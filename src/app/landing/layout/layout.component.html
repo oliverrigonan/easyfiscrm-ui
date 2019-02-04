@@ -1,0 +1,25 @@
+<nav class="navbar fixed-top navbar-expand-sm navbar-light bg-light">
+    <div class="container">
+        <a class="navbar-brand" routerLink="/landing/home">
+            <img src="../../../assets/logo/easyfislogo.png" height="30" alt="">
+        </a>
+        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent"
+            aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="navbarSupportedContent">
+            <ul class="navbar-nav mr-auto mt-2 mt-lg-0">
+                <li class="nav-item active">
+                    <a class="nav-link" routerLink="/landing/home">Home <span class="sr-only">(current)</span></a>
+                </li>
+            </ul>
+            <a routerLink="/account/login" class="btn btn-primary">Login CRM</a>
+        </div>
+    </div>
+</nav>
+<router-outlet></router-outlet>
+<footer class="layout-footer">
+    <div class="container">
+        <b>Easyfis CRM</b> V.1.02032019.1749.NOR
+    </div>
+</footer>

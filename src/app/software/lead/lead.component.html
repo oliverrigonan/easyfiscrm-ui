@@ -1,0 +1,204 @@
+<div class="card card-default">
+
+  <div class="card-header">
+    <table border="0" style="width: 100%; border: none;">
+      <tr>
+        <td>
+          <div class="input-group">
+            <div class="input-group-prepend">
+              <div class="input-group-text">
+                <b>
+                  <i class="fa fa-table"></i>
+                </b>
+              </div>
+            </div>
+            <wj-combo-box #cboNumberOfRows [itemsSource]="cboShowNumberOfRows" [isEditable]="false" [isRequired]="true"
+              [displayMemberPath]="'rowString'" [selectedValuePath]="'rowNumber'" (selectedIndexChanged)="cboShowNumberOfRowsOnSelectedIndexChanged(cboNumberOfRows.selectedValue)"
+              style="width: 140px;">
+            </wj-combo-box>
+          </div>
+        </td>
+        <td style="text-align: right;">
+          <button class="btn btn-primary" (click)="btnAddLeadClick()" style="margin-right: 5px;" id="btnAddLead">
+            <i class="fa fa-plus fa-fw"></i> Add
+          </button>
+          <button class="btn btn-danger" routerLink="/software" id="btnCloseLead">
+            <i class="fa fa-close fa-fw"></i> Close
+          </button>
+        </td>
+      </tr>
+    </table>
+  </div>
+
+  <div class="card-body">
+
+    <div class="row">
+      <div class="col-md-8">
+        <table border="0" style="width: 100%; border: none; margin-top: -15px;">
+          <tr>
+            <td>
+              <div class="form-group">
+                <span class="badge badge-info" style="margin-bottom: 5px;"><i class="fa fa-calendar fa-fw"></i>
+                  Start Date</span>
+                <wj-input-date #cboLeadStartDateFilter [(ngModel)]="leadStartDateFilterData" [ngModelOptions]="{standalone: true}"
+                  (textChanged)="cboStartDateTextChanged()" format="MMMM dd, yyyy" style="width: 100%;">
+                </wj-input-date>
+              </div>
+            </td>
+            <td>
+              <div class="form-group">
+                <span class="badge badge-info" style="margin-bottom: 5px;"><i class="fa fa-calendar fa-fw"></i>
+                  End Date</span>
+                <wj-input-date #cboLeadEndDateFilter [(ngModel)]="leadEndDateFilterData" [ngModelOptions]="{standalone: true}"
+                  (textChanged)="cboEndDateTextChanged()" format="MMMM dd, yyyy" style="width: 100%;">
+                </wj-input-date>
+              </div>
+            </td>
+            <td>
+              <div class="form-group">
+                <span class="badge badge-info" style="margin-bottom: 5px;"><i class="fa fa-question-circle fa-fw"></i>
+                  Status</span>
+                <wj-combo-box #cboLeadStatus [itemsSource]="cboLeadStatusObservableArray" [isEditable]="false"
+                  [isRequired]="true" [displayMemberPath]="'Status'" [selectedValuePath]="'Status'"
+                  (selectedIndexChanged)="cboLeadStatusSelectedIndexChanged(cboLeadStatus.selectedValue)" style="width: 100%;">
+                </wj-combo-box>
+              </div>
+            </td>
+          </tr>
+        </table>
+      </div>
+      <div class="col-md-4"></div>
+    </div>
+    <mat-progress-bar [hidden]="isProgressBarHidden" [color]="'primary'" [mode]="'indeterminate'"></mat-progress-bar>
+    <wj-flex-grid #listLeadFlexGrid [itemsSource]="listLeadCollectionView" [selectionMode]="3" [frozenColumns]="2">
+      <wj-flex-grid-filter></wj-flex-grid-filter>
+      <wj-flex-grid-column [header]="Edit" [isReadOnly]="true" [width]="80">
+        <ng-template wjFlexGridCellTemplate [cellType]="'Cell'">
+          <button type="button" class="btn btn-primary btn-block btn-xs" (click)="btnEditLeadClick()" id="btnEditLead">
+            <i class="fa fa-edit fa-fw"></i> Edit
+          </button>
+        </ng-template>
+      </wj-flex-grid-column>
+      <wj-flex-grid-column [header]="Delete" [isReadOnly]="true" [width]="90">
+        <ng-template wjFlexGridCellTemplate [cellType]="'Cell'">
+          <button type="button" class="btn btn-danger btn-block btn-xs" (click)="btnDeleteLeadClick(leadDeleteModalTemplate)"
+            id="btnDeleteLead">
+            <i class="fa fa-trash fa-fw"></i> Delete
+          </button>
+        </ng-template>
+      </wj-flex-grid-column>
+      <wj-flex-grid-column [header]="'LD No.'" [binding]="'LDNumber'" [isReadOnly]="true" [width]="'*'"></wj-flex-grid-column>
+      <wj-flex-grid-column [header]="'LD Date'" [binding]="'LDDate'" [isReadOnly]="true" [width]="'*'"></wj-flex-grid-column>
+      <wj-flex-grid-column [header]="'Name'" [binding]="'Name'" [isReadOnly]="true" [width]="'*'"></wj-flex-grid-column>
+      <wj-flex-grid-column [header]="'Contact No.'" [binding]="'ContactPhoneNumber'" [isReadOnly]="true" [width]="'*'"></wj-flex-grid-column>
+      <wj-flex-grid-column [header]="'Referred By'" [binding]="'ReferredBy'" [isReadOnly]="true" [width]="'*'"></wj-flex-grid-column>
+      <wj-flex-grid-column [header]="'Remarks'" [binding]="'Remarks'" [isReadOnly]="true" [width]="'*'"></wj-flex-grid-column>
+      <wj-flex-grid-column [header]="'Assigned To'" [binding]="'AssignedToUser'" [isReadOnly]="true" [width]="'*'"></wj-flex-grid-column>
+      <wj-flex-grid-column [header]="'Status'" [binding]="'Status'" [isReadOnly]="true" [width]="'*'"></wj-flex-grid-column>
+      <wj-flex-grid-column [header]="'L'" [binding]="'IsLocked'" [isReadOnly]="true" [width]="'0.5*'"></wj-flex-grid-column>
+    </wj-flex-grid>
+  </div>
+
+  <div class="card-footer">
+    <div class="col-sm-12 btn-group" style="padding: 5px 0px 5px 0px;">
+      <button type="button" class="btn btn-secondary" (click)="listLeadCollectionView.moveToFirstPage()">
+        <i class="fa fa-fast-backward"></i>
+      </button>
+      <button type="button" class="btn btn-secondary" (click)="listLeadCollectionView.moveToPreviousPage()">
+        <i class="fa fa-step-backward"></i>
+      </button>
+      <button type="button" class="btn btn-secondary" disabled style="width:100px">
+        {{ listLeadCollectionView.pageIndex + 1 }} / {{ listLeadCollectionView.pageCount }}
+      </button>
+      <button type="button" class="btn btn-secondary" (click)="listLeadCollectionView.moveToNextPage()">
+        <i class="fa fa-step-forward"></i>
+      </button>
+      <button type="button" class="btn btn-secondary" (click)="listLeadCollectionView.moveToLastPage()">
+        <i class="fa fa-fast-forward"></i>
+      </button>
+    </div>
+  </div>
+</div>
+
+<div class="card card-default" style="margin-top: 10px;">
+  <div class="card-header">
+    User stamp
+  </div>
+  <div class="card-body">
+    <div class="row">
+      <div class="col-md-6">
+        <p>Created by:</p>
+        <div style="padding-left: 10px;">
+          <i class="fa fa-key"></i>&nbsp;
+          <label id="createdBy">
+            {{
+            listLeadCollectionView.items.length > 0 ?
+            listLeadCollectionView.currentItem.CreatedBy : 'NA'
+            }}
+          </label>
+          <br />
+          <small>
+            <i class="fa fa-calendar"></i>&nbsp;&nbsp;
+            <span id="createdDate">
+              {{
+              listLeadCollectionView.items.length > 0 ?
+              listLeadCollectionView.currentItem.CreatedDateTime : 'mm/dd/yyyy'
+              }}
+            </span>
+          </small>
+        </div>
+        <br />
+      </div>
+      <div class="col-md-6">
+        <p>Updated by:</p>
+        <div style="padding-left: 10px;">
+          <i class="fa fa-key"></i>&nbsp;
+          <label id="updatedBy">
+            {{
+            listLeadCollectionView.items.length > 0 ?
+            listLeadCollectionView.currentItem.UpdatedBy : 'NA'
+            }}
+          </label>
+          <br />
+          <small>
+            <i class="fa fa-calendar"></i>&nbsp;&nbsp;
+            <span id="updatedDate">
+              {{
+              listLeadCollectionView.items.length > 0 ?
+              listLeadCollectionView.currentItem.UpdatedDateTime : 'mm/dd/yyyy'
+              }}
+            </span>
+          </small>
+        </div>
+        <br />
+      </div>
+    </div>
+  </div>
+</div>
+
+<ng-template #leadDeleteModalTemplate>
+  <div class="modal-header">
+    <h4 class="modal-title">
+      Delete
+    </h4>
+  </div>
+  <div class="modal-body">
+    Are you sure you want to delete this lead?
+    <br /> <br />
+    LD Number:
+    <b>
+      {{
+      listLeadCollectionView.items.length > 0 ?
+      listLeadCollectionView.currentItem.LDNumber : 'NA'
+      }}
+    </b>
+  </div>
+  <div class="modal-footer">
+    <button type="button" class="btn btn-danger" style="margin-right: 5px;" (click)="btnConfirmDeleteLeadClick()" id="btnConfirmDeleteLead">
+      <i class="fa fa-trash"></i> Delete
+    </button>
+    <button type="button" class="btn" (click)="leadDeleteModalRef.hide()" id="btnCloseConfirmDeleteLeadModal">
+      <i class="fa fa-close"></i> Cancel
+    </button>
+  </div>
+</ng-template>

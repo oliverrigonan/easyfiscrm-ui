@@ -1,0 +1,9 @@
+.layout-footer {
+    position: absolute;
+    bottom: 0;
+    width: 100%;
+    padding-top: 15px;
+    padding-bottom: 15px;
+    background-color: #000f2e;
+    color: white;
+}

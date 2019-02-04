@@ -1,1 +1,38 @@
 /* You can add global styles to this file, and also import other style files */
+@import "~@angular/material/prebuilt-themes/indigo-pink.css";
+
+.btn-xs {
+    padding: 0.1rem 0.1rem !important;
+    font-size: 0.750rem !important; 
+    border-radius: 0.2rem !important;
+}
+
+.toast {
+    box-shadow: none !important;
+}
+
+@media (min-width: 768px) {
+    .form-group-label {
+        text-align: right;
+    }
+}
+
+.wj-control[disabled] {
+    opacity: 10;
+    background-color: #e9ecef;
+    cursor: not-allowed;
+}
+
+.wj-control[disabled] .wj-form-control {
+    pointer-events: none;
+    cursor: not-allowed;
+}
+
+.wj-control[disabled] .wj-btn {
+    pointer-events: none;
+    cursor: not-allowed;
+}
+
+input[disabled] {
+    cursor: not-allowed;
+}
