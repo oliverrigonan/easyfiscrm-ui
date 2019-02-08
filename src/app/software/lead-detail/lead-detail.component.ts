@@ -1,13 +1,17 @@
 import { Component, OnInit, ViewChild, TemplateRef } from '@angular/core';
 import { Router, ActivatedRoute } from '@angular/router';
 
-import { ObservableArray } from 'wijmo/wijmo';
+import { ObservableArray, CollectionView } from 'wijmo/wijmo';
+import { WjFlexGrid } from 'wijmo/wijmo.angular2.grid';
 import { WjComboBox } from 'wijmo/wijmo.angular2.input';
 
 import { LeadDetailService } from './lead-detail.service';
 import { LeadDetailModel } from './lead-detail.model';
 
 import { ToastrService } from 'ngx-toastr';
+
+import { BsModalService } from 'ngx-bootstrap/modal';
+import { BsModalRef } from 'ngx-bootstrap/modal/bs-modal-ref.service';
 
 @Component({
   selector: 'app-lead-detail',
@@ -20,11 +24,15 @@ export class LeadDetailComponent implements OnInit {
     private leadDetailService: LeadDetailService,
     private toastr: ToastrService,
     private activatedRoute: ActivatedRoute,
-    private router: Router
+    private router: Router,
+    private modalService: BsModalService,
   ) { }
 
-  public cboLeadAssignedToUsersSub: any;
+  public cboAssignedToUsersSub: any;
   public cboLeadAssignedToUsersObservableArray: ObservableArray = new ObservableArray();
+
+  public cboListStatusSub: any;
+  public cboLeadStatusObservableArray: ObservableArray = new ObservableArray();
 
   public detailLeadSub: any;
   public saveLeadSub: any;
@@ -47,7 +55,7 @@ export class LeadDetailComponent implements OnInit {
     AssignedToUserId: 0,
     AssignedToUser: "",
     Status: "",
-    IsLocked: "",
+    IsLocked: false,
     CreatedByUserId: 0,
     CreatedByUser: "",
     CreatedDateTime: "",
@@ -56,11 +64,30 @@ export class LeadDetailComponent implements OnInit {
     UpdatedDateTime: ""
   };
 
-  public cboLeadStatusObservableArray: ObservableArray = new ObservableArray();
+  public activitiyModalRef: BsModalRef;
+  public deleteActivitiyModalRef: BsModalRef;
+
+  public cboShowNumberOfRows: ObservableArray = new ObservableArray();
+
+  public listActivityObservableArray: ObservableArray = new ObservableArray();
+  public listActivityCollectionView: CollectionView = new CollectionView(this.listActivityObservableArray);
+  public listActivityPageIndex: number = 15;
+  @ViewChild('listActivityFlexGrid') listActivityFlexGrid: WjFlexGrid;
+  public isProgressBarHidden = false;
+  public isDataLoaded: boolean = false;
+
+  public listActivitySub: any;
+  public deleteActivitySub: any;
+
+  public isLoadingSpinnerHidden: boolean = false;
+  public isContentHidden: boolean = true;
+  public isActivityTabHidden: boolean = true;
+
+  public activityModalHeaderTitle: string = "Activity";
 
   public createCboAssignedToUser() {
     this.leadDetailService.listAssignedUsers();
-    this.cboLeadAssignedToUsersSub = this.leadDetailService.listLeadAssignedToUsersObservable.subscribe(
+    this.cboAssignedToUsersSub = this.leadDetailService.listLeadAssignedToUsersObservable.subscribe(
       data => {
         let assignedUsersObservableArray = new ObservableArray();
 
@@ -76,44 +103,46 @@ export class LeadDetailComponent implements OnInit {
 
         this.cboLeadAssignedToUsersObservableArray = assignedUsersObservableArray;
         if (this.cboLeadAssignedToUsersObservableArray.length > 0) {
-          this.createCboLeadStatus();
+          setTimeout(() => {
+            this.createCboLeadStatus();
+          }, 100);
         }
 
-        if (this.cboLeadAssignedToUsersSub != null) this.cboLeadAssignedToUsersSub.unsubscribe();
+        if (this.cboAssignedToUsersSub != null) this.cboAssignedToUsersSub.unsubscribe();
       }
     );
   }
 
   public createCboLeadStatus(): void {
-    for (let i = 0; i <= 2; i++) {
-      let status = "Open";
+    this.leadDetailService.listStatus();
+    this.cboListStatusSub = this.leadDetailService.listStatusObservable.subscribe(
+      data => {
+        let statusObservableArray = new ObservableArray();
 
-      switch (i) {
-        case 0: {
-          status = "Open";
-          break;
+        statusObservableArray.push({
+          Id: 0,
+          Status: "ALL"
+        });
+
+        if (data != null) {
+          for (var i = 0; i <= data.length - 1; i++) {
+            statusObservableArray.push({
+              Id: data[i].Id,
+              Status: data[i].Status
+            });
+          }
         }
-        case 1: {
-          status = "For Closing";
-          break;
+
+        this.cboLeadStatusObservableArray = statusObservableArray;
+        if (this.cboLeadStatusObservableArray.length > 0) {
+          setTimeout(() => {
+            this.detailLead();
+          }, 100);
         }
-        case 2: {
-          status = "Close";
-          break;
-        }
-        default: {
-          break;
-        }
+
+        if (this.cboListStatusSub != null) this.cboListStatusSub.unsubscribe();
       }
-
-      this.cboLeadStatusObservableArray.push({
-        Status: status
-      });
-    }
-
-    setTimeout(() => {
-      this.detailLead();
-    }, 100);
+    );
   }
 
   public detailLead(): void {
@@ -159,7 +188,12 @@ export class LeadDetailComponent implements OnInit {
             (<HTMLButtonElement>btnSaveLead).disabled = true;
             (<HTMLButtonElement>btnLockLead).disabled = true;
             (<HTMLButtonElement>btnUnlockLead).disabled = false;
+
+            this.isActivityTabHidden = false;
           }
+
+          this.isLoadingSpinnerHidden = true;
+          this.isContentHidden = false;
         }
 
         if (this.detailLeadSub != null) this.detailLeadSub.unsubscribe();
@@ -219,6 +253,8 @@ export class LeadDetailComponent implements OnInit {
             (<HTMLButtonElement>btnSaveLead).disabled = true;
             (<HTMLButtonElement>btnLockLead).disabled = true;
             (<HTMLButtonElement>btnUnlockLead).disabled = false;
+
+            this.isActivityTabHidden = false;
           }, 500);
         } else if (data[0] == "failed") {
           this.toastr.error(data[1], "Error");
@@ -234,6 +270,8 @@ export class LeadDetailComponent implements OnInit {
   }
 
   public btnUnlockLeadClick(): void {
+    this.isActivityTabHidden = true;
+
     let btnSaveLead: Element = document.getElementById("btnSaveLead");
     let btnLockLead: Element = document.getElementById("btnLockLead");
     let btnUnlockLead: Element = document.getElementById("btnUnlockLead");
@@ -253,6 +291,8 @@ export class LeadDetailComponent implements OnInit {
             (<HTMLButtonElement>btnSaveLead).disabled = false;
             (<HTMLButtonElement>btnLockLead).disabled = false;
             (<HTMLButtonElement>btnUnlockLead).disabled = true;
+
+            this.isActivityTabHidden = true;
           }, 500);
         } else if (data[0] == "failed") {
           this.toastr.error(data[1], "Error");
@@ -260,6 +300,8 @@ export class LeadDetailComponent implements OnInit {
           (<HTMLButtonElement>btnSaveLead).disabled = true;
           (<HTMLButtonElement>btnLockLead).disabled = true;
           (<HTMLButtonElement>btnUnlockLead).disabled = false;
+
+          this.isActivityTabHidden = false;
         }
 
         if (this.unlockLeadSub != null) this.unlockLeadSub.unsubscribe();
@@ -267,14 +309,139 @@ export class LeadDetailComponent implements OnInit {
     );
   }
 
+  public createCboShowNumberOfRows(): void {
+    for (var i = 0; i <= 4; i++) {
+      var rows = 0;
+      var rowsString = "";
+
+      if (i == 0) {
+        rows = 15;
+        rowsString = "Show 15";
+      } else if (i == 1) {
+        rows = 50;
+        rowsString = "Show 50";
+      } else if (i == 2) {
+        rows = 100;
+        rowsString = "Show 100";
+      } else if (i == 3) {
+        rows = 150;
+        rowsString = "Show 150";
+      } else {
+        rows = 200;
+        rowsString = "Show 200";
+      }
+
+      this.cboShowNumberOfRows.push({
+        rowNumber: rows,
+        rowString: rowsString
+      });
+    }
+  }
+
+  public cboShowNumberOfRowsOnSelectedIndexChanged(selectedValue: any): void {
+    this.listActivityPageIndex = selectedValue;
+
+    this.listActivityCollectionView.pageSize = this.listActivityPageIndex;
+    this.listActivityCollectionView.refresh();
+    this.listActivityCollectionView.refresh();
+  }
+
+  public listActivity(): void {
+    if (!this.isDataLoaded) {
+      setTimeout(() => {
+        this.listActivityObservableArray = new ObservableArray();
+        this.listActivityCollectionView = new CollectionView(this.listActivityObservableArray);
+        this.listActivityCollectionView.pageSize = 15;
+        this.listActivityCollectionView.trackChanges = true;
+        this.listActivityCollectionView.refresh();
+        this.listActivityFlexGrid.refresh();
+
+        this.isProgressBarHidden = false;
+
+        let id: number = 0;
+        this.activatedRoute.params.subscribe(params => { id = params["id"]; });
+
+        this.leadDetailService.listActivity(id);
+        this.listActivitySub = this.leadDetailService.listActivityObservable.subscribe(
+          data => {
+            if (data.length > 0) {
+              this.listActivityObservableArray = data;
+              this.listActivityCollectionView = new CollectionView(this.listActivityObservableArray);
+              this.listActivityCollectionView.pageSize = this.listActivityPageIndex;
+              this.listActivityCollectionView.trackChanges = true;
+              this.listActivityCollectionView.refresh();
+              this.listActivityFlexGrid.refresh();
+            }
+
+            this.isDataLoaded = true;
+            this.isProgressBarHidden = true;
+
+            if (this.listActivitySub != null) this.listActivitySub.unsubscribe();
+          }
+        );
+      }, 100);
+    }
+  }
+
+  public btnAddActivityClick(activityModalTemplate: TemplateRef<any>): void {
+    this.activitiyModalRef = this.modalService.show(activityModalTemplate, { class: "" });
+
+    this.activityModalHeaderTitle = "Add Activity";
+  }
+
+  public btnEditActivityClick(activityModalTemplate: TemplateRef<any>): void {
+    this.activitiyModalRef = this.modalService.show(activityModalTemplate, { class: "" });
+
+    this.activityModalHeaderTitle = "Edit Activity";
+  }
+
+  public btnDeleteActivityClick(activityDeleteModalTemplate: TemplateRef<any>): void {
+    this.deleteActivitiyModalRef = this.modalService.show(activityDeleteModalTemplate, { class: "modal-sm" });
+  }
+
+  public btnConfirmDeleteAcitivityClick() {
+    let btnConfirmDeleteAcitivity: Element = document.getElementById("btnConfirmDeleteAcitivity");
+    let btnCloseConfirmDeleteAcitivityModal: Element = document.getElementById("btnCloseConfirmDeleteAcitivityModal");
+    (<HTMLButtonElement>btnConfirmDeleteAcitivity).disabled = true;
+    (<HTMLButtonElement>btnCloseConfirmDeleteAcitivityModal).disabled = true;
+
+    let currentActivity = this.listActivityCollectionView.currentItem;
+    this.leadDetailService.deleteActivity(currentActivity.Id);
+    this.deleteActivitySub = this.leadDetailService.deleteActivityObservable.subscribe(
+      data => {
+        if (data[0] == "success") {
+          this.toastr.success("Lead was successfully deleted.", "Success");
+
+          setTimeout(() => {
+            this.isDataLoaded = false;
+
+            this.listActivity();
+            this.deleteActivitiyModalRef.hide();
+          }, 100);
+        } else if (data[0] == "failed") {
+          this.toastr.error(data[1], "Error");
+
+          (<HTMLButtonElement>btnConfirmDeleteAcitivity).disabled = false;
+          (<HTMLButtonElement>btnCloseConfirmDeleteAcitivityModal).disabled = false;
+        }
+
+        if (this.deleteActivitySub != null) this.deleteActivitySub.unsubscribe();
+      }
+    );
+  }
+
   ngOnInit() {
     this.createCboAssignedToUser();
+    this.createCboShowNumberOfRows();
   }
 
   ngOnDestroy() {
-    if (this.cboLeadAssignedToUsersSub != null) this.cboLeadAssignedToUsersSub.unsubscribe();
+    if (this.cboAssignedToUsersSub != null) this.cboAssignedToUsersSub.unsubscribe();
+    if (this.cboListStatusSub != null) this.cboListStatusSub.unsubscribe();
     if (this.detailLeadSub != null) this.detailLeadSub.unsubscribe();
     if (this.lockLeadSub != null) this.lockLeadSub.unsubscribe();
     if (this.unlockLeadSub != null) this.unlockLeadSub.unsubscribe();
+    if (this.listActivitySub != null) this.listActivitySub.unsubscribe();
+    if (this.deleteActivitySub != null) this.deleteActivitySub.unsubscribe();
   }
 }

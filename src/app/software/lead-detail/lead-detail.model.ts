@@ -13,7 +13,7 @@ export class LeadDetailModel {
     AssignedToUserId: number;
     AssignedToUser: string;
     Status: string;
-    IsLocked: string;
+    IsLocked: boolean;
     CreatedByUserId: number;
     CreatedByUser: string;
     CreatedDateTime: string;

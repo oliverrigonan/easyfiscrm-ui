@@ -1,117 +1,414 @@
-<div class="card card-default">
+<div [hidden]="isLoadingSpinnerHidden">
+  <br /><br /><br />
+  <mat-spinner style="margin: auto;"></mat-spinner>
+</div>
+<div [hidden]="isContentHidden">
+  <ul class="nav nav-tabs" id="myTab" role="tablist" style="margin-top: 10px; margin-bottom: 10px;">
+    <li class="nav-item">
+      <a class="nav-link active" id="lead-tab" data-toggle="tab" href="#lead" role="tab" aria-controls="lead"
+        aria-selected="true">Lead Detail</a>
+    </li>
+    <li class="nav-item" [hidden]="isActivityTabHidden">
+      <a class="nav-link" id="activities-tab" data-toggle="tab" href="#activities" role="tab" aria-controls="activities"
+        aria-selected="false" (click)="listActivity()">Activities</a>
+    </li>
+  </ul>
 
-  <div class="card-header">
-    <table border="0" style="width: 100%; border: none;">
-      <tr>
-        <td style="text-align: right;">
-          <button class="btn btn-primary" (click)="btnSaveLeadClick()" style="margin-right: 5px;" id="btnSaveLead"
-            disabled>
-            <i class="fa fa-save fa-fw"></i> Save
-          </button>
-          <button class="btn btn-primary" (click)="btnLockLeadClick()" style="margin-right: 5px;" id="btnLockLead"
-            disabled>
-            <i class="fa fa-lock fa-fw"></i> Lock
-          </button>
-          <button class="btn btn-primary" (click)="btnUnlockLeadClick()" style="margin-right: 5px;" id="btnUnlockLead"
-            disabled>
-            <i class="fa fa-unlock fa-fw"></i> Unlock
-          </button>
-          <button class="btn btn-danger" routerLink="/software/trn/lead" id="btnCloseLead">
-            <i class="fa fa-close fa-fw"></i> Close
-          </button>
-        </td>
-      </tr>
-    </table>
-  </div>
+  <div class="tab-content" id="myTabContent">
+    <div class="tab-pane fade show active" id="lead" role="tabpanel" aria-labelledby="lead-tab">
+      <div class="card card-default">
 
-  <div class="card-body">
-    <div class="row">
-      <div class="col-lg-6">
-        <div class="form-group row">
-          <label for="" class="col-sm-4 col-form-label form-group-label">LD No.</label>
-          <div class="col-sm-8">
-            <input type="text" class="form-control" [(ngModel)]="leadDetailModel.LDNumber" placeholder="LD Number..."
-              disabled>
+        <div class="card-header">
+          <table border="0" style="width: 100%; border: none;">
+            <tr>
+              <td style="text-align: right;">
+                <button class="btn btn-primary" (click)="btnSaveLeadClick()" style="margin-right: 5px;" id="btnSaveLead"
+                  disabled>
+                  <i class="fa fa-save fa-fw"></i> Save
+                </button>
+                <button class="btn btn-primary" (click)="btnLockLeadClick()" style="margin-right: 5px;" id="btnLockLead"
+                  disabled>
+                  <i class="fa fa-lock fa-fw"></i> Lock
+                </button>
+                <button class="btn btn-primary" (click)="btnUnlockLeadClick()" style="margin-right: 5px;" id="btnUnlockLead"
+                  disabled>
+                  <i class="fa fa-unlock fa-fw"></i> Unlock
+                </button>
+                <button class="btn btn-danger" routerLink="/software/trn/lead" id="btnCloseLead">
+                  <i class="fa fa-close fa-fw"></i> Close
+                </button>
+              </td>
+            </tr>
+          </table>
+        </div>
+
+        <div class="card-body">
+          <div class="row">
+            <div class="col-lg-6">
+              <div class="form-group row">
+                <label for="" class="col-sm-4 col-form-label form-group-label">LD No.</label>
+                <div class="col-sm-8">
+                  <input type="text" class="form-control" [(ngModel)]="leadDetailModel.LDNumber" placeholder="LD Number..."
+                    disabled>
+                </div>
+                <br /><br />
+                <label for="" class="col-sm-4 col-form-label form-group-label">LD Date</label>
+                <div class="col-sm-8">
+                  <wj-input-date #cboShopOrderDate [disabled]="isLocked" [(ngModel)]="leadDetailModel.LDDate" format="MM-dd-yyyy"
+                    style="width: 100%; padding: 3px;">
+                  </wj-input-date>
+                </div>
+                <br /><br />
+                <label for="" class="col-sm-4 col-form-label form-group-label">Name</label>
+                <div class="col-sm-8">
+                  <input type="text" class="form-control" [disabled]="isLocked" [(ngModel)]="leadDetailModel.Name"
+                    placeholder="Name...">
+                </div>
+                <br /><br />
+                <label for="" class="col-sm-4 col-form-label form-group-label">Address</label>
+                <div class="col-sm-8">
+                  <textarea type="text" class="form-control" style="resize: none" [disabled]="isLocked" [(ngModel)]="leadDetailModel.Address"
+                    placeholder="Remarks..." rows="5">
+                    </textarea>
+                </div>
+                <br /><br /><br /><br /><br /><br />
+                <label for="" class="col-sm-4 col-form-label form-group-label">Contact Person</label>
+                <div class="col-sm-8">
+                  <input type="text" class="form-control" [disabled]="isLocked" [(ngModel)]="leadDetailModel.ContactPerson"
+                    placeholder="Contact Person...">
+                </div>
+                <br /><br />
+                <label for="" class="col-sm-4 col-form-label form-group-label">Contact Position</label>
+                <div class="col-sm-8">
+                  <input type="text" class="form-control" [disabled]="isLocked" [(ngModel)]="leadDetailModel.ContactPosition"
+                    placeholder="Contact Position...">
+                </div>
+                <br /><br />
+                <label for="" class="col-sm-4 col-form-label form-group-label">Contact Email</label>
+                <div class="col-sm-8">
+                  <input type="text" class="form-control" [disabled]="isLocked" [(ngModel)]="leadDetailModel.ContactEmail"
+                    placeholder="Contact Email...">
+                </div>
+                <br /><br />
+                <label for="" class="col-sm-4 col-form-label form-group-label">Contact Phone No.</label>
+                <div class="col-sm-8">
+                  <input type="text" class="form-control" [disabled]="isLocked" [(ngModel)]="leadDetailModel.ContactPhoneNumber"
+                    placeholder="Contact Phone Number...">
+                </div>
+                <br /><br />
+              </div>
+            </div>
+            <div class="col-lg-6">
+              <div class="form-group row">
+                <label for="" class="col-sm-4 col-form-label form-group-label">Remarks</label>
+                <div class="col-sm-8">
+                  <textarea type="text" class="form-control" style="resize: none" [disabled]="isLocked" [(ngModel)]="leadDetailModel.Remarks"
+                    placeholder="Remarks..." rows="5">
+                  </textarea>
+                </div>
+                <br /><br /><br /><br /><br /><br />
+                <label for="" class="col-sm-4 col-form-label form-group-label">Referred By</label>
+                <div class="col-sm-8">
+                  <input type="text" class="form-control" [disabled]="isLocked" [(ngModel)]="leadDetailModel.ReferredBy"
+                    placeholder="Referred By...">
+                </div>
+                <br /><br />
+                <label for="" class="col-sm-4 col-form-label form-group-label">Assigned To:</label>
+                <div class="col-sm-8">
+                  <wj-combo-box #cboLeadAssignedToUser [disabled]="isLocked" [(ngModel)]="leadDetailModel.AssignedToUserId"
+                    [itemsSource]="cboLeadAssignedToUsersObservableArray" [isEditable]="false" [isRequired]="true"
+                    [displayMemberPath]="'FullName'" [selectedValuePath]="'Id'" style="width: 100%; padding: 3px;">
+                  </wj-combo-box>
+                </div>
+                <br /><br />
+                <label for="" class="col-sm-4 col-form-label form-group-label">Status</label>
+                <div class="col-sm-8">
+                  <wj-combo-box #cboLeadStatus [disabled]="isLocked" [(ngModel)]="leadDetailModel.Status" [itemsSource]="cboLeadStatusObservableArray"
+                    [isEditable]="false" [isRequired]="true" [displayMemberPath]="'Status'" [selectedValuePath]="'Status'"
+                    style="width: 100%; padding: 3px;">
+                  </wj-combo-box>
+                </div>
+              </div>
+            </div>
           </div>
-          <br /><br />
-          <label for="" class="col-sm-4 col-form-label form-group-label">LD Date</label>
-          <div class="col-sm-8">
-            <wj-input-date #cboShopOrderDate [disabled]="isLocked" [(ngModel)]="leadDetailModel.LDDate" format="MM-dd-yyyy"
-              style="width: 100%; padding: 3px;">
-            </wj-input-date>
-          </div>
-          <br /><br />
-          <label for="" class="col-sm-4 col-form-label form-group-label">Name</label>
-          <div class="col-sm-8">
-            <input type="text" class="form-control" [disabled]="isLocked" [(ngModel)]="leadDetailModel.Name"
-              placeholder="Name...">
-          </div>
-          <br /><br />
-          <label for="" class="col-sm-4 col-form-label form-group-label">Address</label>
-          <div class="col-sm-8">
-            <textarea type="text" class="form-control" style="resize: none" [disabled]="isLocked" [(ngModel)]="leadDetailModel.Address"
-              placeholder="Remarks..." rows="5">
-            </textarea>
-          </div>
-          <br /><br /><br /><br /><br /><br />
-          <label for="" class="col-sm-4 col-form-label form-group-label">Contact Person</label>
-          <div class="col-sm-8">
-            <input type="text" class="form-control" [disabled]="isLocked" [(ngModel)]="leadDetailModel.ContactPerson"
-              placeholder="Contact Person...">
-          </div>
-          <br /><br />
-          <label for="" class="col-sm-4 col-form-label form-group-label">Contact Position</label>
-          <div class="col-sm-8">
-            <input type="text" class="form-control" [disabled]="isLocked" [(ngModel)]="leadDetailModel.ContactPosition"
-              placeholder="Contact Position...">
-          </div>
-          <br /><br />
-          <label for="" class="col-sm-4 col-form-label form-group-label">Contact Email</label>
-          <div class="col-sm-8">
-            <input type="text" class="form-control" [disabled]="isLocked" [(ngModel)]="leadDetailModel.ContactEmail"
-              placeholder="Contact Email...">
-          </div>
-          <br /><br />
-          <label for="" class="col-sm-4 col-form-label form-group-label">Contact Phone No.</label>
-          <div class="col-sm-8">
-            <input type="text" class="form-control" [disabled]="isLocked" [(ngModel)]="leadDetailModel.ContactPhoneNumber"
-              placeholder="Contact Phone Number...">
-          </div>
-          <br /><br />
         </div>
       </div>
-      <div class="col-lg-6">
-        <div class="form-group row">
-          <label for="" class="col-sm-4 col-form-label form-group-label">Remarks</label>
-          <div class="col-sm-8">
-            <textarea type="text" class="form-control" style="resize: none" [disabled]="isLocked" [(ngModel)]="leadDetailModel.Remarks"
-              placeholder="Remarks..." rows="5">
-            </textarea>
+
+      <div class="card card-default" style="margin-top: 10px;">
+        <div class="card-header">
+          User stamp
+        </div>
+        <div class="card-body">
+          <div class="row">
+            <div class="col-md-6">
+              <p>Created by:</p>
+              <div style="padding-left: 10px;">
+                <i class="fa fa-key"></i>&nbsp;
+                <label id="createdBy">
+                  {{
+                  leadDetailModel != null ?
+                  leadDetailModel.CreatedByUser : 'NA'
+                  }}
+                </label>
+                <br />
+                <small>
+                  <i class="fa fa-calendar"></i>&nbsp;&nbsp;
+                  <span id="createdDate">
+                    {{
+                    leadDetailModel != null ?
+                    leadDetailModel.CreatedDateTime : 'mm/dd/yyyy'
+                    }}
+                  </span>
+                </small>
+              </div>
+              <br />
+            </div>
+            <div class="col-md-6">
+              <p>Updated by:</p>
+              <div style="padding-left: 10px;">
+                <i class="fa fa-key"></i>&nbsp;
+                <label id="updatedBy">
+                  {{
+                  leadDetailModel != null ?
+                  leadDetailModel.UpdatedByUser : 'NA'
+                  }}
+                </label>
+                <br />
+                <small>
+                  <i class="fa fa-calendar"></i>&nbsp;&nbsp;
+                  <span id="updatedDate">
+                    {{
+                    leadDetailModel != null ?
+                    leadDetailModel.UpdatedDateTime : 'mm/dd/yyyy'
+                    }}
+                  </span>
+                </small>
+              </div>
+              <br />
+            </div>
           </div>
-          <br /><br /><br /><br /><br /><br />
-          <label for="" class="col-sm-4 col-form-label form-group-label">Referred By</label>
-          <div class="col-sm-8">
-            <input type="text" class="form-control" [disabled]="isLocked" [(ngModel)]="leadDetailModel.ReferredBy"
-              placeholder="Referred By...">
-          </div>
-          <br /><br />
-          <label for="" class="col-sm-4 col-form-label form-group-label">Assigned To:</label>
-          <div class="col-sm-8">
-            <wj-combo-box #cboLeadAssignedToUser [disabled]="isLocked" [(ngModel)]="leadDetailModel.AssignedToUserId"
-              [itemsSource]="cboLeadAssignedToUsersObservableArray" [isEditable]="false" [isRequired]="true"
-              [displayMemberPath]="'FullName'" [selectedValuePath]="'Id'" style="width: 100%; padding: 3px;">
-            </wj-combo-box>
-          </div>
-          <br /><br />
-          <label for="" class="col-sm-4 col-form-label form-group-label">Status</label>
-          <div class="col-sm-8">
-            <wj-combo-box #cboLeadStatus [disabled]="isLocked" [(ngModel)]="leadDetailModel.Status" [itemsSource]="cboLeadStatusObservableArray"
-              [isEditable]="false" [isRequired]="true" [displayMemberPath]="'Status'" [selectedValuePath]="'Status'"
-              style="width: 100%; padding: 3px;">
-            </wj-combo-box>
+        </div>
+      </div>
+
+    </div>
+    <div class="tab-pane fade" id="activities" role="tabpanel" aria-labelledby="activities-tab">
+      <div class="card card-default">
+
+        <div class="card-header">
+          <table border="0" style="width: 100%; border: none;">
+            <tr>
+              <td>
+                <div class="input-group">
+                  <div class="input-group-prepend">
+                    <div class="input-group-text">
+                      <b>
+                        <i class="fa fa-table"></i>
+                      </b>
+                    </div>
+                  </div>
+                  <wj-combo-box #cboNumberOfRows [itemsSource]="cboShowNumberOfRows" [isEditable]="false" [isRequired]="true"
+                    [displayMemberPath]="'rowString'" [selectedValuePath]="'rowNumber'" (selectedIndexChanged)="cboShowNumberOfRowsOnSelectedIndexChanged(cboNumberOfRows.selectedValue)"
+                    style="width: 140px;">
+                  </wj-combo-box>
+                </div>
+              </td>
+              <td style="text-align: right;">
+                <button class="btn btn-primary" (click)="btnAddActivityClick(activityModalTemplate)" style="margin-right: 5px;"
+                  id="btnAddActivity">
+                  <i class="fa fa-plus fa-fw"></i> Add
+                </button>
+                <button class="btn btn-danger" routerLink="/software/trn/lead" id="btnCloseActivity">
+                  <i class="fa fa-close fa-fw"></i> Close
+                </button>
+              </td>
+            </tr>
+          </table>
+        </div>
+
+        <div class="card-body">
+          <mat-progress-bar [hidden]="isProgressBarHidden" [color]="'primary'" [mode]="'indeterminate'"></mat-progress-bar>
+          <wj-flex-grid #listActivityFlexGrid [itemsSource]="listActivityCollectionView" [selectionMode]="3"
+            [frozenColumns]="2">
+            <wj-flex-grid-filter></wj-flex-grid-filter>
+            <wj-flex-grid-column [header]="Edit" [isReadOnly]="true" [width]="80">
+              <ng-template wjFlexGridCellTemplate [cellType]="'Cell'">
+                <button type="button" class="btn btn-primary btn-block btn-xs" (click)="btnEditActivityClick(activityModalTemplate)"
+                  id="btnEditActivity">
+                  <i class="fa fa-edit fa-fw"></i> Edit
+                </button>
+              </ng-template>
+            </wj-flex-grid-column>
+            <wj-flex-grid-column [header]="Delete" [isReadOnly]="true" [width]="90">
+              <ng-template wjFlexGridCellTemplate [cellType]="'Cell'">
+                <button type="button" class="btn btn-danger btn-block btn-xs" (click)="btnDeleteActivityClick(activityDeleteModalTemplate)"
+                  id="btnDeleteActivity">
+                  <i class="fa fa-trash fa-fw"></i> Delete
+                </button>
+              </ng-template>
+            </wj-flex-grid-column>
+            <wj-flex-grid-column [header]="'No.'" [binding]="'ACNumber'" [isReadOnly]="true" [width]="'*'"></wj-flex-grid-column>
+            <wj-flex-grid-column [header]="'Date'" [binding]="'ACDate'" [isReadOnly]="true" [width]="'*'"></wj-flex-grid-column>
+            <wj-flex-grid-column [header]="'User'" [binding]="'User'" [isReadOnly]="true" [width]="'*'"></wj-flex-grid-column>
+            <wj-flex-grid-column [header]="'CRM Status'" [binding]="'CRMStatus'" [isReadOnly]="true" [width]="'*'"></wj-flex-grid-column>
+            <wj-flex-grid-column [header]="'Activity'" [binding]="'Activity'" [isReadOnly]="true" [width]="'*'"></wj-flex-grid-column>
+            <wj-flex-grid-column [header]="'Status'" [binding]="'Status'" [isReadOnly]="true" [width]="'*'"></wj-flex-grid-column>
+          </wj-flex-grid>
+        </div>
+
+        <div class="card-footer">
+          <div class="col-sm-12 btn-group" style="padding: 5px 0px 5px 0px;">
+            <button type="button" class="btn btn-secondary" (click)="listActivityCollectionView.moveToFirstPage()">
+              <i class="fa fa-fast-backward"></i>
+            </button>
+            <button type="button" class="btn btn-secondary" (click)="listActivityCollectionView.moveToPreviousPage()">
+              <i class="fa fa-step-backward"></i>
+            </button>
+            <button type="button" class="btn btn-secondary" disabled style="width:100px">
+              {{ listActivityCollectionView.pageIndex + 1 }} / {{ listActivityCollectionView.pageCount }}
+            </button>
+            <button type="button" class="btn btn-secondary" (click)="listActivityCollectionView.moveToNextPage()">
+              <i class="fa fa-step-forward"></i>
+            </button>
+            <button type="button" class="btn btn-secondary" (click)="listActivityCollectionView.moveToLastPage()">
+              <i class="fa fa-fast-forward"></i>
+            </button>
           </div>
         </div>
       </div>
     </div>
   </div>
+
+  <ng-template #activityModalTemplate>
+    <div class="modal-header">
+      <h4 class="modal-title">
+        {{ activityModalHeaderTitle }}
+      </h4>
+    </div>
+    <div class="modal-body">
+      <ul class="nav nav-tabs" id="myTab" role="tablist">
+        <li class="nav-item">
+          <a class="nav-link active" id="activity-detail-tab" data-toggle="tab" href="#activity-detail" role="tab"
+            aria-controls="activity-detail" aria-selected="true">Detail</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" id="activity-activity-tab" data-toggle="tab" href="#activity-activity" role="tab"
+            aria-controls="activity-activity" aria-selected="false">Activity</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" id="activity-cost-tab" data-toggle="tab" href="#activity-cost" role="tab" aria-controls="activity-cost"
+            aria-selected="false">Cost</a>
+        </li>
+      </ul>
+
+      <br />
+
+      <div class="tab-content" id="myTabContent">
+        <div class="tab-pane fade show active" id="activity-detail" role="tabpanel" aria-labelledby="activity-detail-tab">
+          <div class="form-group row">
+            <label for="" class="col-sm-4 col-form-label form-group-label">No.</label>
+            <div class="col-sm-8">
+              <input type="text" class="form-control" placeholder="Number..." disabled>
+            </div>
+            <br /><br />
+            <label for="" class="col-sm-4 col-form-label form-group-label">Date</label>
+            <div class="col-sm-8">
+              <input type="text" class="form-control" placeholder="Date...">
+            </div>
+            <br /><br />
+            <label for="" class="col-sm-4 col-form-label form-group-label">Manual No.</label>
+            <div class="col-sm-8">
+              <input type="text" class="form-control" placeholder="Manual No....">
+            </div>
+            <br /><br />
+            <label for="" class="col-sm-4 col-form-label form-group-label">Functional</label>
+            <div class="col-sm-8">
+              <input type="text" class="form-control" placeholder="Functional...">
+            </div>
+            <br /><br />
+            <label for="" class="col-sm-4 col-form-label form-group-label">Technical</label>
+            <div class="col-sm-8">
+              <input type="text" class="form-control" placeholder="Technical...">
+            </div>
+            <br /><br />
+            <label for="" class="col-sm-4 col-form-label form-group-label">CRM Status</label>
+            <div class="col-sm-8">
+              <input type="text" class="form-control" placeholder="CRM Status..." disabled>
+            </div>
+            <br /><br />
+            <label for="" class="col-sm-4 col-form-label form-group-label">Start Date/Time</label>
+            <div class="col-sm-8">
+              <input type="text" class="form-control" placeholder="Time Start...">
+            </div>
+            <br /><br />
+            <label for="" class="col-sm-4 col-form-label form-group-label">End Date/Time</label>
+            <div class="col-sm-8">
+              <input type="text" class="form-control" placeholder="Time End...">
+            </div>
+            <br /><br />
+          </div>
+        </div>
+        <div class="tab-pane fade" id="activity-activity" role="tabpanel" aria-labelledby="activity-activity-tab">
+          <div class="form-group">
+            <label for="">Activity</label>
+            <textarea type="text" class="form-control" style="resize: none" placeholder="Activity..." rows="10"></textarea>
+          </div>
+          <div class="form-group">
+            <label for="">Status</label>
+            <input type="text" class="form-control" placeholder="Status...">
+          </div>
+        </div>
+        <div class="tab-pane fade" id="activity-cost" role="tabpanel" aria-labelledby="activity-cost-tab">
+          <div class="form-group row">
+            <label for="" class="col-sm-4 col-form-label form-group-label">Transpo.</label>
+            <div class="col-sm-8">
+              <input type="text" class="form-control" placeholder="Transportaion Cost...">
+            </div>
+            <br /><br />
+            <label for="" class="col-sm-4 col-form-label form-group-label">On-site</label>
+            <div class="col-sm-8">
+              <input type="text" class="form-control" placeholder="On-site Cost..">
+            </div>
+            <br /><br />
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="modal-footer">
+      <button type="button" class="btn btn-primary" style="margin-right: 5px;" (click)="btnSaveActivityClick()" id="btnSaveActivity">
+        <i class="fa fa-save"></i> Save
+      </button>
+      <button type="button" class="btn btn-danger" (click)="activitiyModalRef.hide()" id="btnSaveActivityClickCloseModal">
+        <i class="fa fa-close"></i> Cancel
+      </button>
+    </div>
+  </ng-template>
+
+  <ng-template #activityDeleteModalTemplate>
+    <div class="modal-header">
+      <h4 class="modal-title">
+        Delete
+      </h4>
+    </div>
+    <div class="modal-body">
+      Are you sure you want to delete this activity?
+      <br /> <br />
+
+      AC Number:
+      <b>
+        {{
+        listActivityCollectionView.items.length > 0 ?
+        listActivityCollectionView.currentItem.ACNumber : 'NA'
+        }}
+      </b>
+    </div>
+    <div class="modal-footer">
+      <button type="button" class="btn btn-danger" style="margin-right: 5px;" (click)="btnConfirmDeleteAcitivityClick()"
+        id="btnConfirmDeleteAcitivity">
+        <i class="fa fa-trash"></i> Delete
+      </button>
+      <button type="button" class="btn" (click)="deleteActivitiyModalRef.hide()" id="btnCloseConfirmDeleteAcitivityModal">
+        <i class="fa fa-close"></i> Cancel
+      </button>
+    </div>
+  </ng-template>
 </div>

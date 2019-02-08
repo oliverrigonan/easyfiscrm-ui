@@ -21,12 +21,35 @@ export class LeadService {
     })
   };
 
+  public listStatusSubject = new Subject<ObservableArray>();
+  public listStatusObservable = this.listStatusSubject.asObservable();
   public listLeadSubject = new Subject<ObservableArray>();
   public listLeadObservable = this.listLeadSubject.asObservable();
   public addLeadSubject = new Subject<string[]>();
   public addLeadObservable = this.addLeadSubject.asObservable();
   public deleteLeadSubject = new Subject<string[]>();
   public deleteLeadObservable = this.deleteLeadSubject.asObservable();
+
+  public listStatus(): void {
+    let listStatusObservableArray = new ObservableArray();
+    this.listStatusSubject.next(listStatusObservableArray);
+
+    this.httpClient.get(this.defaultAPIURLHost + "/api/crm/trn/lead/list/status", this.options).subscribe(
+      response => {
+        var results = response;
+        if (results["length"] > 0) {
+          for (var i = 0; i <= results["length"] - 1; i++) {
+            listStatusObservableArray.push({
+              Id: results[i].Id,
+              Status: results[i].Status
+            });
+          }
+        }
+
+        this.listStatusSubject.next(listStatusObservableArray);
+      }
+    );
+  }
 
   public listLead(startDate: string, endDate: string, status: string): void {
     let listLeadObservableArray = new ObservableArray();

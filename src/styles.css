@@ -36,3 +36,8 @@
 input[disabled] {
     cursor: not-allowed;
 }
+
+.modal-header {
+    background-color: #115a9e;
+    color: white;
+}

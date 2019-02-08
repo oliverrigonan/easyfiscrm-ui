@@ -40,6 +40,7 @@ export class LeadComponent implements OnInit {
   public isProgressBarHidden = false;
   public isDataLoaded: boolean = false;
 
+  public cboListStatusSub: any;
   public listLeadSub: any;
   public addLeadSub: any;
   public deleteLeadSub: any;
@@ -100,31 +101,35 @@ export class LeadComponent implements OnInit {
   }
 
   public createCboLeadStatus(): void {
-    for (let i = 0; i <= 2; i++) {
-      let status = "Open";
+    this.leadService.listStatus();
+    this.cboListStatusSub = this.leadService.listStatusObservable.subscribe(
+      data => {
+        let statusObservableArray = new ObservableArray();
 
-      switch (i) {
-        case 0: {
-          status = "Open";
-          break;
+        statusObservableArray.push({
+          Id: 0,
+          Status: "ALL"
+        });
+
+        if (data != null) {
+          for (var i = 0; i <= data.length - 1; i++) {
+            statusObservableArray.push({
+              Id: data[i].Id,
+              Status: data[i].Status
+            });
+          }
         }
-        case 1: {
-          status = "For Closing";
-          break;
+
+        this.cboLeadStatusObservableArray = statusObservableArray;
+        if (this.cboLeadStatusObservableArray.length > 0) {
+          setTimeout(() => {
+            this.listLead();
+          }, 100);
         }
-        case 2: {
-          status = "Close";
-          break;
-        }
-        default: {
-          break;
-        }
+
+        if (this.cboListStatusSub != null) this.cboListStatusSub.unsubscribe();
       }
-
-      this.cboLeadStatusObservableArray.push({
-        Status: status
-      });
-    }
+    );
   }
 
   public cboLeadStatusSelectedIndexChanged(selectedValue: any): void {
@@ -232,13 +237,10 @@ export class LeadComponent implements OnInit {
   ngOnInit() {
     this.createCboShowNumberOfRows();
     this.createCboLeadStatus();
-
-    setTimeout(() => {
-      this.listLead();
-    }, 100);
   }
 
   ngOnDestroy() {
+    if (this.cboListStatusSub != null) this.cboListStatusSub.unsubscribe();
     if (this.listLeadSub != null) this.listLeadSub.unsubscribe();
     if (this.addLeadSub != null) this.addLeadSub.unsubscribe();
     if (this.deleteLeadSub != null) this.deleteLeadSub.unsubscribe();
