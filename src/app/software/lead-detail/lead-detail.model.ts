@@ -12,6 +12,7 @@ export class LeadDetailModel {
     Remarks: string;
     AssignedToUserId: number;
     AssignedToUser: string;
+    LastActivity: string;
     Status: string;
     IsLocked: boolean;
     CreatedByUserId: number;

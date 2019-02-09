@@ -567,6 +567,9 @@ export class LeadDetailComponent implements OnInit {
     this.activityModalHeaderTitle = "Add Activity";
     this.isActivityNumberHidden = true;
 
+    this.isActivityLoadingSpinnerHidden = false;
+    this.isActivityContentHidden = true;
+
     this.listActivityUsers();
   }
 
@@ -581,6 +584,9 @@ export class LeadDetailComponent implements OnInit {
 
     this.activityModalHeaderTitle = "Edit Activity";
     this.isActivityNumberHidden = false;
+
+    this.isActivityLoadingSpinnerHidden = false;
+    this.isActivityContentHidden = true;
 
     this.listActivityUsers();
   }
