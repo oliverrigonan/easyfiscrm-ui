@@ -202,7 +202,11 @@ export class LeadComponent implements OnInit {
   }
 
   public btnDeleteLeadClick(leadDeleteModalTemplate: TemplateRef<any>): void {
-    this.leadDeleteModalRef = this.modalService.show(leadDeleteModalTemplate, { class: "modal-sm" });
+    this.leadDeleteModalRef = this.modalService.show(leadDeleteModalTemplate, {
+      backdrop: true,
+      ignoreBackdropClick: true,
+      class: "modal-sm"
+    });
   }
 
   public btnConfirmDeleteLeadClick() {

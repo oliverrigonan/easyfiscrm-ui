@@ -556,7 +556,12 @@ export class LeadDetailComponent implements OnInit {
   }
 
   public btnAddActivityClick(activityModalTemplate: TemplateRef<any>): void {
-    this.activitiyModalRef = this.modalService.show(activityModalTemplate, { class: "" });
+    this.activitiyModalRef = this.modalService.show(activityModalTemplate, {
+      backdrop: true,
+      ignoreBackdropClick: true,
+      class: ""
+    });
+
     this.isAddClicked = true;
 
     this.activityModalHeaderTitle = "Add Activity";
@@ -566,7 +571,12 @@ export class LeadDetailComponent implements OnInit {
   }
 
   public btnEditActivityClick(activityModalTemplate: TemplateRef<any>): void {
-    this.activitiyModalRef = this.modalService.show(activityModalTemplate, { class: "" });
+    this.activitiyModalRef = this.modalService.show(activityModalTemplate, {
+      backdrop: true,
+      ignoreBackdropClick: true,
+      class: ""
+    });
+
     this.isAddClicked = false;
 
     this.activityModalHeaderTitle = "Edit Activity";
@@ -606,7 +616,11 @@ export class LeadDetailComponent implements OnInit {
   }
 
   public btnDeleteActivityClick(activityDeleteModalTemplate: TemplateRef<any>): void {
-    this.deleteActivitiyModalRef = this.modalService.show(activityDeleteModalTemplate, { class: "modal-sm" });
+    this.deleteActivitiyModalRef = this.modalService.show(activityDeleteModalTemplate, {
+      backdrop: true,
+      ignoreBackdropClick: true,
+      class: "modal-sm"
+    });
   }
 
   public btnConfirmDeleteAcitivityClick() {
