@@ -4,6 +4,7 @@ import { AppSettings } from './../../app-settings';
 import { ObservableArray } from 'wijmo/wijmo';
 import { Subject } from 'rxjs';
 import { LeadDetailModel } from './lead-detail.model'
+import { LeadDetailActivityModel } from './lead-detail-activitiy.model'
 
 @Injectable({
   providedIn: 'root'
@@ -35,12 +36,14 @@ export class LeadDetailService {
   public unlockLeadSubject = new Subject<string[]>();
   public unlockLeadObservable = this.unlockLeadSubject.asObservable();
 
+  public listActivityUsersSubject = new Subject<ObservableArray>();
+  public listActivityUsersObservable = this.listActivityUsersSubject.asObservable();
+  public listActivityStatusSubject = new Subject<ObservableArray>();
+  public listActivityStatusObservable = this.listActivityStatusSubject.asObservable();
   public listActivitySubject = new Subject<ObservableArray>();
   public listActivityObservable = this.listActivitySubject.asObservable();
-  public addActivitySubject = new Subject<string[]>();
-  public addActivityObservable = this.addActivitySubject.asObservable();
-  public updateActivitySubject = new Subject<string[]>();
-  public updateActivityObservable = this.updateActivitySubject.asObservable();
+  public saveActivitySubject = new Subject<string[]>();
+  public saveActivityObservable = this.saveActivitySubject.asObservable();
   public deleteActivitySubject = new Subject<string[]>();
   public deleteActivityObservable = this.deleteActivitySubject.asObservable();
 
@@ -164,6 +167,49 @@ export class LeadDetailService {
     );
   }
 
+  public listActivityUsers(): void {
+    let listActivityUsersObservableArray = new ObservableArray();
+    this.listActivityUsersSubject.next(listActivityUsersObservableArray);
+
+    this.httpClient.get(this.defaultAPIURLHost + "/api/crm/trn/activity/users", this.options).subscribe(
+      response => {
+        var results = response;
+        if (results["length"] > 0) {
+          for (var i = 0; i <= results["length"] - 1; i++) {
+            listActivityUsersObservableArray.push({
+              Id: results[i].Id,
+              FullName: results[i].FullName,
+              UserName: results[i].UserName
+            });
+          }
+        }
+
+        this.listActivityUsersSubject.next(listActivityUsersObservableArray);
+      }
+    );
+  }
+
+  public listActivityStatus(): void {
+    let listActivityStatusObservableArray = new ObservableArray();
+    this.listActivityStatusSubject.next(listActivityStatusObservableArray);
+
+    this.httpClient.get(this.defaultAPIURLHost + "/api/crm/trn/activity/status", this.options).subscribe(
+      response => {
+        var results = response;
+        if (results["length"] > 0) {
+          for (var i = 0; i <= results["length"] - 1; i++) {
+            listActivityStatusObservableArray.push({
+              Id: results[i].Id,
+              Status: results[i].Status
+            });
+          }
+        }
+
+        this.listActivityStatusSubject.next(listActivityStatusObservableArray);
+      }
+    );
+  }
+
   public listActivity(leadId: number): void {
     let listActivityObservableArray = new ObservableArray();
     this.listActivitySubject.next(listActivityObservableArray);
@@ -186,8 +232,10 @@ export class LeadDetailService {
               TechnicalUser: results[i].TechnicalUser,
               CRMStatus: results[i].CRMStatus,
               Activity: results[i].Activity,
-              StartDateTime: results[i].StartDateTime,
-              EndDateTime: results[i].EndDateTime,
+              StartDate: results[i].StartDate,
+              StartTime: results[i].StartTime,
+              EndDate: results[i].EndDate,
+              EndTime: results[i].EndTime,
               TransportationCost: results[i].TransportationCost,
               OnSiteCost: results[i].OnSiteCost,
               LDId: results[i].LDId,
@@ -209,7 +257,33 @@ export class LeadDetailService {
       }
     );
   }
-  
+
+  public saveActivity(objActivity: LeadDetailActivityModel): void {
+    if (objActivity.Id == 0) {
+      this.httpClient.post(this.defaultAPIURLHost + "/api/crm/trn/activity/add", JSON.stringify(objActivity), this.options).subscribe(
+        response => {
+          let responseResults: string[] = ["success", ""];
+          this.saveActivitySubject.next(responseResults);
+        },
+        error => {
+          let errorResults: string[] = ["failed", error["error"]];
+          this.saveActivitySubject.next(errorResults);
+        }
+      )
+    } else {
+      this.httpClient.put(this.defaultAPIURLHost + "/api/crm/trn/activity/update/" + objActivity.Id, JSON.stringify(objActivity), this.options).subscribe(
+        response => {
+          let responseResults: string[] = ["success", ""];
+          this.saveActivitySubject.next(responseResults);
+        },
+        error => {
+          let errorResults: string[] = ["failed", error["error"]];
+          this.saveActivitySubject.next(errorResults);
+        }
+      )
+    }
+  }
+
   public deleteActivity(id: number): void {
     this.httpClient.delete(this.defaultAPIURLHost + "/api/crm/trn/activity/delete/" + id, this.options).subscribe(
       response => {

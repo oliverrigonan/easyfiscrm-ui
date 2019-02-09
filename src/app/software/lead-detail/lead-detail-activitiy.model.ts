@@ -10,8 +10,10 @@ export class LeadDetailActivityModel {
     TechnicalUser: string;
     CRMStatus: string;
     Activity: string;
-    StartDateTime: Date;
-    EndDateTime: Date;
+    StartDate: Date;
+    StartTime: Date;
+    EndDate: Date;
+    EndTime: Date;
     TransportationCost: number;
     OnSiteCost: number;
     LDId: number;

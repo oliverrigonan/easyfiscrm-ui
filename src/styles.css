@@ -41,3 +41,20 @@ input[disabled] {
     background-color: #115a9e;
     color: white;
 }
+
+.nav-tabs {
+    background-color: #f2f2f2;
+    border-bottom: 3px solid #115a9e;
+    border-top-left-radius: .25rem;
+    border-top-right-radius: .25rem;
+}
+
+.nav-tabs .nav-item.show .nav-link, .nav-tabs .nav-link.active {
+    color: #fff;
+    background-color: #115a9e;
+    border-color: #115a9e #115a9e #115a9e;
+}
+
+.nav-tabs .nav-link:hover {
+    border: 1px solid transparent;
+}

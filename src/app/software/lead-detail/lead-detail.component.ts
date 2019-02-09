@@ -13,6 +13,8 @@ import { ToastrService } from 'ngx-toastr';
 import { BsModalService } from 'ngx-bootstrap/modal';
 import { BsModalRef } from 'ngx-bootstrap/modal/bs-modal-ref.service';
 
+import { LeadDetailActivityModel } from './lead-detail-activitiy.model';
+
 @Component({
   selector: 'app-lead-detail',
   templateUrl: './lead-detail.component.html',
@@ -77,6 +79,7 @@ export class LeadDetailComponent implements OnInit {
   public isDataLoaded: boolean = false;
 
   public listActivitySub: any;
+  public saveActivitySub: any;
   public deleteActivitySub: any;
 
   public isLoadingSpinnerHidden: boolean = false;
@@ -84,6 +87,49 @@ export class LeadDetailComponent implements OnInit {
   public isActivityTabHidden: boolean = true;
 
   public activityModalHeaderTitle: string = "Activity";
+
+  public cboListActivityUsersSub: any;
+  public cboListActivityUsersObservableArray: ObservableArray = new ObservableArray();
+
+  public cboListActivityStatusSub: any;
+  public cboListActivityStatusObservableArray: ObservableArray = new ObservableArray();
+
+  public isActivityLoadingSpinnerHidden: boolean = false;
+  public isActivityContentHidden: boolean = true;
+  public isActivityNumberHidden = false;
+
+  public leadDetailActivityModel: LeadDetailActivityModel = {
+    Id: 0,
+    ACNumber: "",
+    ACDate: new Date(),
+    UserId: 0,
+    User: "",
+    FunctionalUserId: 0,
+    FunctionalUser: "",
+    TechnicalUserId: 0,
+    TechnicalUser: "",
+    CRMStatus: "",
+    Activity: "",
+    StartDate: new Date(),
+    StartTime: new Date(),
+    EndDate: new Date(),
+    EndTime: new Date(),
+    TransportationCost: 0,
+    OnSiteCost: 0,
+    LDId: null,
+    SIId: null,
+    SPId: null,
+    Status: "",
+    IsLocked: false,
+    CreatedByUserId: 0,
+    CreatedByUser: "",
+    CreatedDateTime: "",
+    UpdatedByUserId: 0,
+    UpdatedByUser: "",
+    UpdatedDateTime: ""
+  };
+
+  public isAddClicked: boolean = false;
 
   public createCboAssignedToUser() {
     this.leadDetailService.listAssignedUsers();
@@ -383,16 +429,180 @@ export class LeadDetailComponent implements OnInit {
     }
   }
 
+  public listActivityUsers(): void {
+    this.leadDetailService.listActivityUsers();
+    this.cboListActivityUsersSub = this.leadDetailService.listActivityUsersObservable.subscribe(
+      data => {
+        let usersObservableArray = new ObservableArray();
+
+        if (data != null) {
+          for (var i = 0; i <= data.length - 1; i++) {
+            usersObservableArray.push({
+              Id: data[i].Id,
+              FullName: data[i].FullName,
+              UserName: data[i].UserName
+            });
+          }
+        }
+
+        this.cboListActivityUsersObservableArray = usersObservableArray;
+
+        setTimeout(() => {
+          this.listActivityStatus();
+        }, 100);
+
+        if (this.cboListActivityUsersSub != null) this.cboListActivityUsersSub.unsubscribe();
+      }
+    );
+  }
+
+  public listActivityStatus(): void {
+    this.leadDetailService.listActivityStatus();
+    this.cboListActivityStatusSub = this.leadDetailService.listActivityStatusObservable.subscribe(
+      data => {
+        let statusObservableArray = new ObservableArray();
+
+        if (data != null) {
+          for (var i = 0; i <= data.length - 1; i++) {
+            statusObservableArray.push({
+              Id: data[i].Id,
+              Status: data[i].Status
+            });
+          }
+        }
+
+        this.cboListActivityStatusObservableArray = statusObservableArray;
+
+        setTimeout(() => {
+          this.currentActivity();
+        }, 100);
+
+        this.isActivityLoadingSpinnerHidden = true;
+        this.isActivityContentHidden = false;
+
+        if (this.cboListActivityStatusSub != null) this.cboListActivityStatusSub.unsubscribe();
+      }
+    );
+  }
+
+  public currentActivity(): void {
+    let LDId: number = 0;
+    this.activatedRoute.params.subscribe(params => { LDId = params["id"]; });
+
+    if (this.isAddClicked) {
+      this.leadDetailActivityModel = {
+        Id: 0,
+        ACNumber: "0000000001",
+        ACDate: new Date(),
+        UserId: 0,
+        User: localStorage.getItem("username"),
+        FunctionalUserId: 0,
+        FunctionalUser: "",
+        TechnicalUserId: 0,
+        TechnicalUser: "",
+        CRMStatus: this.leadDetailModel.Status,
+        Activity: "",
+        StartDate: new Date(),
+        StartTime: new Date(),
+        EndDate: new Date(),
+        EndTime: new Date(),
+        TransportationCost: 0,
+        OnSiteCost: 0,
+        LDId: LDId,
+        SIId: null,
+        SPId: null,
+        Status: "",
+        IsLocked: false,
+        CreatedByUserId: 0,
+        CreatedByUser: "",
+        CreatedDateTime: "",
+        UpdatedByUserId: 0,
+        UpdatedByUser: "",
+        UpdatedDateTime: ""
+      };
+    } else {
+      let currentActivity = this.listActivityCollectionView.currentItem;
+      this.leadDetailActivityModel = {
+        Id: currentActivity.Id,
+        ACNumber: currentActivity.ACNumber,
+        ACDate: currentActivity.ACDate,
+        UserId: currentActivity.UserId,
+        User: currentActivity.User,
+        FunctionalUserId: currentActivity.FunctionalUserId,
+        FunctionalUser: currentActivity.FunctionalUser,
+        TechnicalUserId: currentActivity.TechnicalUserId,
+        TechnicalUser: currentActivity.TechnicalUser,
+        CRMStatus: currentActivity.CRMStatus,
+        Activity: currentActivity.Activity,
+        StartDate: currentActivity.StartDate,
+        StartTime: currentActivity.StartTime,
+        EndDate: currentActivity.EndDate,
+        EndTime: currentActivity.EndTime,
+        TransportationCost: currentActivity.TransportationCost,
+        OnSiteCost: currentActivity.OnSiteCost,
+        LDId: currentActivity.LDId,
+        SIId: currentActivity.SIId,
+        SPId: currentActivity.SPId,
+        Status: currentActivity.Status,
+        IsLocked: currentActivity.IsLocked,
+        CreatedByUserId: currentActivity.CreatedByUserId,
+        CreatedByUser: currentActivity.CreatedByUser,
+        CreatedDateTime: currentActivity.CreatedDateTime,
+        UpdatedByUserId: currentActivity.UpdatedByUserId,
+        UpdatedByUser: currentActivity.UpdatedByUser,
+        UpdatedDateTime: currentActivity.UpdatedDateTime
+      };
+    }
+  }
+
   public btnAddActivityClick(activityModalTemplate: TemplateRef<any>): void {
     this.activitiyModalRef = this.modalService.show(activityModalTemplate, { class: "" });
+    this.isAddClicked = true;
 
     this.activityModalHeaderTitle = "Add Activity";
+    this.isActivityNumberHidden = true;
+
+    this.listActivityUsers();
   }
 
   public btnEditActivityClick(activityModalTemplate: TemplateRef<any>): void {
     this.activitiyModalRef = this.modalService.show(activityModalTemplate, { class: "" });
+    this.isAddClicked = false;
 
     this.activityModalHeaderTitle = "Edit Activity";
+    this.isActivityNumberHidden = false;
+
+    this.listActivityUsers();
+  }
+
+  public btnSaveActivityClick(): void {
+    let btnSaveActivity: Element = document.getElementById("btnSaveActivity");
+    let btnSaveActivityClickCloseModal: Element = document.getElementById("btnSaveActivityClickCloseModal");
+    (<HTMLButtonElement>btnSaveActivity).disabled = true;
+    (<HTMLButtonElement>btnSaveActivityClickCloseModal).disabled = true;
+
+    this.leadDetailService.saveActivity(this.leadDetailActivityModel);
+    this.saveActivitySub = this.leadDetailService.saveActivityObservable.subscribe(
+      data => {
+        if (data[0] == "success") {
+          this.toastr.success("Activity was successfully saved.", "Success");
+
+          setTimeout(() => {
+            this.isDataLoaded = false;
+
+            this.listActivity();
+            this.activitiyModalRef.hide();
+          }, 100);
+        } else if (data[0] == "failed") {
+          this.toastr.error(data[1], "Error");
+
+          (<HTMLButtonElement>btnSaveActivity).disabled = false;
+          (<HTMLButtonElement>btnSaveActivityClickCloseModal).disabled = false;
+        }
+
+        if (this.saveActivitySub != null) this.saveActivitySub.unsubscribe();
+      }
+    );
   }
 
   public btnDeleteActivityClick(activityDeleteModalTemplate: TemplateRef<any>): void {
@@ -441,7 +651,12 @@ export class LeadDetailComponent implements OnInit {
     if (this.detailLeadSub != null) this.detailLeadSub.unsubscribe();
     if (this.lockLeadSub != null) this.lockLeadSub.unsubscribe();
     if (this.unlockLeadSub != null) this.unlockLeadSub.unsubscribe();
+
+    if (this.cboListActivityUsersSub != null) this.cboListActivityUsersSub.unsubscribe();
+    if (this.cboListActivityStatusSub != null) this.cboListActivityStatusSub.unsubscribe();
+
     if (this.listActivitySub != null) this.listActivitySub.unsubscribe();
+    if (this.saveActivitySub != null) this.saveActivitySub.unsubscribe();
     if (this.deleteActivitySub != null) this.deleteActivitySub.unsubscribe();
   }
 }
