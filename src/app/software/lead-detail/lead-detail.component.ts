@@ -56,6 +56,7 @@ export class LeadDetailComponent implements OnInit {
     Remarks: "",
     AssignedToUserId: 0,
     AssignedToUser: "",
+    LastActivity: "",
     Status: "",
     IsLocked: false,
     CreatedByUserId: 0,
