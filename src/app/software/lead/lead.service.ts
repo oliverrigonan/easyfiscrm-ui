@@ -76,6 +76,7 @@ export class LeadService {
               AssignedToUserId: results[i].AssignedToUserId,
               AssignedToUser: results[i].AssignedToUser,
               LastActivity: results[i].LastActivity,
+              LastActivityDate: results[i].LastActivityDate,
               Status: results[i].Status,
               IsLocked: results[i].IsLocked,
               CreatedByUserId: results[i].CreatedByUserId,
