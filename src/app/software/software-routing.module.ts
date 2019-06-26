@@ -8,6 +8,7 @@ import { LayoutComponent } from './layout/layout.component';
 import { DashboardComponent } from './dashboard/dashboard.component'; 
 import { LeadComponent } from './lead/lead.component';
 import { LeadDetailComponent } from './lead-detail/lead-detail.component';
+import { SalesListComponent } from './sales-list/sales-list.component';
 
 const routes: Routes = [
   {
@@ -16,7 +17,8 @@ const routes: Routes = [
       { path: '', component: DashboardComponent, canActivate: [SoftwareRouterActivate] },
       { path: 'sys/dashboard', component: DashboardComponent, canActivate: [SoftwareRouterActivate] },
       { path: 'trn/lead', component: LeadComponent, canActivate: [SoftwareRouterActivate] },
-      { path: 'trn/lead/detail/:id', component: LeadDetailComponent, canActivate: [SoftwareRouterActivate] }
+      { path: 'trn/lead/detail/:id', component: LeadDetailComponent, canActivate: [SoftwareRouterActivate] },
+      { path: 'trn/sales', component: SalesListComponent, canActivate: [SoftwareRouterActivate] }
     ]
   }
 ];
