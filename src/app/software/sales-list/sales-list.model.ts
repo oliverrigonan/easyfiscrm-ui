@@ -1,22 +1,24 @@
-export class SalesListModel {
+export class SalesDeliveryListModel {
     Id: number;
-    BranchId: number;
-    SINumber: number;
-    SIDate: Date;
+    SDNumber: string;
+    SDDate: Date;
+    RenewalDate: Date;
     CustomerId: number;
-    TermId: number;
-    DocumentReference: string;
-    ManualSINumber: string;
-    Remarks: string;
-    Amount: number;
-    PaidAmount: number;
-    AdjustmentAmount: number;
-    BalanceAmount: number
-    SoldById: number;
-    PreparedById: number;
-    CheckedById: number;
-    ApprovedById: number;
+    Customer: string;
+    SIId: number;
+    ProductDescription: string;
+    LDId: number;
+    LDNumber: string;
+    ContactPerson: string;
+    Particulars: string;
+    AssignedToUserId: number;
+    AssignedToUser: string;
     Status: string;
-    IsCancelled: boolean;
-    IsPrinted: boolean;
+    IsLocked: boolean;
+    CreatedByUserId: number;
+    CreatedByUser: string;
+    CreatedDateTime: Date;
+    UpdatedByUserId: number;
+    UpdatedByUser: string;
+    UpdatedDateTime: Date;
 }

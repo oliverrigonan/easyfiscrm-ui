@@ -20,9 +20,10 @@ import { WjInputModule } from 'wijmo/wijmo.angular2.input';
 
 import { ModalModule } from 'ngx-bootstrap/modal';
 import { SalesListComponent } from './sales-list/sales-list.component';
+import { SalesDetailComponent } from './sales-detail/sales-detail.component';
 
 @NgModule({
-  declarations: [LayoutComponent, DashboardComponent, LeadComponent, LeadDetailComponent, SalesListComponent],
+  declarations: [LayoutComponent, DashboardComponent, LeadComponent, LeadDetailComponent, SalesListComponent, SalesDetailComponent],
   imports: [
     CommonModule,
     FormsModule,

@@ -13,7 +13,8 @@
               </div>
             </div>
             <wj-combo-box #cboNumberOfRows [itemsSource]="cboShowNumberOfRows" [isEditable]="false" [isRequired]="true"
-              [displayMemberPath]="'rowString'" [selectedValuePath]="'rowNumber'" (selectedIndexChanged)="cboShowNumberOfRowsOnSelectedIndexChanged(cboNumberOfRows.selectedValue)"
+              [displayMemberPath]="'rowString'" [selectedValuePath]="'rowNumber'"
+              (selectedIndexChanged)="cboShowNumberOfRowsOnSelectedIndexChanged(cboNumberOfRows.selectedValue)"
               style="width: 140px;">
             </wj-combo-box>
           </div>
@@ -28,30 +29,91 @@
   </div>
 
   <div class="card-body">
+    <div class="row">
+      <div class="col-md-8">
+        <table border="0" style="width: 100%; border: none; margin-top: -15px;">
+          <tr>
+            <td>
+              <div class="form-group">
+                <span class="badge badge-info" style="margin-bottom: 5px;"><i class="fa fa-calendar fa-fw"></i>
+                  Start Date</span>
+                <wj-input-date #cboSalesStartDateFilter [(ngModel)]="salesStartDateFilterData" [ngModelOptions]="{standalone: true}" 
+                  (textChanged)="cboStartDateTextChanged()" format="MMMM dd, yyyy" style="width: 100%;">
+                </wj-input-date>
+              </div>
+            </td>
+            <td>
+              <div class="form-group">
+                <span class="badge badge-info" style="margin-bottom: 5px;"><i class="fa fa-calendar fa-fw"></i>
+                  End Date</span>
+                <wj-input-date #cboSalesEndDateFilter [(ngModel)]="salesEndDateFilterData"
+                  [ngModelOptions]="{standalone: true}" (textChanged)="cboEndDateTextChanged()" format="MMMM dd, yyyy"
+                  style="width: 100%;">
+                </wj-input-date>
+              </div>
+            </td>
+            <td>
+              <div class="form-group">
+                <span class="badge badge-info" style="margin-bottom: 5px;"><i class="fa fa-question-circle fa-fw"></i>
+                  Status</span>
+                <wj-combo-box #cboSalesStatus [itemsSource]="cboSalesStatusObservableArray" [isEditable]="false"
+                  [isRequired]="true" [displayMemberPath]="'Status'" [selectedValuePath]="'Status'"
+                  (selectedIndexChanged)="cboSalesStatusSelectedIndexChanged(cboSalesStatus.selectedValue)"
+                  style="width: 100%;">
+                </wj-combo-box>
+              </div>
+            </td>
+          </tr>
+        </table>
+      </div>
+      <div class="col-md-4"></div>
+    </div>
     <mat-progress-bar [hidden]="isProgressBarHidden" [color]="'primary'" [mode]="'indeterminate'"></mat-progress-bar>
-    <wj-flex-grid #listSalesFlexGrid [itemsSource]="listSalesCollectionView" [selectionMode]="3"
-            [frozenColumns]="2">
+    <wj-flex-grid #listSalesFlexGrid [itemsSource]="listSalesCollectionView" [selectionMode]="3" [frozenColumns]="2">
       <wj-flex-grid-filter></wj-flex-grid-filter>
-      <wj-flex-grid-column [header]="'Id'" [binding]="'Id'" [isReadOnly]="true" [width]="'2*'"></wj-flex-grid-column>
-      <wj-flex-grid-column [header]="'BranchId'" [binding]="'BranchId'" [isReadOnly]="true" [width]="'2*'"></wj-flex-grid-column>
-      <wj-flex-grid-column [header]="'SINumber'" [binding]="'SINumber'" [isReadOnly]="true" [width]="'2*'"></wj-flex-grid-column>
-      <wj-flex-grid-column [header]="'SIDate'" [binding]="'SIDate'" [isReadOnly]="true" [width]="'2*'"></wj-flex-grid-column>
-      <wj-flex-grid-column [header]="'CustomerId'" [binding]="'CustomerId'" [isReadOnly]="true" [width]="'2*'"></wj-flex-grid-column>
-      <wj-flex-grid-column [header]="'TermId'" [binding]="'TermId'" [isReadOnly]="true" [width]="'2*'"></wj-flex-grid-column>
-      <wj-flex-grid-column [header]="'DocumentReference'" [binding]="'DocumentReference'" [isReadOnly]="true" [width]="'2*'"></wj-flex-grid-column>
-      <wj-flex-grid-column [header]="'ManualSINumber'" [binding]="'ManualSINumber'" [isReadOnly]="true" [width]="'2*'"></wj-flex-grid-column>
-      <wj-flex-grid-column [header]="'Remarks'" [binding]="'Remarks'" [isReadOnly]="true" [width]="'2*'"></wj-flex-grid-column>
-      <wj-flex-grid-column [header]="'Amount'" [binding]="'Amount'" [isReadOnly]="true" [width]="'2*'"></wj-flex-grid-column>
-      <wj-flex-grid-column [header]="'PaidAmount'" [binding]="'PaidAmount'" [isReadOnly]="true" [width]="'2*'"></wj-flex-grid-column>
-      <wj-flex-grid-column [header]="'AdjustmentAmount'" [binding]="'AdjustmentAmount'" [isReadOnly]="true" [width]="'2*'"></wj-flex-grid-column>
-      <wj-flex-grid-column [header]="'BalanceAmount'" [binding]="'BalanceAmount'" [isReadOnly]="true" [width]="'2*'"></wj-flex-grid-column>
-      <wj-flex-grid-column [header]="'SoldById'" [binding]="'SoldById'" [isReadOnly]="true" [width]="'2*'"></wj-flex-grid-column>
-      <wj-flex-grid-column [header]="'PreparedById'" [binding]="'PreparedById'" [isReadOnly]="true" [width]="'2*'"></wj-flex-grid-column>
-      <wj-flex-grid-column [header]="'CheckedById'" [binding]="'CheckedById'" [isReadOnly]="true" [width]="'2*'"></wj-flex-grid-column>
-      <wj-flex-grid-column [header]="'ApprovedById'" [binding]="'ApprovedById'" [isReadOnly]="true" [width]="'2*'"></wj-flex-grid-column>
-      <wj-flex-grid-column [header]="'Status'" [binding]="'Status'" [isReadOnly]="true" [width]="'2*'"></wj-flex-grid-column>
-      <wj-flex-grid-column [header]="'IsCancelled'" [binding]="'IsCancelled'" [isReadOnly]="true" [width]="'2*'"></wj-flex-grid-column>
-      <wj-flex-grid-column [header]="'IsPrinted'" [binding]="'IsPrinted'" [isReadOnly]="true" [width]="'2*'"></wj-flex-grid-column>
+      <wj-flex-grid-column *ngIf="false" [header]="'Id'" [binding]="'Id'" [isReadOnly]="true" [width]="150"></wj-flex-grid-column>
+      <wj-flex-grid-column [header]="'SD No.'" [binding]="'SDNumber'" [isReadOnly]="true" [width]="150">
+      </wj-flex-grid-column>
+      <wj-flex-grid-column [header]="'Date'" [binding]="'SDDate'" [isReadOnly]="true" [width]="150">
+      </wj-flex-grid-column>
+      <wj-flex-grid-column [header]="'Renewal Date'" [binding]="'RenewalDate'" [isReadOnly]="true" [width]="150">
+      </wj-flex-grid-column>
+      <wj-flex-grid-column *ngIf="false" [header]="'CustomerId'" [binding]="'CustomerId'" [isReadOnly]="true" [width]="150">
+      </wj-flex-grid-column>
+      <wj-flex-grid-column [header]="'Customer'" [binding]="'Customer'" [isReadOnly]="true" [width]="250">
+      </wj-flex-grid-column>
+      <wj-flex-grid-column *ngIf="false" [header]="'SIId'" [binding]="'SIId'" [isReadOnly]="true" [width]="150">
+      </wj-flex-grid-column>
+      <wj-flex-grid-column [header]="'Product Description'" [binding]="'ProductDescription'" [isReadOnly]="true"
+        [width]="300"></wj-flex-grid-column>
+      <wj-flex-grid-column *ngIf="false" [header]="'LDId'" [binding]="'LDId'" [isReadOnly]="true" [width]="150">
+      </wj-flex-grid-column>
+      <wj-flex-grid-column [header]="'LD No.'" [binding]="'LDNumber'" [isReadOnly]="true" [width]="150">
+      </wj-flex-grid-column>
+      <wj-flex-grid-column [header]="'Contact Person'" [binding]="'ContactPerson'" [isReadOnly]="true" [width]="150">
+      </wj-flex-grid-column>
+      <wj-flex-grid-column [header]="'Particulars'" [binding]="'Particulars'" [isReadOnly]="true" [width]="150">
+      </wj-flex-grid-column>
+      <wj-flex-grid-column *ngIf="false" [header]="'AssignedToUserId'" [binding]="'AssignedToUserId'" [isReadOnly]="true"
+        [width]="150"></wj-flex-grid-column>
+      <wj-flex-grid-column [header]="'Assigned To'" [binding]="'AssignedToUser'" [isReadOnly]="true" [width]="150">
+      </wj-flex-grid-column>
+      <wj-flex-grid-column [header]="'Status'" [binding]="'Status'" [isReadOnly]="true" [width]="150">
+      </wj-flex-grid-column>
+      <wj-flex-grid-column [header]="'Locked'" [binding]="'IsLocked'" [isReadOnly]="true" [width]="150">
+      </wj-flex-grid-column>
+      <wj-flex-grid-column *ngIf="false" [header]="'CreatedByUserId'" [binding]="'CreatedByUserId'" [isReadOnly]="true"
+        [width]="150"></wj-flex-grid-column>
+      <wj-flex-grid-column [header]="'Created By'" [binding]="'CreatedByUser'" [isReadOnly]="true" [width]="150">
+      </wj-flex-grid-column>
+      <wj-flex-grid-column [header]="'Created Date'" [binding]="'CreatedDateTime'" [isReadOnly]="true"
+        [width]="150"></wj-flex-grid-column>
+      <wj-flex-grid-column *ngIf="false" [header]="'UpdatedByUserId'" [binding]="'UpdatedByUserId'" [isReadOnly]="true"
+        [width]="150"></wj-flex-grid-column>
+      <wj-flex-grid-column [header]="'Updated By'" [binding]="'UpdatedByUser'" [isReadOnly]="true" [width]="150">
+      </wj-flex-grid-column>
+      <wj-flex-grid-column [header]="'Updated Date'" [binding]="'UpdatedDateTime'" [isReadOnly]="true"
+        [width]="150"></wj-flex-grid-column>
     </wj-flex-grid>
   </div>
 

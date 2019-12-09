@@ -22,39 +22,65 @@ export class SalesListService {
   
   public defaultAPIURLHost: string = this.appSettings.defaultAPIURLHost;
 
+  public listStatusSubject = new Subject<ObservableArray>();
+  public listStatusObservable = this.listStatusSubject.asObservable();
+
   public listSalesSubject = new Subject<ObservableArray>();
   public listSalesObservable = this.listSalesSubject.asObservable();
 
-  public listSales(): void {
+  public listStatus(): void {
+    let listStatusObservableArray = new ObservableArray();
+    this.listStatusSubject.next(listStatusObservableArray);
+
+    this.httpClient.get(this.defaultAPIURLHost + "/api/crm/trn/sales/list/status", this.options).subscribe(
+      response => {
+        var results = response;
+        if (results["length"] > 0) {
+          for (var i = 0; i <= results["length"] - 1; i++) {
+            listStatusObservableArray.push({
+              Id: results[i].Id,
+              Status: results[i].Status
+            });
+          }
+        }
+
+        this.listStatusSubject.next(listStatusObservableArray);
+      }
+    );
+  }
+
+  public listSales(startDate: string, endDate: string, status: string): void {
     let listSalesObservableArray = new ObservableArray();
     this.listSalesSubject.next(listSalesObservableArray);
 
-    this.httpClient.get(this.defaultAPIURLHost + "/api/crm/trn/sales/list", this.options).subscribe(
+    this.httpClient.get(this.defaultAPIURLHost + "/api/crm/trn/sales/list/"  + startDate + "/" + endDate + "/" + status, this.options).subscribe(
       response => {
         var results = response;
         if (results["length"] > 0) {
           for (var i = 0; i <= results["length"] - 1; i++) {
             listSalesObservableArray.push({
               Id: results[i].Id,
-              BranchId: results[i].BranchId,
-              SINumber: results[i].SINumber,
-              SIDate: results[i].SIDate,
+              SDNumber: results[i].SDNumber,
+              SDDate: results[i].SDDate,
+              RenewalDate: results[i].RenewalDate,
               CustomerId: results[i].CustomerId,
-              TermId: results[i].TermId,
-              DocumentReference: results[i].DocumentReference,
-              ManualSINumber: results[i].ManualSINumber,
-              Remarks: results[i].Remarks,
-              Amount: results[i].Amount,
-              PaidAmount: results[i].PaidAmount,
-              AdjustmentAmount: results[i].AdjustmentAmount,
-              BalanceAmount: results[i].BalanceAmount,
-              SoldById: results[i].SoldById,
-              PreparedById: results[i].PreparedById,
-              CheckedById: results[i].CheckedById,
-              ApprovedById: results[i].ApprovedById,
+              Customer: results[i].Customer,
+              SIId: results[i].ProductId,
+              ProductDescription: results[i].ProductDescription,
+              LDId: results[i].LDId,
+              LDNumber: results[i].LDNumber,
+              ContactPerson : results[i].ContactPerson ,
+              Particulars: results[i].Particulars,
+              AssignedToUserId: results[i].AssignedToUserId,
+              AssignedToUser: results[i].AssignedToUser,
               Status: results[i].Status,
-              IsCancelled: results[i].IsCancelled,
-              IsPrinted: results[i].IsPrinted,
+              IsLocked: results[i].IsLocked,
+              CreatedByUserId: results[i].CreatedByUserId,
+              CreatedByUser: results[i].CreatedByUser,
+              CreatedDateTime: results[i].CreatedDateTime,
+              UpdatedByUserId: results[i].UpdatedByUserId,
+              UpdatedByUser: results[i].UpdatedByUser,
+              UpdatedDateTime: results[i].UpdatedDateTime,
             });
           }
         }

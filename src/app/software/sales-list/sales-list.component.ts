@@ -11,7 +11,7 @@ import { BsModalService } from 'ngx-bootstrap/modal';
 import { BsModalRef } from 'ngx-bootstrap/modal/bs-modal-ref.service';
 
 import { SalesListService } from './sales-list.service';
-import { SalesListModel } from './sales-list.model';
+import { SalesDeliveryListModel } from './sales-list.model';
 
 @Component({
   selector: 'app-sales-list',
@@ -28,30 +28,38 @@ export class SalesListComponent implements OnInit {
     private modalService: BsModalService,
   ) { }
 
-  public salesListModel: SalesListModel = {
+  public salesListModel: SalesDeliveryListModel = {
     Id: 0,
-    BranchId: 0,
-    SINumber: 0,
-    SIDate: new Date(),
+    SDNumber: "",
+    SDDate: new Date(),
+    RenewalDate: new Date(),
     CustomerId: 0,
-    TermId: 0,
-    DocumentReference: '',
-    ManualSINumber: '',
-    Remarks: '',
-    Amount: 0,
-    PaidAmount: 0,
-    AdjustmentAmount: 0,
-    BalanceAmount: 0,
-    SoldById: 0,
-    PreparedById: 0,
-    CheckedById: 0,
-    ApprovedById: 0,
-    Status: '',
-    IsCancelled: false,
-    IsPrinted: false
+    Customer: "",
+    SIId: 0,
+    ProductDescription: "",
+    LDId: 0,
+    LDNumber: "",
+    ContactPerson: "",
+    Particulars: "",
+    AssignedToUserId: 0,
+    AssignedToUser: "",
+    Status: "",
+    IsLocked: false,
+    CreatedByUserId: 0,
+    CreatedByUser: "",
+    CreatedDateTime: new Date(),
+    UpdatedByUserId: 0,
+    UpdatedByUser: "",
+    UpdatedDateTime: new Date(),
   }
 
   public cboShowNumberOfRows: ObservableArray = new ObservableArray();
+
+  public salesStartDateFilterData = new Date();
+  public salesEndDateFilterData = new Date();
+
+  public cboSalesStatusObservableArray: ObservableArray = new ObservableArray();
+  public cboSalesStatusSelectedValue: string = "Open";
 
   public listSalesObservableArray: ObservableArray = new ObservableArray();
   public listSalesCollectionView: CollectionView = new CollectionView(this.listSalesObservableArray);
@@ -60,6 +68,7 @@ export class SalesListComponent implements OnInit {
   public isProgressBarHidden = false;
   public isDataLoaded: boolean = false;
 
+  public cboListStatusSub: any;
   public listSalesSub: any;
 
   public createCboShowNumberOfRows(): void {
@@ -90,6 +99,7 @@ export class SalesListComponent implements OnInit {
       });
     }
   }
+  
   public cboShowNumberOfRowsOnSelectedIndexChanged(selectedValue: any): void {
     this.listActivityPageIndex = selectedValue;
 
@@ -97,6 +107,65 @@ export class SalesListComponent implements OnInit {
     this.listSalesCollectionView.refresh();
     this.listSalesCollectionView.refresh();
   }
+
+  public createCboSalesStatus(): void {
+    this.salesListService.listStatus();
+    this.cboListStatusSub = this.salesListService.listStatusObservable.subscribe(
+      data => {
+        let statusObservableArray = new ObservableArray();
+
+        statusObservableArray.push({
+          Id: 0,
+          Status: "ALL"
+        });
+
+        if (data != null) {
+          for (var i = 0; i <= data.length - 1; i++) {
+            statusObservableArray.push({
+              Id: data[i].Id,
+              Status: data[i].Status
+            });
+          }
+        }
+
+        this.cboSalesStatusObservableArray = statusObservableArray;
+        if (this.cboSalesStatusObservableArray.length > 0) {
+          setTimeout(() => {
+            this.listSales();
+          }, 100);
+        }
+
+        if (this.cboListStatusSub != null) this.cboListStatusSub.unsubscribe();
+      }
+    );
+  }
+
+  public cboStartDateTextChanged(): void {
+    if (this.isDataLoaded) {
+      setTimeout(() => {
+        this.listSales();
+      }, 100);
+    }
+  }
+
+  public cboEndDateTextChanged(): void {
+    if (this.isDataLoaded) {
+      setTimeout(() => {
+        this.listSales();
+      }, 100);
+    }
+  }
+
+  public cboSalesStatusSelectedIndexChanged(selectedValue: any): void {
+    this.cboSalesStatusSelectedValue = selectedValue;
+
+    if (this.isDataLoaded) {
+      setTimeout(() => {
+        this.listSales();
+      }, 100);
+    }
+  }
+
   public listSales(): void {
     if (!this.isDataLoaded) {
       setTimeout(() => {
@@ -107,9 +176,12 @@ export class SalesListComponent implements OnInit {
         this.listSalesCollectionView.refresh();
         this.listSalesFlexGrid.refresh();
 
+        let startDate = [this.salesStartDateFilterData.getFullYear(), this.salesStartDateFilterData.getMonth() + 1, this.salesStartDateFilterData.getDate()].join('-');
+        let endDate = [this.salesEndDateFilterData.getFullYear(), this.salesEndDateFilterData.getMonth() + 1, this.salesEndDateFilterData.getDate()].join('-');
+
         this.isProgressBarHidden = false;
 
-        this.salesListService.listSales();
+        this.salesListService.listSales(startDate, endDate, this.cboSalesStatusSelectedValue);
         this.listSalesSub = this.salesListService.listSalesObservable.subscribe(
           data => {
             if (data.length > 0) {
@@ -120,7 +192,6 @@ export class SalesListComponent implements OnInit {
               this.listSalesCollectionView.refresh();
               this.listSalesFlexGrid.refresh();
             }
-
             this.isDataLoaded = true;
             this.isProgressBarHidden = true;
 
@@ -134,6 +205,7 @@ export class SalesListComponent implements OnInit {
 
   ngOnInit() {
     this.createCboShowNumberOfRows();
+    this.createCboSalesStatus();
     this.listSales();
   }
 
