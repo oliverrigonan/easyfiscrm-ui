@@ -70,6 +70,11 @@ export class SalesListComponent implements OnInit {
 
   public cboListStatusSub: any;
   public listSalesSub: any;
+  public addSalesSub: any;
+  public deleteSalesDeliverySub: any;
+
+  public deleteSalesDeliveryModalRef: BsModalRef;
+
 
   public createCboShowNumberOfRows(): void {
     for (var i = 0; i <= 4; i++) {
@@ -99,7 +104,7 @@ export class SalesListComponent implements OnInit {
       });
     }
   }
-  
+
   public cboShowNumberOfRowsOnSelectedIndexChanged(selectedValue: any): void {
     this.listActivityPageIndex = selectedValue;
 
@@ -167,46 +172,95 @@ export class SalesListComponent implements OnInit {
   }
 
   public listSales(): void {
-    if (!this.isDataLoaded) {
-      setTimeout(() => {
-        this.listSalesObservableArray = new ObservableArray();
-        this.listSalesCollectionView = new CollectionView(this.listSalesObservableArray);
-        this.listSalesCollectionView.pageSize = 15;
-        this.listSalesCollectionView.trackChanges = true;
-        this.listSalesCollectionView.refresh();
-        this.listSalesFlexGrid.refresh();
+    this.listSalesObservableArray = new ObservableArray();
+    this.listSalesCollectionView = new CollectionView(this.listSalesObservableArray);
+    this.listSalesCollectionView.pageSize = 15;
+    this.listSalesCollectionView.trackChanges = true;
+    this.listSalesCollectionView.refresh();
+    this.listSalesFlexGrid.refresh();
 
-        let startDate = [this.salesStartDateFilterData.getFullYear(), this.salesStartDateFilterData.getMonth() + 1, this.salesStartDateFilterData.getDate()].join('-');
-        let endDate = [this.salesEndDateFilterData.getFullYear(), this.salesEndDateFilterData.getMonth() + 1, this.salesEndDateFilterData.getDate()].join('-');
+    let startDate = [this.salesStartDateFilterData.getFullYear(), this.salesStartDateFilterData.getMonth() + 1, this.salesStartDateFilterData.getDate()].join('-');
+    let endDate = [this.salesEndDateFilterData.getFullYear(), this.salesEndDateFilterData.getMonth() + 1, this.salesEndDateFilterData.getDate()].join('-');
 
-        this.isProgressBarHidden = false;
+    this.isProgressBarHidden = false;
 
-        this.salesListService.listSales(startDate, endDate, this.cboSalesStatusSelectedValue);
-        this.listSalesSub = this.salesListService.listSalesObservable.subscribe(
-          data => {
-            if (data.length > 0) {
-              this.listSalesObservableArray = data;
-              this.listSalesCollectionView = new CollectionView(this.listSalesObservableArray);
-              this.listSalesCollectionView.pageSize = this.listActivityPageIndex;
-              this.listSalesCollectionView.trackChanges = true;
-              this.listSalesCollectionView.refresh();
-              this.listSalesFlexGrid.refresh();
-            }
-            this.isDataLoaded = true;
-            this.isProgressBarHidden = true;
+    this.salesListService.listSales(startDate, endDate, this.cboSalesStatusSelectedValue);
+    this.listSalesSub = this.salesListService.listSalesObservable.subscribe(
+      data => {
+        if (data.length > 0) {
+          this.listSalesObservableArray = data;
+          this.listSalesCollectionView = new CollectionView(this.listSalesObservableArray);
+          this.listSalesCollectionView.pageSize = this.listActivityPageIndex;
+          this.listSalesCollectionView.trackChanges = true;
+          this.listSalesCollectionView.refresh();
+          this.listSalesFlexGrid.refresh();
+        }
+        this.isDataLoaded = true;
+        this.isProgressBarHidden = true;
 
-            if (this.listSalesSub != null) this.listSalesSub.unsubscribe();
-          }
-        );
-      }, 100);
-    }
+        if (this.listSalesSub != null) this.listSalesSub.unsubscribe();
+      }
+    );
   }
 
+  public btnAddSalesClick() {
+    let btnAddSales: Element = document.getElementById("btnAddSales");
+    (<HTMLButtonElement>btnAddSales).disabled = true;
+
+    this.salesListService.AddSales();
+    this.addSalesSub = this.salesListService.addSalesObservable.subscribe(
+      data => {
+        if (data[0] == "success") {
+          this.toastr.success("Sales was successfully added.", "Success");
+          this.router.navigate(['/software/trn/sales/detail/', data[1]]);
+        }
+        else if (data[0] == "failed") {
+          this.toastr.error(data[1], "Error");
+          (<HTMLButtonElement>btnAddSales).disabled = false;
+        }
+        if (this.addSalesSub != null) this.addSalesSub.unsubscribe();
+      }
+    );
+  }
 
   ngOnInit() {
     this.createCboShowNumberOfRows();
     this.createCboSalesStatus();
     this.listSales();
+  }
+
+  public btnDeleteSalesDeliveryClick(salesDeliveryDeleteModalTemplate: TemplateRef<any>): void {
+    this.deleteSalesDeliveryModalRef = this.modalService.show(salesDeliveryDeleteModalTemplate, {
+      backdrop: true,
+      ignoreBackdropClick: true,
+      class: "modal-sm"
+    });
+
+  }
+
+  public btnConfirmDeleteSalesDeliveryClick(): void {
+    let btnConfirmDeleteSalesDelivery: Element = document.getElementById("btnConfirmDeleteSalesDelivery");
+    let btnCloseConfirmDeleteAcitivityModal: Element = document.getElementById("btnCloseConfirmDeleteSalesDeliveryModal");
+    (<HTMLButtonElement>btnConfirmDeleteSalesDelivery).disabled = true;
+    (<HTMLButtonElement>btnCloseConfirmDeleteAcitivityModal).disabled = true;
+
+    let currentItem = this.listSalesCollectionView.currentItem;
+    this.salesListService.DeleteSalesDelivery(currentItem.Id);
+    this.deleteSalesDeliverySub = this.salesListService.deleteSalesDeliveryObservable.subscribe(
+      data => {
+        if (data[0] == "success") {
+          this.toastr.success("Sales successfully deleted!", "Success");
+          setTimeout(() => {
+            this.listSales();
+            this.deleteSalesDeliveryModalRef.hide();
+          }, 100);
+        } else if (data[0] == "failed") {
+          this.toastr.error(data[1], "Error");
+          (<HTMLButtonElement>btnConfirmDeleteSalesDelivery).disabled = false;
+          (<HTMLButtonElement>btnCloseConfirmDeleteAcitivityModal).disabled = false;
+        }
+      }
+    );
   }
 
 }

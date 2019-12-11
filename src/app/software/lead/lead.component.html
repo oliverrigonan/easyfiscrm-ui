@@ -13,7 +13,8 @@
               </div>
             </div>
             <wj-combo-box #cboNumberOfRows [itemsSource]="cboShowNumberOfRows" [isEditable]="false" [isRequired]="true"
-              [displayMemberPath]="'rowString'" [selectedValuePath]="'rowNumber'" (selectedIndexChanged)="cboShowNumberOfRowsOnSelectedIndexChanged(cboNumberOfRows.selectedValue)"
+              [displayMemberPath]="'rowString'" [selectedValuePath]="'rowNumber'"
+              (selectedIndexChanged)="cboShowNumberOfRowsOnSelectedIndexChanged(cboNumberOfRows.selectedValue)"
               style="width: 140px;">
             </wj-combo-box>
           </div>
@@ -29,9 +30,7 @@
       </tr>
     </table>
   </div>
-
   <div class="card-body">
-
     <div class="row">
       <div class="col-md-8">
         <table border="0" style="width: 100%; border: none; margin-top: -15px;">
@@ -40,8 +39,9 @@
               <div class="form-group">
                 <span class="badge badge-info" style="margin-bottom: 5px;"><i class="fa fa-calendar fa-fw"></i>
                   Start Date</span>
-                <wj-input-date #cboLeadStartDateFilter [(ngModel)]="leadStartDateFilterData" [ngModelOptions]="{standalone: true}"
-                  (textChanged)="cboStartDateTextChanged()" format="MMMM dd, yyyy" style="width: 100%;">
+                <wj-input-date #cboLeadStartDateFilter [(ngModel)]="leadStartDateFilterData"
+                  [ngModelOptions]="{standalone: true}" (textChanged)="cboStartDateTextChanged()" format="MMMM dd, yyyy"
+                  style="width: 100%;">
                 </wj-input-date>
               </div>
             </td>
@@ -49,8 +49,9 @@
               <div class="form-group">
                 <span class="badge badge-info" style="margin-bottom: 5px;"><i class="fa fa-calendar fa-fw"></i>
                   End Date</span>
-                <wj-input-date #cboLeadEndDateFilter [(ngModel)]="leadEndDateFilterData" [ngModelOptions]="{standalone: true}"
-                  (textChanged)="cboEndDateTextChanged()" format="MMMM dd, yyyy" style="width: 100%;">
+                <wj-input-date #cboLeadEndDateFilter [(ngModel)]="leadEndDateFilterData"
+                  [ngModelOptions]="{standalone: true}" (textChanged)="cboEndDateTextChanged()" format="MMMM dd, yyyy"
+                  style="width: 100%;">
                 </wj-input-date>
               </div>
             </td>
@@ -60,7 +61,8 @@
                   Status</span>
                 <wj-combo-box #cboLeadStatus [itemsSource]="cboLeadStatusObservableArray" [isEditable]="false"
                   [isRequired]="true" [displayMemberPath]="'Status'" [selectedValuePath]="'Status'"
-                  (selectedIndexChanged)="cboLeadStatusSelectedIndexChanged(cboLeadStatus.selectedValue)" style="width: 100%;">
+                  (selectedIndexChanged)="cboLeadStatusSelectedIndexChanged(cboLeadStatus.selectedValue)"
+                  style="width: 100%;">
                 </wj-combo-box>
               </div>
             </td>
@@ -81,21 +83,30 @@
       </wj-flex-grid-column>
       <wj-flex-grid-column [header]="Delete" [isReadOnly]="true" [width]="90">
         <ng-template wjFlexGridCellTemplate [cellType]="'Cell'">
-          <button type="button" class="btn btn-danger btn-block btn-xs" (click)="btnDeleteLeadClick(leadDeleteModalTemplate)"
-            id="btnDeleteLead">
+          <button type="button" class="btn btn-danger btn-block btn-xs"
+            (click)="btnDeleteLeadClick(leadDeleteModalTemplate)" id="btnDeleteLead">
             <i class="fa fa-trash fa-fw"></i> Delete
           </button>
         </ng-template>
       </wj-flex-grid-column>
-      <wj-flex-grid-column [header]="'LD No.'" [binding]="'LDNumber'" [isReadOnly]="true" [width]="110"></wj-flex-grid-column>
-      <wj-flex-grid-column [header]="'LD Date'" [binding]="'LDDate'" [isReadOnly]="true" [width]="110"></wj-flex-grid-column>
-      <wj-flex-grid-column [header]="'Name'" [binding]="'Name'" [isReadOnly]="true" [width]="'2*'"></wj-flex-grid-column>
-      <wj-flex-grid-column [header]="'Created By'" [binding]="'CreatedByUser'" [isReadOnly]="true" [width]="'2*'"></wj-flex-grid-column>
-      <wj-flex-grid-column [header]="'Assigned To'" [binding]="'AssignedToUser'" [isReadOnly]="true" [width]="'2*'"></wj-flex-grid-column>
-      <wj-flex-grid-column [header]="'Last Activity'" [binding]="'LastActivity'" [isReadOnly]="true" [width]="'2.5*'"></wj-flex-grid-column>
-      <wj-flex-grid-column [header]="'Last Act. Date'" [binding]="'LastActivityDate'" [isReadOnly]="true" [width]="'2*'"></wj-flex-grid-column>
-      <wj-flex-grid-column [header]="'Status'" [binding]="'Status'" [isReadOnly]="true" [width]="'2*'"></wj-flex-grid-column>
-      <wj-flex-grid-column [header]="'L'" [binding]="'IsLocked'" [isReadOnly]="true" [width]="'0.8*'"></wj-flex-grid-column>
+      <wj-flex-grid-column [header]="'LD No.'" [binding]="'LDNumber'" [isReadOnly]="true" [width]="110">
+      </wj-flex-grid-column>
+      <wj-flex-grid-column [header]="'LD Date'" [binding]="'LDDate'" [isReadOnly]="true" [width]="110">
+      </wj-flex-grid-column>
+      <wj-flex-grid-column [header]="'Name'" [binding]="'Name'" [isReadOnly]="true" [width]="'2*'">
+      </wj-flex-grid-column>
+      <wj-flex-grid-column [header]="'Created By'" [binding]="'CreatedByUser'" [isReadOnly]="true" [width]="'2*'">
+      </wj-flex-grid-column>
+      <wj-flex-grid-column [header]="'Assigned To'" [binding]="'AssignedToUser'" [isReadOnly]="true" [width]="'2*'">
+      </wj-flex-grid-column>
+      <wj-flex-grid-column [header]="'Last Activity'" [binding]="'LastActivity'" [isReadOnly]="true" [width]="'2.5*'">
+      </wj-flex-grid-column>
+      <wj-flex-grid-column [header]="'Last Act. Date'" [binding]="'LastActivityDate'" [isReadOnly]="true"
+        [width]="'2*'"></wj-flex-grid-column>
+      <wj-flex-grid-column [header]="'Status'" [binding]="'Status'" [isReadOnly]="true" [width]="'2*'">
+      </wj-flex-grid-column>
+      <wj-flex-grid-column [header]="'L'" [binding]="'IsLocked'" [isReadOnly]="true" [width]="'0.8*'">
+      </wj-flex-grid-column>
     </wj-flex-grid>
   </div>
 
@@ -194,7 +205,8 @@
     </b>
   </div>
   <div class="modal-footer">
-    <button type="button" class="btn btn-danger" style="margin-right: 5px;" (click)="btnConfirmDeleteLeadClick()" id="btnConfirmDeleteLead">
+    <button type="button" class="btn btn-danger" style="margin-right: 5px;" (click)="btnConfirmDeleteLeadClick()"
+      id="btnConfirmDeleteLead">
       <i class="fa fa-trash"></i> Delete
     </button>
     <button type="button" class="btn" (click)="leadDeleteModalRef.hide()" id="btnCloseConfirmDeleteLeadModal">

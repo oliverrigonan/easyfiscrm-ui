@@ -19,7 +19,7 @@ export class SalesListService {
       'Authorization': 'Bearer ' + localStorage.getItem('access_token')
     })
   };
-  
+
   public defaultAPIURLHost: string = this.appSettings.defaultAPIURLHost;
 
   public listStatusSubject = new Subject<ObservableArray>();
@@ -27,6 +27,12 @@ export class SalesListService {
 
   public listSalesSubject = new Subject<ObservableArray>();
   public listSalesObservable = this.listSalesSubject.asObservable();
+
+  public addSalesSubject = new Subject<string[]>();
+  public addSalesObservable = this.addSalesSubject.asObservable();
+
+  public deleteSalesDeliverySubject = new Subject<string[]>();
+  public deleteSalesDeliveryObservable = this.deleteSalesDeliverySubject.asObservable();
 
   public listStatus(): void {
     let listStatusObservableArray = new ObservableArray();
@@ -53,7 +59,7 @@ export class SalesListService {
     let listSalesObservableArray = new ObservableArray();
     this.listSalesSubject.next(listSalesObservableArray);
 
-    this.httpClient.get(this.defaultAPIURLHost + "/api/crm/trn/sales/list/"  + startDate + "/" + endDate + "/" + status, this.options).subscribe(
+    this.httpClient.get(this.defaultAPIURLHost + "/api/crm/trn/sales/list/" + startDate + "/" + endDate + "/" + status, this.options).subscribe(
       response => {
         var results = response;
         if (results["length"] > 0) {
@@ -69,7 +75,10 @@ export class SalesListService {
               ProductDescription: results[i].ProductDescription,
               LDId: results[i].LDId,
               LDNumber: results[i].LDNumber,
-              ContactPerson : results[i].ContactPerson ,
+              ContactPerson: results[i].ContactPerson,
+              ContactPosition: results[i].ContactPosition,
+              ContactEmail: results[i].ContactEmail,
+              ContactPhoneNumber: results[i].ContactPhoneNumber,
               Particulars: results[i].Particulars,
               AssignedToUserId: results[i].AssignedToUserId,
               AssignedToUser: results[i].AssignedToUser,
@@ -86,6 +95,32 @@ export class SalesListService {
         }
 
         this.listSalesSubject.next(listSalesObservableArray);
+      }
+    );
+  }
+
+  public AddSales(): void {
+    this.httpClient.post(this.defaultAPIURLHost + "/api/crm/trn/sales/add", "", this.options).subscribe(
+      response => {
+        let responseResults: string[] = ["success", response.toString()];
+        this.addSalesSubject.next(responseResults);
+      },
+      error => {
+        let errorResults: string[] = ["failed", error["error"]];
+        this.addSalesSubject.next(errorResults);
+      }
+    );
+  }
+
+  public DeleteSalesDelivery(id: number){
+    this.httpClient.delete(this.defaultAPIURLHost + "/api/crm/trn/sales/delete/" + id, this.options).subscribe(
+      response => {
+        let responseResults: string[] = ["success", ""];
+        this.deleteSalesDeliverySubject.next(responseResults);
+      },
+      error => {
+        let errorResults: string[] = ["failed", error["error"]];
+        this.deleteSalesDeliverySubject.next(errorResults);
       }
     );
   }
