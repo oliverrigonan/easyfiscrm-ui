@@ -259,6 +259,7 @@ export class SalesListComponent implements OnInit {
           (<HTMLButtonElement>btnConfirmDeleteSalesDelivery).disabled = false;
           (<HTMLButtonElement>btnCloseConfirmDeleteAcitivityModal).disabled = false;
         }
+        if(this.deleteSalesDeliverySub != null) this.deleteSalesDeliverySub.unsubscribe();
       }
     );
   }

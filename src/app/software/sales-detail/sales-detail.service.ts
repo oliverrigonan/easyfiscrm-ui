@@ -39,15 +39,21 @@ export class SalesDetailService {
   public listSalesAssignedToUsersSubject = new Subject<ObservableArray>();
   public listLeadAssignedToUsersObservable = this.listSalesAssignedToUsersSubject.asObservable();
 
+  public listSalesStatusSubject = new Subject<ObservableArray>();
+  public listSalesStatusObservable = this.listSalesStatusSubject.asObservable();
+
   public deleteSalesDeliverySubject = new Subject<string[]>();
   public deleteSalesDeliveryObservable = this.deleteSalesDeliverySubject.asObservable();
 
-  public detailSalesSubject = new Subject<SalesDetailModel>();
+  public detailSalesSubject = new Subject<SalesDeliveryDetailModel>();
   public detailSalesObservable = this.detailSalesSubject.asObservable();
+
   public saveSalesSubject = new Subject<string[]>();
   public saveSalesObservable = this.saveSalesSubject.asObservable();
+
   public lockSalesSubject = new Subject<string[]>();
   public lockSalesObservable = this.lockSalesSubject.asObservable();
+  
   public unlockSalesSubject = new Subject<string[]>();
   public unlockSalesObservable = this.unlockSalesSubject.asObservable();
 
@@ -55,35 +61,34 @@ export class SalesDetailService {
     let listCustomerObservableArray = new ObservableArray();
     this.listCustomerSubject.next(listCustomerObservableArray);
 
-    this.httpClient.get(this.defaultAPIURLHost + "/api/crm/trn/lead/list/customer", this.options).subscribe(
+    this.httpClient.get(this.defaultAPIURLHost + "/api/crm/trn/sales/list/customer", this.options).subscribe(
       response => {
         var results = response;
         if (results["length"] > 0) {
           for (var i = 0; i <= results["length"] - 1; i++) {
             listCustomerObservableArray.push({
               Id: results[i].Id,
-              Article: results[i].Id
+              Article: results[i].Article
             });
           }
         }
-
         this.listCustomerSubject.next(listCustomerObservableArray);
       }
     );
   }
 
-  public listSalesInvoice(): void {
+  public listSalesInvoice(id: number): void {
     let listSalesInvoiceObservableArray = new ObservableArray();
     this.listSalesInvoiceSubject.next(listSalesInvoiceObservableArray);
 
-    this.httpClient.get(this.defaultAPIURLHost + "/api/crm/trn/lead/list/sales/invoice", this.options).subscribe(
+    this.httpClient.get(this.defaultAPIURLHost + "/api/crm/trn/sales/list/sales/invoice/" + id, this.options).subscribe(
       response => {
         var results = response;
         if (results["length"] > 0) {
-          for(var i = 0; i <= results["length"] - 1; i++){
+          for (var i = 0; i <= results["length"] - 1; i++) {
             listSalesInvoiceObservableArray.push({
               Id: results[i].Id,
-              SDNumber: results[i].SDNumber
+              SINumber: results[i].SINumber
             });
           }
         }
@@ -96,14 +101,13 @@ export class SalesDetailService {
     let listProductObservableArray = new ObservableArray();
     this.listProductSubject.next(listProductObservableArray);
 
-    this.httpClient.get(this.defaultAPIURLHost + "/api/crm/trn/lead/list/product", this.options).subscribe(
+    this.httpClient.get(this.defaultAPIURLHost + "/api/crm/trn/sales/list/product", this.options).subscribe(
       response => {
         var results = response;
-        if(results["lenght"] > 0){
-          for(var i = 0; i <= results["length"] - 1; i++){
+        if (results["length"] > 0) {
+          for (var i = 0; i <= results["length"] - 1; i++) {
             listProductObservableArray.push({
               Id: results[i].Id,
-              ProductCode: results[i].ProductCode,
               ProductDescription: results[i].ProductDescription
             });
           }
@@ -117,18 +121,18 @@ export class SalesDetailService {
     let listLeadObservableArray = new ObservableArray();
     this.listLeadSubject.next(listLeadObservableArray);
 
-    this.httpClient.get(this.defaultAPIURLHost + "/api/crm/trn/lead/list/lead", this.options).subscribe(
+    this.httpClient.get(this.defaultAPIURLHost + "/api/crm/trn/sales/list/lead", this.options).subscribe(
       response => {
         var results = response;
-        if(results["lenght"] > 0){
-          for(var i = 0; i <= results["length"] - 1; i++){
+        if (results["length"] > 0) {
+          for (var i = 0; i <= results["length"] - 1; i++) {
             listLeadObservableArray.push({
               Id: results[i].Id,
               LDNumber: results[i].LDNumber,
             });
           }
         }
-        this.listProductSubject.next(listLeadObservableArray);
+        this.listLeadSubject.next(listLeadObservableArray);
       }
     );
   }
@@ -137,7 +141,7 @@ export class SalesDetailService {
     let listAssignedToUsersObservableArray = new ObservableArray();
     this.listSalesAssignedToUsersSubject.next(listAssignedToUsersObservableArray);
 
-    this.httpClient.get(this.defaultAPIURLHost + "/api/crm/trn/lead/list/users", this.options).subscribe(
+    this.httpClient.get(this.defaultAPIURLHost + "/api/crm/trn/sales/list/users", this.options).subscribe(
       response => {
         var results = response;
         if (results["length"] > 0) {
@@ -149,21 +153,40 @@ export class SalesDetailService {
             });
           }
         }
-
         this.listSalesAssignedToUsersSubject.next(listAssignedToUsersObservableArray);
       }
     );
   }
 
+  public listSalesStatus(): void {
+    let listSalesStatusObservableArray = new ObservableArray();
+    this.listSalesStatusSubject.next(listSalesStatusObservableArray);
+
+    this.httpClient.get(this.defaultAPIURLHost + "/api/crm/trn/sales/list/status", this.options).subscribe(
+      response => {
+        var results = response;
+        if (results["length"] > 0) {
+          for (var i = 0; i <= results["length"] - 1; i++) {
+            listSalesStatusObservableArray.push({
+              Id: results[i].Id,
+              Status: results[i].Status
+            });
+          }
+        }
+        this.listSalesStatusSubject.next(listSalesStatusObservableArray);
+      }
+    );
+  }
+
   public detailSales(id: number) {
-    let salesDetailModel: SalesDeliveryDetailModel;
-    this.detailSalesSubject.next(salesDetailModel);
+    let salesDeliveryDetailModel: SalesDeliveryDetailModel;
+    this.detailSalesSubject.next(salesDeliveryDetailModel);
 
     this.httpClient.get(this.defaultAPIURLHost + "/api/crm/trn/sales/detail/" + id, this.options).subscribe(
       response => {
         var result = response;
         if (result != null) {
-          salesDetailModel = {
+          salesDeliveryDetailModel = {
             Id: result["Id"],
             SDNumber: result["SDNumber"],
             SDDate: result["SDDate"],
@@ -186,12 +209,12 @@ export class SalesDetailService {
             UpdatedDateTime: result["UpdatedDateTime"],
           };
         }
-        this.detailSalesSubject.next(salesDetailModel);
+        this.detailSalesSubject.next(salesDeliveryDetailModel);
       }
     );
   }
 
-  public saveSales(objSales: SalesDetailModel) {
+  public saveSales(objSales: SalesDeliveryDetailModel) {
     this.httpClient.put(this.defaultAPIURLHost + "/api/crm/trn/sales/save/" + objSales.Id, JSON.stringify(objSales), this.options).subscribe(
       response => {
         let responseResults: string[] = ["success", ""];
@@ -204,7 +227,7 @@ export class SalesDetailService {
     );
   }
 
-  public lockSales(objSales: SalesDetailModel) {
+  public lockSales(objSales: SalesDeliveryDetailModel) {
     this.httpClient.put(this.defaultAPIURLHost + "/api/crm/trn/sales/lock/" + objSales.Id, JSON.stringify(objSales), this.options).subscribe(
       response => {
         let responseResults: string[] = ["success", ""];
@@ -217,7 +240,7 @@ export class SalesDetailService {
     );
   }
 
-  public deleteSalesDelivery(id: number){
+  public deleteSalesDelivery(id: number) {
     this.httpClient.delete(this.defaultAPIURLHost + "/api/crm/trn/sales/delete" + id, this.options).subscribe(
       response => {
         let responseResults: string[] = ["success", ""];
