@@ -29,7 +29,6 @@ export class SalesDetailComponent implements OnInit {
 
   public isLoadingSpinnerHidden: boolean = false;
   public isContentHidden: boolean = true;
-  public isActivityTabHidden: boolean = true;
 
   public detailSalesSub: any;
   public saveSalesSub: any;
@@ -37,6 +36,17 @@ export class SalesDetailComponent implements OnInit {
   public unlockSalesSub: any;
 
   public isLocked: boolean = false;
+
+  public activityModalHeaderTitle: string = "";
+
+  public IsLoaded: Boolean = false;
+  public listCustomerObservableArray: ObservableArray = new ObservableArray();
+  public listCustomerCollectionView: CollectionView = new CollectionView(this.listCustomerObservableArray);
+  public listCustomerPageIndex: number = 15;
+  @ViewChild('listCustomerFlexGrid') listCustomerFlexGrid: WjFlexGrid;
+  public isProgressBarHidden = false;
+  public selectedCustomer: string = "";
+
 
   public cboCustomerSub: any;
   public cboCustomerObservableArray: ObservableArray = new ObservableArray();
@@ -59,12 +69,15 @@ export class SalesDetailComponent implements OnInit {
 
   public isDataLoaded: boolean = false;
 
+  public customerModalRef: BsModalRef;
+
   public salesDeliveryDetailModel: SalesDeliveryDetailModel = {
     Id: 0,
     SDNumber: "",
     SDDate: new Date(),
     RenewalDate: new Date(),
     CustomerId: 0,
+    Customer: "",
     SIId: 0,
     ProductId: 0,
     LDId: 0,
@@ -77,13 +90,72 @@ export class SalesDetailComponent implements OnInit {
     Status: "",
     IsLocked: false,
     CreatedByUserId: 0,
+    CreatedByUser: "",
     CreatedDateTime: new Date(),
     UpdatedByUserId: 0,
+    UpdatedByUser: "",
     UpdatedDateTime: new Date(),
   }
 
+  public activitiyModalRef: BsModalRef;
+  public deleteActivitiyModalRef: BsModalRef;
+
+  public cboShowNumberOfRows: ObservableArray = new ObservableArray();
+
+  public listActivityObservableArray: ObservableArray = new ObservableArray();
+  public listActivityCollectionView: CollectionView = new CollectionView(this.listActivityObservableArray);
+  public listActivityPageIndex: number = 15;
+  @ViewChild('listActivityFlexGrid') listActivityFlexGrid: WjFlexGrid;
+  // public isProgressBarHidden = false;
+  // public isDataLoaded: boolean = false;
+
+  public listActivitySub: any;
+  public saveActivitySub: any;
+  public deleteActivitySub: any;
+
+  // public isLoadingSpinnerHidden: boolean = false;
+  // public isContentHidden: boolean = true;
+  public isActivityTabHidden: boolean = true;
+
+  public listActivity(): void {
+    if (!this.isDataLoaded) {
+      setTimeout(() => {
+        this.listActivityObservableArray = new ObservableArray();
+        this.listActivityCollectionView = new CollectionView(this.listActivityObservableArray);
+        this.listActivityCollectionView.pageSize = 15;
+        this.listActivityCollectionView.trackChanges = true;
+        this.listActivityCollectionView.refresh();
+        this.listActivityFlexGrid.refresh();
+
+        this.isProgressBarHidden = false;
+
+        let id: number = 0;
+        this.activatedRoute.params.subscribe(params => { id = params["id"]; });
+
+        this.salesDetailService.listActivity(id);
+        this.listActivitySub = this.salesDetailService.listActivityObservable.subscribe(
+          data => {
+            if (data.length > 0) {
+              this.listActivityObservableArray = data;
+              this.listActivityCollectionView = new CollectionView(this.listActivityObservableArray);
+              this.listActivityCollectionView.pageSize = this.listActivityPageIndex;
+              this.listActivityCollectionView.trackChanges = true;
+              this.listActivityCollectionView.refresh();
+              this.listActivityFlexGrid.refresh();
+            }
+
+            this.isDataLoaded = true;
+            this.isProgressBarHidden = true;
+
+            if (this.listActivitySub != null) this.listActivitySub.unsubscribe();
+          }
+        );
+      }, 100);
+    }
+  }
+
   ngOnInit() {
-    this.createCboCustomer();
+    this.createCboProduct();
   }
 
   public detailSales(): void {
@@ -98,6 +170,7 @@ export class SalesDetailComponent implements OnInit {
         this.salesDeliveryDetailModel.SDDate = data.SDDate;
         this.salesDeliveryDetailModel.RenewalDate = data.RenewalDate;
         this.salesDeliveryDetailModel.CustomerId = data.CustomerId;
+        this.salesDeliveryDetailModel.Customer = data.Customer;
         this.salesDeliveryDetailModel.SIId = data.SIId;
         this.salesDeliveryDetailModel.ProductId = data.ProductId;
         this.salesDeliveryDetailModel.LDId = data.LDId;
@@ -110,13 +183,17 @@ export class SalesDetailComponent implements OnInit {
         this.salesDeliveryDetailModel.Status = data.Status;
         this.salesDeliveryDetailModel.IsLocked = data.IsLocked;
         this.salesDeliveryDetailModel.CreatedByUserId = data.CreatedByUserId;
+        this.salesDeliveryDetailModel.CreatedByUser = data.CreatedByUser;
         this.salesDeliveryDetailModel.CreatedDateTime = data.CreatedDateTime;
         this.salesDeliveryDetailModel.UpdatedByUserId = data.UpdatedByUserId;
+        this.salesDeliveryDetailModel.UpdatedByUser = data.UpdatedByUser;
         this.salesDeliveryDetailModel.UpdatedDateTime = data.UpdatedDateTime;
 
-        let btnSaveSales: Element = document.getElementById("btnSaveLead");
-        let btnLockSales: Element = document.getElementById("btnLockLead");
-        let btnUnlockSales: Element = document.getElementById("btnUnlockLead");
+        let btnSaveSales: Element = document.getElementById("btnSaveSales");
+        let btnLockSales: Element = document.getElementById("btnLockSales");
+        let btnUnlockSales: Element = document.getElementById("btnUnlockSales");
+
+        this.selectedCustomer = data.Customer;
 
         (<HTMLButtonElement>btnSaveSales).disabled = false;
         (<HTMLButtonElement>btnLockSales).disabled = false;
@@ -131,41 +208,47 @@ export class SalesDetailComponent implements OnInit {
 
           this.isActivityTabHidden = false;
         }
-
+        setTimeout(() => {
+          this.createCboSalesInvoice(this.salesDeliveryDetailModel.CustomerId);
+        }, 100);
         this.isLoadingSpinnerHidden = true;
         this.isContentHidden = false;
 
-        if(this.detailSalesSub != null) this.detailSalesSub.unsubscribe();
+        if (this.detailSalesSub != null) this.detailSalesSub.unsubscribe();
       }
     );
   }
-  public createCboCustomer(): void {
+
+  public listCustomer(): void {
+    this.listCustomerObservableArray = new ObservableArray();
+    this.listCustomerCollectionView = new CollectionView(this.listCustomerObservableArray);
+    this.listCustomerCollectionView.pageSize = 15;
+    this.listCustomerCollectionView.trackChanges = true;
+    this.listCustomerCollectionView.refresh();
+    // this.listCustomerFlexGrid.refresh();
+
+    this.isProgressBarHidden = false;
     this.salesDetailService.listCustomer();
     this.cboCustomerSub = this.salesDetailService.listCustomerObservable.subscribe(
       data => {
-        let customerObservableArray = new ObservableArray();
         if (data.length > 0) {
-          for (var i = 0; i <= data.length - 1; ++i) {
-            customerObservableArray.push({
-              Id: data[i].Id,
-              Article: data[i].Article
-            });
-          }
+          this.listCustomerObservableArray = data;
+          this.listCustomerCollectionView = new CollectionView(this.listCustomerObservableArray);
+          this.listCustomerCollectionView.pageSize = this.listCustomerPageIndex;
+          this.listCustomerCollectionView.trackChanges = true;
+          this.listCustomerCollectionView.refresh();
+          // this.listCustomerFlexGrid.refresh();
         }
+        console.log(this.listCustomerCollectionView);
 
-        this.cboCustomerObservableArray = customerObservableArray;
-        if (this.cboCustomerObservableArray.length > 0) {
-          setTimeout(() => {
-            this.createCboSalesInvoice();
-          }, 100);
-        }
-        if(this.cboCustomerSub != null) this.cboCustomerSub.unsubscribe();
+        this.isProgressBarHidden = true;
+        if (this.cboCustomerSub != null) this.cboCustomerSub.unsubscribe();
       }
     );
   }
 
-  public createCboSalesInvoice(): void {
-    this.salesDetailService.listSalesInvoice(this.cboCustomerSelectedValue);
+  public createCboSalesInvoice(customerId: number): void {
+    this.salesDetailService.listSalesInvoice(customerId);
     this.cboSalesInvoiceSub = this.salesDetailService.listSalesInvoiceObservable.subscribe(
       data => {
         let salesInvoiceObservableArray = new ObservableArray();
@@ -179,15 +262,7 @@ export class SalesDetailComponent implements OnInit {
         }
 
         this.cboSalesInvoiceObservableArray = salesInvoiceObservableArray;
-
-        this.isDataLoaded = true;
-        if(this.cboSalesInvoiceObservableArray.length > 0){
-          setTimeout(() => {
-            this.createCboProduct();
-          }, 100);
-        }
-        
-        if(this.cboSalesInvoiceSub != null) this.cboSalesInvoiceSub.unsubscribe();
+        if (this.cboSalesInvoiceSub != null) this.cboSalesInvoiceSub.unsubscribe();
       }
     );
   }
@@ -208,12 +283,10 @@ export class SalesDetailComponent implements OnInit {
 
         this.cboProductObservableArray = productObservableArray;
 
-        if(this.cboProductObservableArray.length > 0){
-          setTimeout(()=>{
-            this.createCboLead();
-          },100);
-        }
-        if(this.cboProductSub != null) this.cboProductSub.unsubscribe();
+        setTimeout(() => {
+          this.createCboLead();
+        }, 100);
+        if (this.cboProductSub != null) this.cboProductSub.unsubscribe();
       }
     );
   }
@@ -234,12 +307,10 @@ export class SalesDetailComponent implements OnInit {
 
         this.cboLeadObservable = leadObservableArray;
 
-        if(this.cboLeadObservable.length > 0){
-          setTimeout(()=>{
-            this.createCboAssignedToUser();
-          },100);
-        }
-        if(this.cboLeadSub != null) this.cboLeadSub.unsubscribe();
+        setTimeout(() => {
+          this.createCboAssignedToUser();
+        }, 100);
+        if (this.cboLeadSub != null) this.cboLeadSub.unsubscribe();
       }
     );
   }
@@ -260,12 +331,10 @@ export class SalesDetailComponent implements OnInit {
 
         this.cboAssignedToUserObservable = assignedToUserObservableArray;
 
-        if(this.cboAssignedToUserObservable.length > 0){
-          setTimeout(()=>{
-            this.createCboSalesStatus();
-          },100);
-        }
-        if(this.cboAssignedToUserSub != null) this.cboAssignedToUserSub.unsubscribe();
+        setTimeout(() => {
+          this.createCboSalesStatus();
+        }, 100);
+        if (this.cboAssignedToUserSub != null) this.cboAssignedToUserSub.unsubscribe();
       }
     );
   }
@@ -285,34 +354,158 @@ export class SalesDetailComponent implements OnInit {
         }
 
         this.cboSalesStatusObservable = salesStatusObservableArray;
-        
-        if(this.cboSalesStatusObservable.length > 0){
-          setTimeout(()=>{
-            this.detailSales();
-          },100);
-        }
-        if(this.cboSalesStatusSub != null) this.cboSalesStatusSub.unsubscribe();
+
+        setTimeout(() => {
+          this.detailSales();
+        }, 100);
+        if (this.cboSalesStatusSub != null) this.cboSalesStatusSub.unsubscribe();
       }
     );
   }
 
-  public cboCustomerSelectedIndexChanged(selectedValue: any): void {
-    this.cboCustomerSelectedValue = selectedValue;
-
-    if (this.isDataLoaded) {
+  public btnCustomerListClick(customerModalTemplate: TemplateRef<any>): void {
+    if (!this.isLocked) {
+    this.activityModalHeaderTitle = "Costumer List";
+      this.listCustomer();
       setTimeout(() => {
-        this.createCboSalesInvoice();
+
+        this.customerModalRef = this.modalService.show(customerModalTemplate, {
+          backdrop: true,
+          ignoreBackdropClick: true,
+          class: "modal-lg"
+        });
       }, 100);
     }
+
+
   }
+
+  public btnPickCustomerClick(): void {
+    let currentCustomer = this.listCustomerCollectionView.currentItem;
+    this.selectedCustomer = currentCustomer.Article;
+    this.salesDeliveryDetailModel.CustomerId = currentCustomer.Id;
+
+    this.customerModalRef.hide();
+
+    this.createCboSalesInvoice(this.salesDeliveryDetailModel.CustomerId);
+  }
+
+  public btnSaveSalesClick(): void {
+    let btnSaveSales: Element = document.getElementById("btnSaveSales");
+    let btnLockSales: Element = document.getElementById("btnLockSales");
+    let btnUnlockSales: Element = document.getElementById("btnUnlockSales");
+    (<HTMLButtonElement>btnSaveSales).disabled = true;
+    (<HTMLButtonElement>btnLockSales).disabled = true;
+    (<HTMLButtonElement>btnUnlockSales).disabled = true;
+
+    this.salesDetailService.saveSales(this.salesDeliveryDetailModel)
+    this.saveSalesSub = this.salesDetailService.saveSalesObservable.subscribe(
+      data => {
+        if (data[0] == "success") {
+          this.toastr.success("Sales was successfully saved.", "Success");
+
+          setTimeout(() => {
+            (<HTMLButtonElement>btnSaveSales).disabled = false;
+            (<HTMLButtonElement>btnLockSales).disabled = false;
+            (<HTMLButtonElement>btnUnlockSales).disabled = true;
+          }, 500);
+        } else if (data[0] == "failed") {
+          this.toastr.error(data[1], "Error");
+
+          (<HTMLButtonElement>btnSaveSales).disabled = false;
+          (<HTMLButtonElement>btnLockSales).disabled = false;
+          (<HTMLButtonElement>btnUnlockSales).disabled = true;
+        }
+
+        if (this.saveSalesSub != null) this.saveSalesSub.unsubscribe();
+      }
+    );
+  }
+
+  public btnLockSalesClick(): void {
+    let btnSaveSales: Element = document.getElementById("btnSaveSales");
+    let btnLockSales: Element = document.getElementById("btnLockSales");
+    let btnUnlockSales: Element = document.getElementById("btnUnlockSales");
+    (<HTMLButtonElement>btnSaveSales).disabled = true;
+    (<HTMLButtonElement>btnLockSales).disabled = true;
+    (<HTMLButtonElement>btnUnlockSales).disabled = true;
+
+    this.salesDetailService.lockSales(this.salesDeliveryDetailModel)
+    this.lockSalesSub = this.salesDetailService.lockSalesObservable.subscribe(
+      data => {
+        if (data[0] == "success") {
+          this.toastr.success("Sales was successfully saved.", "Success");
+          setTimeout(() => {
+            this.isLocked = true;
+
+            (<HTMLButtonElement>btnSaveSales).disabled = true;
+            (<HTMLButtonElement>btnLockSales).disabled = true;
+            (<HTMLButtonElement>btnUnlockSales).disabled = false;
+
+            this.isActivityTabHidden = false;
+          }, 500);
+        } else if (data[0] == "failed") {
+          this.toastr.error(data[1], "Error");
+          (<HTMLButtonElement>btnSaveSales).disabled = false;
+          (<HTMLButtonElement>btnLockSales).disabled = false;
+          (<HTMLButtonElement>btnUnlockSales).disabled = true;
+        }
+
+        if (this.lockSalesSub != null) this.lockSalesSub.unsubscribe();
+      }
+    );
+  }
+
+  public btnUnlockSalesClick(): void {
+    this.isActivityTabHidden = true;
+
+    let btnSaveSales: Element = document.getElementById("btnSaveSales");
+    let btnLockSales: Element = document.getElementById("btnLockSales");
+    let btnUnlockSales: Element = document.getElementById("btnUnlockSales");
+    (<HTMLButtonElement>btnSaveSales).disabled = true;
+    (<HTMLButtonElement>btnLockSales).disabled = true;
+    (<HTMLButtonElement>btnUnlockSales).disabled = true;
+
+    this.salesDetailService.unlockSales(this.salesDeliveryDetailModel);
+    this.unlockSalesSub = this.salesDetailService.unlockSalesObservable.subscribe(
+      data => {
+        if (data[0] == "success") {
+          this.toastr.success("Sales was successfully unlocked.", "Success");
+
+          setTimeout(() => {
+            this.isLocked = false;
+
+            (<HTMLButtonElement>btnSaveSales).disabled = false;
+            (<HTMLButtonElement>btnLockSales).disabled = false;
+            (<HTMLButtonElement>btnUnlockSales).disabled = true;
+
+            this.isActivityTabHidden = true;
+          }, 500);
+        } else if (data[0] == "failed") {
+          this.toastr.error(data[1], "Error");
+
+          (<HTMLButtonElement>btnSaveSales).disabled = true;
+          (<HTMLButtonElement>btnLockSales).disabled = true;
+          (<HTMLButtonElement>btnUnlockSales).disabled = false;
+
+          this.isActivityTabHidden = false;
+        }
+        if (this.unlockSalesSub != null) this.unlockSalesSub.unsubscribe();
+      }
+    );
+  }
+
 
   ngOnDestroy() {
     if (this.cboProductSub != null) this.cboProductSub.unsubscribe();
     if (this.cboSalesInvoiceSub != null) this.cboSalesInvoiceSub.unsubscribe();
     if (this.cboCustomerSub != null) this.cboCustomerSub.unsubscribe();
-    if(this.cboProductSub != null) this.cboProductSub.unsubscribe();
-    if(this.cboLeadSub != null) this.cboLeadSub.unsubscribe();
-    if(this.detailSalesSub != null) this.detailSalesSub.unsubscribe();
+    if (this.cboProductSub != null) this.cboProductSub.unsubscribe();
+    if (this.cboLeadSub != null) this.cboLeadSub.unsubscribe();
+    if (this.detailSalesSub != null) this.detailSalesSub.unsubscribe();
+    if (this.saveSalesSub != null) this.saveSalesSub.unsubscribe();
+    if (this.lockSalesSub != null) this.lockSalesSub.unsubscribe();
+    if (this.unlockSalesSub != null) this.unlockSalesSub.unsubscribe();
   }
 
 }

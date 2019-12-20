@@ -34,6 +34,9 @@ export class LayoutComponent implements OnInit {
       } else if (this.router.url == "/software/trn/sales") {
         this.ToolbarTitle = "Sales List";
         toolBarImage.setAttribute("src", "../../assets/img/icons/sales.png");
+      } else if (this.router.url.split('/').slice(0, -1).join('/') == "/software/trn/sales/detail") {
+        this.ToolbarTitle = "Sales Detail";
+        toolBarImage.setAttribute("src", "../../assets/img/icons/sales.png");
       } else {
         // this.ToolbarTitle = "Easyfis CRM";
       }

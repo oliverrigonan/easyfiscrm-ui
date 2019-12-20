@@ -264,4 +264,11 @@ export class SalesListComponent implements OnInit {
     );
   }
 
+  public btnEditSalesClick(): void {
+    let currentSales = this.listSalesCollectionView.currentItem;
+    this.router.navigate(['/software/trn/sales/detail/', currentSales.Id]);
+  }
+
+ 
+
 }

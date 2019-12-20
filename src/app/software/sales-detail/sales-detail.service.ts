@@ -57,6 +57,9 @@ export class SalesDetailService {
   public unlockSalesSubject = new Subject<string[]>();
   public unlockSalesObservable = this.unlockSalesSubject.asObservable();
 
+  public listActivitySubject = new Subject<ObservableArray>();
+  public listActivityObservable = this.listActivitySubject.asObservable();
+
   public listCustomer(): void {
     let listCustomerObservableArray = new ObservableArray();
     this.listCustomerSubject.next(listCustomerObservableArray);
@@ -64,11 +67,14 @@ export class SalesDetailService {
     this.httpClient.get(this.defaultAPIURLHost + "/api/crm/trn/sales/list/customer", this.options).subscribe(
       response => {
         var results = response;
+        console.log(results);
         if (results["length"] > 0) {
           for (var i = 0; i <= results["length"] - 1; i++) {
             listCustomerObservableArray.push({
               Id: results[i].Id,
-              Article: results[i].Article
+              ArticleCode: results[i].ArticleCode,
+              Article: results[i].Article,
+              ContactPerson: results[i].ContactPerson
             });
           }
         }
@@ -192,6 +198,7 @@ export class SalesDetailService {
             SDDate: result["SDDate"],
             RenewalDate: result["RenewalDate"],
             CustomerId: result["CustomerId"],
+            Customer: result["Customer"],
             SIId: result["SIId"],
             ProductId: result["ProductId"],
             LDId: result["LDId"],
@@ -204,8 +211,10 @@ export class SalesDetailService {
             Status: result["Status"],
             IsLocked: result["IsLocked"],
             CreatedByUserId: result["CreatedByUserId"],
+            CreatedByUser: result["CreatedByUser"],
             CreatedDateTime: result["CreatedDateTime"],
             UpdatedByUserId: result["UpdatedByUserId"],
+            UpdatedByUser: result["UpdatedByUser"],
             UpdatedDateTime: result["UpdatedDateTime"],
           };
         }
@@ -240,6 +249,19 @@ export class SalesDetailService {
     );
   }
 
+  public unlockSales(objSales: SalesDeliveryDetailModel): void {
+    this.httpClient.put(this.defaultAPIURLHost + "/api/crm/trn/sales//unlock/" + objSales.Id, JSON.stringify(objSales), this.options).subscribe(
+      response => {
+        let responseResults: string[] = ["success", ""];
+        this.unlockSalesSubject.next(responseResults);
+      },
+      error => {
+        let errorResults: string[] = ["failed", error["error"]];
+        this.unlockSalesSubject.next(errorResults);
+      }
+    );
+  }
+
   public deleteSalesDelivery(id: number) {
     this.httpClient.delete(this.defaultAPIURLHost + "/api/crm/trn/sales/delete" + id, this.options).subscribe(
       response => {
@@ -249,6 +271,55 @@ export class SalesDetailService {
       error => {
         let errorResults: string[] = ["failed", error["error"]];
         this.deleteSalesDeliverySubject.next(errorResults);
+      }
+    );
+  }
+
+  public listActivity(leadId: number): void {
+    let listActivityObservableArray = new ObservableArray();
+    this.listActivitySubject.next(listActivityObservableArray);
+
+    this.httpClient.get(this.defaultAPIURLHost + "/api/crm/trn/activity/sales/list/" + leadId, this.options).subscribe(
+      response => {
+        let results = response;
+
+        if (results["length"] > 0) {
+          for (let i = 0; i <= results["length"] - 1; i++) {
+            listActivityObservableArray.push({
+              Id: results[i].Id,
+              ACNumber: results[i].ACNumber,
+              ACDate: results[i].ACDate,
+              UserId: results[i].UserId,
+              User: results[i].User,
+              FunctionalUserId: results[i].FunctionalUserId,
+              FunctionalUser: results[i].FunctionalUser,
+              TechnicalUserId: results[i].TechnicalUserId,
+              TechnicalUser: results[i].TechnicalUser,
+              CRMStatus: results[i].CRMStatus,
+              Activity: results[i].Activity,
+              StartDate: results[i].StartDate,
+              StartTime: results[i].StartTime,
+              EndDate: results[i].EndDate,
+              EndTime: results[i].EndTime,
+              TransportationCost: results[i].TransportationCost,
+              OnSiteCost: results[i].OnSiteCost,
+              LDId: results[i].LDId,
+              SIId: results[i].SIId,
+              SPId: results[i].SPId,
+              LastActivity: results[i].LastActivity,
+              Status: results[i].Status,
+              IsLocked: results[i].IsLocked,
+              CreatedByUserId: results[i].CreatedByUserId,
+              CreatedByUser: results[i].CreatedByUser,
+              CreatedDateTime: results[i].CreatedDateTime,
+              UpdatedByUserId: results[i].UpdatedByUserId,
+              UpdatedByUser: results[i].UpdatedByUser,
+              UpdatedDateTime: results[i].UpdatedDateTime,
+            });
+          }
+        }
+
+        this.listActivitySubject.next(listActivityObservableArray);
       }
     );
   }

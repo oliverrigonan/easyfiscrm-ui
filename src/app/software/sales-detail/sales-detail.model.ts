@@ -4,6 +4,7 @@ export class SalesDeliveryDetailModel {
     SDDate: Date;
     RenewalDate: Date;
     CustomerId: number;
+    Customer: string;
     SIId: number;
     ProductId: 0;
     LDId: number;
@@ -16,7 +17,9 @@ export class SalesDeliveryDetailModel {
     Status: string;
     IsLocked: boolean;
     CreatedByUserId: number;
+    CreatedByUser: string;
     CreatedDateTime: Date;
     UpdatedByUserId: number;
+    UpdatedByUser: string;
     UpdatedDateTime: Date;
 }
