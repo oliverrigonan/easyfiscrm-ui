@@ -1,4 +1,4 @@
-export class LeadDetailActivityModel {
+export class SalesDetailActivityModel {
     Id: number;
     ACNumber: string;
     ACDate: Date;

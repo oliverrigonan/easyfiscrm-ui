@@ -32,11 +32,14 @@ export class LayoutComponent implements OnInit {
         this.ToolbarTitle = "Lead Detail";
         toolBarImage.setAttribute("src", "../../assets/img/icons/leads.png");
       } else if (this.router.url == "/software/trn/sales") {
-        this.ToolbarTitle = "Sales List";
+        this.ToolbarTitle = "Sales";
         toolBarImage.setAttribute("src", "../../assets/img/icons/sales.png");
       } else if (this.router.url.split('/').slice(0, -1).join('/') == "/software/trn/sales/detail") {
         this.ToolbarTitle = "Sales Detail";
         toolBarImage.setAttribute("src", "../../assets/img/icons/sales.png");
+      } else if (this.router.url == "/software/trn/support") {
+        this.ToolbarTitle = "Support";
+        toolBarImage.setAttribute("src", "../../assets/img/icons/support.png");
       } else {
         // this.ToolbarTitle = "Easyfis CRM";
       }

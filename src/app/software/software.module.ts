@@ -21,9 +21,11 @@ import { WjInputModule } from 'wijmo/wijmo.angular2.input';
 import { ModalModule } from 'ngx-bootstrap/modal';
 import { SalesListComponent } from './sales-list/sales-list.component';
 import { SalesDetailComponent } from './sales-detail/sales-detail.component';
+import { SupportListComponent } from './support-list/support-list.component';
+import { SupportDetailComponent } from './support-detail/support-detail.component';
 
 @NgModule({
-  declarations: [LayoutComponent, DashboardComponent, LeadComponent, LeadDetailComponent, SalesListComponent, SalesDetailComponent],
+  declarations: [LayoutComponent, DashboardComponent, LeadComponent, LeadDetailComponent, SalesListComponent, SalesDetailComponent, SupportListComponent, SupportDetailComponent],
   imports: [
     CommonModule,
     FormsModule,

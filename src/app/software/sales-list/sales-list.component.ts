@@ -28,31 +28,6 @@ export class SalesListComponent implements OnInit {
     private modalService: BsModalService,
   ) { }
 
-  public salesListModel: SalesDeliveryListModel = {
-    Id: 0,
-    SDNumber: "",
-    SDDate: new Date(),
-    RenewalDate: new Date(),
-    CustomerId: 0,
-    Customer: "",
-    SIId: 0,
-    ProductDescription: "",
-    LDId: 0,
-    LDNumber: "",
-    ContactPerson: "",
-    Particulars: "",
-    AssignedToUserId: 0,
-    AssignedToUser: "",
-    Status: "",
-    IsLocked: false,
-    CreatedByUserId: 0,
-    CreatedByUser: "",
-    CreatedDateTime: new Date(),
-    UpdatedByUserId: 0,
-    UpdatedByUser: "",
-    UpdatedDateTime: new Date(),
-  }
-
   public cboShowNumberOfRows: ObservableArray = new ObservableArray();
 
   public salesStartDateFilterData = new Date();

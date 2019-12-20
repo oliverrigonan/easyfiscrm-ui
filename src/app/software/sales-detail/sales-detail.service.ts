@@ -4,6 +4,7 @@ import { AppSettings } from './../../app-settings';
 import { ObservableArray } from 'wijmo/wijmo';
 import { Subject } from 'rxjs';
 import { SalesDeliveryDetailModel } from './sales-detail.model';
+import { SalesDetailActivityModel } from './sales-detail-activitiy.model';
 
 @Injectable({
   providedIn: 'root'
@@ -23,6 +24,9 @@ export class SalesDetailService {
   };
 
   public defaultAPIURLHost: string = this.appSettings.defaultAPIURLHost;
+  
+  public detailSalesSubject = new Subject<SalesDeliveryDetailModel>();
+  public detailSalesObservable = this.detailSalesSubject.asObservable();
 
   public listCustomerSubject = new Subject<ObservableArray>();
   public listCustomerObservable = this.listCustomerSubject.asObservable();
@@ -45,20 +49,23 @@ export class SalesDetailService {
   public deleteSalesDeliverySubject = new Subject<string[]>();
   public deleteSalesDeliveryObservable = this.deleteSalesDeliverySubject.asObservable();
 
-  public detailSalesSubject = new Subject<SalesDeliveryDetailModel>();
-  public detailSalesObservable = this.detailSalesSubject.asObservable();
-
   public saveSalesSubject = new Subject<string[]>();
   public saveSalesObservable = this.saveSalesSubject.asObservable();
 
   public lockSalesSubject = new Subject<string[]>();
   public lockSalesObservable = this.lockSalesSubject.asObservable();
-  
+
   public unlockSalesSubject = new Subject<string[]>();
   public unlockSalesObservable = this.unlockSalesSubject.asObservable();
 
   public listActivitySubject = new Subject<ObservableArray>();
   public listActivityObservable = this.listActivitySubject.asObservable();
+
+  public saveActivitySubject = new Subject<string[]>();
+  public saveActivityObservable = this.saveActivitySubject.asObservable();
+
+  public deleteActivitySubject = new Subject<string[]>();
+  public deleteActivityObservable = this.deleteActivitySubject.asObservable();
 
   public listCustomer(): void {
     let listCustomerObservableArray = new ObservableArray();
@@ -275,11 +282,11 @@ export class SalesDetailService {
     );
   }
 
-  public listActivity(leadId: number): void {
+  public listActivity(salesId: number): void {
     let listActivityObservableArray = new ObservableArray();
     this.listActivitySubject.next(listActivityObservableArray);
 
-    this.httpClient.get(this.defaultAPIURLHost + "/api/crm/trn/activity/sales/list/" + leadId, this.options).subscribe(
+    this.httpClient.get(this.defaultAPIURLHost + "/api/crm/trn/activity/sales/list/" + salesId, this.options).subscribe(
       response => {
         let results = response;
 
@@ -304,7 +311,7 @@ export class SalesDetailService {
               TransportationCost: results[i].TransportationCost,
               OnSiteCost: results[i].OnSiteCost,
               LDId: results[i].LDId,
-              SIId: results[i].SIId,
+              SDId: results[i].SDId,
               SPId: results[i].SPId,
               LastActivity: results[i].LastActivity,
               Status: results[i].Status,
@@ -322,5 +329,93 @@ export class SalesDetailService {
         this.listActivitySubject.next(listActivityObservableArray);
       }
     );
+  }
+
+  public listActivityUsersSubject = new Subject<ObservableArray>();
+  public listActivityUsersObservable = this.listActivityUsersSubject.asObservable();
+
+  public listActivityStatusSubject = new Subject<ObservableArray>();
+  public listActivityStatusObservable = this.listActivityStatusSubject.asObservable();
+
+  public listActivityUsers(): void {
+    let listActivityUsersObservableArray = new ObservableArray();
+    this.listActivityUsersSubject.next(listActivityUsersObservableArray);
+
+    this.httpClient.get(this.defaultAPIURLHost + "/api/crm/trn/activity/users", this.options).subscribe(
+      response => {
+        var results = response;
+        if (results["length"] > 0) {
+          for (var i = 0; i <= results["length"] - 1; i++) {
+            listActivityUsersObservableArray.push({
+              Id: results[i].Id,
+              FullName: results[i].FullName,
+              UserName: results[i].UserName
+            });
+          }
+        }
+
+        this.listActivityUsersSubject.next(listActivityUsersObservableArray);
+      }
+    );
+  }
+
+  public listActivityStatus(): void {
+    let listActivityStatusObservableArray = new ObservableArray();
+    this.listActivityStatusSubject.next(listActivityStatusObservableArray);
+
+    this.httpClient.get(this.defaultAPIURLHost + "/api/crm/trn/activity/status", this.options).subscribe(
+      response => {
+        var results = response;
+        if (results["length"] > 0) {
+          for (var i = 0; i <= results["length"] - 1; i++) {
+            listActivityStatusObservableArray.push({
+              Id: results[i].Id,
+              Status: results[i].Status
+            });
+          }
+        }
+
+        this.listActivityStatusSubject.next(listActivityStatusObservableArray);
+      }
+    );
+  }
+
+  public saveActivity(objActivity: SalesDetailActivityModel): void {
+    if (objActivity.Id == 0) {
+      this.httpClient.post(this.defaultAPIURLHost + "/api/crm/trn/activity/add", JSON.stringify(objActivity), this.options).subscribe(
+        response => {
+          let responseResults: string[] = ["success", ""];
+          this.saveActivitySubject.next(responseResults);
+        },
+        error => {
+          let errorResults: string[] = ["failed", error["error"]];
+          this.saveActivitySubject.next(errorResults);
+        }
+      )
+    } else {
+      this.httpClient.put(this.defaultAPIURLHost + "/api/crm/trn/activity/update/" + objActivity.Id, JSON.stringify(objActivity), this.options).subscribe(
+        response => {
+          let responseResults: string[] = ["success", ""];
+          this.saveActivitySubject.next(responseResults);
+        },
+        error => {
+          let errorResults: string[] = ["failed", error["error"]];
+          this.saveActivitySubject.next(errorResults);
+        }
+      )
+    }
+  }
+
+  public deleteActivity(id: number): void {
+    this.httpClient.delete(this.defaultAPIURLHost + "/api/crm/trn/activity/delete/" + id, this.options).subscribe(
+      response => {
+        let responseResults: string[] = ["success", ""];
+        this.deleteActivitySubject.next(responseResults);
+      },
+      error => {
+        let errorResults: string[] = ["failed", error["error"]];
+        this.deleteActivitySubject.next(errorResults);
+      }
+    )
   }
 }
