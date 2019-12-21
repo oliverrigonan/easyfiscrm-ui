@@ -94,7 +94,6 @@ export class SalesListService {
             });
           }
         }
-
         this.listSalesSubject.next(listSalesObservableArray);
       }
     );

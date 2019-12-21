@@ -179,9 +179,9 @@ export class SupportListComponent implements OnInit {
     );
   }
 
-  public btnAddSalesClick() {
-    let btnAddSales: Element = document.getElementById("btnAddSales");
-    (<HTMLButtonElement>btnAddSales).disabled = true;
+  public btnAddSupportClick(): void {
+    let btnAddSupport: Element = document.getElementById("btnAddSupport");
+    (<HTMLButtonElement>btnAddSupport).disabled = true;
 
     this.supportListService.AddSupport();
     this.addSupportSub = this.supportListService.addSupportObservable.subscribe(
@@ -192,7 +192,7 @@ export class SupportListComponent implements OnInit {
         }
         else if (data[0] == "failed") {
           this.toastr.error(data[1], "Error");
-          (<HTMLButtonElement>btnAddSales).disabled = false;
+          (<HTMLButtonElement>btnAddSupport).disabled = false;
         }
         if (this.addSupportSub != null) this.addSupportSub.unsubscribe();
       }

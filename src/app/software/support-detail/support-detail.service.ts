@@ -22,6 +22,18 @@ export class SupportDetailService {
     })
   };
 
+  public listCustomerSubject = new Subject<ObservableArray>();
+  public listCustomerObservable = this.listCustomerSubject.asObservable();
+
+  public listSalesDeliverySubject = new Subject<ObservableArray>();
+  public listSalesObservable = this.listSalesDeliverySubject.asObservable();
+
+  public listSalesAssignedToUsersSubject = new Subject<ObservableArray>();
+  public listLeadAssignedToUsersObservable = this.listSalesAssignedToUsersSubject.asObservable();
+
+  public listSalesStatusSubject = new Subject<ObservableArray>();
+  public listSalesStatusObservable = this.listSalesStatusSubject.asObservable();
+
   public defaultAPIURLHost: string = this.appSettings.defaultAPIURLHost;
 
   public detailSupportSubject = new Subject<SupportModel>();
@@ -35,6 +47,90 @@ export class SupportDetailService {
 
   public unlockSupportSubject = new Subject<string[]>();
   public unlockSupportObservable = this.unlockSupportSubject.asObservable();
+
+  public listCustomer(): void {
+    let listCustomerObservableArray = new ObservableArray();
+    this.listCustomerSubject.next(listCustomerObservableArray);
+
+    this.httpClient.get(this.defaultAPIURLHost + "/api/crm/trn/sales/list/customer", this.options).subscribe(
+      response => {
+        var results = response;
+        console.log(results);
+        if (results["length"] > 0) {
+          for (var i = 0; i <= results["length"] - 1; i++) {
+            listCustomerObservableArray.push({
+              Id: results[i].Id,
+              ArticleCode: results[i].ArticleCode,
+              Article: results[i].Article,
+              ContactPerson: results[i].ContactPerson
+            });
+          }
+        }
+        this.listCustomerSubject.next(listCustomerObservableArray);
+      }
+    );
+  }
+
+  public listSalesDelivery(startDate: string, endDate: string, status: string): void {
+    let listSalesObservableArray = new ObservableArray();
+    this.listSalesDeliverySubject.next(listSalesObservableArray);
+
+    this.httpClient.get(this.defaultAPIURLHost + "/api/crm/trn/sales/list/" + startDate + "/" + endDate + "/" + status, this.options).subscribe(
+      response => {
+        var results = response;
+        if (results["length"] > 0) {
+          for (var i = 0; i <= results["length"] - 1; i++) {
+            listSalesObservableArray.push({
+              Id: results[i].Id,
+              SDNumber: results[i].SDNumber,
+            });
+          }
+        }
+        this.listSalesDeliverySubject.next(listSalesObservableArray);
+      }
+    );
+  }
+
+  public listAssignedUsers(): void {
+    let listAssignedToUsersObservableArray = new ObservableArray();
+    this.listSalesAssignedToUsersSubject.next(listAssignedToUsersObservableArray);
+
+    this.httpClient.get(this.defaultAPIURLHost + "/api/crm/trn/sales/list/users", this.options).subscribe(
+      response => {
+        var results = response;
+        if (results["length"] > 0) {
+          for (var i = 0; i <= results["length"] - 1; i++) {
+            listAssignedToUsersObservableArray.push({
+              Id: results[i].Id,
+              UserName: results[i].UserName,
+              FullName: results[i].FullName
+            });
+          }
+        }
+        this.listSalesAssignedToUsersSubject.next(listAssignedToUsersObservableArray);
+      }
+    );
+  }
+
+  public listSalesStatus(): void {
+    let listSalesStatusObservableArray = new ObservableArray();
+    this.listSalesStatusSubject.next(listSalesStatusObservableArray);
+
+    this.httpClient.get(this.defaultAPIURLHost + "/api/crm/trn/sales/list/status", this.options).subscribe(
+      response => {
+        var results = response;
+        if (results["length"] > 0) {
+          for (var i = 0; i <= results["length"] - 1; i++) {
+            listSalesStatusObservableArray.push({
+              Id: results[i].Id,
+              Status: results[i].Status
+            });
+          }
+        }
+        this.listSalesStatusSubject.next(listSalesStatusObservableArray);
+      }
+    );
+  }
 
   public detailSales(id: number) {
     let supportDetailModel: SupportModel;
