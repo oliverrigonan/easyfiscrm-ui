@@ -232,4 +232,8 @@ export class SupportListComponent implements OnInit {
       }
     );
   }
+
+  ngOnDestroy(){
+    if (this.listSupportSub != null) this.listSupportSub.unsubscribe();
+  }
 }

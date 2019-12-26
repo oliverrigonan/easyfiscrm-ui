@@ -334,8 +334,6 @@ export class SalesDetailComponent implements OnInit {
         });
       }, 100);
     }
-
-
   }
 
   public btnPickCustomerClick(): void {
@@ -743,7 +741,7 @@ export class SalesDetailComponent implements OnInit {
     let btnSaveActivityClickCloseModal: Element = document.getElementById("btnSaveActivityClickCloseModal");
     (<HTMLButtonElement>btnSaveActivity).disabled = true;
     (<HTMLButtonElement>btnSaveActivityClickCloseModal).disabled = true;
-console.log(this.salesDetailActivityModel);
+    
     this.salesDetailService.saveActivity(this.salesDetailActivityModel);
     this.saveActivitySub = this.salesDetailService.saveActivityObservable.subscribe(
       data => {
