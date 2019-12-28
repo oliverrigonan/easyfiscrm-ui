@@ -72,21 +72,21 @@ export class SupportDetailService {
   }
 
   public listSalesDelivery(customerId: number): void {
-    let listSalesObservableArray = new ObservableArray();
-    this.listSalesDeliverySubject.next(listSalesObservableArray);
+    let listSupportObservableArray = new ObservableArray();
+    this.listSalesDeliverySubject.next(listSupportObservableArray);
 
     this.httpClient.get(this.defaultAPIURLHost + "/api/crm/trn/support/list/sales/delivery/" + customerId, this.options).subscribe(
       response => {
         var results = response;
         if (results["length"] > 0) {
           for (var i = 0; i <= results["length"] - 1; i++) {
-            listSalesObservableArray.push({
+            listSupportObservableArray.push({
               Id: results[i].Id,
               SDNumber: results[i].SDNumber,
             });
           }
         }
-        this.listSalesDeliverySubject.next(listSalesObservableArray);
+        this.listSalesDeliverySubject.next(listSupportObservableArray);
       }
     );
   }
@@ -95,7 +95,7 @@ export class SupportDetailService {
     let listAssignedToUsersObservableArray = new ObservableArray();
     this.listSupportAssignedToUsersSubject.next(listAssignedToUsersObservableArray);
 
-    this.httpClient.get(this.defaultAPIURLHost + "/api/crm/trn/sales/list/users", this.options).subscribe(
+    this.httpClient.get(this.defaultAPIURLHost + "/api/crm/trn/support/list/users", this.options).subscribe(
       response => {
         var results = response;
         if (results["length"] > 0) {
@@ -113,21 +113,21 @@ export class SupportDetailService {
   }
 
   public listSupportStatus(): void {
-    let listSalesStatusObservableArray = new ObservableArray();
-    this.listSupportStatusSubject.next(listSalesStatusObservableArray);
+    let listSupportStatusObservableArray = new ObservableArray();
+    this.listSupportStatusSubject.next(listSupportStatusObservableArray);
 
-    this.httpClient.get(this.defaultAPIURLHost + "/api/crm/trn/sales/list/status", this.options).subscribe(
+    this.httpClient.get(this.defaultAPIURLHost + "/api/crm/trn/support/list/status", this.options).subscribe(
       response => {
         var results = response;
         if (results["length"] > 0) {
           for (var i = 0; i <= results["length"] - 1; i++) {
-            listSalesStatusObservableArray.push({
+            listSupportStatusObservableArray.push({
               Id: results[i].Id,
               Status: results[i].Status
             });
           }
         }
-        this.listSupportStatusSubject.next(listSalesStatusObservableArray);
+        this.listSupportStatusSubject.next(listSupportStatusObservableArray);
       }
     );
   }
@@ -145,7 +145,7 @@ export class SupportDetailService {
             SPNumber: result["SPNumber"],
             SPDate: result["SPDate"],
             CustomerId: result["CustomerId"],
-            Customer: result["ICustomer"],
+            Customer: result["Customer"],
             SDId: result["SDId"],
             SDNumber: result["SDNumber"],
             ContactPerson: result["ContactPerson"],
@@ -170,8 +170,8 @@ export class SupportDetailService {
     );
   }
 
-  public supportSales(objSales: SupportModel) {
-    this.httpClient.put(this.defaultAPIURLHost + "/api/crm/trn/sales/save/" + objSales.Id, JSON.stringify(objSales), this.options).subscribe(
+  public saveSupport(objSupport: SupportModel) {
+    this.httpClient.put(this.defaultAPIURLHost + "/api/crm/trn/support/save/" + objSupport.Id, JSON.stringify(objSupport), this.options).subscribe(
       response => {
         let responseResults: string[] = ["success", ""];
         this.saveSupportSubject.next(responseResults);
@@ -183,8 +183,8 @@ export class SupportDetailService {
     );
   }
 
-  public lockSales(objSales: SupportModel) {
-    this.httpClient.put(this.defaultAPIURLHost + "/api/crm/trn/sales/lock/" + objSales.Id, JSON.stringify(objSales), this.options).subscribe(
+  public lockSupport(objSupport: SupportModel) {
+    this.httpClient.put(this.defaultAPIURLHost + "/api/crm/trn/support/lock/" + objSupport.Id, JSON.stringify(objSupport), this.options).subscribe(
       response => {
         let responseResults: string[] = ["success", ""];
         this.lockSupportSubject.next(responseResults);
@@ -196,8 +196,8 @@ export class SupportDetailService {
     );
   }
 
-  public unlockSales(objSales: SupportModel): void {
-    this.httpClient.put(this.defaultAPIURLHost + "/api/crm/trn/sales//unlock/" + objSales.Id, JSON.stringify(objSales), this.options).subscribe(
+  public unlockSupport(objSupport: SupportModel): void {
+    this.httpClient.put(this.defaultAPIURLHost + "/api/crm/trn/support/unlock/" + objSupport.Id, JSON.stringify(objSupport), this.options).subscribe(
       response => {
         let responseResults: string[] = ["success", ""];
         this.unlockSupportSubject.next(responseResults);

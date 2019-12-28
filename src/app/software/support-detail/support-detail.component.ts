@@ -52,7 +52,13 @@ export class SupportDetailComponent implements OnInit {
   public cboSalesDeliverySub: any;
   public cboSalesDeliveryObservable: ObservableArray = new ObservableArray();
 
+  public saveSupportSub: any;
+  public lockSupportSub: any;
+  public unlockSupportSub: any;
+
   public isLocked: Boolean = false;
+
+  public isActivityTabHidden: Boolean = false;
 
   public supportModel: SupportModel = {
     Id: 0,
@@ -150,9 +156,6 @@ export class SupportDetailComponent implements OnInit {
         }
 
         this.cboSalesDeliveryObservable = salesInvoiceObservableArray;
-        setTimeout(() => {
-          this.createCboAssignedToUser();
-        }, 100);
         if (this.cboSalesDeliverySub != null) this.cboSalesDeliverySub.unsubscribe();
       }
     );
@@ -196,6 +199,9 @@ export class SupportDetailComponent implements OnInit {
         }
 
         this.cboSupportStatusObservable = statusObservableArray;
+        setTimeout(() => {
+          this.detailSupport();
+        }, 100);
         if (this.cboSupportStatusSub != null) this.cboSupportStatusSub.unsubscribe();
       }
     );
@@ -209,25 +215,32 @@ export class SupportDetailComponent implements OnInit {
     this.detailSupportSub = this.supportDetailService.detailSupportObservable.subscribe(
       data => {
         this.supportModel.Id = data.Id;
-        
+        this.supportModel.SPNumber = data.SPNumber;
+        this.supportModel.CustomerId = data.CustomerId;
+        this.supportModel.Customer = data.Customer;
+        this.supportModel.SDId = data.SDId;
+        this.supportModel.ContactPerson = data.ContactPerson;
+        this.supportModel.ContactPosition = data.ContactPosition;
+        this.supportModel.ContactEmail = data.ContactEmail;
+        this.supportModel.ContactPhoneNumber = data.ContactPhoneNumber;
+        this.supportModel.Issue = data.Issue;
+        this.supportModel.AssignedToUserId = data.AssignedToUserId;
+        this.supportModel.AssignedToUserId = data.AssignedToUserId;
+        this.supportModel.Status = data.Status;
+        this.supportModel.IsLocked = data.IsLocked;
+        this.supportModel.CreatedByUserId = data.CreatedByUserId;
+        this.supportModel.CreatedByUser = data.CreatedByUser;
+        this.supportModel.CreatedDateTime = data.CreatedDateTime;
+        this.supportModel.UpdatedByUserId = data.UpdatedByUserId;
+        this.supportModel.UpdatedByUser = data.UpdatedByUser;
+        this.supportModel.UpdatedDateTime = data.UpdatedDateTime;
 
         let btnSaveSupport: Element = document.getElementById("btnSaveSupport");
         let btnLockSupport: Element = document.getElementById("btnLockSupport");
         let btnUnlockSupport: Element = document.getElementById("btnUnlockSupport");
 
         this.selectedCustomer = data.Customer;
-        this.selectedCustomer = data.Customer;
-        this.selectedCustomer = data.Customer;
-        this.selectedCustomer = data.Customer;
-        this.selectedCustomer = data.Customer;
-        this.selectedCustomer = data.Customer;
-        this.selectedCustomer = data.Customer;
-        this.selectedCustomer = data.Customer;
-        this.selectedCustomer = data.Customer;
-        this.selectedCustomer = data.Customer;
-        this.selectedCustomer = data.Customer;
-
-
+        
         (<HTMLButtonElement>btnSaveSupport).disabled = false;
         (<HTMLButtonElement>btnLockSupport).disabled = false;
         (<HTMLButtonElement>btnUnlockSupport).disabled = true;
@@ -239,16 +252,136 @@ export class SupportDetailComponent implements OnInit {
           (<HTMLButtonElement>btnLockSupport).disabled = true;
           (<HTMLButtonElement>btnUnlockSupport).disabled = false;
 
-          // this.isActivityTabHidden = false;
+          this.isActivityTabHidden = false;
         }
-        // setTimeout(() => {
-        //   this.createCboSalesInvoice(this.salesDeliveryDetailModel.CustomerId);
-        // }, 100);
+        setTimeout(() => {
+          this.createCboSalesDelivery(this.supportModel.CustomerId);
+        }, 100);
         // this.isLoadingSpinnerHidden = true;
         // this.isContentHidden = false;
 
         if (this.detailSupportSub != null) this.detailSupportSub.unsubscribe();
       }
     );
+  }
+
+  public btnSaveSupportClick(): void {
+    let btnSaveSupport: Element = document.getElementById("btnSaveSupport");
+    let btnLockSupport: Element = document.getElementById("btnLockSupport");
+    let btnUnlockSupport: Element = document.getElementById("btnUnlockSupport");
+    (<HTMLButtonElement>btnSaveSupport).disabled = true;
+    (<HTMLButtonElement>btnLockSupport).disabled = true;
+    (<HTMLButtonElement>btnUnlockSupport).disabled = true;
+
+    this.supportDetailService.saveSupport(this.supportModel);
+    this.saveSupportSub = this.supportDetailService.saveSupportObservable.subscribe(
+      data => {
+        if (data[0] == "success") {
+          this.toastr.success("Support was successfully saved.", "Success");
+
+          setTimeout(() => {
+            (<HTMLButtonElement>btnSaveSupport).disabled = false;
+            (<HTMLButtonElement>btnLockSupport).disabled = false;
+            (<HTMLButtonElement>btnUnlockSupport).disabled = true;
+          }, 500);
+        } else if (data[0] == "failed") {
+          this.toastr.error(data[1], "Error");
+
+          (<HTMLButtonElement>btnSaveSupport).disabled = false;
+          (<HTMLButtonElement>btnLockSupport).disabled = false;
+          (<HTMLButtonElement>btnUnlockSupport).disabled = true;
+        }
+
+        if (this.saveSupportSub != null) this.saveSupportSub.unsubscribe();
+      }
+    );
+  }
+
+  public btnLockSupportClick(): void {
+    let btnSaveSupport: Element = document.getElementById("btnSaveSupport");
+    let btnLockSupport: Element = document.getElementById("btnLockSupport");
+    let btnUnlockSupport: Element = document.getElementById("btnUnlockSupport");
+    (<HTMLButtonElement>btnSaveSupport).disabled = true;
+    (<HTMLButtonElement>btnLockSupport).disabled = true;
+    (<HTMLButtonElement>btnUnlockSupport).disabled = true;
+
+    this.supportDetailService.lockSupport(this.supportModel);
+    this.lockSupportSub = this.supportDetailService.lockSupportObservable.subscribe(
+      data => {
+        if (data[0] == "success") {
+          this.toastr.success("Support was successfully locked.", "Success");
+
+          setTimeout(() => {
+            this.isLocked = true;
+
+            (<HTMLButtonElement>btnSaveSupport).disabled = true;
+            (<HTMLButtonElement>btnLockSupport).disabled = true;
+            (<HTMLButtonElement>btnUnlockSupport).disabled = false;
+
+            this.isActivityTabHidden = false;
+          }, 500);
+        } else if (data[0] == "failed") {
+          this.toastr.error(data[1], "Error");
+
+          (<HTMLButtonElement>btnSaveSupport).disabled = false;
+          (<HTMLButtonElement>btnLockSupport).disabled = false;
+          (<HTMLButtonElement>btnUnlockSupport).disabled = true;
+        }
+
+        if (this.lockSupportSub != null) this.lockSupportSub.unsubscribe();
+      }
+    );
+  }
+
+  public btnUnlockSupportClick(): void {
+    this.isActivityTabHidden = true;
+
+    let btnSaveSupport: Element = document.getElementById("btnSaveSupport");
+    let btnLockSupport: Element = document.getElementById("btnLockSupport");
+    let btnUnlockSupport: Element = document.getElementById("btnUnlockSupport");
+    (<HTMLButtonElement>btnSaveSupport).disabled = true;
+    (<HTMLButtonElement>btnLockSupport).disabled = true;
+    (<HTMLButtonElement>btnUnlockSupport).disabled = true;
+
+    this.supportDetailService.unlockSupport(this.supportModel);
+    this.unlockSupportSub = this.supportDetailService.unlockSupportObservable.subscribe(
+      data => {
+        if (data[0] == "success") {
+          this.toastr.success("Support was successfully unlocked.", "Success");
+
+          setTimeout(() => {
+            this.isLocked = false;
+
+            (<HTMLButtonElement>btnSaveSupport).disabled = false;
+            (<HTMLButtonElement>btnLockSupport).disabled = false;
+            (<HTMLButtonElement>btnUnlockSupport).disabled = true;
+
+            this.isActivityTabHidden = true;
+          }, 500);
+        } else if (data[0] == "failed") {
+          this.toastr.error(data[1], "Error");
+
+          (<HTMLButtonElement>btnSaveSupport).disabled = true;
+          (<HTMLButtonElement>btnLockSupport).disabled = true;
+          (<HTMLButtonElement>btnUnlockSupport).disabled = false;
+
+          this.isActivityTabHidden = false;
+        }
+
+        if (this.unlockSupportSub != null) this.unlockSupportSub.unsubscribe();
+      }
+    );
+  }
+
+  ngOnDestry(){
+    if (this.cboCustomerSub != null) this.cboCustomerSub.unsubscribe();
+    if (this.detailSupportSub != null) this.detailSupportSub.unsubscribe();
+    if (this.cboSupportStatusSub != null) this.cboSupportStatusSub.unsubscribe();
+    if (this.cboAssignedToUserSub != null) this.cboAssignedToUserSub.unsubscribe();
+    if (this.cboSalesDeliverySub != null) this.cboSalesDeliverySub.unsubscribe();
+    if (this.cboCustomerSub != null) this.cboCustomerSub.unsubscribe();
+    if (this.saveSupportSub != null) this.saveSupportSub.unsubscribe();
+    if (this.lockSupportSub != null) this.lockSupportSub.unsubscribe();
+    if (this.unlockSupportSub != null) this.unlockSupportSub.unsubscribe();
   }
 }

@@ -14,7 +14,7 @@
   </ul>
 
   <div class="tab-content" id="myTabContent">
-    <div class="tab-pane fade show active" id="#support" role="tabpanel" aria-labelledby="support-tab">
+    <div class="tab-pane fade show active" id="support" role="tabpanel" aria-labelledby="support-tab">
       <div class="card card-default">
         <div class="card-header">
           <table border="0" style="width: 100%; border: none;">
@@ -52,7 +52,7 @@
                 <br /><br />
                 <label for="" class="col-sm-4 col-form-label form-group-label">SP Date</label>
                 <div class="col-sm-8">
-                  <wj-input-date #cboShopOrderDate [disabled]="isLocked" [(ngModel)]="supportModel.SPDate"
+                  <wj-input-date #cboSPDate [disabled]="isLocked" [(ngModel)]="supportModel.SPDate"
                     format="MMMM dd, yyyy" style="width: 100%; padding: 3px;">
                   </wj-input-date>
                 </div>
@@ -108,7 +108,7 @@
                 <label for="" class="col-sm-4 col-form-label form-group-label">Issue</label>
                 <div class="col-sm-8">
                   <textarea type="text" class="form-control" style="resize: none" [disabled]="isLocked"
-                    [(ngModel)]="supportModel.Particulars" placeholder="Remarks..." rows="5">
+                    [(ngModel)]="supportModel.Issue" placeholder="Remarks..." rows="5">
                   </textarea>
                 </div>
                 <br /><br /><br /><br /><br /><br />

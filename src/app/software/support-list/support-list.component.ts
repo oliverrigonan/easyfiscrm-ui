@@ -233,6 +233,11 @@ export class SupportListComponent implements OnInit {
     );
   }
 
+  public btnEditSupportClick(): void {
+    let currentSupport = this.listSupportCollectionView.currentItem;
+    this.router.navigate(['/software/trn/support/detail/', currentSupport.Id]);
+  }
+  
   ngOnDestroy(){
     if (this.listSupportSub != null) this.listSupportSub.unsubscribe();
   }
