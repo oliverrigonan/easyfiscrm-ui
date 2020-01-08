@@ -12,6 +12,9 @@ import { SalesListComponent } from './sales-list/sales-list.component';
 import { SalesDetailComponent } from './sales-detail/sales-detail.component';
 import { SupportListComponent } from './support-list/support-list.component';
 import { SupportDetailComponent } from './support-detail/support-detail.component';
+import { LeadReportComponent } from './report/lead-report/lead-report.component';
+import { SalesdeliveryReportComponent } from './report/salesdelivery-report/salesdelivery-report.component';
+import { SupportReportComponent } from './report/support-report/support-report.component';
 
 const routes: Routes = [
   {
@@ -25,6 +28,9 @@ const routes: Routes = [
       { path: 'trn/sales/detail/:id', component: SalesDetailComponent, canActivate: [SoftwareRouterActivate] },
       { path: 'trn/support', component: SupportListComponent, canActivate: [SoftwareRouterActivate] },
       { path: 'trn/support/detail/:id', component: SupportDetailComponent, canActivate: [SoftwareRouterActivate] },
+      { path: 'report/lead', component: LeadReportComponent, canActivate: [SoftwareRouterActivate] },
+      { path: 'report/sales/delivery', component: SalesdeliveryReportComponent, canActivate: [SoftwareRouterActivate] },
+      { path: 'report/support', component: SupportReportComponent, canActivate: [SoftwareRouterActivate] }
     ]
   }
 ];

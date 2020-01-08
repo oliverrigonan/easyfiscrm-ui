@@ -1,6 +1,7 @@
 import { Component, OnInit, ChangeDetectorRef, ViewChild } from '@angular/core';
 import { Router } from '@angular/router';
 import { MatSidenav } from '@angular/material';
+import { MatMenuModule } from '@angular/material/menu';
 
 @Component({
   selector: 'app-layout',
@@ -32,13 +33,16 @@ export class LayoutComponent implements OnInit {
         this.ToolbarTitle = "Lead Detail";
         toolBarImage.setAttribute("src", "../../assets/img/icons/leads.png");
       } else if (this.router.url == "/software/trn/sales") {
-        this.ToolbarTitle = "Sales";
-        toolBarImage.setAttribute("src", "../../assets/img/icons/sales.png");
+        this.ToolbarTitle = "Sales Delivery";
+        toolBarImage.setAttribute("src", "../../assets/img/icons/delivery.png");
       } else if (this.router.url.split('/').slice(0, -1).join('/') == "/software/trn/sales/detail") {
-        this.ToolbarTitle = "Sales Detail";
-        toolBarImage.setAttribute("src", "../../assets/img/icons/sales.png");
+        this.ToolbarTitle = "Sales Delivery Detail";
+        toolBarImage.setAttribute("src", "../../assets/img/icons/delivery.png");
       } else if (this.router.url == "/software/trn/support") {
         this.ToolbarTitle = "Support";
+        toolBarImage.setAttribute("src", "../../assets/img/icons/support.png");
+      } else if (this.router.url.split('/').slice(0, -1).join('/') == "/software/trn/support/detail") {
+        this.ToolbarTitle = "Support Detail";
         toolBarImage.setAttribute("src", "../../assets/img/icons/support.png");
       } else {
         // this.ToolbarTitle = "Easyfis CRM";

@@ -35,19 +35,38 @@
                 <img src="../../../assets/img/icons/leads.png" height="30" alt=""> &nbsp; Leads
             </a>
             <a class="list-group-item list-group-item-action" id="list-home-list" routerLink="/software/trn/sales">
-                <img src="../../../assets/img/icons/sales.png" height="30" alt=""> &nbsp; Sales
+                <img src="../../../assets/img/icons/delivery.png" height="30" alt=""> &nbsp; Sales Delivery
             </a>
             <a class="list-group-item list-group-item-action" id="list-home-list" routerLink="/software/trn/support">
                 <img src="../../../assets/img/icons/support.png" height="30" alt=""> &nbsp; Support
             </a>
+            <!-- <a class="list-group-item list-group-item-action" id="list-home-list" routerLink="/software/report">
+                <img src="../../../assets/img/icons/report.png" height="30" alt=""> &nbsp; Report
+            </a> -->
+
+            <button mat-button [matMenuTriggerFor]="menu" class="list-group-item list-group-item-action">
+                <img src="../../../assets/img/icons/report.png" height="30" alt="" > &nbsp; Report
+            </button>
+            <mat-menu #menu="matMenu" xPosition="after" width="1000">
+                <button class="btn-submenu" mat-menu-item routerLink="/software/report/lead"> 
+                    <img src="../../../assets/img/icons/report.png" height="30" alt="" > &nbsp; Lead Report 
+                </button>
+                <button class="btn-submenu" mat-menu-item routerLink="report/sales/delivery">
+                    <img src="../../../assets/img/icons/report.png" height="30" alt=""> &nbsp; Sales Delivery Report &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                </button>
+                <button class="btn-submenu" mat-menu-item routerLink="report/support">
+                    <img src="../../../assets/img/icons/report.png" height="30" alt=""> &nbsp; Support Report
+                </button>
+            </mat-menu>
+            
         </div>
     </mat-drawer>
     <mat-drawer-content>
         <div class="container-fluid content-header">
-            <!-- <button class="btn btn-info" (click)="openSideBar()">
+            <button class="btn btn-info" (click)="openSideBar()">
                 <i class="fa fa-bars fa-fw"></i>
             </button>
-            &nbsp; -->
+            &nbsp;
             <img id="toolBarImage" height="25" />
             &nbsp;
             <span class="toolbar-title-style">

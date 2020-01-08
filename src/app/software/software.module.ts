@@ -13,6 +13,7 @@ import { LeadDetailComponent } from './lead-detail/lead-detail.component';
 import { MatSidenavModule } from '@angular/material/sidenav';
 import { MatProgressBarModule } from '@angular/material/progress-bar';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
+import { MatMenuModule } from '@angular/material/menu';
 
 import { WjGridFilterModule } from 'wijmo/wijmo.angular2.grid.filter';
 import { WjGridModule } from 'wijmo/wijmo.angular2.grid';
@@ -23,9 +24,12 @@ import { SalesListComponent } from './sales-list/sales-list.component';
 import { SalesDetailComponent } from './sales-detail/sales-detail.component';
 import { SupportListComponent } from './support-list/support-list.component';
 import { SupportDetailComponent } from './support-detail/support-detail.component';
+import { LeadReportComponent } from './report/lead-report/lead-report.component';
+import { SalesdeliveryReportComponent } from './report/salesdelivery-report/salesdelivery-report.component';
+import { SupportReportComponent } from './report/support-report/support-report.component';
 
 @NgModule({
-  declarations: [LayoutComponent, DashboardComponent, LeadComponent, LeadDetailComponent, SalesListComponent, SalesDetailComponent, SupportListComponent, SupportDetailComponent],
+  declarations: [LayoutComponent, DashboardComponent, LeadComponent, LeadDetailComponent, SalesListComponent, SalesDetailComponent, SupportListComponent, SupportDetailComponent, LeadReportComponent, SalesdeliveryReportComponent, SupportReportComponent],
   imports: [
     CommonModule,
     FormsModule,
@@ -34,6 +38,7 @@ import { SupportDetailComponent } from './support-detail/support-detail.componen
     MatSidenavModule,
     MatProgressBarModule,
     MatProgressSpinnerModule,
+    MatMenuModule,
     WjGridFilterModule,
     WjGridModule,
     WjInputModule,

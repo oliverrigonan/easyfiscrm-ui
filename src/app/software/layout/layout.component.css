@@ -56,3 +56,9 @@
 .mat-drawer-container {
     background-color: white !important;
 }
+
+
+.btn-submenu:hover {
+    background: #7a0400;
+    border: none;
+} 

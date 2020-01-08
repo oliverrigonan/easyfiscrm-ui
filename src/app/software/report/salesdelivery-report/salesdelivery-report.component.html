@@ -1,0 +1,151 @@
+<div class="card card-default">
+
+  <div class="card-header">
+    <table border="0" style="width: 100%; border: none;">
+      <tr>
+        <td>
+          <div class="input-group">
+            <div class="input-group-prepend">
+              <div class="input-group-text">
+                <b>
+                  <i class="fa fa-table"></i>
+                </b>
+              </div>
+            </div>
+            <wj-combo-box #cboNumberOfRows [itemsSource]="cboShowNumberOfRows" [isEditable]="false" [isRequired]="true"
+              [displayMemberPath]="'rowString'" [selectedValuePath]="'rowNumber'"
+              (selectedIndexChanged)="cboShowNumberOfRowsOnSelectedIndexChanged(cboNumberOfRows.selectedValue)"
+              style="width: 140px;">
+            </wj-combo-box>
+          </div>
+        </td>
+        <td style="text-align: right;">
+          <button class="btn btn-primary" (click)="btnCSVReportClick()" style="margin-right: 5px;" id="btnPrint">
+            <i class="fa fa-file-excel-o fa-fw"></i> CSV
+          </button>
+          <button class="btn btn-danger" routerLink="/software/sys/dashboard" id="btnCloseActivity">
+            <i class="fa fa-close fa-fw"></i> Close
+          </button>
+        </td>
+      </tr>
+    </table>
+  </div>
+
+  <div class="card-body">
+    <div class="row">
+      <div class="col-md-8">
+        <table border="0" style="width: 100%; border: none; margin-top: -15px;">
+          <tr>
+            <td>
+              <div class="form-group">
+                <span class="badge badge-info" style="margin-bottom: 5px;"><i class="fa fa-calendar fa-fw"></i>
+                  Start Date</span>
+                <wj-input-date #cboSalesStartDateFilter [(ngModel)]="salesStartDateFilterData"
+                  [ngModelOptions]="{standalone: true}" (textChanged)="cboStartDateTextChanged()" format="MMMM dd, yyyy"
+                  style="width: 100%;">
+                </wj-input-date>
+              </div>
+            </td>
+            <td>
+              <div class="form-group">
+                <span class="badge badge-info" style="margin-bottom: 5px;"><i class="fa fa-calendar fa-fw"></i>
+                  End Date</span>
+                <wj-input-date #cboSalesEndDateFilter [(ngModel)]="salesEndDateFilterData"
+                  [ngModelOptions]="{standalone: true}" (textChanged)="cboEndDateTextChanged()" format="MMMM dd, yyyy"
+                  style="width: 100%;">
+                </wj-input-date>
+              </div>
+            </td>
+            <td>
+              <div class="form-group">
+                <span class="badge badge-info" style="margin-bottom: 5px;"><i class="fa fa-question-circle fa-fw"></i>
+                  Status</span>
+                <wj-combo-box #cboSalesStatus [itemsSource]="cboSalesStatusObservableArray" [isEditable]="false"
+                  [isRequired]="true" [displayMemberPath]="'Status'" [selectedValuePath]="'Status'"
+                  (selectedIndexChanged)="cboSalesStatusSelectedIndexChanged(cboSalesStatus.selectedValue)"
+                  style="width: 100%;">
+                </wj-combo-box>
+              </div>
+            </td>
+          </tr>
+        </table>
+      </div>
+      <div class="col-md-4"></div>
+    </div>
+    <mat-progress-bar [hidden]="isProgressBarHidden" [color]="'primary'" [mode]="'indeterminate'"></mat-progress-bar>
+    <wj-flex-grid #listSalesFlexGrid [itemsSource]="listSalesCollectionView" [selectionMode]="3" [frozenColumns]="2">
+      <wj-flex-grid-filter></wj-flex-grid-filter>
+      <wj-flex-grid-column *ngIf="false" [header]="'Id'" [binding]="'Id'" [isReadOnly]="true" [width]="150">
+      </wj-flex-grid-column>
+      <wj-flex-grid-column [header]="'SD No.'" [binding]="'SDNumber'" [isReadOnly]="true" [width]="100">
+      </wj-flex-grid-column>
+      <wj-flex-grid-column [header]="'Date'" [binding]="'SDDate'" [isReadOnly]="true" [width]="100">
+      </wj-flex-grid-column>
+      <wj-flex-grid-column [header]="'Renewal Date'" [binding]="'RenewalDate'" [isReadOnly]="true" [width]="100">
+      </wj-flex-grid-column>
+      <wj-flex-grid-column *ngIf="false" [header]="'CustomerId'" [binding]="'CustomerId'" [isReadOnly]="true"
+        [width]="150">
+      </wj-flex-grid-column>
+      <wj-flex-grid-column [header]="'Customer'" [binding]="'Customer'" [isReadOnly]="true" [width]="175">
+      </wj-flex-grid-column>
+      <wj-flex-grid-column *ngIf="false" [header]="'SIId'" [binding]="'SIId'" [isReadOnly]="true" [width]="120">
+      </wj-flex-grid-column>
+      <wj-flex-grid-column [header]="'Product Description'" [binding]="'ProductDescription'" [isReadOnly]="true"
+        [width]="225"></wj-flex-grid-column>
+      <wj-flex-grid-column *ngIf="false" [header]="'LDId'" [binding]="'LDId'" [isReadOnly]="true" [width]="150">
+      </wj-flex-grid-column>
+      <wj-flex-grid-column [header]="'LD No.'" [binding]="'LDNumber'" [isReadOnly]="true" [width]="100">
+      </wj-flex-grid-column>
+      <wj-flex-grid-column [header]="'Contact Person'" [binding]="'ContactPerson'" [isReadOnly]="true" [width]="150">
+      </wj-flex-grid-column>
+      <wj-flex-grid-column [header]="'Contact Position'" [binding]="'ContactPosition'" [isReadOnly]="true" [width]="150">
+      </wj-flex-grid-column>
+      <wj-flex-grid-column [header]="'Contact Email'" [binding]="'ContactEmail'" [isReadOnly]="true" [width]="150">
+      </wj-flex-grid-column>
+      <wj-flex-grid-column [header]="'Contact PhoneNumber'" [binding]="'ContactPhoneNumber'" [isReadOnly]="true" [width]="150">
+      </wj-flex-grid-column>
+      <wj-flex-grid-column [header]="'Particulars'" [binding]="'Particulars'" [isReadOnly]="true" [width]="150">
+      </wj-flex-grid-column>
+      <wj-flex-grid-column *ngIf="false" [header]="'AssignedToUserId'" [binding]="'AssignedToUserId'"
+        [isReadOnly]="true" [width]="175"></wj-flex-grid-column>
+      <wj-flex-grid-column [header]="'Assigned To'" [binding]="'AssignedToUser'" [isReadOnly]="true" [width]="170">
+      </wj-flex-grid-column>
+      <wj-flex-grid-column [header]="'Status'" [binding]="'Status'" [isReadOnly]="true" [width]="150">
+      </wj-flex-grid-column>
+      <wj-flex-grid-column [header]="'L'" [binding]="'IsLocked'" [isReadOnly]="true" [width]="50">
+      </wj-flex-grid-column>
+      <wj-flex-grid-column *ngIf="false" [header]="'CreatedByUserId'" [binding]="'CreatedByUserId'" [isReadOnly]="true"
+        [width]="150"></wj-flex-grid-column>
+      <wj-flex-grid-column [header]="'Created By'" [binding]="'CreatedByUser'" [isReadOnly]="true" [width]="150">
+      </wj-flex-grid-column>
+      <wj-flex-grid-column [header]="'Created Date'" [binding]="'CreatedDateTime'" [isReadOnly]="true" [width]="150">
+      </wj-flex-grid-column>
+      <wj-flex-grid-column *ngIf="false" [header]="'UpdatedByUserId'" [binding]="'UpdatedByUserId'" [isReadOnly]="true"
+        [width]="150"></wj-flex-grid-column>
+      <wj-flex-grid-column [header]="'Updated By'" [binding]="'UpdatedByUser'" [isReadOnly]="true" [width]="150">
+      </wj-flex-grid-column>
+      <wj-flex-grid-column [header]="'Updated Date'" [binding]="'UpdatedDateTime'" [isReadOnly]="true" [width]="150">
+      </wj-flex-grid-column>
+    </wj-flex-grid>
+  </div>
+
+  <div class="card-footer">
+    <div class="col-sm-12 btn-group" style="padding: 5px 0px 5px 0px;">
+      <button type="button" class="btn btn-secondary" (click)="listSalesCollectionView.moveToFirstPage()">
+        <i class="fa fa-fast-backward"></i>
+      </button>
+      <button type="button" class="btn btn-secondary" (click)="listSalesCollectionView.moveToPreviousPage()">
+        <i class="fa fa-step-backward"></i>
+      </button>
+      <button type="button" class="btn btn-secondary" disabled style="width:100px">
+        {{ listSalesCollectionView.pageIndex + 1 }} / {{ listSalesCollectionView.pageCount }}
+      </button>
+      <button type="button" class="btn btn-secondary" (click)="listSalesCollectionView.moveToNextPage()">
+        <i class="fa fa-step-forward"></i>
+      </button>
+      <button type="button" class="btn btn-secondary" (click)="listSalesCollectionView.moveToLastPage()">
+        <i class="fa fa-fast-forward"></i>
+      </button>
+    </div>
+  </div>
+</div>
