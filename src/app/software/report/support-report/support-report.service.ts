@@ -54,7 +54,7 @@ export class SupportReportService {
     let listSupportObservableArray = new ObservableArray();
     this.listSupportSubject.next(listSupportObservableArray);
 
-    this.httpClient.get(this.defaultAPIURLHost + "/api/crm/trn/support/list/" + startDate + "/" + endDate + "/" + status, this.options).subscribe(
+    this.httpClient.get(this.defaultAPIURLHost + "/api/crm/report/support/list/" + startDate + "/" + endDate + "/" + status, this.options).subscribe(
       response => {
         var results = response;
         if (results["length"] > 0) {
@@ -75,6 +75,8 @@ export class SupportReportService {
               AssignedToUserId: results[i].AssignedToUserId,
               AssignedToUser: results[i].AssignedToUser,
               Status: results[i].Status,
+              LastActivity: results[i].LastActivity,
+              LastActivityDate: results[i].LastActivityDate,
               IsLocked: results[i].IsLocked,
               CreatedByUserId: results[i].CreatedByUserId,
               CreatedByUser: results[i].CreatedByUser,
