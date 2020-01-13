@@ -28,9 +28,11 @@ import { LeadReportComponent } from './report/lead-report/lead-report.component'
 import { SalesdeliveryReportComponent } from './report/salesdelivery-report/salesdelivery-report.component';
 import { SupportReportComponent } from './report/support-report/support-report.component';
 import { ActivityReportComponent } from './report/activity-report/activity-report.component';
+import { AdministratorComponent } from './administrator/administrator.component';
+import { ActivityComponent } from './activity/activity.component';
 
 @NgModule({
-  declarations: [LayoutComponent, DashboardComponent, LeadComponent, LeadDetailComponent, SalesListComponent, SalesDetailComponent, SupportListComponent, SupportDetailComponent, LeadReportComponent, SalesdeliveryReportComponent, SupportReportComponent, ActivityReportComponent],
+  declarations: [LayoutComponent, DashboardComponent, LeadComponent, LeadDetailComponent, SalesListComponent, SalesDetailComponent, SupportListComponent, SupportDetailComponent, LeadReportComponent, SalesdeliveryReportComponent, SupportReportComponent, ActivityReportComponent, AdministratorComponent, ActivityComponent],
   imports: [
     CommonModule,
     FormsModule,

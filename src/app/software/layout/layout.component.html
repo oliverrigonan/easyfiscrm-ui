@@ -40,19 +40,19 @@
             <a class="list-group-item list-group-item-action" id="list-home-list" routerLink="/software/trn/support">
                 <img src="../../../assets/img/icons/support.png" height="30" alt=""> &nbsp; Support
             </a>
-            <!-- <a class="list-group-item list-group-item-action" id="list-home-list" routerLink="/software/report">
-                <img src="../../../assets/img/icons/report.png" height="30" alt=""> &nbsp; Report
-            </a> -->
-
+            <a class="list-group-item list-group-item-action" id="list-home-list" routerLink="/software/trn/activity">
+                <img src="../../../assets/img/icons/activity.png" height="30" alt=""> &nbsp; Activity
+            </a>
             <button mat-button [matMenuTriggerFor]="menu" class="list-group-item list-group-item-action">
-                <img src="../../../assets/img/icons/report.png" height="30" alt="" > &nbsp; Report
+                <img src="../../../assets/img/icons/report.png" height="30" alt=""> &nbsp; Report
             </button>
             <mat-menu #menu="matMenu" xPosition="after" width="1000">
-                <button class="btn-submenu" mat-menu-item routerLink="/software/report/lead"> 
-                    <img src="../../../assets/img/icons/report.png" height="30" alt="" > &nbsp; Lead Report 
+                <button class="btn-submenu" mat-menu-item routerLink="/software/report/lead">
+                    <img src="../../../assets/img/icons/report.png" height="30" alt=""> &nbsp; Lead Report
                 </button>
                 <button class="btn-submenu" mat-menu-item routerLink="report/sales/delivery">
-                    <img src="../../../assets/img/icons/report.png" height="30" alt=""> &nbsp; Sales Delivery Report &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                    <img src="../../../assets/img/icons/report.png" height="30" alt=""> &nbsp; Sales Delivery Report
+                    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
                 </button>
                 <button class="btn-submenu" mat-menu-item routerLink="report/support">
                     <img src="../../../assets/img/icons/report.png" height="30" alt=""> &nbsp; Support Report
@@ -61,7 +61,7 @@
                     <img src="../../../assets/img/icons/report.png" height="30" alt=""> &nbsp; Activity Report
                 </button>
             </mat-menu>
-            
+
         </div>
     </mat-drawer>
     <mat-drawer-content>

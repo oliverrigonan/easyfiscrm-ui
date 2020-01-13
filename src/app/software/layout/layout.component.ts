@@ -44,7 +44,23 @@ export class LayoutComponent implements OnInit {
       } else if (this.router.url.split('/').slice(0, -1).join('/') == "/software/trn/support/detail") {
         this.ToolbarTitle = "Support Detail";
         toolBarImage.setAttribute("src", "../../assets/img/icons/support.png");
-      } else {
+      } else if (this.router.url == "/software/trn/activity") {
+        this.ToolbarTitle = "Activity";
+        toolBarImage.setAttribute("src", "../../assets/img/icons/activity.png");
+      } else if (this.router.url == "/software/report/lead") {
+        this.ToolbarTitle = "Lead Report";
+        toolBarImage.setAttribute("src", "../../assets/img/icons/report.png");
+      } else if (this.router.url == "/software/report/sales/delivery") {
+        this.ToolbarTitle = "Sales Delivery Report";
+        toolBarImage.setAttribute("src", "../../assets/img/icons/report.png");
+      } else if (this.router.url == "/software/report/support") {
+        this.ToolbarTitle = "Support Report";
+        toolBarImage.setAttribute("src", "../../assets/img/icons/report.png");
+      }else if (this.router.url == "/software/report/activity") {
+        this.ToolbarTitle = "Activity Report";
+        toolBarImage.setAttribute("src", "../../assets/img/icons/report.png");
+      }
+      else {
         // this.ToolbarTitle = "Easyfis CRM";
       }
     });
