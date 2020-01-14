@@ -58,6 +58,39 @@ export class SupportDetailComponent implements OnInit {
 
   public isLocked: Boolean = false;
 
+  public cboShowNumberOfRows: ObservableArray = new ObservableArray();
+
+  public listActivityObservableArray: ObservableArray = new ObservableArray();
+  public listActivityCollectionView: CollectionView = new CollectionView(this.listActivityObservableArray);
+  public listActivityPageIndex: number = 15;
+  @ViewChild('listActivityFlexGrid') listActivityFlexGrid: WjFlexGrid;
+  public isDataLoaded: boolean = false;
+
+  public listActivitySub: any;
+  public saveActivitySub: any;
+  public deleteActivitySub: any;
+
+  public isLoadingSpinnerHidden: boolean = false;
+  public isContentHidden: boolean = true;
+  public isActivityTabHidden: boolean = true;
+
+  public activityModalHeaderTitle: string = "Activity";
+
+  public cboListActivityUsersSub: any;
+  public cboListActivityUsersObservableArray: ObservableArray = new ObservableArray();
+
+  public cboListActivityStatusSub: any;
+  public cboListActivityStatusObservableArray: ObservableArray = new ObservableArray();
+
+  public isActivityLoadingSpinnerHidden: boolean = false;
+  public isActivityContentHidden: boolean = true;
+  public isActivityNumberHidden = false;
+
+  public activitiyModalRef: BsModalRef;
+  public deleteActivitiyModalRef: BsModalRef;
+
+  public isAddClicked: boolean = false;
+
   public supportModel: SupportModel = {
     Id: 0,
     SPNumber: "",
@@ -372,37 +405,6 @@ export class SupportDetailComponent implements OnInit {
     );
   }
 
-  public cboShowNumberOfRows: ObservableArray = new ObservableArray();
-
-  public listActivityObservableArray: ObservableArray = new ObservableArray();
-  public listActivityCollectionView: CollectionView = new CollectionView(this.listActivityObservableArray);
-  public listActivityPageIndex: number = 15;
-  @ViewChild('listActivityFlexGrid') listActivityFlexGrid: WjFlexGrid;
-  public isDataLoaded: boolean = false;
-
-  public listActivitySub: any;
-  public saveActivitySub: any;
-  public deleteActivitySub: any;
-
-  public isLoadingSpinnerHidden: boolean = false;
-  public isContentHidden: boolean = true;
-  public isActivityTabHidden: boolean = true;
-
-  public activityModalHeaderTitle: string = "Activity";
-
-  public cboListActivityUsersSub: any;
-  public cboListActivityUsersObservableArray: ObservableArray = new ObservableArray();
-
-  public cboListActivityStatusSub: any;
-  public cboListActivityStatusObservableArray: ObservableArray = new ObservableArray();
-
-  public isActivityLoadingSpinnerHidden: boolean = false;
-  public isActivityContentHidden: boolean = true;
-  public isActivityNumberHidden = false;
-
-  public activitiyModalRef: BsModalRef;
-  public deleteActivitiyModalRef: BsModalRef;
-
   public supportDetailActivityModel: SupportDetailActivityModel = {
     Id: 0,
     ACNumber: "",
@@ -433,8 +435,6 @@ export class SupportDetailComponent implements OnInit {
     UpdatedByUser: "",
     UpdatedDateTime: "",
   };
-
-  public isAddClicked: boolean = false;
 
   public createCboShowNumberOfRows(): void {
     for (var i = 0; i <= 4; i++) {

@@ -27,6 +27,7 @@ export class ActivityComponent implements OnInit {
     this.createCboShowNumberOfRows();
     this.createCboActivityDocument();
     this.createCboActivityStatus();
+    this.createCboActivityUser();
   }
 
   public cboShowNumberOfRows: ObservableArray = new ObservableArray();
@@ -34,19 +35,23 @@ export class ActivityComponent implements OnInit {
   public ActivityStartDateFilterData = new Date();
   public ActivityEndDateFilterData = new Date();
 
+  public cboActivityUserObservableArray: ObservableArray = new ObservableArray();
+  public cboActivityUserSelectedValue: number = 0;
+
   public cboActivityStatusObservableArray: ObservableArray = new ObservableArray();
   public cboActivityStatusSelectedValue: string = "Open";
 
   public cboActivityDocumentObservableArray: ObservableArray = new ObservableArray();
   public cboActivityDocumentSelectedValue: string = "Open";
 
-  public listActivityObservableArray: ObservableArray = new ObservableArray();
-  public listActivityHeaderCollectionView: CollectionView = new CollectionView(this.listActivityObservableArray);
+  public clistActivityHeaderObservableArray: ObservableArray = new ObservableArray();
+  public listActivityHeaderCollectionView: CollectionView = new CollectionView(this.clistActivityHeaderObservableArray);
   public listActivityPageIndex: number = 15;
   @ViewChild('listActivityFlexGrid') listActivityFlexGrid: WjFlexGrid;
   public isProgressBarHidden = false;
   public isDataLoaded: boolean = false;
 
+  public cboListUserSub: any;
   public cboListDocumentSub: any;
   public cboListStatusSub: any;
   public listActivitySub: any;
@@ -104,8 +109,32 @@ export class ActivityComponent implements OnInit {
     }
   }
 
-  public cboDocumentSelectedIndexChanged(selectedValue: any): void {
-    this.cboActivityDocumentSelectedValue = selectedValue;
+  public createCboActivityUser(): void {
+    this.activityService.listUser();
+    this.cboListUserSub = this.activityService.listUserObservable.subscribe(
+      data => {
+        let userObservableArray = new ObservableArray();
+        if (data != null) {
+          for (var i = 0; i <= data.length - 1; i++) {
+            userObservableArray.push({
+              Id: data[i].Id,
+              UserName: data[i].UserName,
+              FullName: data[i].FullName
+            });
+          }
+        }
+
+        this.cboActivityUserObservableArray = userObservableArray;
+        setTimeout(() => {
+          this.listActivity();
+        }, 100);
+        if (this.cboListUserSub != null) this.cboListUserSub.unsubscribe();
+      }
+    );
+  }
+
+  public cboActivityUserSelectedIndexChanged(selectedValue: any): void {
+    this.cboActivityUserSelectedValue = selectedValue;
 
     if (this.isDataLoaded) {
       setTimeout(() => {
@@ -139,6 +168,16 @@ export class ActivityComponent implements OnInit {
         if (this.cboListDocumentSub != null) this.cboListDocumentSub.unsubscribe();
       }
     );
+  }
+
+  public cboDocumentSelectedIndexChanged(selectedValue: any): void {
+    this.cboActivityDocumentSelectedValue = selectedValue;
+
+    if (this.isDataLoaded) {
+      setTimeout(() => {
+        this.createCboActivityStatus();
+      }, 100);
+    }
   }
 
   public createCboActivityStatus(): void {
@@ -186,8 +225,8 @@ export class ActivityComponent implements OnInit {
   }
 
   public listActivity(): void {
-    this.listActivityObservableArray = new ObservableArray();
-    this.listActivityHeaderCollectionView = new CollectionView(this.listActivityObservableArray);
+    this.clistActivityHeaderObservableArray = new ObservableArray();
+    this.listActivityHeaderCollectionView = new CollectionView(this.clistActivityHeaderObservableArray);
     this.listActivityHeaderCollectionView.pageSize = 15;
     this.listActivityHeaderCollectionView.trackChanges = true;
     this.listActivityHeaderCollectionView.refresh();
@@ -198,13 +237,13 @@ export class ActivityComponent implements OnInit {
 
     this.isProgressBarHidden = false;
 
-    this.activityService.listActivityHeader(startDate, endDate, this.cboActivityDocumentSelectedValue, this.cboActivityStatusSelectedValue);
+    this.activityService.listActivityHeader(startDate, endDate, this.cboActivityDocumentSelectedValue, this.cboActivityStatusSelectedValue, this.cboActivityUserSelectedValue);
     this.listActivitySub = this.activityService.listActivityObservable.subscribe(
       data => {
         console.log(data);
         if (data.length > 0) {
-          this.listActivityObservableArray = data;
-          this.listActivityHeaderCollectionView = new CollectionView(this.listActivityObservableArray);
+          this.clistActivityHeaderObservableArray = data;
+          this.listActivityHeaderCollectionView = new CollectionView(this.clistActivityHeaderObservableArray);
           this.listActivityHeaderCollectionView.pageSize = this.listActivityPageIndex;
           this.listActivityHeaderCollectionView.trackChanges = true;
           this.listActivityHeaderCollectionView.refresh();
@@ -217,6 +256,61 @@ export class ActivityComponent implements OnInit {
         if (this.listActivitySub != null) this.listActivitySub.unsubscribe();
       }
     );
+  }
+
+  public IsLoaded: Boolean = false;
+  public listActivityObservableArray: ObservableArray = new ObservableArray();
+  public listActivityCollectionView: CollectionView = new CollectionView(this.listActivityObservableArray);
+  public listCustomerPageIndex: number = 15;
+  @ViewChild('listCustomerFlexGrid') listCustomerFlexGrid: WjFlexGrid;
+  public selectedCustomer: string = "";
+
+  public detailSupportSub: any;
+
+  public customerModalRef: BsModalRef;
+
+  public cboCustomerSub: any;
+  public cboCustomerObservableArray: ObservableArray = new ObservableArray();
+
+  public listCustomer(): void {
+    this.listActivityObservableArray = new ObservableArray();
+    this.listActivityCollectionView = new CollectionView(this.listActivityObservableArray);
+    this.listActivityCollectionView.pageSize = 15;
+    this.listActivityCollectionView.trackChanges = true;
+    this.listActivityCollectionView.refresh();
+    // this.listCustomerFlexGrid.refresh();
+
+    this.isProgressBarHidden = false;
+    this.activityService.listCustomer();
+    this.cboCustomerSub = this.activityService.listCustomerObservable.subscribe(
+      data => {
+        if (data.length > 0) {
+          this.listActivityObservableArray = data;
+          this.listActivityCollectionView = new CollectionView(this.listActivityObservableArray);
+          this.listActivityCollectionView.pageSize = this.listCustomerPageIndex;
+          this.listActivityCollectionView.trackChanges = true;
+          this.listActivityCollectionView.refresh();
+          // this.listCustomerFlexGrid.refresh();
+        }
+        console.log(this.listActivityCollectionView);
+
+        this.isProgressBarHidden = true;
+        if (this.cboCustomerSub != null) this.cboCustomerSub.unsubscribe();
+      }
+    );
+  }
+  public activityModalHeaderTitle: any;
+
+  public btnCustomerListClick(customerModalTemplate: TemplateRef<any>): void {
+    this.activityModalHeaderTitle = "Costumer List";
+    this.listCustomer();
+    setTimeout(() => {
+      this.customerModalRef = this.modalService.show(customerModalTemplate, {
+        backdrop: true,
+        ignoreBackdropClick: true,
+        class: "modal-lg"
+      });
+    }, 100);
   }
 
   ngOnDestroy() {
