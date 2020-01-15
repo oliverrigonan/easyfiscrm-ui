@@ -9,6 +9,7 @@ import { BsModalRef } from 'ngx-bootstrap/modal/bs-modal-ref.service';
 
 import { ToastrService } from 'ngx-toastr';
 import { ActivityService } from './activity.service';
+import { ActivityModel } from './activity.model';
 @Component({
   selector: 'app-activity',
   templateUrl: './activity.component.html',
@@ -54,7 +55,7 @@ export class ActivityComponent implements OnInit {
   public cboListUserSub: any;
   public cboListDocumentSub: any;
   public cboListStatusSub: any;
-  public listActivitySub: any;
+  public listActivityHeaderSub: any;
 
   public createCboShowNumberOfRows(): void {
     for (var i = 0; i <= 4; i++) {
@@ -96,7 +97,7 @@ export class ActivityComponent implements OnInit {
   public cboStartDateTextChanged(): void {
     if (this.isDataLoaded) {
       setTimeout(() => {
-        this.listActivity();
+        this.listActivityHeader();
       }, 100);
     }
   }
@@ -104,7 +105,7 @@ export class ActivityComponent implements OnInit {
   public cboEndDateTextChanged(): void {
     if (this.isDataLoaded) {
       setTimeout(() => {
-        this.listActivity();
+        this.listActivityHeader();
       }, 100);
     }
   }
@@ -126,7 +127,7 @@ export class ActivityComponent implements OnInit {
 
         this.cboActivityUserObservableArray = userObservableArray;
         setTimeout(() => {
-          this.listActivity();
+          this.listActivityHeader();
         }, 100);
         if (this.cboListUserSub != null) this.cboListUserSub.unsubscribe();
       }
@@ -161,7 +162,7 @@ export class ActivityComponent implements OnInit {
         this.cboActivityDocumentObservableArray = documentObservableArray;
         if (this.cboActivityDocumentObservableArray.length > 0) {
           setTimeout(() => {
-            this.listActivity();
+            this.listActivityHeader();
           }, 100);
         }
 
@@ -205,7 +206,7 @@ export class ActivityComponent implements OnInit {
         this.cboActivityStatusObservableArray = statusObservableArray;
         if (this.cboActivityStatusObservableArray.length > 0) {
           setTimeout(() => {
-            this.listActivity();
+            this.listActivityHeader();
           }, 100);
         }
 
@@ -219,12 +220,12 @@ export class ActivityComponent implements OnInit {
 
     if (this.isDataLoaded) {
       setTimeout(() => {
-        this.listActivity();
+        this.listActivityHeader();
       }, 100);
     }
   }
 
-  public listActivity(): void {
+  public listActivityHeader(): void {
     this.clistActivityHeaderObservableArray = new ObservableArray();
     this.listActivityHeaderCollectionView = new CollectionView(this.clistActivityHeaderObservableArray);
     this.listActivityHeaderCollectionView.pageSize = 15;
@@ -238,7 +239,7 @@ export class ActivityComponent implements OnInit {
     this.isProgressBarHidden = false;
 
     this.activityService.listActivityHeader(startDate, endDate, this.cboActivityDocumentSelectedValue, this.cboActivityStatusSelectedValue, this.cboActivityUserSelectedValue);
-    this.listActivitySub = this.activityService.listActivityObservable.subscribe(
+    this.listActivityHeaderSub = this.activityService.listActivityHeadingObservable.subscribe(
       data => {
         console.log(data);
         if (data.length > 0) {
@@ -253,69 +254,427 @@ export class ActivityComponent implements OnInit {
         this.isDataLoaded = true;
         this.isProgressBarHidden = true;
 
-        if (this.listActivitySub != null) this.listActivitySub.unsubscribe();
+        if (this.listActivityHeaderSub != null) this.listActivityHeaderSub.unsubscribe();
       }
     );
   }
 
-  public IsLoaded: Boolean = false;
-  public listActivityObservableArray: ObservableArray = new ObservableArray();
-  public listActivityCollectionView: CollectionView = new CollectionView(this.listActivityObservableArray);
-  public listCustomerPageIndex: number = 15;
-  @ViewChild('listCustomerFlexGrid') listCustomerFlexGrid: WjFlexGrid;
-  public selectedCustomer: string = "";
+  public activityListModalRef: BsModalRef;
+  public modalcboShowNumberOfRows: ObservableArray = new ObservableArray();
+  public listActivitySub: any;
 
-  public detailSupportSub: any;
+  public modalListActivityObservableArray: ObservableArray = new ObservableArray();
+  public modalListActivityCollectionView: CollectionView = new CollectionView(this.modalListActivityObservableArray);
+  public modalListActivityPageIndex: number = 15;
+  @ViewChild('modalListActivityFlexGrid') modalListActivityFlexGrid: WjFlexGrid;
 
-  public customerModalRef: BsModalRef;
+  public modallistActivitySub: any;
+  public saveActivitySub: any;
+  public deleteActivitySub: any;
 
-  public cboCustomerSub: any;
-  public cboCustomerObservableArray: ObservableArray = new ObservableArray();
+  public isLoadingSpinnerHidden: boolean = false;
+  public isContentHidden: boolean = true;
+  public isActivityTabHidden: boolean = true;
 
-  public listCustomer(): void {
-    this.listActivityObservableArray = new ObservableArray();
-    this.listActivityCollectionView = new CollectionView(this.listActivityObservableArray);
-    this.listActivityCollectionView.pageSize = 15;
-    this.listActivityCollectionView.trackChanges = true;
-    this.listActivityCollectionView.refresh();
-    // this.listCustomerFlexGrid.refresh();
+  public activityModalHeaderTitle: string = "Activity";
 
-    this.isProgressBarHidden = false;
-    this.activityService.listCustomer();
-    this.cboCustomerSub = this.activityService.listCustomerObservable.subscribe(
-      data => {
-        if (data.length > 0) {
-          this.listActivityObservableArray = data;
-          this.listActivityCollectionView = new CollectionView(this.listActivityObservableArray);
-          this.listActivityCollectionView.pageSize = this.listCustomerPageIndex;
-          this.listActivityCollectionView.trackChanges = true;
-          this.listActivityCollectionView.refresh();
-          // this.listCustomerFlexGrid.refresh();
-        }
-        console.log(this.listActivityCollectionView);
+  public cboListActivityUsersSub: any;
+  public cboListActivityUsersObservableArray: ObservableArray = new ObservableArray();
 
-        this.isProgressBarHidden = true;
-        if (this.cboCustomerSub != null) this.cboCustomerSub.unsubscribe();
-      }
-    );
-  }
-  public activityModalHeaderTitle: any;
+  public cboListActivityStatusSub: any;
+  public cboListActivityStatusObservableArray: ObservableArray = new ObservableArray();
 
-  public btnCustomerListClick(customerModalTemplate: TemplateRef<any>): void {
-    this.activityModalHeaderTitle = "Costumer List";
-    this.listCustomer();
+  public isActivityLoadingSpinnerHidden: boolean = false;
+  public isActivityContentHidden: boolean = true;
+  public isActivityNumberHidden = false;
+
+  public activitiyModalRef: BsModalRef;
+  public deleteActivitiyModalRef: BsModalRef;
+
+  public isAddClicked: boolean = false;
+  public isActivityDataLoaded: boolean = false;
+
+  public activityModel: ActivityModel = {
+    Id: 0,
+    ACNumber: "",
+    ACDate: new Date(),
+    UserId: 0,
+    User: "",
+    FunctionalUserId: 0,
+    FunctionalUser: "",
+    TechnicalUserId: 0,
+    TechnicalUser: "",
+    CRMStatus: "",
+    Activity: "",
+    StartDate: new Date(),
+    StartTime: new Date(),
+    EndDate: new Date(),
+    EndTime: new Date(),
+    TransportationCost: 0,
+    OnSiteCost: 0,
+    LDId: 0,
+    SDId: 0,
+    SPId: 0,
+    Status: "",
+    IsLocked: false,
+    CreatedByUserId: 0,
+    CreatedByUser: "",
+    CreatedDateTime: "",
+    UpdatedByUserId: 0,
+    UpdatedByUser: "",
+    UpdatedDateTime: "",
+  };
+
+  public btnActivityListClick(activityListModalTemplate: TemplateRef<any>): void {
+    this.activityModalHeaderTitle = "Activity List";
+    this.modalCreateCboShowNumberOfRows();
+    this.isActivityDataLoaded = false;
+    this.listActivity();
     setTimeout(() => {
-      this.customerModalRef = this.modalService.show(customerModalTemplate, {
+      this.activityListModalRef = this.modalService.show(activityListModalTemplate, {
         backdrop: true,
         ignoreBackdropClick: true,
         class: "modal-lg"
       });
-    }, 100);
+    }, 300);
   }
+
+  public modalCreateCboShowNumberOfRows(): void {
+    for (var i = 0; i <= 4; i++) {
+      var rows = 0;
+      var rowsString = "";
+
+      if (i == 0) {
+        rows = 15;
+        rowsString = "Show 15";
+      } else if (i == 1) {
+        rows = 50;
+        rowsString = "Show 50";
+      } else if (i == 2) {
+        rows = 100;
+        rowsString = "Show 100";
+      } else if (i == 3) {
+        rows = 150;
+        rowsString = "Show 150";
+      } else {
+        rows = 200;
+        rowsString = "Show 200";
+      }
+
+      this.modalcboShowNumberOfRows.push({
+        rowNumber: rows,
+        rowString: rowsString
+      });
+    }
+  }
+
+  public modalCboShowNumberOfRowsOnSelectedIndexChanged(selectedValue: any): void {
+    this.listActivityPageIndex = selectedValue;
+
+    this.modalListActivityCollectionView.pageSize = this.listActivityPageIndex;
+    this.modalListActivityCollectionView.refresh();
+    this.modalListActivityCollectionView.refresh();
+  }
+
+  public listActivity(): void {
+    if (!this.isActivityDataLoaded) {
+      setTimeout(() => {
+        this.modalListActivityObservableArray = new ObservableArray();
+        this.modalListActivityCollectionView = new CollectionView(this.modalListActivityObservableArray);
+        this.modalListActivityCollectionView.pageSize = 15;
+        this.modalListActivityCollectionView.trackChanges = true;
+        this.modalListActivityCollectionView.refresh();
+        this.listActivityFlexGrid.refresh();
+
+        this.isProgressBarHidden = false;
+
+        let currentActivityHeader = this.listActivityHeaderCollectionView.currentItem;
+
+        this.activityService.listActivity(currentActivityHeader.DocType, currentActivityHeader.Id);
+        this.listActivitySub = this.activityService.listActivityObservable.subscribe(
+          data => {
+            if (data.length > 0) {
+              this.modalListActivityObservableArray = data;
+              this.modalListActivityCollectionView = new CollectionView(this.modalListActivityObservableArray);
+              this.modalListActivityCollectionView.pageSize = this.listActivityPageIndex;
+              this.modalListActivityCollectionView.trackChanges = true;
+              this.modalListActivityCollectionView.refresh();
+              this.listActivityFlexGrid.refresh();
+            }
+
+            this.isActivityDataLoaded = true;
+            this.isProgressBarHidden = true;
+
+            if (this.listActivitySub != null) this.listActivitySub.unsubscribe();
+          }
+        );
+      }, 100);
+    }
+  }
+
+  public currentActivity(): void {
+    let currentActivityHeader = this.listActivityHeaderCollectionView.currentItem;
+    let leadId: number;
+    let salesDeliveryId: number;
+    let supportId: number;
+    if (currentActivityHeader.DocType == "LEAD") {
+      leadId = currentActivityHeader.Id;
+      salesDeliveryId = null;
+      supportId = null;
+    }
+
+    if (currentActivityHeader.DocType == "SALES DELIVERY") {
+      leadId = null;
+      salesDeliveryId = currentActivityHeader.Id;
+      supportId = null;
+    }
+
+    if (currentActivityHeader.DocType == "SUPPORT") {
+      leadId = null;
+      salesDeliveryId = null;
+      supportId = currentActivityHeader.Id;
+    }
+    console.log(leadId,salesDeliveryId,supportId);
+
+    if (this.isAddClicked) {
+      this.activityModel = {
+        Id: 0,
+        ACNumber: "0000000001",
+        ACDate: new Date(),
+        UserId: 0,
+        User: localStorage.getItem("username"),
+        FunctionalUserId: 0,
+        FunctionalUser: "",
+        TechnicalUserId: 0,
+        TechnicalUser: "",
+        CRMStatus: this.activityModel.Status,
+        Activity: "",
+        StartDate: new Date(),
+        StartTime: new Date(),
+        EndDate: new Date(),
+        EndTime: new Date(),
+        TransportationCost: 0,
+        OnSiteCost: 0,
+        LDId: leadId,
+        SDId: salesDeliveryId,
+        SPId: supportId,
+        Status: "",
+        IsLocked: false,
+        CreatedByUserId: 0,
+        CreatedByUser: "",
+        CreatedDateTime: "",
+        UpdatedByUserId: 0,
+        UpdatedByUser: "",
+        UpdatedDateTime: ""
+      };
+    } else {
+      let currentActivity = this.modalListActivityCollectionView.currentItem;
+      this.activityModel = {
+        Id: currentActivity.Id,
+        ACNumber: currentActivity.ACNumber,
+        ACDate: currentActivity.ACDate,
+        UserId: currentActivity.UserId,
+        User: currentActivity.User,
+        FunctionalUserId: currentActivity.FunctionalUserId,
+        FunctionalUser: currentActivity.FunctionalUser,
+        TechnicalUserId: currentActivity.TechnicalUserId,
+        TechnicalUser: currentActivity.TechnicalUser,
+        CRMStatus: currentActivity.CRMStatus,
+        Activity: currentActivity.Activity,
+        StartDate: currentActivity.StartDate,
+        StartTime: currentActivity.StartTime,
+        EndDate: currentActivity.EndDate,
+        EndTime: currentActivity.EndTime,
+        TransportationCost: currentActivity.TransportationCost,
+        OnSiteCost: currentActivity.OnSiteCost,
+        LDId: currentActivity.LDId,
+        SDId: currentActivity.SDId,
+        SPId: currentActivity.SPId,
+        Status: currentActivity.Status,
+        IsLocked: currentActivity.IsLocked,
+        CreatedByUserId: currentActivity.CreatedByUserId,
+        CreatedByUser: currentActivity.CreatedByUser,
+        CreatedDateTime: currentActivity.CreatedDateTime,
+        UpdatedByUserId: currentActivity.UpdatedByUserId,
+        UpdatedByUser: currentActivity.UpdatedByUser,
+        UpdatedDateTime: currentActivity.UpdatedDateTime
+      };
+    }
+  }
+
+  public btnAddActivityClick(activityModalTemplate: TemplateRef<any>): void {
+    this.activitiyModalRef = this.modalService.show(activityModalTemplate, {
+      backdrop: true,
+      ignoreBackdropClick: true,
+      class: ""
+    });
+
+    this.isAddClicked = true;
+
+    this.activityModalHeaderTitle = "Add Activity";
+    this.isActivityNumberHidden = true;
+
+    this.isActivityLoadingSpinnerHidden = false;
+    this.isActivityContentHidden = true;
+
+    this.listActivityUsers();
+  }
+
+  public btnEditActivityClick(activityModalTemplate: TemplateRef<any>): void {
+    this.activitiyModalRef = this.modalService.show(activityModalTemplate, {
+      backdrop: true,
+      ignoreBackdropClick: true,
+      class: ""
+    });
+
+    this.isAddClicked = false;
+
+    this.activityModalHeaderTitle = "Edit Activity";
+    this.isActivityNumberHidden = false;
+
+    this.isActivityLoadingSpinnerHidden = false;
+    this.isActivityContentHidden = true;
+
+    this.listActivityUsers();
+  }
+
+  public btnSaveActivityClick(): void {
+    let btnSaveActivity: Element = document.getElementById("btnSaveActivity");
+    let btnSaveActivityClickCloseModal: Element = document.getElementById("btnSaveActivityClickCloseModal");
+    (<HTMLButtonElement>btnSaveActivity).disabled = true;
+    (<HTMLButtonElement>btnSaveActivityClickCloseModal).disabled = true;
+
+    this.activityService.saveActivity(this.activityModel);
+    this.saveActivitySub = this.activityService.saveActivityObservable.subscribe(
+      data => {
+        if (data[0] == "success") {
+          this.toastr.success("Activity was successfully saved.", "Success");
+
+          setTimeout(() => {
+            this.isActivityDataLoaded = false;
+
+            this.listActivity();
+            this.activitiyModalRef.hide();
+          }, 100);
+        } else if (data[0] == "failed") {
+          this.toastr.error(data[1], "Error");
+
+          (<HTMLButtonElement>btnSaveActivity).disabled = false;
+          (<HTMLButtonElement>btnSaveActivityClickCloseModal).disabled = false;
+        }
+
+        if (this.saveActivitySub != null) this.saveActivitySub.unsubscribe();
+      }
+    );
+  }
+
+  public listActivityUsers(): void {
+    this.activityService.listActivityUsers();
+    this.cboListActivityUsersSub = this.activityService.listActivityUsersObservable.subscribe(
+      data => {
+        let usersObservableArray = new ObservableArray();
+
+        if (data != null) {
+          for (var i = 0; i <= data.length - 1; i++) {
+            usersObservableArray.push({
+              Id: data[i].Id,
+              FullName: data[i].FullName,
+              UserName: data[i].UserName
+            });
+          }
+        }
+
+        this.cboListActivityUsersObservableArray = usersObservableArray;
+
+        setTimeout(() => {
+          this.listActivityStatus();
+        }, 100);
+
+        if (this.cboListActivityUsersSub != null) this.cboListActivityUsersSub.unsubscribe();
+      }
+    );
+  }
+
+  public listActivityStatus(): void {
+    this.activityService.listActivityStatus();
+    this.cboListActivityStatusSub = this.activityService.listActivityStatusObservable.subscribe(
+      data => {
+        let statusObservableArray = new ObservableArray();
+
+        if (data != null) {
+          for (var i = 0; i <= data.length - 1; i++) {
+            statusObservableArray.push({
+              Id: data[i].Id,
+              Status: data[i].Status
+            });
+          }
+        }
+
+        this.cboListActivityStatusObservableArray = statusObservableArray;
+
+        setTimeout(() => {
+          this.currentActivity();
+        }, 100);
+
+        this.isActivityLoadingSpinnerHidden = true;
+        this.isActivityContentHidden = false;
+
+        if (this.cboListActivityStatusSub != null) this.cboListActivityStatusSub.unsubscribe();
+      }
+    );
+  }
+
+  public btnDeleteActivityClick(activityDeleteModalTemplate: TemplateRef<any>): void {
+    this.deleteActivitiyModalRef = this.modalService.show(activityDeleteModalTemplate, {
+      backdrop: true,
+      ignoreBackdropClick: true,
+      class: "modal-sm"
+    });
+  }
+
+  public btnConfirmDeleteAcitivityClick() {
+    let btnConfirmDeleteAcitivity: Element = document.getElementById("btnConfirmDeleteAcitivity");
+    let btnCloseConfirmDeleteAcitivityModal: Element = document.getElementById("btnCloseConfirmDeleteAcitivityModal");
+    (<HTMLButtonElement>btnConfirmDeleteAcitivity).disabled = true;
+    (<HTMLButtonElement>btnCloseConfirmDeleteAcitivityModal).disabled = true;
+
+    let currentActivity = this.modalListActivityCollectionView.currentItem;
+    this.activityService.deleteActivity(currentActivity.Id);
+    this.deleteActivitySub = this.activityService.deleteActivityObservable.subscribe(
+      data => {
+        if (data[0] == "success") {
+          this.toastr.success("Lead was successfully deleted.", "Success");
+
+          setTimeout(() => {
+            this.isActivityDataLoaded = false;
+
+            this.listActivity();
+            this.deleteActivitiyModalRef.hide();
+          }, 100);
+        } else if (data[0] == "failed") {
+          this.toastr.error(data[1], "Error");
+
+          (<HTMLButtonElement>btnConfirmDeleteAcitivity).disabled = false;
+          (<HTMLButtonElement>btnCloseConfirmDeleteAcitivityModal).disabled = false;
+        }
+
+        if (this.deleteActivitySub != null) this.deleteActivitySub.unsubscribe();
+      }
+    );
+  }
+
 
   ngOnDestroy() {
     if (this.cboListStatusSub != null) this.cboListStatusSub.unsubscribe();
     if (this.cboListDocumentSub != null) this.cboListDocumentSub.unsubscribe();
+    if (this.listActivityHeaderSub != null) this.listActivityHeaderSub.unsubscribe();
     if (this.listActivitySub != null) this.listActivitySub.unsubscribe();
+    if (this.saveActivitySub != null) this.saveActivitySub.unsubscribe();
+
+    if (this.cboListActivityUsersSub != null) this.cboListActivityUsersSub.unsubscribe();
+
+    if (this.deleteActivitySub != null) this.deleteActivitySub.unsubscribe();
+    if (this.cboListActivityStatusSub != null) this.cboListActivityStatusSub.unsubscribe();
+
   }
 }

@@ -4,8 +4,8 @@ import { Routes, RouterModule } from '@angular/router';
 
 import { SoftwareRouterActivate } from './software.router.activate';
 
-import { LayoutComponent } from './layout/layout.component'; 
-import { DashboardComponent } from './dashboard/dashboard.component'; 
+import { LayoutComponent } from './layout/layout.component';
+import { DashboardComponent } from './dashboard/dashboard.component';
 import { LeadComponent } from './lead/lead.component';
 import { LeadDetailComponent } from './lead-detail/lead-detail.component';
 import { SalesListComponent } from './sales-list/sales-list.component';
@@ -17,6 +17,7 @@ import { SalesdeliveryReportComponent } from './report/salesdelivery-report/sale
 import { SupportReportComponent } from './report/support-report/support-report.component';
 import { ActivityReportComponent } from './report/activity-report/activity-report.component';
 import { ActivityComponent } from './activity/activity.component';
+import { UserComponent } from './user/user.component';
 
 const routes: Routes = [
   {
@@ -34,9 +35,8 @@ const routes: Routes = [
       { path: 'report/lead', component: LeadReportComponent, canActivate: [SoftwareRouterActivate] },
       { path: 'report/sales/delivery', component: SalesdeliveryReportComponent, canActivate: [SoftwareRouterActivate] },
       { path: 'report/support', component: SupportReportComponent, canActivate: [SoftwareRouterActivate] },
-      { path: 'report/activity', component: ActivityReportComponent, canActivate: [SoftwareRouterActivate] }
-      
-
+      { path: 'report/activity', component: ActivityReportComponent, canActivate: [SoftwareRouterActivate] },
+      { path: 'mst/account', component: UserComponent, canActivate: [SoftwareRouterActivate] }
     ]
   }
 ];
