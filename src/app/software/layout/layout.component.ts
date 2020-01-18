@@ -50,8 +50,8 @@ export class LayoutComponent implements OnInit {
       } else if (this.router.url == "/software/report/lead") {
         this.ToolbarTitle = "Lead Report";
         toolBarImage.setAttribute("src", "../../assets/img/icons/print.png");
-      } else if (this.router.url == "/software/mst/account") {
-        this.ToolbarTitle = "Lead Report";
+      } else if (this.router.url == "/software/mst/user") {
+        this.ToolbarTitle = "Users";
         toolBarImage.setAttribute("src", "../../assets/img/icons/woman.png");
       } else if (this.router.url == "/software/report/sales/delivery") {
         this.ToolbarTitle = "Sales Delivery Report";

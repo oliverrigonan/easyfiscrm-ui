@@ -36,7 +36,7 @@ export class SupportListComponent implements OnInit {
 
   public listSupportObservableArray: ObservableArray = new ObservableArray();
   public listSupportCollectionView: CollectionView = new CollectionView(this.listSupportObservableArray);
-  public listActivityPageIndex: number = 15;
+  public listSupportPageIndex: number = 15;
   @ViewChild('listSupportFlexGrid') listSupportFlexGrid: WjFlexGrid;
   public isProgressBarHidden = false;
   public isDataLoaded: boolean = false;
@@ -83,9 +83,9 @@ export class SupportListComponent implements OnInit {
   }
   
   public cboShowNumberOfRowsOnSelectedIndexChanged(selectedValue: any): void {
-    this.listActivityPageIndex = selectedValue;
+    this.listSupportPageIndex = selectedValue;
 
-    this.listSupportCollectionView.pageSize = this.listActivityPageIndex;
+    this.listSupportCollectionView.pageSize = this.listSupportPageIndex;
     this.listSupportCollectionView.refresh();
     this.listSupportCollectionView.refresh();
   }
@@ -166,7 +166,7 @@ export class SupportListComponent implements OnInit {
         if (data.length > 0) {
           this.listSupportObservableArray = data;
           this.listSupportCollectionView = new CollectionView(this.listSupportObservableArray);
-          this.listSupportCollectionView.pageSize = this.listActivityPageIndex;
+          this.listSupportCollectionView.pageSize = this.listSupportPageIndex;
           this.listSupportCollectionView.trackChanges = true;
           this.listSupportCollectionView.refresh();
           this.listSupportFlexGrid.refresh();
