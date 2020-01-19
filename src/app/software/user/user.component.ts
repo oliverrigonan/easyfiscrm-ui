@@ -40,10 +40,14 @@ export class UserComponent implements OnInit {
   public addUserSubscription: any;
 
   public userDetailModalRef: BsModalRef;
+  public userFormDetailModalRef: BsModalRef;
+
 
   public IsAddButtonClick: Boolean;
 
   public userDetailModalHeaderTitle: string;
+  public userFormDetailModalHeaderTitle: string;
+
   ngOnInit() {
     this.createCboShowNumberOfRows();
     this.listUserData();
@@ -153,6 +157,17 @@ export class UserComponent implements OnInit {
     });
 
     this.userDetailModalHeaderTitle = "Add User";
+    this.IsAddButtonClick = true;
+  }
+
+  public btnAddUserFormClick(addUserFormDetailModalTemplate: TemplateRef<any>): void {
+    this.userFormDetailModalRef = this.modalService.show(addUserFormDetailModalTemplate, {
+      backdrop: true,
+      ignoreBackdropClick: true,
+      class: "modal-sm"
+    });
+
+    this.userFormDetailModalHeaderTitle = "Add User Form";
     this.IsAddButtonClick = true;
   }
 

@@ -20,7 +20,8 @@
           </div>
         </td>
         <td style="text-align: right;">
-          <button class="btn btn-primary" (click)="btnAddUserClick(userDetailModalTemplate)" style="margin-right: 5px;" id="btnAddSupport">
+          <button class="btn btn-primary" (click)="btnAddUserClick(userDetailModalTemplate)" style="margin-right: 5px;"
+            id="btnAddSupport">
             <i class="fa fa-plus fa-fw"></i> Add
           </button>
           <button class="btn btn-danger" routerLink="/software/sys/dashboard" id="btnCloseActivity">
@@ -30,16 +31,14 @@
       </tr>
     </table>
   </div>
-
   <div class="card-body">
-    
     <mat-progress-bar [hidden]="isProgressBarHidden" [color]="'primary'" [mode]="'indeterminate'"></mat-progress-bar>
     <wj-flex-grid #listUserFlexGrid [itemsSource]="listUsertCollectionView" [selectionMode]="3" [frozenColumns]="2">
       <wj-flex-grid-filter></wj-flex-grid-filter>
       <wj-flex-grid-column [header]="Edit" [isReadOnly]="true" [width]="80">
         <ng-template wjFlexGridCellTemplate [cellType]="'Cell'">
-          <button type="button" class="btn btn-primary btn-block btn-xs" (click)="btnEditUserClick(userDetailModalTemplate)"
-            id="btnEditUser">
+          <button type="button" class="btn btn-primary btn-block btn-xs"
+            (click)="btnEditUserClick(userDetailModalTemplate)" id="btnEditUser">
             <i class="fa fa-edit fa-fw"></i> Edit
           </button>
         </ng-template>
@@ -112,8 +111,7 @@
               </div> -->
             </td>
             <td style="text-align: right;">
-              <button class="btn btn-primary" (click)="btnSaveClick()"
-                style="margin-right: 5px;" id="btnAddActivity">
+              <button class="btn btn-primary" (click)="btnSaveClick()" style="margin-right: 5px;" id="btnAddActivity">
                 <i class="fa fa-plus fa-fw"></i> Register
               </button>
               <button class="btn btn-danger" (click)="btnCloseModal()" id="btnCloseActivity">
@@ -155,6 +153,20 @@
         </div>
       </div>
       <div class="card-body">
+        <table border="0" style="width: 100%; border: none;">
+          <tr>
+            <td>
+
+            </td>
+            <td style="text-align: right;">
+              <button class="btn btn-primary" (click)="btnAddUserFormClick(userFormModalTemplate)"
+                style="margin-right: 5px;" id="btnAddSupport">
+                <i class="fa fa-plus fa-fw"></i> Add
+              </button>
+            </td>
+          </tr>
+        </table>
+        <br>
         <mat-progress-bar [hidden]="isProgressBarHidden" [color]="'primary'" [mode]="'indeterminate'">
         </mat-progress-bar>
         <wj-flex-grid #listActivityFlexGrid [itemsSource]="modalListActivityCollectionView" [selectionMode]="3"
@@ -163,8 +175,7 @@
           <wj-flex-grid-column [header]="Edit" [isReadOnly]="true" [width]="80">
             <ng-template wjFlexGridCellTemplate [cellType]="'Cell'">
               <button type="button" class="btn btn-primary btn-block btn-xs"
-                (click)="btnEditActivityClick(activityModalTemplate)" id="btnEditActivity"
-                >
+                (click)="btnEditActivityClick(activityModalTemplate)" id="btnEditActivity">
                 <i class="fa fa-edit fa-fw"></i> Edit
               </button>
             </ng-template>
@@ -211,9 +222,142 @@
         </div>
       </div> -->
     </div>
-    
+
   </div>
   <!-- <div class="modal-footer"> -->
+  <div class="modal-footer">
+    <!-- <table>
+      <tr>
+        <td>
+          <div class="col-sm-12 btn-group" style="padding: 5px 0px 5px 0px;">
+            <button type="button" class="btn btn-secondary" (click)="modalListActivityCollectionView.moveToFirstPage()">
+              <i class="fa fa-fast-backward"></i>
+            </button>
+            <button type="button" class="btn btn-secondary" (click)="modalListActivityCollectionView.moveToPreviousPage()">
+              <i class="fa fa-step-backward"></i>
+            </button>
+            <button type="button" class="btn btn-secondary" disabled style="width:100px">
+              {{ modalListActivityCollectionView.pageIndex + 1 }} / {{ modalListActivityCollectionView.pageCount }}
+            </button>
+            <button type="button" class="btn btn-secondary" (click)="modalListActivityCollectionView.moveToNextPage()">
+              <i class="fa fa-step-forward"></i>
+            </button>
+            <button type="button" class="btn btn-secondary" (click)="modalListActivityCollectionView.moveToLastPage()">
+              <i class="fa fa-fast-forward"></i>
+            </button>
+          </div>
+        </td>
+        <td></td>
+      </tr>
+    </table> -->
+  </div>
+</ng-template>
+
+<ng-template #userFormModalTemplate>
+  <div class="modal-header">
+    <h4 class="modal-title">
+      {{ userFormDetailModalHeaderTitle }}
+    </h4>
+  </div>
+  <div class="modal-body">
+    <div class="card card-default">
+      <div class="card-header">
+        <table border="0" style="width: 100%; border: none;">
+          <tr>
+            <td>
+            </td>
+            <td style="text-align: right;">
+              <button class="btn btn-primary" (click)="btnSaveClick()" style="margin-right: 5px;" id="btnAddActivity">
+                <i class="fa fa-plus fa-fw"></i> Save
+              </button>
+              <button class="btn btn-danger" (click)="btnCloseModal()" id="btnCloseActivity">
+                <i class="fa fa-close fa-fw"></i> Cancel
+              </button>
+            </td>
+          </tr>
+        </table>
+      </div>
+      <div class="card-body">
+        <div class="row">
+          <div class="col-lg-12">
+            <div class="form-group">
+              <span class="badge badge-info" style="margin-bottom: 5px;"><i class="fa fa-question-circle fa-fw"></i>
+                System Form</span>
+              <wj-combo-box #cboSysForm [itemsSource]="cboObservableArray" [isEditable]="false"
+                [isRequired]="true" [displayMemberPath]="'FormName'" [selectedValuePath]="'Id'"
+                (selectedIndexChanged)="cboUserFormSelectedIndexChanged(cboSysForm.selectedValue)"
+                style="width: 100%;">
+              </wj-combo-box>
+            </div>
+            <table>
+              <tr>
+                <td>
+                  <input type="checkbox" aria-label="Checkbox for following text input">
+                </td>
+                <td>
+                  <label for="" class="col-form-label form-group-label">CanAdd</label>
+                </td>
+              </tr>
+              <tr>
+                <td>
+                  <input type="checkbox" aria-label="Checkbox for following text input">
+                </td>
+                <td>
+                  <label for="" class="col-form-label form-group-label">CanEdit</label>
+                </td>
+              </tr>
+              <tr>
+                <td>
+                  <input type="checkbox" aria-label="Checkbox for following text input">
+                </td>
+                <td>
+                  <label for="" class="col-form-label form-group-label">CanDelete</label>
+                </td>
+              </tr>
+              <tr>
+                <td>
+                  <input type="checkbox" aria-label="Checkbox for following text input">
+                </td>
+                <td>
+                  <label for="" class="col-form-label form-group-label">CanLock</label>
+                </td>
+              </tr>
+              <tr>
+                <td>
+                  <input type="checkbox" aria-label="Checkbox for following text input">
+                </td>
+                <td>
+                  <label for="" class="col-form-label form-group-label">CanUnlock</label>
+                </td>
+              </tr>
+              <tr>
+                <td>
+                  <input type="checkbox" aria-label="Checkbox for following text input">
+                </td>
+                <td>
+                  <label for="" class="col-form-label form-group-label">CanCancel</label>
+                </td>
+              </tr>
+              <tr>
+                <td>
+                  <input type="checkbox" aria-label="Checkbox for following text input">
+                </td>
+                <td>
+                  <label for="" class="col-form-label form-group-label">CanPrint</label>
+                </td>
+              </tr>
+            </table>
+          </div>
+
+
+
+        </div>
+
+      </div>
+
+    </div>
+
+  </div>
   <div class="modal-footer">
     <!-- <table>
       <tr>
