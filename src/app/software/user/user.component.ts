@@ -11,6 +11,7 @@ import { BsModalService } from 'ngx-bootstrap/modal';
 import { BsModalRef } from 'ngx-bootstrap/modal/bs-modal-ref.service';
 import { UserService } from './user.service';
 import { UserModel } from './user.model';
+import { UserFormModel } from './user-form.model';
 
 @Component({
   selector: 'app-user',
@@ -30,23 +31,39 @@ export class UserComponent implements OnInit {
   public cboShowNumberOfRows: ObservableArray = new ObservableArray();
 
   public listUserObservableArray: ObservableArray = new ObservableArray();
-  public listUsertCollectionView: CollectionView = new CollectionView(this.listUserObservableArray);
+  public listUserCollectionView: CollectionView = new CollectionView(this.listUserObservableArray);
   public listUserPageIndex: number = 15;
   @ViewChild('listUserFlexGrid') listUserFlexGrid: WjFlexGrid;
   public isProgressBarHidden = false;
   public isDataLoaded: boolean = false;
 
   public listUserSub: any;
-  public addUserSubscription: any;
+  public addUserSub: any;
 
   public userDetailModalRef: BsModalRef;
   public userFormDetailModalRef: BsModalRef;
-
-
-  public IsAddButtonClick: Boolean;
+  public userFormDeleteModalRef: BsModalRef;
+  public userFormEditModalRef: BsModalRef;
 
   public userDetailModalHeaderTitle: string;
   public userFormDetailModalHeaderTitle: string;
+
+  public IsAddButtonClick: Boolean;
+
+  public cboSysFormSub: any;
+  public cboSysFormObservable: ObservableArray = new ObservableArray();
+
+  public currentUserId: number = 0;
+
+  public listUserFormObservableArray: ObservableArray = new ObservableArray();
+  public listUserFormCollectionView: CollectionView = new CollectionView(this.listUserFormObservableArray);
+  public listUserFormPageIndex: number = 15;
+  @ViewChild('listUserFormFlexGrid') listUserFormFlexGrid: WjFlexGrid;
+  public listUserFormSub: any;
+
+  public addUserFormSub: any;
+  public deleteUserFormSub: any;
+
 
   ngOnInit() {
     this.createCboShowNumberOfRows();
@@ -61,6 +78,19 @@ export class UserComponent implements OnInit {
     Password: '',
     ConfirmPassword: ''
   };
+
+  public userFormModel: UserFormModel = {
+    Id: 0,
+    UserId: 0,
+    FormId: 0,
+    CanAdd: true,
+    CanEdit: true,
+    CanDelete: true,
+    CanLock: true,
+    CanUnlock: true,
+    CanCancel: true,
+    CanPrint: true
+  }
 
 
   public createCboShowNumberOfRows(): void {
@@ -95,17 +125,17 @@ export class UserComponent implements OnInit {
   public cboShowNumberOfRowsOnSelectedIndexChanged(selectedValue: any): void {
     this.listUserPageIndex = selectedValue;
 
-    this.listUsertCollectionView.pageSize = this.listUserPageIndex;
-    this.listUsertCollectionView.refresh();
-    this.listUsertCollectionView.refresh();
+    this.listUserCollectionView.pageSize = this.listUserPageIndex;
+    this.listUserCollectionView.refresh();
+    this.listUserCollectionView.refresh();
   }
 
   public listUserData(): void {
     this.listUserObservableArray = new ObservableArray();
-    this.listUsertCollectionView = new CollectionView(this.listUserObservableArray);
-    this.listUsertCollectionView.pageSize = 15;
-    this.listUsertCollectionView.trackChanges = true;
-    this.listUsertCollectionView.refresh();
+    this.listUserCollectionView = new CollectionView(this.listUserObservableArray);
+    this.listUserCollectionView.pageSize = 15;
+    this.listUserCollectionView.trackChanges = true;
+    this.listUserCollectionView.refresh();
     this.listUserFlexGrid.refresh();
 
     this.isProgressBarHidden = false;
@@ -113,13 +143,12 @@ export class UserComponent implements OnInit {
     this.userService.listUser();
     this.listUserSub = this.userService.userListObservable.subscribe(
       data => {
-        console.log("Fire");
         if (data.length > 0) {
           this.listUserObservableArray = data;
-          this.listUsertCollectionView = new CollectionView(this.listUserObservableArray);
-          this.listUsertCollectionView.pageSize = this.listUserPageIndex;
-          this.listUsertCollectionView.trackChanges = true;
-          this.listUsertCollectionView.refresh();
+          this.listUserCollectionView = new CollectionView(this.listUserObservableArray);
+          this.listUserCollectionView.pageSize = this.listUserPageIndex;
+          this.listUserCollectionView.trackChanges = true;
+          this.listUserCollectionView.refresh();
           this.listUserFlexGrid.refresh();
         }
         this.isDataLoaded = true;
@@ -131,13 +160,14 @@ export class UserComponent implements OnInit {
   }
 
   public btnEditUserClick(userDetailModalTemplate: TemplateRef<any>): void {
+
     this.userDetailModalRef = this.modalService.show(userDetailModalTemplate, {
       backdrop: true,
       ignoreBackdropClick: true,
       class: "modal-lg"
     });
 
-    let currentUserDetail = this.listUsertCollectionView.currentItem;
+    let currentUserDetail = this.listUserCollectionView.currentItem;
     this.userModel.Id = currentUserDetail.Id;
     this.userModel.UserName = currentUserDetail.UserName;
     this.userModel.FullName = currentUserDetail.FullName;
@@ -146,7 +176,8 @@ export class UserComponent implements OnInit {
 
     this.userDetailModalHeaderTitle = "User Detail";
     this.IsAddButtonClick = false;
-
+    this.currentUserId = currentUserDetail.Id;
+    this.userFormModel.UserId = currentUserDetail.Id;
   }
 
   public btnAddUserClick(addDetailModalTemplate: TemplateRef<any>): void {
@@ -158,6 +189,9 @@ export class UserComponent implements OnInit {
 
     this.userDetailModalHeaderTitle = "Add User";
     this.IsAddButtonClick = true;
+    this.userFormModel.UserId = 0;
+    this.currentUserId = 0;
+    this.listUserFormData();
   }
 
   public btnAddUserFormClick(addUserFormDetailModalTemplate: TemplateRef<any>): void {
@@ -169,15 +203,15 @@ export class UserComponent implements OnInit {
 
     this.userFormDetailModalHeaderTitle = "Add User Form";
     this.IsAddButtonClick = true;
+    this.createCboSysForm();
   }
-
 
   public btnSaveClick(): void {
     if (this.IsAddButtonClick == true) {
       if (this.userModel.UserName !== "" || this.userModel.FullName !== "" || this.userModel.Email !== "" || this.userModel.Password !== "") {
         this.userService.saveUser(this.userModel);
 
-        this.addUserSubscription = this.userService.saveUserObservable.subscribe(
+        this.addUserSub = this.userService.saveUserObservable.subscribe(
           data => {
             if (data[0] == "success") {
               this.userDetailModalRef.hide();
@@ -185,13 +219,13 @@ export class UserComponent implements OnInit {
               setTimeout(() => {
                 this.isDataLoaded = false;
                 this.listUserData();
-                this.resetForm();
+                this.resetUserForm();
               }, 100);
 
             } else if (data[0] == "failed") {
               this.toastr.error(data[1], "Error");
             }
-            if (this.addUserSubscription != null) this.addUserSubscription.unsubscribe();
+            if (this.addUserSub != null) this.addUserSub.unsubscribe();
           }
         );
       } else {
@@ -201,7 +235,7 @@ export class UserComponent implements OnInit {
       if (this.userModel.UserName !== "" || this.userModel.FullName !== "" || this.userModel.Email !== "" || this.userModel.Password !== "") {
         this.userService.saveUser(this.userModel);
 
-        this.addUserSubscription = this.userService.saveUserObservable.subscribe(
+        this.addUserSub = this.userService.saveUserObservable.subscribe(
           data => {
             if (data[0] == "success") {
               this.userDetailModalRef.hide();
@@ -210,13 +244,13 @@ export class UserComponent implements OnInit {
                 this.isDataLoaded = false;
 
                 this.listUserData();
-                this.resetForm();
+                this.resetUserForm();
               }, 100);
 
             } else if (data[0] == "failed") {
               this.toastr.error(data[1], "Error");
             }
-            if (this.addUserSubscription != null) this.addUserSubscription.unsubscribe();
+            if (this.addUserSub != null) this.addUserSub.unsubscribe();
           }
         );
       } else {
@@ -225,12 +259,179 @@ export class UserComponent implements OnInit {
     }
   }
 
-  public btnCloseModal(): void {
-    this.userDetailModalRef.hide();
-    this.resetForm();
+
+
+  public createCboSysForm(): void {
+    this.userService.listSysForm();
+    this.cboSysFormSub = this.userService.sysFormObservable.subscribe(
+      data => {
+        let sysFormObservableArray = new ObservableArray();
+        if (data.length > 0) {
+          for (var i = 0; i <= data.length - 1; ++i) {
+            sysFormObservableArray.push({
+              Id: data[i].Id,
+              FormName: data[i].FormName
+            });
+          }
+        }
+
+        this.cboSysFormObservable = sysFormObservableArray;
+        if (this.cboSysFormSub != null) this.cboSysFormSub.unsubscribe();
+      }
+    );
   }
 
-  public resetForm(): void {
+  public cboSysFormSelectedIndexChanged(selectedValue: any): void {
+    this.userFormModel.FormId = selectedValue;
+  }
+
+  public listUserFormData(): void {
+    if (!this.isDataLoaded) {
+      setTimeout(() => {
+
+        this.listUserFormObservableArray = new ObservableArray();
+        this.listUserFormCollectionView = new CollectionView(this.listUserFormObservableArray);
+        this.listUserFormCollectionView.pageSize = 15;
+        this.listUserFormCollectionView.trackChanges = true;
+        this.listUserFormCollectionView.refresh();
+        // this.listUserFormFlexGrid.refresh();
+
+        this.isProgressBarHidden = false;
+
+        this.userService.listUserForm(this.currentUserId);
+        this.listUserFormSub = this.userService.userFormListObservable.subscribe(
+          data => {
+            if (data.length > 0) {
+              this.listUserFormObservableArray = data;
+              this.listUserFormCollectionView = new CollectionView(this.listUserFormObservableArray);
+              this.listUserFormCollectionView.pageSize = this.listUserFormPageIndex;
+              this.listUserFormCollectionView.trackChanges = true;
+              this.listUserFormCollectionView.refresh();
+              // this.listUserFormFlexGrid.refresh();
+            }
+            this.isDataLoaded = true;
+            this.isProgressBarHidden = true;
+
+            if (this.listUserFormSub != null) this.listUserFormSub.unsubscribe();
+          }
+        );
+      }, 100);
+    }
+  }
+
+  public btnCloseModal(): void {
+    this.userDetailModalRef.hide();
+    this.resetUserForm();
+  }
+
+  public listUserForm(): void {
+    this.isDataLoaded = false;
+    setTimeout(() => {
+      this.listUserFormData();
+    }, 500);
+  }
+
+  public btnSaveUserFormClick(): void {
+    console.log(this.userFormModel);
+    this.userService.AddUserForm(this.userFormModel);
+
+    this.addUserFormSub = this.userService.addUserFormObservable.subscribe(
+      data => {
+        if (data[0] == "success") {
+          this.closeUserFormModal();
+          this.toastr.success("Updated successfully.", "Success");
+          setTimeout(() => {
+            this.isDataLoaded = false;
+            this.listUserFormData();
+          }, 100);
+
+        } else if (data[0] == "failed") {
+          this.toastr.error(data[1], "Error");
+        }
+        if (this.addUserFormSub != null) this.addUserFormSub.unsubscribe();
+      }
+    );
+  }
+
+  public btnConfirmDeleteUserFormClick(): void {
+
+    let currentUserForm = this.listUserFormCollectionView.currentItem;
+    this.userService.DeleteUserForm(currentUserForm.Id);
+    this.deleteUserFormSub = this.userService.deleteUserFormObservable.subscribe(
+      data => {
+        if (data[0] == "success") {
+          this.userFormDeleteModalRef.hide();
+          this.toastr.success("Deleted successfully.", "Success");
+          setTimeout(() => {
+            this.isDataLoaded = false;
+            this.listUserFormData();
+          }, 100);
+
+        } else if (data[0] == "failed") {
+          this.toastr.error(data[1], "Error");
+        }
+        if (this.deleteUserFormSub != null) this.deleteUserFormSub.unsubscribe();
+      }
+    );
+  }
+
+  public btnEditUserFormClick(editUserFormDetailModalTemplate: TemplateRef<any>): void {
+    this.userFormDetailModalRef = this.modalService.show(editUserFormDetailModalTemplate, {
+      backdrop: true,
+      ignoreBackdropClick: true,
+      class: "modal-sm"
+    });
+    this.createCboSysForm();
+    setTimeout(() => {
+      let currentUserForm = this.listUserFormCollectionView.currentItem;
+      this.userFormModel = {
+        Id: currentUserForm.Id,
+        UserId: currentUserForm.UserId,
+        FormId: currentUserForm.FormId,
+        CanAdd: currentUserForm.CanAdd,
+        CanEdit: currentUserForm.CanEdit,
+        CanDelete: currentUserForm.CanDelete,
+        CanLock: currentUserForm.CanLock,
+        CanUnlock: currentUserForm.CanUnlock,
+        CanCancel: currentUserForm.CanCancel,
+        CanPrint: currentUserForm.CanPrint,
+      }
+    }, 100);
+
+
+  }
+
+  public btnDelteUserFormClick(deleteUserFormDetailModalTemplate: TemplateRef<any>): void {
+    this.userFormDeleteModalRef = this.modalService.show(deleteUserFormDetailModalTemplate, {
+      backdrop: true,
+      ignoreBackdropClick: true,
+      class: "modal-sm"
+    });
+
+  }
+
+  public btnCloseUserFormModal(): void {
+    this.closeUserFormModal();
+  }
+
+  public closeUserFormModal(): void {
+    this.userFormDetailModalRef.hide();
+    this.resetUserFormForm();
+  }
+
+  public resetUserFormForm(): void {
+    this.userFormModel.Id = 0;
+    this.userFormModel.FormId = 0;
+    this.userFormModel.CanAdd = true;
+    this.userFormModel.CanEdit = true;
+    this.userFormModel.CanDelete = true;
+    this.userFormModel.CanLock = true;
+    this.userFormModel.CanUnlock = true;
+    this.userFormModel.CanCancel = true;
+    this.userFormModel.CanPrint = true;
+  }
+
+  public resetUserForm(): void {
     this.userModel.Id = 0;
     this.userModel.UserName = "";
     this.userModel.FullName = "";
