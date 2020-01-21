@@ -1,7 +1,7 @@
 <div class="container-fluid">
     <div class="row">
       <div class="col-lg-3">
-        <button type="button" class="btn btn-light btn-block" routerLink="/software/trn/lead">
+        <button type="button" class="btn btn-light btn-block" routerLink="/software/trn/lead" *ngIf="crmLead">
           <br />
           <img src="../../../assets/img/icons/leads.png" height="100" alt="">
           <br />
@@ -14,7 +14,7 @@
         <br />
       </div>
       <div class="col-lg-3">
-        <button type="button" class="btn btn-light btn-block" routerLink="/software/trn/sales">
+        <button type="button" class="btn btn-light btn-block" routerLink="/software/trn/sales" *ngIf="crmSalesDelivery">
           <br />
           <img src="../../../assets/img/icons/delivery.png" height="100" alt="">
           <br />
@@ -27,7 +27,7 @@
         <br />
       </div>
       <div class="col-lg-3">
-        <button type="button" class="btn btn-light btn-block" routerLink="/software/trn/support">
+        <button type="button" class="btn btn-light btn-block" routerLink="/software/trn/support" *ngIf="crmSupport">
           <br />
           <img src="../../../assets/img/icons/support.png" height="100" alt="">
           <br />
@@ -40,7 +40,7 @@
         <br />
       </div>
       <div class="col-lg-3">
-        <button type="button" class="btn btn-light btn-block" routerLink="/software/report">
+        <button type="button" class="btn btn-light btn-block" routerLink="/software/report" *ngIf="crmReport">
           <br />
           <img src="../../../assets/img/icons/report.png" height="100" alt="">
           <br />

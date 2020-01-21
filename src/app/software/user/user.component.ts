@@ -206,7 +206,7 @@ export class UserComponent implements OnInit {
     this.createCboSysForm();
   }
 
-  public btnSaveClick(): void {
+  public btnSaveUserClick(): void {
     if (this.IsAddButtonClick == true) {
       if (this.userModel.UserName !== "" || this.userModel.FullName !== "" || this.userModel.Email !== "" || this.userModel.Password !== "") {
         this.userService.saveUser(this.userModel);
@@ -259,6 +259,32 @@ export class UserComponent implements OnInit {
     }
   }
 
+  public btnLockUserClick(): void {
+    if (this.userModel.UserName !== "" || this.userModel.FullName !== "" || this.userModel.Email !== "" || this.userModel.Password !== "") {
+      this.userService.saveUser(this.userModel);
+
+      this.addUserSub = this.userService.saveUserObservable.subscribe(
+        data => {
+          if (data[0] == "success") {
+            this.userDetailModalRef.hide();
+            this.toastr.success("Updated successfully.", "Success");
+            setTimeout(() => {
+              this.isDataLoaded = false;
+
+              this.listUserData();
+              this.resetUserForm();
+            }, 100);
+
+          } else if (data[0] == "failed") {
+            this.toastr.error(data[1], "Error");
+          }
+          if (this.addUserSub != null) this.addUserSub.unsubscribe();
+        }
+      );
+    } else {
+      this.toastr.error("Please don't leave empty fields.", "Error");
+    }
+  }
 
 
   public createCboSysForm(): void {
@@ -332,14 +358,13 @@ export class UserComponent implements OnInit {
   }
 
   public btnSaveUserFormClick(): void {
-    console.log(this.userFormModel);
-    this.userService.AddUserForm(this.userFormModel);
+    this.userService.SaveUserForm(this.userFormModel);
 
-    this.addUserFormSub = this.userService.addUserFormObservable.subscribe(
+    this.addUserFormSub = this.userService.saveserFormObservable.subscribe(
       data => {
         if (data[0] == "success") {
           this.closeUserFormModal();
-          this.toastr.success("Updated successfully.", "Success");
+          this.toastr.success("Saved successfully.", "Success");
           setTimeout(() => {
             this.isDataLoaded = false;
             this.listUserFormData();
@@ -354,7 +379,6 @@ export class UserComponent implements OnInit {
   }
 
   public btnConfirmDeleteUserFormClick(): void {
-
     let currentUserForm = this.listUserFormCollectionView.currentItem;
     this.userService.DeleteUserForm(currentUserForm.Id);
     this.deleteUserFormSub = this.userService.deleteUserFormObservable.subscribe(
@@ -397,8 +421,6 @@ export class UserComponent implements OnInit {
         CanPrint: currentUserForm.CanPrint,
       }
     }, 100);
-
-
   }
 
   public btnDelteUserFormClick(deleteUserFormDetailModalTemplate: TemplateRef<any>): void {
@@ -407,7 +429,6 @@ export class UserComponent implements OnInit {
       ignoreBackdropClick: true,
       class: "modal-sm"
     });
-
   }
 
   public btnCloseUserFormModal(): void {

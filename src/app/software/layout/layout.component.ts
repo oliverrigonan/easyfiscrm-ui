@@ -2,6 +2,7 @@ import { Component, OnInit, ChangeDetectorRef, ViewChild } from '@angular/core';
 import { Router } from '@angular/router';
 import { MatSidenav } from '@angular/material';
 import { MatMenuModule } from '@angular/material/menu';
+import { SecurityService } from '../security/security.service';
 
 @Component({
   selector: 'app-layout',
@@ -10,8 +11,17 @@ import { MatMenuModule } from '@angular/material/menu';
 })
 export class LayoutComponent implements OnInit {
 
+  private crmLead: boolean = false;
+  private crmSalesDelivery: boolean = false;
+  private crmSupport: boolean = false;
+  private crmActivity: boolean = false;
+  private crmReport: boolean = false;
+  private crmAdmin: boolean = false;
+
   constructor(
-    private router: Router
+    private router: Router,
+    private securityService: SecurityService
+
   ) {
     this.routerEvents();
   }
@@ -87,6 +97,31 @@ export class LayoutComponent implements OnInit {
   ngOnInit() {
     this.openSideBar();
     this.username = localStorage.getItem("username");
+    console.log(this.securityService.openPage("CRMLead"));
+
+    if (this.securityService.openPage("CRMLead") == true) {
+      this.crmLead = true;
+    }
+    if (this.securityService.openPage("CRMSalesDelivery") == true) {
+      this.crmSalesDelivery = true;
+    }
+    if (this.securityService.openPage("CRMSupport") == true) {
+      this.crmSupport = true;
+    }
+    if (this.securityService.openPage("CRMActivity") == true) {
+      this.crmActivity = true;
+    }
+    if (this.securityService.openPage("CRMReport") == true) {
+      this.crmReport = true;
+    }
+    if (this.securityService.openPage("CRMReport") == true) {
+      this.crmReport = true;
+    }
+    if (this.securityService.openPage("CRMAdmin") == true) {
+      this.crmAdmin = true;
+    }
+    
+    
   }
 
 }

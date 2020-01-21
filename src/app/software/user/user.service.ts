@@ -37,8 +37,8 @@ export class UserService {
   public userFormListSubject = new Subject<ObservableArray>();
   public userFormListObservable = this.userFormListSubject.asObservable();
 
-  public addUserFormSubject = new Subject<string[]>();
-  public addUserFormObservable = this.addUserFormSubject.asObservable();
+  public saveUserFormSubject = new Subject<string[]>();
+  public saveserFormObservable = this.saveUserFormSubject.asObservable();
   
   public deleteUserFormSubject = new Subject<string[]>();
   public deleteUserFormObservable = this.deleteUserFormSubject.asObservable();
@@ -188,17 +188,32 @@ export class UserService {
     );
   }
 
-  public AddUserForm(objUserForm: UserFormModel): void {
-    this.httpClient.post(this.defaultAPIURLHost + "/api/crm/mst/user/form/add", JSON.stringify(objUserForm), this.options).subscribe(
-      response => {
-        let responseResults: string[] = ["success", ""];
-        this.addUserFormSubject.next(responseResults);
-      },
-      error => {
-        let errorResults: string[] = ["failed", error["error"]];
-        this.addUserFormSubject.next(errorResults);
-      }
-    );
+  public SaveUserForm(objUserForm: UserFormModel): void {
+    if(objUserForm.Id == 0){
+      this.httpClient.post(this.defaultAPIURLHost + "/api/crm/mst/user/form/add", JSON.stringify(objUserForm), this.options).subscribe(
+        response => {
+          let responseResults: string[] = ["success", ""];
+          this.saveUserFormSubject.next(responseResults);
+        },
+        error => {
+          let errorResults: string[] = ["failed", error["error"]];
+          this.saveUserFormSubject.next(errorResults);
+        }
+      );
+    }
+    else{
+      this.httpClient.put(this.defaultAPIURLHost + "/api/crm/mst/user/form/update", JSON.stringify(objUserForm), this.options).subscribe(
+        response => {
+          let responseResults: string[] = ["success", ""];
+          this.saveUserFormSubject.next(responseResults);
+        },
+        error => {
+          let errorResults: string[] = ["failed", error["error"]];
+          this.saveUserFormSubject.next(errorResults);
+        }
+      );
+    }
+    
   }
 
   public DeleteUserForm(id: number): void {
