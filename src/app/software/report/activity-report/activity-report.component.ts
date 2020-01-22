@@ -217,4 +217,10 @@ export class ActivityReportComponent implements OnInit {
       }
     );
   }
+
+  ngOnDestroy() {
+    if (this.cboListDocumentSub != null) this.cboListDocumentSub.unsubscribe();
+    if (this.cboListStatusSub != null) this.cboListStatusSub.unsubscribe();
+    if (this.listActivitySub != null) this.listActivitySub.unsubscribe();
+  }
 }

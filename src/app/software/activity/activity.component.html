@@ -20,9 +20,6 @@
           </div>
         </td>
         <td style="text-align: right;">
-          <button class="btn btn-primary" (click)="btnCSVReportClick()" style="margin-right: 5px;" id="btnPrint">
-            <i class="fa fa-file-excel-o fa-fw"></i> CSV
-          </button>
           <button class="btn btn-danger" routerLink="/software" id="btnCloseActivity">
             <i class="fa fa-close fa-fw"></i> Close
           </button>
@@ -32,7 +29,7 @@
   </div>
   <div class="card-body">
     <div class="row">
-      <div class="col-md-8">
+      <div class="col-md-10">
         <table border="0" style="width: 100%; border: none; margin-top: -15px;">
           <tr>
             <td>
@@ -89,10 +86,19 @@
                 </wj-combo-box>
               </div>
             </td>
+            <td>
+              <div class="form-group">
+                <span class="badge badge-info" style="margin-bottom: 5px;"><i class="fa fa-question-circle fa-fw"></i>
+                </span>
+                <button class="btn btn-primary" (click)="btnGetActivityClick()" style="margin-right: 5px;" id="btnPrint">
+                 Get
+                </button>
+              </div>
+            </td>
           </tr>
         </table>
       </div>
-      <div class="col-md-4"></div>
+      <div class="col-md-2"></div>
     </div>
     <mat-progress-bar [hidden]="isProgressBarHidden" [color]="'primary'" [mode]="'indeterminate'"></mat-progress-bar>
     <wj-flex-grid #listActivityFlexGrid [itemsSource]="listActivityHeaderCollectionView" [selectionMode]="3"

@@ -29,6 +29,9 @@ export class ActivityComponent implements OnInit {
     this.createCboActivityDocument();
     this.createCboActivityStatus();
     this.createCboActivityUser();
+    setTimeout(() => {
+      this.listActivityHeader();
+    }, 300);
   }
 
   public cboShowNumberOfRows: ObservableArray = new ObservableArray();
@@ -95,19 +98,19 @@ export class ActivityComponent implements OnInit {
   }
 
   public cboStartDateTextChanged(): void {
-    if (this.isDataLoaded) {
-      setTimeout(() => {
-        this.listActivityHeader();
-      }, 100);
-    }
+    // if (this.isDataLoaded) {
+    //   setTimeout(() => {
+    //     this.listActivityHeader();
+    //   }, 100);
+    // }
   }
 
   public cboEndDateTextChanged(): void {
-    if (this.isDataLoaded) {
-      setTimeout(() => {
-        this.listActivityHeader();
-      }, 100);
-    }
+    // if (this.isDataLoaded) {
+    //   setTimeout(() => {
+    //     this.listActivityHeader();
+    //   }, 100);
+    // }
   }
 
   public createCboActivityUser(): void {
@@ -126,9 +129,9 @@ export class ActivityComponent implements OnInit {
         }
 
         this.cboActivityUserObservableArray = userObservableArray;
-        setTimeout(() => {
-          this.listActivityHeader();
-        }, 100);
+        // setTimeout(() => {
+        //   this.listActivityHeader();
+        // }, 100);
         if (this.cboListUserSub != null) this.cboListUserSub.unsubscribe();
       }
     );
@@ -204,11 +207,11 @@ export class ActivityComponent implements OnInit {
         console.log("Good!");
 
         this.cboActivityStatusObservableArray = statusObservableArray;
-        if (this.cboActivityStatusObservableArray.length > 0) {
-          setTimeout(() => {
-            this.listActivityHeader();
-          }, 100);
-        }
+        // if (this.cboActivityStatusObservableArray.length > 0) {
+        //   setTimeout(() => {
+        //     this.listActivityHeader();
+        //   }, 100);
+        // }
 
         if (this.cboListStatusSub != null) this.cboListStatusSub.unsubscribe();
       }
@@ -218,11 +221,15 @@ export class ActivityComponent implements OnInit {
   public cboActivityStatusSelectedIndexChanged(selectedValue: any): void {
     this.cboActivityStatusSelectedValue = selectedValue;
 
-    if (this.isDataLoaded) {
-      setTimeout(() => {
-        this.listActivityHeader();
-      }, 100);
-    }
+    // if (this.isDataLoaded) {
+    //   setTimeout(() => {
+    //     this.listActivityHeader();
+    //   }, 100);
+    // }
+  }
+
+  public btnGetActivityClick(): void {
+    this.listActivityHeader();
   }
 
   public listActivityHeader(): void {
@@ -434,7 +441,7 @@ export class ActivityComponent implements OnInit {
       salesDeliveryId = null;
       supportId = currentActivityHeader.Id;
     }
-    console.log(leadId,salesDeliveryId,supportId);
+    console.log(leadId, salesDeliveryId, supportId);
 
     if (this.isAddClicked) {
       this.activityModel = {
@@ -665,16 +672,14 @@ export class ActivityComponent implements OnInit {
 
 
   ngOnDestroy() {
-    if (this.cboListStatusSub != null) this.cboListStatusSub.unsubscribe();
+    if (this.cboListUserSub != null) this.cboListUserSub.unsubscribe();
     if (this.cboListDocumentSub != null) this.cboListDocumentSub.unsubscribe();
+    if (this.cboListStatusSub != null) this.cboListStatusSub.unsubscribe();
     if (this.listActivityHeaderSub != null) this.listActivityHeaderSub.unsubscribe();
     if (this.listActivitySub != null) this.listActivitySub.unsubscribe();
     if (this.saveActivitySub != null) this.saveActivitySub.unsubscribe();
-
     if (this.cboListActivityUsersSub != null) this.cboListActivityUsersSub.unsubscribe();
-
-    if (this.deleteActivitySub != null) this.deleteActivitySub.unsubscribe();
     if (this.cboListActivityStatusSub != null) this.cboListActivityStatusSub.unsubscribe();
-
+    if (this.deleteActivitySub != null) this.deleteActivitySub.unsubscribe();
   }
 }

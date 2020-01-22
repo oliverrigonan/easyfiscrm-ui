@@ -226,4 +226,8 @@ export class SalesdeliveryReportComponent implements OnInit {
     this.listSales();
   }
 
+  ngOnDestroy() {
+    if (this.cboListStatusSub != null) this.cboListStatusSub.unsubscribe();
+    if (this.listSalesDeliverySub != null) this.listSalesDeliverySub.unsubscribe();
+  }
 }

@@ -72,7 +72,7 @@ export class SupportReportComponent implements OnInit {
       });
     }
   }
-  
+
   public cboShowNumberOfRowsOnSelectedIndexChanged(selectedValue: any): void {
     this.listActivityPageIndex = selectedValue;
 
@@ -137,7 +137,7 @@ export class SupportReportComponent implements OnInit {
       }, 100);
     }
   }
-  
+
   public listSupport(): void {
     this.listSupportObservableArray = new ObservableArray();
     this.listSupportCollectionView = new CollectionView(this.listSupportObservableArray);
@@ -222,6 +222,11 @@ export class SupportReportComponent implements OnInit {
   ngOnInit() {
     this.createCboShowNumberOfRows();
     this.createCboSupportStatus();
+  }
+
+  ngOnDestroy() {
+    if (this.cboListStatusSub != null) this.cboListStatusSub.unsubscribe();
+    if (this.listSupportSub != null) this.listSupportSub.unsubscribe();
   }
 
 }

@@ -81,7 +81,7 @@ export class SupportListComponent implements OnInit {
       });
     }
   }
-  
+
   public cboShowNumberOfRowsOnSelectedIndexChanged(selectedValue: any): void {
     this.listSupportPageIndex = selectedValue;
 
@@ -146,7 +146,7 @@ export class SupportListComponent implements OnInit {
       }, 100);
     }
   }
-  
+
   public listSupport(): void {
     this.listSupportObservableArray = new ObservableArray();
     this.listSupportCollectionView = new CollectionView(this.listSupportObservableArray);
@@ -228,7 +228,7 @@ export class SupportListComponent implements OnInit {
           (<HTMLButtonElement>btnConfirmDeleteSupport).disabled = false;
           (<HTMLButtonElement>btnCloseConfirmDeleteAcitivityModal).disabled = false;
         }
-        if(this.deleteSupportSub != null) this.deleteSupportSub.unsubscribe();
+        if (this.deleteSupportSub != null) this.deleteSupportSub.unsubscribe();
       }
     );
   }
@@ -237,8 +237,10 @@ export class SupportListComponent implements OnInit {
     let currentSupport = this.listSupportCollectionView.currentItem;
     this.router.navigate(['/software/trn/support/detail/', currentSupport.Id]);
   }
-  
-  ngOnDestroy(){
+
+  ngOnDestroy() {
+    if (this.cboListStatusSub != null) this.cboListStatusSub.unsubscribe();
     if (this.listSupportSub != null) this.listSupportSub.unsubscribe();
+    if (this.deleteSupportSub != null) this.deleteSupportSub.unsubscribe();
   }
 }

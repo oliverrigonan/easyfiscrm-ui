@@ -234,7 +234,7 @@ export class SalesListComponent implements OnInit {
           (<HTMLButtonElement>btnConfirmDeleteSalesDelivery).disabled = false;
           (<HTMLButtonElement>btnCloseConfirmDeleteAcitivityModal).disabled = false;
         }
-        if(this.deleteSalesDeliverySub != null) this.deleteSalesDeliverySub.unsubscribe();
+        if (this.deleteSalesDeliverySub != null) this.deleteSalesDeliverySub.unsubscribe();
       }
     );
   }
@@ -244,6 +244,11 @@ export class SalesListComponent implements OnInit {
     this.router.navigate(['/software/trn/sales/detail/', currentSales.Id]);
   }
 
- 
+  ngOnDestroy() {
+    if (this.cboListStatusSub != null) this.cboListStatusSub.unsubscribe();
+    if (this.listSalesSub != null) this.listSalesSub.unsubscribe();
+    if (this.addSalesSub != null) this.addSalesSub.unsubscribe();
+    if (this.deleteSalesDeliverySub != null) this.deleteSalesDeliverySub.unsubscribe();
+  }
 
 }

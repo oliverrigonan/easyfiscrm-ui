@@ -29,6 +29,7 @@ export class UserComponent implements OnInit {
   ) { }
 
   public cboShowNumberOfRows: ObservableArray = new ObservableArray();
+  public cboSysFormObservable: ObservableArray = new ObservableArray();
 
   public listUserObservableArray: ObservableArray = new ObservableArray();
   public listUserCollectionView: CollectionView = new CollectionView(this.listUserObservableArray);
@@ -37,8 +38,10 @@ export class UserComponent implements OnInit {
   public isProgressBarHidden = false;
   public isDataLoaded: boolean = false;
 
-  public listUserSub: any;
-  public addUserSub: any;
+  public listUserFormObservableArray: ObservableArray = new ObservableArray();
+  public listUserFormCollectionView: CollectionView = new CollectionView(this.listUserFormObservableArray);
+  public listUserFormPageIndex: number = 15;
+  @ViewChild('listUserFormFlexGrid') listUserFormFlexGrid: WjFlexGrid;
 
   public userDetailModalRef: BsModalRef;
   public userFormDetailModalRef: BsModalRef;
@@ -48,21 +51,15 @@ export class UserComponent implements OnInit {
   public userDetailModalHeaderTitle: string;
   public userFormDetailModalHeaderTitle: string;
 
-  public IsAddButtonClick: Boolean;
-
   public cboSysFormSub: any;
-  public cboSysFormObservable: ObservableArray = new ObservableArray();
-
-  public currentUserId: number = 0;
-
-  public listUserFormObservableArray: ObservableArray = new ObservableArray();
-  public listUserFormCollectionView: CollectionView = new CollectionView(this.listUserFormObservableArray);
-  public listUserFormPageIndex: number = 15;
-  @ViewChild('listUserFormFlexGrid') listUserFormFlexGrid: WjFlexGrid;
-  public listUserFormSub: any;
-
+  public listUserSub: any;
+  public addUserSub: any;
   public addUserFormSub: any;
   public deleteUserFormSub: any;
+  public listUserFormSub: any;
+
+  public currentUserId: number = 0;
+  public IsAddButtonClick: Boolean;
 
 
   ngOnInit() {
@@ -91,7 +88,6 @@ export class UserComponent implements OnInit {
     CanCancel: true,
     CanPrint: true
   }
-
 
   public createCboShowNumberOfRows(): void {
     for (var i = 0; i <= 4; i++) {
@@ -314,7 +310,6 @@ export class UserComponent implements OnInit {
   public listUserFormData(): void {
     if (!this.isDataLoaded) {
       setTimeout(() => {
-
         this.listUserFormObservableArray = new ObservableArray();
         this.listUserFormCollectionView = new CollectionView(this.listUserFormObservableArray);
         this.listUserFormCollectionView.pageSize = 15;
@@ -345,18 +340,6 @@ export class UserComponent implements OnInit {
     }
   }
 
-  public btnCloseModal(): void {
-    this.userDetailModalRef.hide();
-    this.resetUserForm();
-  }
-
-  public listUserForm(): void {
-    this.isDataLoaded = false;
-    setTimeout(() => {
-      this.listUserFormData();
-    }, 500);
-  }
-
   public btnSaveUserFormClick(): void {
     this.userService.SaveUserForm(this.userFormModel);
 
@@ -374,27 +357,6 @@ export class UserComponent implements OnInit {
           this.toastr.error(data[1], "Error");
         }
         if (this.addUserFormSub != null) this.addUserFormSub.unsubscribe();
-      }
-    );
-  }
-
-  public btnConfirmDeleteUserFormClick(): void {
-    let currentUserForm = this.listUserFormCollectionView.currentItem;
-    this.userService.DeleteUserForm(currentUserForm.Id);
-    this.deleteUserFormSub = this.userService.deleteUserFormObservable.subscribe(
-      data => {
-        if (data[0] == "success") {
-          this.userFormDeleteModalRef.hide();
-          this.toastr.success("Deleted successfully.", "Success");
-          setTimeout(() => {
-            this.isDataLoaded = false;
-            this.listUserFormData();
-          }, 100);
-
-        } else if (data[0] == "failed") {
-          this.toastr.error(data[1], "Error");
-        }
-        if (this.deleteUserFormSub != null) this.deleteUserFormSub.unsubscribe();
       }
     );
   }
@@ -431,6 +393,39 @@ export class UserComponent implements OnInit {
     });
   }
 
+  public btnConfirmDeleteUserFormClick(): void {
+    let currentUserForm = this.listUserFormCollectionView.currentItem;
+    this.userService.DeleteUserForm(currentUserForm.Id);
+    this.deleteUserFormSub = this.userService.deleteUserFormObservable.subscribe(
+      data => {
+        if (data[0] == "success") {
+          this.userFormDeleteModalRef.hide();
+          this.toastr.success("Deleted successfully.", "Success");
+          setTimeout(() => {
+            this.isDataLoaded = false;
+            this.listUserFormData();
+          }, 100);
+
+        } else if (data[0] == "failed") {
+          this.toastr.error(data[1], "Error");
+        }
+        if (this.deleteUserFormSub != null) this.deleteUserFormSub.unsubscribe();
+      }
+    );
+  }
+
+  public btnCloseModal(): void {
+    this.userDetailModalRef.hide();
+    this.resetUserForm();
+  }
+
+  public listUserForm(): void {
+    this.isDataLoaded = false;
+    setTimeout(() => {
+      this.listUserFormData();
+    }, 500);
+  }
+
   public btnCloseUserFormModal(): void {
     this.closeUserFormModal();
   }
@@ -460,5 +455,15 @@ export class UserComponent implements OnInit {
     this.userModel.Password = "";
   };
 
+  ngOnDestroy() {
+    if (this.listUserSub != null) this.listUserSub.unsubscribe();
+    if (this.addUserSub != null) this.addUserSub.unsubscribe();
+    if (this.addUserSub != null) this.addUserSub.unsubscribe();
+    if (this.addUserSub != null) this.addUserSub.unsubscribe();
+    if (this.cboSysFormSub != null) this.cboSysFormSub.unsubscribe();
+    if (this.listUserFormSub != null) this.listUserFormSub.unsubscribe();
+    if (this.addUserFormSub != null) this.addUserFormSub.unsubscribe();
+    if (this.deleteUserFormSub != null) this.deleteUserFormSub.unsubscribe();
+  }
 
 }

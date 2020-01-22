@@ -220,7 +220,11 @@ export class LeadReportComponent implements OnInit {
         collection.moveToNextPage();
       }
     }
-
     return new Blob([data], { type: 'text/csv;charset=utf-8;' });
+  }
+
+  ngOnDestroy() {
+    if (this.cboListStatusSub != null) this.cboListStatusSub.unsubscribe();
+    if (this.listLeadSub != null) this.listLeadSub.unsubscribe();
   }
 }

@@ -272,7 +272,7 @@ export class SupportDetailComponent implements OnInit {
         let btnUnlockSupport: Element = document.getElementById("btnUnlockSupport");
 
         this.selectedCustomer = data.Customer;
-        
+
         (<HTMLButtonElement>btnSaveSupport).disabled = false;
         (<HTMLButtonElement>btnLockSupport).disabled = false;
         (<HTMLButtonElement>btnUnlockSupport).disabled = true;
@@ -741,15 +741,19 @@ export class SupportDetailComponent implements OnInit {
     );
   }
 
-  ngOnDestry(){
+  ngOnDestry() {
     if (this.cboCustomerSub != null) this.cboCustomerSub.unsubscribe();
-    if (this.detailSupportSub != null) this.detailSupportSub.unsubscribe();
-    if (this.cboSupportStatusSub != null) this.cboSupportStatusSub.unsubscribe();
-    if (this.cboAssignedToUserSub != null) this.cboAssignedToUserSub.unsubscribe();
     if (this.cboSalesDeliverySub != null) this.cboSalesDeliverySub.unsubscribe();
-    if (this.cboCustomerSub != null) this.cboCustomerSub.unsubscribe();
+    if (this.cboAssignedToUserSub != null) this.cboAssignedToUserSub.unsubscribe();
+    if (this.cboSupportStatusSub != null) this.cboSupportStatusSub.unsubscribe();
+    if (this.detailSupportSub != null) this.detailSupportSub.unsubscribe();
     if (this.saveSupportSub != null) this.saveSupportSub.unsubscribe();
     if (this.lockSupportSub != null) this.lockSupportSub.unsubscribe();
     if (this.unlockSupportSub != null) this.unlockSupportSub.unsubscribe();
+    if (this.listActivitySub != null) this.listActivitySub.unsubscribe();
+    if (this.cboListActivityUsersSub != null) this.cboListActivityUsersSub.unsubscribe();
+    if (this.cboListActivityStatusSub != null) this.cboListActivityStatusSub.unsubscribe();
+    if (this.saveActivitySub != null) this.saveActivitySub.unsubscribe();
+    if (this.deleteActivitySub != null) this.deleteActivitySub.unsubscribe();
   }
 }

@@ -741,7 +741,7 @@ export class SalesDetailComponent implements OnInit {
     let btnSaveActivityClickCloseModal: Element = document.getElementById("btnSaveActivityClickCloseModal");
     (<HTMLButtonElement>btnSaveActivity).disabled = true;
     (<HTMLButtonElement>btnSaveActivityClickCloseModal).disabled = true;
-    
+
     this.salesDetailService.saveActivity(this.salesDetailActivityModel);
     this.saveActivitySub = this.salesDetailService.saveActivityObservable.subscribe(
       data => {
@@ -768,15 +768,19 @@ export class SalesDetailComponent implements OnInit {
 
 
   ngOnDestroy() {
-    if (this.cboProductSub != null) this.cboProductSub.unsubscribe();
-    if (this.cboSalesInvoiceSub != null) this.cboSalesInvoiceSub.unsubscribe();
     if (this.cboCustomerSub != null) this.cboCustomerSub.unsubscribe();
+    if (this.cboSalesInvoiceSub != null) this.cboSalesInvoiceSub.unsubscribe();
     if (this.cboProductSub != null) this.cboProductSub.unsubscribe();
     if (this.cboLeadSub != null) this.cboLeadSub.unsubscribe();
-    if (this.detailSalesSub != null) this.detailSalesSub.unsubscribe();
+    if (this.cboAssignedToUserSub != null) this.cboAssignedToUserSub.unsubscribe();
+    if (this.cboSalesStatusSub != null) this.cboSalesStatusSub.unsubscribe();
     if (this.saveSalesSub != null) this.saveSalesSub.unsubscribe();
     if (this.lockSalesSub != null) this.lockSalesSub.unsubscribe();
     if (this.unlockSalesSub != null) this.unlockSalesSub.unsubscribe();
+    if (this.listActivitySub != null) this.listActivitySub.unsubscribe();
+    if (this.cboListActivityUsersSub != null) this.cboListActivityUsersSub.unsubscribe();
+    if (this.cboListActivityStatusSub != null) this.cboListActivityStatusSub.unsubscribe();
+    if (this.saveActivitySub != null) this.saveActivitySub.unsubscribe();
   }
 
 }
