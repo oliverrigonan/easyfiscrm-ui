@@ -393,6 +393,15 @@ export class LeadDetailComponent implements OnInit {
     this.listActivityCollectionView.refresh();
   }
 
+  public totalCost: number = 0;
+  public transportationCostTextChanged(): void {
+    this.totalCost = this.leadDetailActivityModel.TransportationCost + this.leadDetailActivityModel.OnSiteCost;
+  }
+
+  public OnSiteCostTextChanged(): void {
+    this.totalCost = this.leadDetailActivityModel.TransportationCost + this.leadDetailActivityModel.OnSiteCost;
+  }
+
   public listActivity(): void {
     if (!this.isDataLoaded) {
       setTimeout(() => {
@@ -449,6 +458,7 @@ export class LeadDetailComponent implements OnInit {
         this.cboListActivityUsersObservableArray = usersObservableArray;
 
         setTimeout(() => {
+
           this.listActivityStatus();
         }, 100);
 
@@ -490,6 +500,8 @@ export class LeadDetailComponent implements OnInit {
     let LDId: number = 0;
     this.activatedRoute.params.subscribe(params => { LDId = params["id"]; });
 
+    this.leadDetailActivityModel.FunctionalUserId = this.leadDetailModel.AssignedToUserId;
+    this.leadDetailActivityModel.TechnicalUserId = this.leadDetailModel.AssignedToUserId;
     if (this.isAddClicked) {
       this.leadDetailActivityModel = {
         Id: 0,
@@ -497,9 +509,9 @@ export class LeadDetailComponent implements OnInit {
         ACDate: new Date(),
         UserId: 0,
         User: localStorage.getItem("username"),
-        FunctionalUserId: 0,
+        FunctionalUserId: this.leadDetailModel.AssignedToUserId,
         FunctionalUser: "",
-        TechnicalUserId: 0,
+        TechnicalUserId: this.leadDetailModel.AssignedToUserId,
         TechnicalUser: "",
         CRMStatus: this.leadDetailModel.Status,
         Activity: "",

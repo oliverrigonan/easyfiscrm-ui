@@ -34,7 +34,7 @@
                   disabled>
                   <i class="fa fa-unlock fa-fw"></i> Unlock
                 </button>
-                <button class="btn btn-danger" routerLink="/software/sys/dashboard" id="btnCloseLead">
+                <button class="btn btn-danger" routerLink="/software/trn/lead" id="btnCloseLead">
                   <i class="fa fa-close fa-fw"></i> Close
                 </button>
               </td>
@@ -406,14 +406,19 @@
           </div>
           <div class="tab-pane fade" id="activity-cost" role="tabpanel" aria-labelledby="activity-cost-tab">
             <div class="form-group row">
-              <label for="" class="col-sm-3 col-form-label form-group-label">Transpo.</label>
-              <div class="col-sm-9">
-                <wj-input-number [(ngModel)]="leadDetailActivityModel.TransportationCost" #numActivityTranspoCost style="width: 100%; padding: 3px;"></wj-input-number>
+              <label for="" class="col-sm-4 col-form-label form-group-label">Transportation Fee</label>
+              <div class="col-sm-8">
+                <wj-input-number [(ngModel)]="leadDetailActivityModel.TransportationCost" #numActivityTranspoCost style="width: 100%; padding: 3px;" (textChanged)="transportationCostTextChanged()"></wj-input-number>
               </div>
               <br /><br />
-              <label for="" class="col-sm-3 col-form-label form-group-label">On-site</label>
-              <div class="col-sm-9">
-                <wj-input-number [(ngModel)]="leadDetailActivityModel.OnSiteCost" #numActivityOnsiteCost style="width: 100%; padding: 3px;"></wj-input-number>
+              <label for="" class="col-sm-4 col-form-label form-group-label">On-Site Fee</label>
+              <div class="col-sm-8">
+                <wj-input-number [(ngModel)]="leadDetailActivityModel.OnSiteCost" #numActivityOnsiteCost style="width: 100%; padding: 3px;" (textChanged)="OnSiteCostTextChanged()"></wj-input-number>
+              </div>
+              <br /><br />
+              <label for="" class="col-sm-4 col-form-label form-group-label">Total</label>
+              <div class="col-sm-8">
+                <wj-input-number [(ngModel)]="totalCost"  style="width: 100%; padding: 3px;" #numTotalCost></wj-input-number>
               </div>
             </div>
           </div>
