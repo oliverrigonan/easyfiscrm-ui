@@ -74,7 +74,7 @@
                 <wj-combo-box #cboSalesInvoice [(ngModel)]="supportModel.SDId"
                   [itemsSource]="cboSalesDeliveryObservable" [isEditable]="false" [isRequired]="true"
                   [displayMemberPath]="'SDNumber'" [selectedValuePath]="'Id'" style="width: 100%; padding: 3px;"
-                  [disabled]="isLocked">
+                  [disabled]="isLocked" (selectedIndexChanged)="cboSalesInvoice_SelectedIndexChange(cboSalesInvoice)">
                 </wj-combo-box>
               </div>
               <br /><br />
@@ -96,24 +96,23 @@
                   placeholder="Contact Email...">
               </div>
               <br /><br />
-            </div>
-          </div>
-          <div class="col-lg-6">
-            <div class="form-group row">
-
               <label for="" class="col-sm-4 col-form-label form-group-label">Contact Phone No.</label>
               <div class="col-sm-8">
                 <input type="text" class="form-control" [disabled]="isLocked"
                   [(ngModel)]="supportModel.ContactPhoneNumber" placeholder="Contact Phone Number...">
               </div>
-              <br /><br />
+            </div>
+          </div>
+          <div class="col-lg-6">
+            <div class="form-group row">
               <label for="" class="col-sm-4 col-form-label form-group-label">Issue</label>
               <div class="col-sm-8">
                 <textarea type="text" class="form-control" style="resize: none" [disabled]="isLocked"
-                  [(ngModel)]="supportModel.Issue" placeholder="Remarks..." rows="5">
+                  [(ngModel)]="supportModel.Issue" placeholder="Remarks..." rows="10">
                   </textarea>
               </div>
-              <br /><br /><br /><br /><br /><br />
+              <br /><br />
+              <br /><br /><br /><br /><br /><br /><br /><br /><br />
               <label for="" class="col-sm-4 col-form-label form-group-label">Assigned To</label>
               <div class="col-sm-8">
                 <wj-combo-box #cboAssignedToUser [(ngModel)]="supportModel.AssignedToUserId"
@@ -415,16 +414,21 @@
           </div>
           <div class="tab-pane fade" id="activity-cost" role="tabpanel" aria-labelledby="activity-cost-tab">
             <div class="form-group row">
-              <label for="" class="col-sm-3 col-form-label form-group-label">Transpo.</label>
-              <div class="col-sm-9">
+              <label for="" class="col-sm-4 col-form-label form-group-label">Transportation Fee</label>
+              <div class="col-sm-8">
                 <wj-input-number [(ngModel)]="supportDetailActivityModel.TransportationCost" #numActivityTranspoCost
-                  style="width: 100%; padding: 3px;"></wj-input-number>
+                  style="width: 100%; padding: 3px;" (textChanged)="transportationCostTextChanged()"></wj-input-number>
               </div>
               <br /><br />
-              <label for="" class="col-sm-3 col-form-label form-group-label">On-site</label>
-              <div class="col-sm-9">
+              <label for="" class="col-sm-4 col-form-label form-group-label">On-Site Fee</label>
+              <div class="col-sm-8">
                 <wj-input-number [(ngModel)]="supportDetailActivityModel.OnSiteCost" #numActivityOnsiteCost
-                  style="width: 100%; padding: 3px;"></wj-input-number>
+                  style="width: 100%; padding: 3px;" (textChanged)="transportationCostTextChanged()"></wj-input-number>
+              </div>
+              <br /><br />
+              <label for="" class="col-sm-4 col-form-label form-group-label">Total</label>
+              <div class="col-sm-8">
+                <wj-input-number [(ngModel)]="totalCost"  style="width: 100%; padding: 3px;" #numTotalCost></wj-input-number>
               </div>
             </div>
           </div>

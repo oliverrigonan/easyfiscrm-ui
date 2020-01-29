@@ -94,7 +94,11 @@ export class SupportDetailService {
           for (var i = 0; i <= results["length"] - 1; i++) {
             listSupportObservableArray.push({
               Id: results[i].Id,
-              SDNumber: results[i].SDNumber,
+              SDNumber: results[i].SDNumber + " - " + results[i].SDDate + " - " + results[i].ProductDescription + " - " + results[i].AssignedToUser,
+              ContactPerson: results[i].ContactPerson,
+              ContactPosition: results[i].ContactPosition,
+              ContactEmail: results[i].ContactEmail,
+              ContactPhoneNumber: results[i].ContactPhoneNumber
             });
           }
         }

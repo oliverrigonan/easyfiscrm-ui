@@ -38,18 +38,9 @@ export class SalesDetailComponent implements OnInit {
 
   public isLocked: boolean = false;
 
-  public IsLoaded: Boolean = false;
-  public listCustomerObservableArray: ObservableArray = new ObservableArray();
-  public listCustomerCollectionView: CollectionView = new CollectionView(this.listCustomerObservableArray);
-  public listCustomerPageIndex: number = 15;
-  @ViewChild('listCustomerFlexGrid') listCustomerFlexGrid: WjFlexGrid;
-  public isProgressBarHidden = false;
-  public selectedCustomer: string = "";
-
-
-  public cboCustomerSub: any;
-  public cboCustomerObservableArray: ObservableArray = new ObservableArray();
-  public cboCustomerSelectedValue: number;
+  // ========
+  // Combobox
+  // ========
 
   public cboSalesInvoiceSub: any;
   public cboSalesInvoiceObservableArray: ObservableArray = new ObservableArray();
@@ -60,15 +51,68 @@ export class SalesDetailComponent implements OnInit {
   public cboAssignedToUserSub: any;
   public cboAssignedToUserObservable: ObservableArray = new ObservableArray();
 
-  public cboLeadSub: any;
-  public cboLeadObservable: ObservableArray = new ObservableArray();
-
   public cboSalesStatusSub: any;
   public cboSalesStatusObservable: ObservableArray = new ObservableArray();
 
   public isDataLoaded: boolean = false;
 
+  // ========
+  // Customer
+  // ========
   public customerModalRef: BsModalRef;
+
+  public cboCustomerSub: any;
+
+  public cboCustomerObservableArray: ObservableArray = new ObservableArray();
+  public cboCustomerSelectedValue: number;
+
+  public IsLoaded: Boolean = false;
+  public listCustomerObservableArray: ObservableArray = new ObservableArray();
+  public listCustomerCollectionView: CollectionView = new CollectionView(this.listCustomerObservableArray);
+  public listCustomerPageIndex: number = 15;
+  @ViewChild('listCustomerFlexGrid') listCustomerFlexGrid: WjFlexGrid;
+  public isProgressBarHidden = false;
+  public selectedCustomer: string = "";
+
+  // ========
+  // Customer
+  // ========
+  public leadModalRef: BsModalRef;
+
+  public cboLeadSub: any;
+
+  public cboLeadObservable: ObservableArray = new ObservableArray();
+  public cboLeadObservableArray: ObservableArray = new ObservableArray();
+  public cboLeadSelectedValue: number;
+
+  public listLeadObservableArray: ObservableArray = new ObservableArray();
+  public listLeadCollectionView: CollectionView = new CollectionView(this.listCustomerObservableArray);
+  public listLeadPageIndex: number = 15;
+  @ViewChild('listLeadFlexGrid') listLeadFlexGrid: WjFlexGrid;
+  public selectedLead: string = "";
+
+  // ========
+  // Activity
+  // ========
+  public listActivitySub: any;
+  public saveActivitySub: any;
+  public deleteActivitySub: any;
+
+  public isActivityTabHidden: boolean = true;
+
+  public activityModalHeaderTitle: string = "Activity";
+
+  public cboListActivityUsersSub: any;
+  public cboListActivityUsersObservableArray: ObservableArray = new ObservableArray();
+
+  public cboListActivityStatusSub: any;
+  public cboListActivityStatusObservableArray: ObservableArray = new ObservableArray();
+
+  public isActivityLoadingSpinnerHidden: boolean = false;
+  public isActivityContentHidden: boolean = true;
+  public isActivityNumberHidden = false;
+
+  public isAddClicked: boolean = false;
 
   public salesDeliveryDetailModel: SalesDeliveryDetailModel = {
     Id: 0,
@@ -80,6 +124,7 @@ export class SalesDetailComponent implements OnInit {
     SIId: 0,
     ProductId: 0,
     LDId: 0,
+    LDName: "",
     ContactPerson: "",
     ContactPosition: "",
     ContactEmail: "",
@@ -152,6 +197,7 @@ export class SalesDetailComponent implements OnInit {
         let btnUnlockSales: Element = document.getElementById("btnUnlockSales");
 
         this.selectedCustomer = data.Customer;
+        this.selectedLead = data.LDName;
 
         (<HTMLButtonElement>btnSaveSales).disabled = false;
         (<HTMLButtonElement>btnLockSales).disabled = false;
@@ -201,6 +247,32 @@ export class SalesDetailComponent implements OnInit {
 
         this.isProgressBarHidden = true;
         if (this.cboCustomerSub != null) this.cboCustomerSub.unsubscribe();
+      }
+    );
+  }
+
+  public listLead(): void {
+    this.listLeadObservableArray = new ObservableArray();
+    this.listLeadCollectionView = new CollectionView(this.listLeadObservableArray);
+    this.listLeadCollectionView.pageSize = 15;
+    this.listLeadCollectionView.trackChanges = true;
+    this.listLeadCollectionView.refresh();
+    // this.listLeadFlexGrid.refresh();
+
+    this.isProgressBarHidden = false;
+    this.salesDetailService.listLead();
+    this.cboLeadSub = this.salesDetailService.listLeadObservable.subscribe(
+      data => {
+        if (data.length > 0) {
+          this.listLeadObservableArray = data;
+          this.listLeadCollectionView = new CollectionView(this.listLeadObservableArray);
+          this.listLeadCollectionView.pageSize = this.listLeadPageIndex;
+          this.listLeadCollectionView.trackChanges = true;
+          this.listLeadCollectionView.refresh();
+          // this.listLeadFlexGrid.refresh();
+        }
+        this.isProgressBarHidden = true;
+        if (this.cboLeadSub != null) this.cboLeadSub.unsubscribe();
       }
     );
   }
@@ -336,6 +408,21 @@ export class SalesDetailComponent implements OnInit {
     }
   }
 
+  public btnLeadListClick(leadModalTemplate: TemplateRef<any>): void {
+    if (!this.isLocked) {
+      this.activityModalHeaderTitle = "Costumer List";
+      this.listLead();
+      setTimeout(() => {
+
+        this.leadModalRef = this.modalService.show(leadModalTemplate, {
+          backdrop: true,
+          ignoreBackdropClick: true,
+          class: "modal-lg"
+        });
+      }, 100);
+    }
+  }
+
   public btnPickCustomerClick(): void {
     let currentCustomer = this.listCustomerCollectionView.currentItem;
     this.selectedCustomer = currentCustomer.Article;
@@ -344,6 +431,18 @@ export class SalesDetailComponent implements OnInit {
     this.customerModalRef.hide();
 
     this.createCboSalesInvoice(this.salesDeliveryDetailModel.CustomerId);
+  }
+
+  public btnPickLeadClick(): void {
+    let currentLead = this.listLeadCollectionView.currentItem;
+    this.selectedLead = currentLead.Name;
+    this.salesDeliveryDetailModel.LDId = currentLead.Id;
+    this.salesDeliveryDetailModel.ContactPerson = currentLead.ContactPerson;
+    this.salesDeliveryDetailModel.ContactPosition = currentLead.ContactPosition;
+    this.salesDeliveryDetailModel.ContactEmail = currentLead.ContactEmail;
+    this.salesDeliveryDetailModel.ContactPhoneNumber = currentLead.ContactPhoneNumber;
+    this.salesDeliveryDetailModel.Particulars = currentLead.Remarks;
+    this.leadModalRef.hide();
   }
 
   public btnSaveSalesClick(): void {
@@ -518,26 +617,9 @@ export class SalesDetailComponent implements OnInit {
     UpdatedDateTime: "",
   }
 
-  public listActivitySub: any;
-  public saveActivitySub: any;
-  public deleteActivitySub: any;
-
-  public isActivityTabHidden: boolean = true;
-
-  public activityModalHeaderTitle: string = "Activity";
-
-  public cboListActivityUsersSub: any;
-  public cboListActivityUsersObservableArray: ObservableArray = new ObservableArray();
-
-  public cboListActivityStatusSub: any;
-  public cboListActivityStatusObservableArray: ObservableArray = new ObservableArray();
-
-  public isActivityLoadingSpinnerHidden: boolean = false;
-  public isActivityContentHidden: boolean = true;
-  public isActivityNumberHidden = false;
-
-  public isAddClicked: boolean = false;
-
+  // ========
+  // Activity
+  // ========
   public listActivity(): void {
     if (!this.isDataLoaded) {
       setTimeout(() => {
@@ -573,6 +655,11 @@ export class SalesDetailComponent implements OnInit {
         );
       }, 100);
     }
+  }
+
+  public totalCost: number = 0;
+  public transportationCostTextChanged(): void {
+    this.totalCost = this.salesDetailActivityModel.TransportationCost + this.salesDetailActivityModel.OnSiteCost;
   }
 
   public listActivityUsers(): void {
@@ -641,9 +728,9 @@ export class SalesDetailComponent implements OnInit {
         ACDate: new Date(),
         UserId: 0,
         User: localStorage.getItem("username"),
-        FunctionalUserId: 0,
+        FunctionalUserId: this.salesDeliveryDetailModel.AssignedToUserId,
         FunctionalUser: "",
-        TechnicalUserId: 0,
+        TechnicalUserId: this.salesDeliveryDetailModel.AssignedToUserId,
         TechnicalUser: "",
         CRMStatus: this.salesDeliveryDetailModel.Status,
         Activity: "",
@@ -781,6 +868,7 @@ export class SalesDetailComponent implements OnInit {
     if (this.cboListActivityUsersSub != null) this.cboListActivityUsersSub.unsubscribe();
     if (this.cboListActivityStatusSub != null) this.cboListActivityStatusSub.unsubscribe();
     if (this.saveActivitySub != null) this.saveActivitySub.unsubscribe();
+    if (this.cboLeadSub != null) this.cboLeadSub.unsubscribe();
   }
 
 }

@@ -51,6 +51,7 @@ export class SupportDetailComponent implements OnInit {
 
   public cboSalesDeliverySub: any;
   public cboSalesDeliveryObservable: ObservableArray = new ObservableArray();
+  @ViewChild('cboSalesInvoice') cboSalesInvoice: WjComboBox;
 
   public saveSupportSub: any;
   public lockSupportSub: any;
@@ -141,8 +142,6 @@ export class SupportDetailComponent implements OnInit {
           this.listCustomerCollectionView.refresh();
           // this.listCustomerFlexGrid.refresh();
         }
-        console.log(this.listCustomerCollectionView);
-
         this.isProgressBarHidden = true;
         if (this.cboCustomerSub != null) this.cboCustomerSub.unsubscribe();
       }
@@ -180,17 +179,30 @@ export class SupportDetailComponent implements OnInit {
           for (var i = 0; i <= data.length - 1; ++i) {
             salesInvoiceObservableArray.push({
               Id: data[i].Id,
-              SDNumber: data[i].SDNumber
+              SDNumber: data[i].SDNumber,
+              ContactPerson: data[i].ContactPerson,
+              ContactPosition: data[i].ContactPosition,
+              ContactEmail: data[i].ContactEmail,
+              ContactPhoneNumber: data[i].ContactPhoneNumber
             });
           }
         } else {
           this.toastr.error("No Sales Delivery");
         }
-
+        this.isSalesDeliveryDataLoaded = true;
         this.cboSalesDeliveryObservable = salesInvoiceObservableArray;
         if (this.cboSalesDeliverySub != null) this.cboSalesDeliverySub.unsubscribe();
       }
     );
+  }
+public isSalesDeliveryDataLoaded: boolean = false;
+  public cboSalesInvoice_SelectedIndexChange(cboSalesInvoice: any): void {
+    if (this.isSalesDeliveryDataLoaded) {
+      this.supportModel.ContactPerson = this.cboSalesInvoice.selectedItem["ContactPerson"];
+      this.supportModel.ContactPosition = this.cboSalesInvoice.selectedItem["ContactPosition"];
+      this.supportModel.ContactEmail = this.cboSalesInvoice.selectedItem["ContactEmail"];
+      this.supportModel.ContactPhoneNumber = this.cboSalesInvoice.selectedItem["ContactPhoneNumber"];
+    }
   }
 
   public createCboAssignedToUser(): void {
@@ -250,7 +262,6 @@ export class SupportDetailComponent implements OnInit {
         this.supportModel.SPNumber = data.SPNumber;
         this.supportModel.CustomerId = data.CustomerId;
         this.supportModel.Customer = data.Customer;
-        this.supportModel.SDId = data.SDId;
         this.supportModel.ContactPerson = data.ContactPerson;
         this.supportModel.ContactPosition = data.ContactPosition;
         this.supportModel.ContactEmail = data.ContactEmail;
@@ -286,12 +297,17 @@ export class SupportDetailComponent implements OnInit {
 
           this.isActivityTabHidden = false;
         }
-        setTimeout(() => {
-          this.createCboSalesDelivery(this.supportModel.CustomerId);
-        }, 100);
+
+        this.isSalesDeliveryDataLoaded = false;
+        this.createCboSalesDelivery(this.supportModel.CustomerId);
+
+
         this.isLoadingSpinnerHidden = true;
         this.isContentHidden = false;
+        setTimeout(() => {
+          this.supportModel.SDId = data.SDId;
 
+        }, 100);
         if (this.detailSupportSub != null) this.detailSupportSub.unsubscribe();
       }
     );
@@ -528,6 +544,11 @@ export class SupportDetailComponent implements OnInit {
     this.listActivityUsers();
   }
 
+  public totalCost: number = 0;
+  public transportationCostTextChanged(): void {
+    this.totalCost = this.supportDetailActivityModel.TransportationCost + this.supportDetailActivityModel.OnSiteCost;
+  }
+
   public listActivityUsers(): void {
     this.supportDetailService.listActivityUsers();
     this.cboListActivityUsersSub = this.supportDetailService.listActivityUsersObservable.subscribe(
@@ -595,9 +616,9 @@ export class SupportDetailComponent implements OnInit {
         ACDate: new Date(),
         UserId: 0,
         User: localStorage.getItem("username"),
-        FunctionalUserId: 0,
+        FunctionalUserId: this.supportModel.AssignedToUserId,
         FunctionalUser: "",
-        TechnicalUserId: 0,
+        TechnicalUserId: this.supportModel.AssignedToUserId,
         TechnicalUser: "",
         CRMStatus: this.supportModel.Status,
         Activity: "",

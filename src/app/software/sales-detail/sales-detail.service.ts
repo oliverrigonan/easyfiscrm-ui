@@ -24,7 +24,7 @@ export class SalesDetailService {
   };
 
   public defaultAPIURLHost: string = this.appSettings.defaultAPIURLHost;
-  
+
   public detailSalesSubject = new Subject<SalesDeliveryDetailModel>();
   public detailSalesObservable = this.detailSalesSubject.asObservable();
 
@@ -101,7 +101,11 @@ export class SalesDetailService {
           for (var i = 0; i <= results["length"] - 1; i++) {
             listSalesInvoiceObservableArray.push({
               Id: results[i].Id,
-              SINumber: results[i].SINumber
+              SINumber: results[i].SINumber + " - " + results[i].SIDate + " - " + results[i].Amount + " - " + results[i].Remarks,
+              ContactPerson: results[i].ContactPerson,
+              ContactPosition: results[i].ContactPosition,
+              ContactEmail: results[i].ContactEmail,
+              ContactPhoneNumber: results[i].ContactPhoneNumber
             });
           }
         }
@@ -142,6 +146,13 @@ export class SalesDetailService {
             listLeadObservableArray.push({
               Id: results[i].Id,
               LDNumber: results[i].LDNumber,
+              LDDate: results[i].LDDate,
+              Name: results[i].Name,
+              ContactPerson: results[i].ContactPerson,
+              ContactPosition: results[i].ContactPosition,
+              ContactEmail: results[i].ContactEmail,
+              ContactPhoneNumber: results[i].ContactPhoneNumber,
+              Remarks: results[i].Remarks
             });
           }
         }
@@ -209,6 +220,7 @@ export class SalesDetailService {
             SIId: result["SIId"],
             ProductId: result["ProductId"],
             LDId: result["LDId"],
+            LDName: result["LDName"],
             ContactPerson: result["ContactPerson"],
             ContactPosition: result["ContactPosition"],
             ContactEmail: result["ContactEmail"],

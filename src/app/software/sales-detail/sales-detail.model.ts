@@ -8,6 +8,7 @@ export class SalesDeliveryDetailModel {
     SIId: number;
     ProductId: 0;
     LDId: number;
+    LDName: string;
     ContactPerson: string;
     ContactPosition: string;
     ContactEmail: string;
