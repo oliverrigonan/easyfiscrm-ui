@@ -10,6 +10,7 @@ import { BsModalRef } from 'ngx-bootstrap/modal/bs-modal-ref.service';
 import { ToastrService } from 'ngx-toastr';
 import { ActivityService } from './activity.service';
 import { ActivityModel } from './activity.model';
+import { ActivityHeaderModel } from './activity-header.model';
 @Component({
   selector: 'app-activity',
   templateUrl: './activity.component.html',
@@ -339,10 +340,30 @@ export class ActivityComponent implements OnInit {
     UpdatedDateTime: "",
   };
 
+  public activityHeaderModel: ActivityHeaderModel = {
+    docType: "",
+    reference: "",
+    particular: "",
+    assignedTo: "",
+    createdBy: "",
+    product: "",
+    status: "",
+  };
+
   public btnActivityListClick(activityListModalTemplate: TemplateRef<any>): void {
     this.activityModalHeaderTitle = "Activity List";
     this.modalCreateCboShowNumberOfRows();
     this.isActivityDataLoaded = false;
+    
+    let currentActivityHeader = this.listActivityHeaderCollectionView.currentItem;
+    this.activityHeaderModel.docType = currentActivityHeader.DocType;
+    this.activityHeaderModel.reference = currentActivityHeader.Reference;
+    this.activityHeaderModel.assignedTo = currentActivityHeader.AssignedTo;
+    this.activityHeaderModel.createdBy = currentActivityHeader.CreatedBy;
+    this.activityHeaderModel.product = currentActivityHeader.Product;
+    this.activityHeaderModel.status = currentActivityHeader.Status;
+    this.activityHeaderModel.particular = currentActivityHeader.Particular;
+console.log(currentActivityHeader);
     this.listActivity();
     setTimeout(() => {
       this.activityListModalRef = this.modalService.show(activityListModalTemplate, {

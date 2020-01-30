@@ -126,9 +126,12 @@ export class ActivityService {
               DocType: results[i].DocType,
               Reference: results[i].Reference,
               Customer: results[i].Customer,
+              Product: results[i].Product,
               Particular: results[i].Particular,
               LastActivity: results[i].LastActivity,
               Status: results[i].Status,
+              AssignedTo: results[i].AssignedTo,
+              CreatedBy: results[i].CreatedBy
             });
           }
         }

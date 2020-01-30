@@ -162,48 +162,48 @@
     <div class="card card-default">
       <div class="card-header">
         <div class="row">
-          <div class="col-lg-6">
+          <div class="col-lg-7">
             <div class="form-group row">
               <label for="" class="col-sm-4 col-form-label form-group-label">Document</label>
               <div class="col-sm-8">
-                <input type="text" class="form-control" placeholder="Document..." [disabled]="isLocked">
+                <input type="text" class="form-control" placeholder="Document..." [disabled]="isLocked" [readonly]="true" [(ngModel)]="activityHeaderModel.docType">
               </div>
               <br /><br />
-              <label for="" class="col-sm-4 col-form-label form-group-label">Document No</label>
+              <label for="" class="col-sm-4 col-form-label form-group-label">Document No.</label>
               <div class="col-sm-8">
-                <input type="text" class="form-control" [disabled]="isLocked" placeholder="Document No..." [readonly]>
+                <input type="text" class="form-control" [disabled]="isLocked" placeholder="Document No..." [readonly]="true" [(ngModel)]="activityHeaderModel.reference">
               </div>
               <br /><br />
               <label for="" class="col-sm-4 col-form-label form-group-label">Assigned To</label>
               <div class="col-sm-8">
                 <input type="text" class="form-control" style="resize: none" [disabled]="isLocked"
-                  placeholder="Sales Assigned To...">
+                  placeholder="Sales Assigned To..." [readonly]="true" [(ngModel)]="activityHeaderModel.assignedTo">
               </div>
               <br /><br />
               <label for="" class="col-sm-4 col-form-label form-group-label">Created By</label>
               <div class="col-sm-8">
-                <input type="text" class="form-control" [disabled]="isLocked" placeholder="Created By...">
+                <input type="text" class="form-control" [disabled]="isLocked" placeholder="Created By..." [readonly]="true" [(ngModel)]="activityHeaderModel.createdBy">
               </div>
               <br /><br />
-              <label for="" class="col-sm-4 col-form-label form-group-label">Product</label>
-              <div class="col-sm-8">
-                <input type="text" class="form-control" [disabled]="isLocked" placeholder="Product...">
+              <label for="" *ngIf="activityHeaderModel.docType != 'LEAD'" class="col-sm-4 col-form-label form-group-label">Product</label>
+              <div class="col-sm-8" *ngIf="activityHeaderModel.docType != 'LEAD'">
+                <input type="text" class="form-control" [disabled]="isLocked" placeholder="Product..." [readonly]="true" [(ngModel)]="activityHeaderModel.product">
               </div>
               <br /><br />
               <label for="" class="col-sm-4 col-form-label form-group-label">Status</label>
               <div class="col-sm-8">
-                <input type="text" class="form-control" [disabled]="isLocked" placeholder="Status...">
+                <input type="text" class="form-control" [disabled]="isLocked" placeholder="Status..." [readonly]="true" [(ngModel)]="activityHeaderModel.status">
               </div>
             </div>
           </div>
-          <div class="col-lg-6">
+          <div class="col-lg-5">
             <div class="form-group row">
-              <label for="" class="col-sm-8 col-form-label form-group-label">Particulars / Remarks / Issues</label>
-              <label for="" class="col-sm-4 col-form-label form-group-label"></label>
+              <label for="" class="col-sm-9 col-form-label form-group-label">Particulars / Remarks / Issues</label>
+              <label for="" class="col-sm-3 col-form-label form-group-label"></label>
               <br /><br />
               <div class="col-sm-12">
                 <textarea type="text" class="form-control" style="resize: none" [disabled]="isLocked"
-                  placeholder="Particulars / Remarks / Issues..." rows="8">
+                  placeholder="Particulars / Remarks / Issues..." rows="9" [readonly]="true" [(ngModel)]="activityHeaderModel.particular">
                 </textarea>
               </div>
             </div>
