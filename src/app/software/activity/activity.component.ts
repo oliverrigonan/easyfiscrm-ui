@@ -25,6 +25,7 @@ export class ActivityComponent implements OnInit {
   ) { }
 
   ngOnInit() {
+    this.getFirsDayOftheMonth();
     this.createCboShowNumberOfRows();
     this.createCboActivityDocument();
     this.createCboActivityStatus();
@@ -95,6 +96,12 @@ export class ActivityComponent implements OnInit {
     this.listActivityHeaderCollectionView.pageSize = this.listActivityPageIndex;
     this.listActivityHeaderCollectionView.refresh();
     this.listActivityHeaderCollectionView.refresh();
+  }
+
+  public getFirsDayOftheMonth() {
+    var date = new Date();
+    this.ActivityStartDateFilterData = new Date(date.getFullYear(), date.getMonth(), 1);
+    this.ActivityEndDateFilterData = new Date(date.getFullYear(), date.getMonth() + 1, 0);
   }
 
   public cboStartDateTextChanged(): void {

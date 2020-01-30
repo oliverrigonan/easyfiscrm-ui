@@ -51,6 +51,7 @@ export class SupportListComponent implements OnInit {
   ngOnInit() {
     this.createCboShowNumberOfRows();
     this.createCboSupportStatus();
+    this.getFirsDayOftheMonth();
   }
 
   public createCboShowNumberOfRows(): void {
@@ -120,6 +121,12 @@ export class SupportListComponent implements OnInit {
         if (this.cboListStatusSub != null) this.cboListStatusSub.unsubscribe();
       }
     );
+  }
+
+  public getFirsDayOftheMonth() {
+    var date = new Date();
+    this.supportStartDateFilterData = new Date(date.getFullYear(), date.getMonth(), 1);
+    this.supportEndDateFilterData = new Date(date.getFullYear(), date.getMonth() + 1, 0);
   }
 
   public cboStartDateTextChanged(): void {

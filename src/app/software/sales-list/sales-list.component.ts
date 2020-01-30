@@ -28,6 +28,13 @@ export class SalesListComponent implements OnInit {
     private modalService: BsModalService,
   ) { }
 
+  ngOnInit() {
+    this.createCboShowNumberOfRows();
+    this.createCboSalesStatus();
+    this.getFirsDayOftheMonth();
+    this.listSales();
+  }
+
   public cboShowNumberOfRows: ObservableArray = new ObservableArray();
 
   public salesStartDateFilterData = new Date();
@@ -49,7 +56,6 @@ export class SalesListComponent implements OnInit {
   public deleteSalesDeliverySub: any;
 
   public deleteSalesDeliveryModalRef: BsModalRef;
-
 
   public createCboShowNumberOfRows(): void {
     for (var i = 0; i <= 4; i++) {
@@ -118,6 +124,12 @@ export class SalesListComponent implements OnInit {
         if (this.cboListStatusSub != null) this.cboListStatusSub.unsubscribe();
       }
     );
+  }
+
+  public getFirsDayOftheMonth() {
+    var date = new Date();
+    this.salesStartDateFilterData = new Date(date.getFullYear(), date.getMonth(), 1);
+    this.salesEndDateFilterData = new Date(date.getFullYear(), date.getMonth() + 1, 0);
   }
 
   public cboStartDateTextChanged(): void {
@@ -198,11 +210,7 @@ export class SalesListComponent implements OnInit {
     );
   }
 
-  ngOnInit() {
-    this.createCboShowNumberOfRows();
-    this.createCboSalesStatus();
-    this.listSales();
-  }
+  
 
   public btnDeleteSalesDeliveryClick(salesDeliveryDeleteModalTemplate: TemplateRef<any>): void {
     this.deleteSalesDeliveryModalRef = this.modalService.show(salesDeliveryDeleteModalTemplate, {

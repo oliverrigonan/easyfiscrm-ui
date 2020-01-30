@@ -25,6 +25,12 @@ export class LeadComponent implements OnInit {
     private router: Router
   ) { }
 
+  ngOnInit() {
+    this.createCboShowNumberOfRows();
+    this.createCboLeadStatus();
+    this.getFirsDayOftheMonth();
+  }
+
   public cboShowNumberOfRows: ObservableArray = new ObservableArray();
 
   public leadStartDateFilterData = new Date();
@@ -74,6 +80,12 @@ export class LeadComponent implements OnInit {
         rowString: rowsString
       });
     }
+  }
+
+  public getFirsDayOftheMonth() {
+    var date = new Date();
+    this.leadStartDateFilterData = new Date(date.getFullYear(), date.getMonth(), 1);
+    this.leadEndDateFilterData = new Date(date.getFullYear(), date.getMonth() + 1, 0);
   }
 
   public cboShowNumberOfRowsOnSelectedIndexChanged(selectedValue: any): void {
@@ -236,11 +248,6 @@ export class LeadComponent implements OnInit {
         if (this.deleteLeadSub != null) this.deleteLeadSub.unsubscribe();
       }
     );
-  }
-
-  ngOnInit() {
-    this.createCboShowNumberOfRows();
-    this.createCboLeadStatus();
   }
 
   ngOnDestroy() {
