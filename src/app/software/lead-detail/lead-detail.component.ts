@@ -1,5 +1,6 @@
 import { Component, OnInit, ViewChild, TemplateRef } from '@angular/core';
 import { Router, ActivatedRoute } from '@angular/router';
+import { MatDialog, MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
 
 import { ObservableArray, CollectionView } from 'wijmo/wijmo';
 import { WjFlexGrid } from 'wijmo/wijmo.angular2.grid';
@@ -14,6 +15,7 @@ import { BsModalService } from 'ngx-bootstrap/modal';
 import { BsModalRef } from 'ngx-bootstrap/modal/bs-modal-ref.service';
 
 import { LeadDetailActivityModel } from './lead-detail-activitiy.model';
+import { LeadPrintDialogComponent } from './lead-print-dialog/lead-print-dialog.component';
 
 @Component({
   selector: 'app-lead-detail',
@@ -28,6 +30,8 @@ export class LeadDetailComponent implements OnInit {
     private activatedRoute: ActivatedRoute,
     private router: Router,
     private modalService: BsModalService,
+    public casePrintCaseDialog: MatDialog,
+
   ) { }
 
   public cboAssignedToUsersSub: any;
@@ -671,6 +675,17 @@ export class LeadDetailComponent implements OnInit {
         if (this.deleteActivitySub != null) this.deleteActivitySub.unsubscribe();
       }
     );
+  }
+
+  public btnPrintLead(): void {
+    let LDId: number = 0;
+    this.activatedRoute.params.subscribe(params => { LDId = params["id"]; });
+
+    this.casePrintCaseDialog.open(LeadPrintDialogComponent, {
+      width: '1000px',
+      data: { objId: LDId },
+      disableClose: true
+    });
   }
 
   ngOnInit() {

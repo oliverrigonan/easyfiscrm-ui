@@ -14,6 +14,10 @@ import { MatSidenavModule } from '@angular/material/sidenav';
 import { MatProgressBarModule } from '@angular/material/progress-bar';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 import { MatMenuModule } from '@angular/material/menu';
+import { MatDialogModule } from '@angular/material/dialog';
+import { MatButtonModule } from '@angular/material/button';
+import { MatToolbarModule } from '@angular/material/toolbar';
+import {MatDividerModule} from '@angular/material/divider';
 
 import { WjGridFilterModule } from 'wijmo/wijmo.angular2.grid.filter';
 import { WjGridModule } from 'wijmo/wijmo.angular2.grid';
@@ -29,11 +33,12 @@ import { SalesdeliveryReportComponent } from './report/salesdelivery-report/sale
 import { SupportReportComponent } from './report/support-report/support-report.component';
 import { ActivityReportComponent } from './report/activity-report/activity-report.component';
 import { ActivityComponent } from './activity/activity.component';
-import { UserComponent } from './user/user.component';
-import { UserDetailComponent } from './user-detail/user-detail.component';
+import { UserComponent } from './setup/user/user.component';
+import { LeadPrintDialogComponent } from './lead-detail/lead-print-dialog/lead-print-dialog.component';
+import { ProductComponent } from './setup/product/product.component';
 
 @NgModule({
-  declarations: [LayoutComponent, DashboardComponent, LeadComponent, LeadDetailComponent, SalesListComponent, SalesDetailComponent, SupportListComponent, SupportDetailComponent, LeadReportComponent, SalesdeliveryReportComponent, SupportReportComponent, ActivityReportComponent, ActivityComponent, UserComponent, UserDetailComponent ],
+  declarations: [LayoutComponent, DashboardComponent, LeadComponent, LeadDetailComponent, SalesListComponent, SalesDetailComponent, SupportListComponent, SupportDetailComponent, LeadReportComponent, SalesdeliveryReportComponent, SupportReportComponent, ActivityReportComponent, ActivityComponent, UserComponent, LeadPrintDialogComponent, ProductComponent ],
   imports: [
     CommonModule,
     FormsModule,
@@ -43,6 +48,9 @@ import { UserDetailComponent } from './user-detail/user-detail.component';
     MatProgressBarModule,
     MatProgressSpinnerModule,
     MatMenuModule,
+    MatDialogModule,
+    MatButtonModule,
+    MatDividerModule,
     WjGridFilterModule,
     WjGridModule,
     WjInputModule,

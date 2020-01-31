@@ -298,4 +298,24 @@ export class LeadDetailService {
       }
     )
   }
+
+  public printLeadSubject = new Subject<Blob>();
+  public printLeadObservable = this.printLeadSubject.asObservable();
+
+  public printLead(id: number): void {
+    let printCaseOptions: any = {
+      headers: new HttpHeaders({
+        'Content-Type': 'application/json',
+        'Authorization': 'Bearer ' + localStorage.getItem('access_token')
+      }),
+      responseType: "blob"
+    };
+
+    this.httpClient.get(this.defaultAPIURLHost + "/api/trn/case/print/" + id, printCaseOptions).subscribe(
+      response => {
+        let results = new Blob([response], { type: 'application/pdf' });
+        this.printLeadSubject.next(results);
+      }
+    );
+  }
 }
