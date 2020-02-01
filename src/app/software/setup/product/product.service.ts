@@ -40,19 +40,20 @@ export class ProductService {
     let productListObservableArray = new ObservableArray();
     this.listProductSubject.next(productListObservableArray);
 
-    this.httpClient.get(this.defaultAPIURLHost + "api/crm/mst/product/list", this.options).subscribe(
+    this.httpClient.get(this.defaultAPIURLHost + "/api/crm/product/list", this.options).subscribe(
       response => {
         var results = response;
         if (results["length"] > 0) {
           for (var i = 0; i <= results["length"] - 1; i++) {
             productListObservableArray.push({
               Id: results[i].Id,
-              Status: results[i].Status,
-              Category: results[i].Category,
-              IsLocked: results[i].IsLocked,
-              CreatedBy: results[i].CreatedBy,
+              ProductCode: results[i].ProductCode,
+              ProductDescription: results[i].ProductDescription,
+              CreatedByUserId: results[i].CreatedByUserId,
+              CreatedBy: results[i].CreatedByUser,
               CreatedDateTime: results[i].CreatedDateTime,
-              UpdatedBy: results[i].UpdatedBy,
+              UpdatedByUserId: results[i].UpdatedByUserId,
+              UpdatedByUser: results[i].UpdatedByUser,
               UpdatedDateTime: results[i].UpdatedDateTime,
             });
           }
@@ -62,10 +63,10 @@ export class ProductService {
     );
   }
 
-  public AddProduct(): void {
-    this.httpClient.post(this.defaultAPIURLHost + "/api/crm/mst/product/add", "", this.options).subscribe(
+  public AddProduct(objProduct: ProductModel): void {
+    this.httpClient.post(this.defaultAPIURLHost + "/api/crm/product/add", JSON.stringify(objProduct), this.options).subscribe(
       response => {
-        let responseResults: string[] = ["success", response.toString()];
+        let responseResults: string[] = ["success", ""];
         this.addProductSubject.next(responseResults);
       },
       error => {
@@ -76,20 +77,20 @@ export class ProductService {
   }
 
   public UpdateProduct(objProduct: ProductModel): void {
-    this.httpClient.post(this.defaultAPIURLHost + "/api/crm/mst/product/update/" + objProduct.Id, JSON.stringify(objProduct) ,this.options).subscribe(
+    this.httpClient.put(this.defaultAPIURLHost + "/api/crm/product/update/", JSON.stringify(objProduct) ,this.options).subscribe(
       response => {
-        let responseResults: string[] = ["success", response.toString()];
-        this.addProductSubject.next(responseResults);
+        let responseResults: string[] = ["success", ""];
+        this.updateProductSubject.next(responseResults);
       },
       error => {
         let errorResults: string[] = ["failed", error["error"]];
-        this.addProductSubject.next(errorResults);
+        this.updateProductSubject.next(errorResults);
       }
     );
   }
 
-  public deleteSalesDelivery(id: number) {
-    this.httpClient.delete(this.defaultAPIURLHost + "/api/crm/trn/sales/delete" + id, this.options).subscribe(
+  public deleteProduct(id: number) {
+    this.httpClient.delete(this.defaultAPIURLHost + "/api/crm/product/delete/" + id, this.options).subscribe(
       response => {
         let responseResults: string[] = ["success", ""];
         this.deleteProductSubject.next(responseResults);

@@ -36,9 +36,10 @@ import { ActivityComponent } from './activity/activity.component';
 import { UserComponent } from './setup/user/user.component';
 import { LeadPrintDialogComponent } from './lead-detail/lead-print-dialog/lead-print-dialog.component';
 import { ProductComponent } from './setup/product/product.component';
+import { StatusComponent } from './setup/status/status.component';
 
 @NgModule({
-  declarations: [LayoutComponent, DashboardComponent, LeadComponent, LeadDetailComponent, SalesListComponent, SalesDetailComponent, SupportListComponent, SupportDetailComponent, LeadReportComponent, SalesdeliveryReportComponent, SupportReportComponent, ActivityReportComponent, ActivityComponent, UserComponent, LeadPrintDialogComponent, ProductComponent ],
+  declarations: [LayoutComponent, DashboardComponent, LeadComponent, LeadDetailComponent, SalesListComponent, SalesDetailComponent, SupportListComponent, SupportDetailComponent, LeadReportComponent, SalesdeliveryReportComponent, SupportReportComponent, ActivityReportComponent, ActivityComponent, UserComponent, LeadPrintDialogComponent, ProductComponent, StatusComponent ],
   imports: [
     CommonModule,
     FormsModule,

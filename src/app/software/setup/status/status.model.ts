@@ -1,7 +1,7 @@
-export class ProductModel {
+export class StatusModel {
     Id: number;
-    ProductCode: string;
-    ProductDescription: string;
+    Status: string;
+    Category: string;
     CreatedById: number;
     CreatedDateTime: Date;
     UpdatedById: number;

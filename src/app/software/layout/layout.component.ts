@@ -60,20 +60,27 @@ export class LayoutComponent implements OnInit {
       } else if (this.router.url == "/software/report/lead") {
         this.ToolbarTitle = "Lead Report";
         toolBarImage.setAttribute("src", "../../assets/img/icons/print.png");
-      } else if (this.router.url == "/software/mst/user") {
-        this.ToolbarTitle = "Users";
-        toolBarImage.setAttribute("src", "../../assets/img/icons/woman.png");
       } else if (this.router.url == "/software/report/sales/delivery") {
         this.ToolbarTitle = "Sales Delivery Report";
         toolBarImage.setAttribute("src", "../../assets/img/icons/print.png");
       } else if (this.router.url == "/software/report/support") {
         this.ToolbarTitle = "Support Report";
         toolBarImage.setAttribute("src", "../../assets/img/icons/print.png");
-      }else if (this.router.url == "/software/report/activity") {
+      } else if (this.router.url == "/software/report/activity") {
         this.ToolbarTitle = "Activity Report";
         toolBarImage.setAttribute("src", "../../assets/img/icons/print.png");
-      }
+      } else if (this.router.url == "/software/setup/user") {
+        this.ToolbarTitle = "Users";
+        toolBarImage.setAttribute("src", "../../assets/img/icons/woman.png");
+      } else if (this.router.url == "/software/setup/product") {
+        this.ToolbarTitle = "Products";
+        toolBarImage.setAttribute("src", "../../../assets/img/icons/product.png");
+      } else if (this.router.url == "/software/setup/status") {
+        this.ToolbarTitle = "Status";
+        toolBarImage.setAttribute("src", "../../assets/img/icons/status.png");
+      } 
       else {
+
         // this.ToolbarTitle = "Easyfis CRM";
       }
     });
@@ -120,8 +127,8 @@ export class LayoutComponent implements OnInit {
     if (this.securityService.openPage("CRMAdmin") == true) {
       this.crmAdmin = true;
     }
-    
-    
+
+
   }
 
 }

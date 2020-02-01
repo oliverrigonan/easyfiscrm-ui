@@ -18,6 +18,8 @@ import { SupportReportComponent } from './report/support-report/support-report.c
 import { ActivityReportComponent } from './report/activity-report/activity-report.component';
 import { ActivityComponent } from './activity/activity.component';
 import { UserComponent } from './setup/user/user.component';
+import { ProductComponent } from './setup/product/product.component';
+import { StatusComponent } from './setup/status/status.component';
 
 const routes: Routes = [
   {
@@ -36,7 +38,11 @@ const routes: Routes = [
       { path: 'report/sales/delivery', component: SalesdeliveryReportComponent, canActivate: [SoftwareRouterActivate] },
       { path: 'report/support', component: SupportReportComponent, canActivate: [SoftwareRouterActivate] },
       { path: 'report/activity', component: ActivityReportComponent, canActivate: [SoftwareRouterActivate] },
-      { path: 'mst/user', component: UserComponent, canActivate: [SoftwareRouterActivate] },
+      { path: 'setup/user', component: UserComponent, canActivate: [SoftwareRouterActivate] },
+      { path: 'setup/product', component: ProductComponent, canActivate: [SoftwareRouterActivate] },
+      { path: 'setup/status', component: StatusComponent, canActivate: [SoftwareRouterActivate] },
+
+
     ]
   }
 ];
