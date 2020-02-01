@@ -1,59 +1,110 @@
 <div class="container-fluid">
-    <div class="row">
-      <div class="col-lg-3">
-        <button type="button" class="btn btn-light btn-block" routerLink="/software/trn/lead" *ngIf="crmLead">
-          <br />
-          <img src="../../../assets/img/icons/leads.png" height="100" alt="">
-          <br />
-          <br />
-          <h5>
-            Leads
-          </h5>
-          <br />
-        </button>
+  <div class="row">
+    <div class="col-lg-3">
+      <button type="button" class="btn btn-light btn-block" routerLink="/software/trn/lead" *ngIf="crmLead">
         <br />
-      </div>
-      <div class="col-lg-3">
-        <button type="button" class="btn btn-light btn-block" routerLink="/software/trn/sales" *ngIf="crmSalesDelivery">
-          <br />
-          <img src="../../../assets/img/icons/delivery.png" height="100" alt="">
-          <br />
-          <br />
-          <h5>
-            Sales Delivery
-          </h5>
-          <br />
-        </button>
+        <img src="../../../assets/img/icons/leads.png" height="100" alt="">
         <br />
-      </div>
-      <div class="col-lg-3">
-        <button type="button" class="btn btn-light btn-block" routerLink="/software/trn/support" *ngIf="crmSupport">
-          <br />
-          <img src="../../../assets/img/icons/support.png" height="100" alt="">
-          <br />
-          <br />
-          <h5>
-            Support
-          </h5>
-          <br />
-        </button>
         <br />
-      </div>
-      <div class="col-lg-3">
-        <button type="button" class="btn btn-light btn-block" routerLink="/software/report" *ngIf="crmReport">
-          <br />
-          <img src="../../../assets/img/icons/report.png" height="100" alt="">
-          <br />
-          <br />
-          <h5>
-            Report
-          </h5>
-          <br />
-        </button>
+        <h5>
+          Leads
+        </h5>
         <br />
-      </div>
-      <div class="col-lg-3">
-        
-      </div>
+      </button>
+      <br />
+    </div>
+    <div class="col-lg-3">
+      <button type="button" class="btn btn-light btn-block" routerLink="/software/trn/sales" *ngIf="crmSalesDelivery">
+        <br />
+        <img src="../../../assets/img/icons/delivery.png" height="100" alt="">
+        <br />
+        <br />
+        <h5>
+          Sales Delivery
+        </h5>
+        <br />
+      </button>
+      <br />
+    </div>
+    <div class="col-lg-3">
+      <button type="button" class="btn btn-light btn-block" routerLink="/software/trn/support" *ngIf="crmSupport">
+        <br />
+        <img src="../../../assets/img/icons/support.png" height="100" alt="">
+        <br />
+        <br />
+        <h5>
+          Support
+        </h5>
+        <br />
+      </button>
+      <br />
+    </div>
+    <div class="col-lg-3">
+      <button type="button" class="btn btn-light btn-block" routerLink="/software/trn/activity" *ngIf="crmActivity">
+        <br />
+        <img src="../../../assets/img/icons/activity.png" height="100" alt="">
+        <br />
+        <br />
+        <h5>
+          Activity
+        </h5>
+        <br />
+      </button>
+      <br />
     </div>
   </div>
+  <div class="row">
+    <div class="col-lg-3">
+      <button type="button" class="btn btn-light btn-block" routerLink="/software/setup/product" *ngIf="crmAdmin">
+        <br />
+        <img src="../../../assets/img/icons/product.png"height="100" alt="">
+        <br />
+        <br />
+        <h5>
+          Product
+        </h5>
+        <br />
+      </button>
+      <br />
+    </div>
+    <div class="col-lg-3">
+      <button type="button" class="btn btn-light btn-block" routerLink="/software/trn/sales" *ngIf="crmAdmin">
+        <br />
+        <img src="../../../assets/img/icons/status.png" height="100" alt="">
+        <br />
+        <br />
+        <h5>
+          Status
+        </h5>
+        <br />
+      </button>
+      <br />
+    </div>
+    <div class="col-lg-3">
+      <button type="button" class="btn btn-light btn-block" routerLink="/software/setup/user" *ngIf="crmAdmin">
+        <br />
+        <img src="../../../assets/img/icons/woman.png" height="100" alt="">
+        <br />
+        <br />
+        <h5>
+          User
+        </h5>
+        <br />
+      </button>
+      <br />
+    </div>
+    <div class="col-lg-3">
+      <button type="button" class="btn btn-light btn-block" routerLink="/software/report" *ngIf="crmReport">
+        <br />
+        <img src="../../../assets/img/icons/report.png" height="100" alt="">
+        <br />
+        <br />
+        <h5>
+          Report
+        </h5>
+        <br />
+      </button>
+      <br />
+    </div>
+  </div>
+</div>

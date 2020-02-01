@@ -62,3 +62,11 @@
     background: #7a0400;
     border: none;
 } 
+
+#signOut {
+    background: transparent;
+    color: white;
+    /* border: 1px solid rgb(59, 59, 59); */
+    border: none;
+}
+

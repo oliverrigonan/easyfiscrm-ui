@@ -1,8 +1,10 @@
-import { Component, OnInit, ChangeDetectorRef, ViewChild } from '@angular/core';
+import { Component, OnInit, ChangeDetectorRef, ViewChild, TemplateRef } from '@angular/core';
 import { Router } from '@angular/router';
 import { MatSidenav } from '@angular/material';
 import { MatMenuModule } from '@angular/material/menu';
 import { SecurityService } from '../security/security.service';
+import { BsModalRef } from 'ngx-bootstrap/modal/bs-modal-ref.service';
+import { BsModalService } from 'ngx-bootstrap/modal';
 
 @Component({
   selector: 'app-layout',
@@ -10,6 +12,8 @@ import { SecurityService } from '../security/security.service';
   styleUrls: ['./layout.component.css']
 })
 export class LayoutComponent implements OnInit {
+
+  public logOutModalRef: BsModalRef;
 
   private crmLead: boolean = false;
   private crmSalesDelivery: boolean = false;
@@ -20,6 +24,8 @@ export class LayoutComponent implements OnInit {
 
   constructor(
     private router: Router,
+    private modalService: BsModalService,
+
     private securityService: SecurityService
 
   ) {
@@ -127,8 +133,14 @@ export class LayoutComponent implements OnInit {
     if (this.securityService.openPage("CRMAdmin") == true) {
       this.crmAdmin = true;
     }
+  }
 
-
+  public btnSignOutlick(deleltestatusDetailModalTemplate: TemplateRef<any>): void {
+    this.logOutModalRef = this.modalService.show(deleltestatusDetailModalTemplate, {
+      backdrop: true,
+      ignoreBackdropClick: true,
+      class: "modal-sm"
+    });
   }
 
 }
