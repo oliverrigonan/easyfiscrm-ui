@@ -55,9 +55,22 @@
   </div>
   <div class="row">
     <div class="col-lg-3">
+      <button type="button" class="btn btn-light btn-block" routerLink="/software/report" *ngIf="crmReport">
+        <br />
+        <img src="../../../assets/img/icons/report.png" height="100" alt="">
+        <br />
+        <br />
+        <h5>
+          Report
+        </h5>
+        <br />
+      </button>
+      <br />
+    </div>
+    <div class="col-lg-3">
       <button type="button" class="btn btn-light btn-block" routerLink="/software/setup/product" *ngIf="crmAdmin">
         <br />
-        <img src="../../../assets/img/icons/product.png"height="100" alt="">
+        <img src="../../../assets/img/icons/product.png" height="100" alt="">
         <br />
         <br />
         <h5>
@@ -88,19 +101,6 @@
         <br />
         <h5>
           User
-        </h5>
-        <br />
-      </button>
-      <br />
-    </div>
-    <div class="col-lg-3">
-      <button type="button" class="btn btn-light btn-block" routerLink="/software/report" *ngIf="crmReport">
-        <br />
-        <img src="../../../assets/img/icons/report.png" height="100" alt="">
-        <br />
-        <br />
-        <h5>
-          Report
         </h5>
         <br />
       </button>

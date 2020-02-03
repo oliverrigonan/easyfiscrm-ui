@@ -1,6 +1,7 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
+import { PdfViewerModule } from 'ng2-pdf-viewer';
 
 import { SoftwareRoutingModule } from './software-routing.module';
 import { SoftwareRouterActivate } from './software.router.activate';
@@ -55,10 +56,14 @@ import { StatusComponent } from './setup/status/status.component';
     WjGridFilterModule,
     WjGridModule,
     WjInputModule,
-    ModalModule.forRoot()
+    ModalModule.forRoot(),
+    PdfViewerModule
   ],
   providers: [
     SoftwareRouterActivate
+  ],
+  entryComponents: [
+    LeadPrintDialogComponent
   ]
 })
 export class SoftwareModule { }

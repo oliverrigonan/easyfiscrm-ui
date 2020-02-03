@@ -311,7 +311,7 @@ export class LeadDetailService {
       responseType: "blob"
     };
 
-    this.httpClient.get(this.defaultAPIURLHost + "/api/trn/case/print/" + id, printCaseOptions).subscribe(
+    this.httpClient.get(this.defaultAPIURLHost + "/api/pdf/report/lead/" + id, printCaseOptions).subscribe(
       response => {
         let results = new Blob([response], { type: 'application/pdf' });
         this.printLeadSubject.next(results);

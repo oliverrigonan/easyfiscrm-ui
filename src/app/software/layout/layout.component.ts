@@ -110,8 +110,6 @@ export class LayoutComponent implements OnInit {
   ngOnInit() {
     this.openSideBar();
     this.username = localStorage.getItem("username");
-    console.log(this.securityService.openPage("CRMLead"));
-
     if (this.securityService.openPage("CRMLead") == true) {
       this.crmLead = true;
     }

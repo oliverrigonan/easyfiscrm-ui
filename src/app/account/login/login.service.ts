@@ -55,6 +55,7 @@ export class LoginService {
     this.httpClient.get(this.defaultAPIHostURL + "/api/crm/mst/user/form/list/UserFormByUserName/" + username, options).subscribe(
       response => {
         var results = response;
+        console.log(results);
         if (results["length"] > 0) {
           for (var i = 0; i <= results["length"] - 1; i++) {
             userRights.push({
