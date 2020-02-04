@@ -430,4 +430,24 @@ export class SalesDetailService {
       }
     )
   }
+
+  public printSalesDeliverySubject = new Subject<Blob>();
+  public printLeadObservable = this.printSalesDeliverySubject.asObservable();
+
+  public printLead(id: number): void {
+    let printCaseOptions: any = {
+      headers: new HttpHeaders({
+        'Content-Type': 'application/json',
+        'Authorization': 'Bearer ' + localStorage.getItem('access_token')
+      }),
+      responseType: "blob"
+    };
+
+    this.httpClient.get(this.defaultAPIURLHost + "/api/pdf/report/list/salesdelivery/" + id, printCaseOptions).subscribe(
+      response => {
+        let results = new Blob([response], { type: 'application/pdf' });
+        this.printSalesDeliverySubject.next(results);
+      }
+    );
+  }
 }

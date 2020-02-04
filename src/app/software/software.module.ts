@@ -38,9 +38,11 @@ import { UserComponent } from './setup/user/user.component';
 import { LeadPrintDialogComponent } from './lead-detail/lead-print-dialog/lead-print-dialog.component';
 import { ProductComponent } from './setup/product/product.component';
 import { StatusComponent } from './setup/status/status.component';
+import { SalesDetailPrintDialogComponent } from './sales-detail/sales-detail-print-dialog/sales-detail-print-dialog.component';
+import { SupportDetailPrintDialogComponent } from './support-detail/support-detail-print-dialog/support-detail-print-dialog.component';
 
 @NgModule({
-  declarations: [LayoutComponent, DashboardComponent, LeadComponent, LeadDetailComponent, SalesListComponent, SalesDetailComponent, SupportListComponent, SupportDetailComponent, LeadReportComponent, SalesdeliveryReportComponent, SupportReportComponent, ActivityReportComponent, ActivityComponent, UserComponent, LeadPrintDialogComponent, ProductComponent, StatusComponent ],
+  declarations: [LayoutComponent, DashboardComponent, LeadComponent, LeadDetailComponent, SalesListComponent, SalesDetailComponent, SupportListComponent, SupportDetailComponent, LeadReportComponent, SalesdeliveryReportComponent, SupportReportComponent, ActivityReportComponent, ActivityComponent, UserComponent, LeadPrintDialogComponent, ProductComponent, StatusComponent, SalesDetailPrintDialogComponent, SupportDetailPrintDialogComponent ],
   imports: [
     CommonModule,
     FormsModule,
@@ -63,7 +65,9 @@ import { StatusComponent } from './setup/status/status.component';
     SoftwareRouterActivate
   ],
   entryComponents: [
-    LeadPrintDialogComponent
+    LeadPrintDialogComponent,
+    SalesDetailPrintDialogComponent,
+    SupportDetailPrintDialogComponent
   ]
 })
 export class SoftwareModule { }

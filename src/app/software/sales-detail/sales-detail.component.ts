@@ -1,5 +1,6 @@
 import { Component, OnInit, ViewChild, TemplateRef } from '@angular/core';
 import { Router, ActivatedRoute } from '@angular/router';
+import { MatDialog, MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
 
 import { ObservableArray, CollectionView } from 'wijmo/wijmo';
 import { WjFlexGrid } from 'wijmo/wijmo.angular2.grid';
@@ -12,6 +13,7 @@ import { BsModalRef } from 'ngx-bootstrap/modal/bs-modal-ref.service';
 import { SalesDeliveryDetailModel } from './sales-detail.model';
 import { SalesDetailService } from './sales-detail.service';
 import { SalesDetailActivityModel } from './sales-detail-activitiy.model';
+import { SalesDetailPrintDialogComponent } from './sales-detail-print-dialog/sales-detail-print-dialog.component';
 
 @Component({
   selector: 'app-sales-detail',
@@ -26,6 +28,8 @@ export class SalesDetailComponent implements OnInit {
     private activatedRoute: ActivatedRoute,
     private router: Router,
     private modalService: BsModalService,
+    public casePrintCaseDialog: MatDialog,
+
   ) { }
 
   public isLoadingSpinnerHidden: boolean = false;
@@ -851,6 +855,17 @@ export class SalesDetailComponent implements OnInit {
         if (this.saveActivitySub != null) this.saveActivitySub.unsubscribe();
       }
     );
+  }
+
+  public btnPrintSalesDelivery(): void {
+    let id: number = 0;
+    this.activatedRoute.params.subscribe(params => { id = params["id"]; });
+
+    this.casePrintCaseDialog.open(SalesDetailPrintDialogComponent, {
+      width: '1000px',
+      data: { objId: id },
+      disableClose: true
+    });
   }
 
 

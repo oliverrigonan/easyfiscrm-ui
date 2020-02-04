@@ -46,6 +46,9 @@ export class LeadDetailService {
   public saveActivityObservable = this.saveActivitySubject.asObservable();
   public deleteActivitySubject = new Subject<string[]>();
   public deleteActivityObservable = this.deleteActivitySubject.asObservable();
+  
+  public printLeadSubject = new Subject<Blob>();
+  public printLeadObservable = this.printLeadSubject.asObservable();
 
   public listAssignedUsers(): void {
     let listAssignedToUsersObservableArray = new ObservableArray();
@@ -299,9 +302,6 @@ export class LeadDetailService {
     )
   }
 
-  public printLeadSubject = new Subject<Blob>();
-  public printLeadObservable = this.printLeadSubject.asObservable();
-
   public printLead(id: number): void {
     let printCaseOptions: any = {
       headers: new HttpHeaders({
@@ -311,7 +311,7 @@ export class LeadDetailService {
       responseType: "blob"
     };
 
-    this.httpClient.get(this.defaultAPIURLHost + "/api/pdf/report/lead/" + id, printCaseOptions).subscribe(
+    this.httpClient.get(this.defaultAPIURLHost + "/api/pdf/report/list/lead/" + id, printCaseOptions).subscribe(
       response => {
         let results = new Blob([response], { type: 'application/pdf' });
         this.printLeadSubject.next(results);

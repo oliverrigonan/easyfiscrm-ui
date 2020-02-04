@@ -1,0 +1,20 @@
+<h1 mat-dialog-title>
+  Sales Delivery
+</h1>
+<mat-divider></mat-divider>
+<div mat-dialog-content>
+  <pdf-viewer [src]="pdfUrl" [render-text]="true" style="width: 100% !important;"></pdf-viewer>
+  <iframe id="printPDF" name="printPDF" style="width: 0; height: 0; border: 0; border: none;"></iframe>
+</div>
+<mat-divider></mat-divider>
+<div mat-dialog-actions align="right">
+  <button mat-flat-button color="primary" style="margin-right: 5px;" (click)="btnPrintSalesDelivery()">
+      <!-- <fa-icon icon="print" fixedWidth="true"></fa-icon>  -->
+      <i class="fa fa-print fa-fw"></i>
+      Print
+  </button>
+  <button mat-flat-button color="warn" (click)="btnClosePrintDialog()" id="btnClosePrintDialog">
+      <!-- <fa-icon icon="times" fixedWidth="true"></fa-icon>  -->
+      <i class="fa fa-close fa-fw"></i>Close
+  </button>
+</div>

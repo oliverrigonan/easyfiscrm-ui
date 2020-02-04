@@ -1,5 +1,6 @@
 import { Component, OnInit, ViewChild, TemplateRef } from '@angular/core';
 import { Router, ActivatedRoute } from '@angular/router';
+import { MatDialog, MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
 
 import { ObservableArray, CollectionView } from 'wijmo/wijmo';
 import { WjFlexGrid } from 'wijmo/wijmo.angular2.grid';
@@ -12,6 +13,7 @@ import { BsModalRef } from 'ngx-bootstrap/modal/bs-modal-ref.service';
 import { SupportDetailService } from './support-detail.service';
 import { SupportModel } from '../support-list/support-list.model';
 import { SupportDetailActivityModel } from './support-detail-activity.model';
+import { SupportDetailPrintDialogComponent } from './support-detail-print-dialog/support-detail-print-dialog.component';
 
 @Component({
   selector: 'app-support-detail',
@@ -26,6 +28,7 @@ export class SupportDetailComponent implements OnInit {
     private activatedRoute: ActivatedRoute,
     private router: Router,
     private modalService: BsModalService,
+    public casePrintCaseDialog: MatDialog
   ) { }
 
   public IsLoaded: Boolean = false;
@@ -760,6 +763,17 @@ public isSalesDeliveryDataLoaded: boolean = false;
         if (this.deleteActivitySub != null) this.deleteActivitySub.unsubscribe();
       }
     );
+  }
+
+  public btnPrintSupport(): void {
+    let LDId: number = 0;
+    this.activatedRoute.params.subscribe(params => { LDId = params["id"]; });
+
+    this.casePrintCaseDialog.open(SupportDetailPrintDialogComponent, {
+      width: '1000px',
+      data: { objId: LDId },
+      disableClose: true
+    });
   }
 
   ngOnDestry() {
