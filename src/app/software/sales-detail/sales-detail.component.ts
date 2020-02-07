@@ -105,6 +105,7 @@ export class SalesDetailComponent implements OnInit {
   public isActivityTabHidden: boolean = true;
 
   public activityModalHeaderTitle: string = "Activity";
+  public leadModalHeaderTitle: string = "Lead List";
 
   public cboListActivityUsersSub: any;
   public cboListActivityUsersObservableArray: ObservableArray = new ObservableArray();
@@ -397,9 +398,10 @@ export class SalesDetailComponent implements OnInit {
     );
   }
 
+  public customerModalHeaderTitle: string = "Customer List";
+
   public btnCustomerListClick(customerModalTemplate: TemplateRef<any>): void {
     if (!this.isLocked) {
-      this.activityModalHeaderTitle = "Costumer List";
       this.listCustomer();
       setTimeout(() => {
 
@@ -414,7 +416,6 @@ export class SalesDetailComponent implements OnInit {
 
   public btnLeadListClick(leadModalTemplate: TemplateRef<any>): void {
     if (!this.isLocked) {
-      this.activityModalHeaderTitle = "Costumer List";
       this.listLead();
       setTimeout(() => {
 
