@@ -9,6 +9,8 @@ import { AppSettings } from './app-settings';
 
 import { AppRoutingModule } from './app-routing.module';
 import { AppRouterActivate } from './app.router.activate';
+import { CurrencyPipe } from '@angular/common';
+
 
 import { AppComponent } from './app.component';
 
@@ -27,7 +29,8 @@ import { AppComponent } from './app.component';
   ],
   providers: [
     AppSettings,
-    AppRouterActivate
+    AppRouterActivate,
+    CurrencyPipe
   ],
   bootstrap: [AppComponent]
 })

@@ -311,7 +311,7 @@ export class SalesDetailComponent implements OnInit {
           for (var i = 0; i <= data.length - 1; ++i) {
             productObservableArray.push({
               Id: data[i].Id,
-              ProductDescription: data[i].ProductDescription
+              ProductCode: data[i].ProductCode
             });
           }
         }

@@ -125,7 +125,7 @@ export class SalesDetailService {
           for (var i = 0; i <= results["length"] - 1; i++) {
             listProductObservableArray.push({
               Id: results[i].Id,
-              ProductDescription: results[i].ProductDescription
+              ProductCode: results[i].ProductCode
             });
           }
         }

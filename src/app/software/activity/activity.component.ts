@@ -36,6 +36,9 @@ export class ActivityComponent implements OnInit {
     }, 300);
   }
 
+  // ===============
+  // Activity Header
+  // ===============
   public cboShowNumberOfRows: ObservableArray = new ObservableArray();
 
   public ActivityStartDateFilterData = new Date();
@@ -62,218 +65,9 @@ export class ActivityComponent implements OnInit {
   public cboListStatusSub: any;
   public listActivityHeaderSub: any;
 
-  public createCboShowNumberOfRows(): void {
-    for (var i = 0; i <= 4; i++) {
-      var rows = 0;
-      var rowsString = "";
-
-      if (i == 0) {
-        rows = 15;
-        rowsString = "Show 15";
-      } else if (i == 1) {
-        rows = 50;
-        rowsString = "Show 50";
-      } else if (i == 2) {
-        rows = 100;
-        rowsString = "Show 100";
-      } else if (i == 3) {
-        rows = 150;
-        rowsString = "Show 150";
-      } else {
-        rows = 200;
-        rowsString = "Show 200";
-      }
-
-      this.cboShowNumberOfRows.push({
-        rowNumber: rows,
-        rowString: rowsString
-      });
-    }
-  }
-
-  public cboShowNumberOfRowsOnSelectedIndexChanged(selectedValue: any): void {
-    this.listActivityPageIndex = selectedValue;
-
-    this.listActivityHeaderCollectionView.pageSize = this.listActivityPageIndex;
-    this.listActivityHeaderCollectionView.refresh();
-    this.listActivityHeaderCollectionView.refresh();
-  }
-
-  public getFirsDayOftheMonth() {
-    var date = new Date();
-    this.ActivityStartDateFilterData = new Date(date.getFullYear(), date.getMonth(), 1);
-    this.ActivityEndDateFilterData = new Date(date.getFullYear(), date.getMonth() + 1, 0);
-  }
-
-  public cboStartDateTextChanged(): void {
-    // if (this.isDataLoaded) {
-    //   setTimeout(() => {
-    //     this.listActivityHeader();
-    //   }, 100);
-    // }
-  }
-
-  public cboEndDateTextChanged(): void {
-    // if (this.isDataLoaded) {
-    //   setTimeout(() => {
-    //     this.listActivityHeader();
-    //   }, 100);
-    // }
-  }
-
-  public createCboActivityUser(): void {
-    this.activityService.listUser();
-    this.cboListUserSub = this.activityService.listUserObservable.subscribe(
-      data => {
-        let userObservableArray = new ObservableArray();
-        if (data != null) {
-          for (var i = 0; i <= data.length - 1; i++) {
-            userObservableArray.push({
-              Id: data[i].Id,
-              UserName: data[i].UserName,
-              FullName: data[i].FullName
-            });
-          }
-        }
-
-        this.cboActivityUserObservableArray = userObservableArray;
-        // setTimeout(() => {
-        //   this.listActivityHeader();
-        // }, 100);
-        if (this.cboListUserSub != null) this.cboListUserSub.unsubscribe();
-      }
-    );
-  }
-
-  public cboActivityUserSelectedIndexChanged(selectedValue: any): void {
-    this.cboActivityUserSelectedValue = selectedValue;
-
-    if (this.isDataLoaded) {
-      setTimeout(() => {
-        this.createCboActivityStatus();
-      }, 100);
-    }
-  }
-
-  public createCboActivityDocument(): void {
-    this.activityService.listDocument();
-    this.cboListDocumentSub = this.activityService.listDocumentObservable.subscribe(
-      data => {
-        let documentObservableArray = new ObservableArray();
-
-        if (data != null) {
-          for (var i = 0; i <= data.length - 1; i++) {
-            documentObservableArray.push({
-              Id: data[i].Id,
-              Category: data[i].Category
-            });
-          }
-        }
-
-        this.cboActivityDocumentObservableArray = documentObservableArray;
-        if (this.cboActivityDocumentObservableArray.length > 0) {
-          setTimeout(() => {
-            this.listActivityHeader();
-          }, 100);
-        }
-
-        if (this.cboListDocumentSub != null) this.cboListDocumentSub.unsubscribe();
-      }
-    );
-  }
-
-  public cboDocumentSelectedIndexChanged(selectedValue: any): void {
-    this.cboActivityDocumentSelectedValue = selectedValue;
-
-    if (this.isDataLoaded) {
-      setTimeout(() => {
-        this.createCboActivityStatus();
-      }, 100);
-    }
-  }
-
-  public createCboActivityStatus(): void {
-    this.activityService.listStatus(this.cboActivityDocumentSelectedValue);
-    this.cboListStatusSub = this.activityService.listStatusObservable.subscribe(
-      data => {
-        let statusObservableArray = new ObservableArray();
-
-        statusObservableArray.push({
-          Id: 0,
-          Status: "ALL"
-        });
-
-        if (data != null) {
-          for (var i = 0; i <= data.length - 1; i++) {
-            statusObservableArray.push({
-              Id: data[i].Id,
-              Status: data[i].Status
-            });
-          }
-        }
-
-        console.log("Good!");
-
-        this.cboActivityStatusObservableArray = statusObservableArray;
-        // if (this.cboActivityStatusObservableArray.length > 0) {
-        //   setTimeout(() => {
-        //     this.listActivityHeader();
-        //   }, 100);
-        // }
-
-        if (this.cboListStatusSub != null) this.cboListStatusSub.unsubscribe();
-      }
-    );
-  }
-
-  public cboActivityStatusSelectedIndexChanged(selectedValue: any): void {
-    this.cboActivityStatusSelectedValue = selectedValue;
-
-    // if (this.isDataLoaded) {
-    //   setTimeout(() => {
-    //     this.listActivityHeader();
-    //   }, 100);
-    // }
-  }
-
-  public btnGetActivityClick(): void {
-    this.listActivityHeader();
-  }
-
-  public listActivityHeader(): void {
-    this.clistActivityHeaderObservableArray = new ObservableArray();
-    this.listActivityHeaderCollectionView = new CollectionView(this.clistActivityHeaderObservableArray);
-    this.listActivityHeaderCollectionView.pageSize = 15;
-    this.listActivityHeaderCollectionView.trackChanges = true;
-    this.listActivityHeaderCollectionView.refresh();
-    this.listActivityFlexGrid.refresh();
-
-    let startDate = [this.ActivityStartDateFilterData.getFullYear(), this.ActivityStartDateFilterData.getMonth() + 1, this.ActivityStartDateFilterData.getDate()].join('-');
-    let endDate = [this.ActivityEndDateFilterData.getFullYear(), this.ActivityEndDateFilterData.getMonth() + 1, this.ActivityEndDateFilterData.getDate()].join('-');
-
-    this.isProgressBarHidden = false;
-
-    this.activityService.listActivityHeader(startDate, endDate, this.cboActivityDocumentSelectedValue, this.cboActivityStatusSelectedValue, this.cboActivityUserSelectedValue);
-    this.listActivityHeaderSub = this.activityService.listActivityHeadingObservable.subscribe(
-      data => {
-        console.log(data);
-        if (data.length > 0) {
-          this.clistActivityHeaderObservableArray = data;
-          this.listActivityHeaderCollectionView = new CollectionView(this.clistActivityHeaderObservableArray);
-          this.listActivityHeaderCollectionView.pageSize = this.listActivityPageIndex;
-          this.listActivityHeaderCollectionView.trackChanges = true;
-          this.listActivityHeaderCollectionView.refresh();
-          this.listActivityFlexGrid.refresh();
-        }
-
-        this.isDataLoaded = true;
-        this.isProgressBarHidden = true;
-
-        if (this.listActivityHeaderSub != null) this.listActivityHeaderSub.unsubscribe();
-      }
-    );
-  }
-
+  // ========
+  // Activity
+  // ========
   public activityListModalRef: BsModalRef;
   public modalcboShowNumberOfRows: ObservableArray = new ObservableArray();
   public listActivitySub: any;
@@ -344,17 +138,225 @@ export class ActivityComponent implements OnInit {
     docType: "",
     reference: "",
     particular: "",
+    assignedToId: 0,
     assignedTo: "",
     createdBy: "",
     product: "",
     status: "",
   };
 
-  public btnActivityListClick(activityListModalTemplate: TemplateRef<any>): void {
+
+  // ===============
+  // Activity Header
+  // ===============
+
+  public createCboShowNumberOfRows(): void {
+    for (var i = 0; i <= 4; i++) {
+      var rows = 0;
+      var rowsString = "";
+
+      if (i == 0) {
+        rows = 15;
+        rowsString = "Show 15";
+      } else if (i == 1) {
+        rows = 50;
+        rowsString = "Show 50";
+      } else if (i == 2) {
+        rows = 100;
+        rowsString = "Show 100";
+      } else if (i == 3) {
+        rows = 150;
+        rowsString = "Show 150";
+      } else {
+        rows = 200;
+        rowsString = "Show 200";
+      }
+
+      this.cboShowNumberOfRows.push({
+        rowNumber: rows,
+        rowString: rowsString
+      });
+    }
+  }
+
+  public cboShowNumberOfRowsOnSelectedIndexChanged(selectedValue: any): void {
+    this.listActivityPageIndex = selectedValue;
+
+    this.listActivityHeaderCollectionView.pageSize = this.listActivityPageIndex;
+    this.listActivityHeaderCollectionView.refresh();
+    this.listActivityHeaderCollectionView.refresh();
+  }
+
+  public getFirsDayOftheMonth() {
+    var date = new Date();
+    this.ActivityStartDateFilterData = new Date(date.getFullYear(), date.getMonth(), 1);
+    this.ActivityEndDateFilterData = new Date(date.getFullYear(), date.getMonth() + 1, 0);
+  }
+
+  public cboStartDateTextChanged(): void {
+  }
+
+  public cboEndDateTextChanged(): void {
+  }
+
+  // =============
+  // ComboBox User
+  // =============
+  public createCboActivityUser(): void {
+    this.activityService.listUser();
+    this.cboListUserSub = this.activityService.listUserObservable.subscribe(
+      data => {
+        let userObservableArray = new ObservableArray();
+        if (data != null) {
+          for (var i = 0; i <= data.length - 1; i++) {
+            userObservableArray.push({
+              Id: data[i].Id,
+              UserName: data[i].UserName,
+              FullName: data[i].FullName
+            });
+          }
+        }
+
+        this.cboActivityUserObservableArray = userObservableArray;
+        if (this.cboListUserSub != null) this.cboListUserSub.unsubscribe();
+      }
+    );
+  }
+
+  public cboActivityUserSelectedIndexChanged(selectedValue: any): void {
+    this.cboActivityUserSelectedValue = selectedValue;
+
+    if (this.isDataLoaded) {
+      setTimeout(() => {
+        this.createCboActivityStatus();
+      }, 100);
+    }
+  }
+
+  // =================
+  // ComboBox Document
+  // =================
+  public createCboActivityDocument(): void {
+    this.activityService.listDocument();
+    this.cboListDocumentSub = this.activityService.listDocumentObservable.subscribe(
+      data => {
+        let documentObservableArray = new ObservableArray();
+
+        if (data != null) {
+          for (var i = 0; i <= data.length - 1; i++) {
+            documentObservableArray.push({
+              Id: data[i].Id,
+              Category: data[i].Category
+            });
+          }
+        }
+
+        this.cboActivityDocumentObservableArray = documentObservableArray;
+        if (this.cboActivityDocumentObservableArray.length > 0) {
+          setTimeout(() => {
+            this.listActivityHeader();
+          }, 100);
+        }
+
+        if (this.cboListDocumentSub != null) this.cboListDocumentSub.unsubscribe();
+      }
+    );
+  }
+
+  public cboDocumentSelectedIndexChanged(selectedValue: any): void {
+    this.cboActivityDocumentSelectedValue = selectedValue;
+
+    if (this.isDataLoaded) {
+      setTimeout(() => {
+        this.createCboActivityStatus();
+      }, 100);
+    }
+  }
+
+  // ===============
+  // ComboBox Status
+  // ===============
+  public createCboActivityStatus(): void {
+    this.activityService.listStatus(this.cboActivityDocumentSelectedValue);
+    this.cboListStatusSub = this.activityService.listStatusObservable.subscribe(
+      data => {
+        let statusObservableArray = new ObservableArray();
+
+        statusObservableArray.push({
+          Id: 0,
+          Status: "ALL"
+        });
+
+        if (data != null) {
+          for (var i = 0; i <= data.length - 1; i++) {
+            statusObservableArray.push({
+              Id: data[i].Id,
+              Status: data[i].Status
+            });
+          }
+        }
+
+        console.log("Good!");
+
+        this.cboActivityStatusObservableArray = statusObservableArray;
+        if (this.cboListStatusSub != null) this.cboListStatusSub.unsubscribe();
+      }
+    );
+  }
+
+  public cboActivityStatusSelectedIndexChanged(selectedValue: any): void {
+    this.cboActivityStatusSelectedValue = selectedValue;
+  }
+
+  public btnGetActivityClick(): void {
+    this.listActivityHeader();
+  }
+
+  // ====================
+  // Activity Header List
+  // ====================
+  public listActivityHeader(): void {
+    this.clistActivityHeaderObservableArray = new ObservableArray();
+    this.listActivityHeaderCollectionView = new CollectionView(this.clistActivityHeaderObservableArray);
+    this.listActivityHeaderCollectionView.pageSize = 15;
+    this.listActivityHeaderCollectionView.trackChanges = true;
+    this.listActivityHeaderCollectionView.refresh();
+    this.listActivityFlexGrid.refresh();
+
+    let startDate = [this.ActivityStartDateFilterData.getFullYear(), this.ActivityStartDateFilterData.getMonth() + 1, this.ActivityStartDateFilterData.getDate()].join('-');
+    let endDate = [this.ActivityEndDateFilterData.getFullYear(), this.ActivityEndDateFilterData.getMonth() + 1, this.ActivityEndDateFilterData.getDate()].join('-');
+
+    this.isProgressBarHidden = false;
+
+    this.activityService.listActivityHeader(startDate, endDate, this.cboActivityDocumentSelectedValue, this.cboActivityStatusSelectedValue, this.cboActivityUserSelectedValue);
+    this.listActivityHeaderSub = this.activityService.listActivityHeadingObservable.subscribe(
+      data => {
+        console.log(data);
+        if (data.length > 0) {
+          this.clistActivityHeaderObservableArray = data;
+          this.listActivityHeaderCollectionView = new CollectionView(this.clistActivityHeaderObservableArray);
+          this.listActivityHeaderCollectionView.pageSize = this.listActivityPageIndex;
+          this.listActivityHeaderCollectionView.trackChanges = true;
+          this.listActivityHeaderCollectionView.refresh();
+          this.listActivityFlexGrid.refresh();
+        }
+
+        this.isDataLoaded = true;
+        this.isProgressBarHidden = true;
+
+        if (this.listActivityHeaderSub != null) this.listActivityHeaderSub.unsubscribe();
+      }
+    );
+  }
+
+  // ====================
+  // Activity Header Edit
+  // ====================
+  public btnEditActivityListClick(activityListModalTemplate: TemplateRef<any>): void {
     this.activityModalHeaderTitle = "Activity List";
     this.modalCreateCboShowNumberOfRows();
     this.isActivityDataLoaded = false;
-    
+
     let currentActivityHeader = this.listActivityHeaderCollectionView.currentItem;
     this.activityHeaderModel.docType = currentActivityHeader.DocType;
     this.activityHeaderModel.reference = currentActivityHeader.Reference;
@@ -363,7 +365,7 @@ export class ActivityComponent implements OnInit {
     this.activityHeaderModel.product = currentActivityHeader.Product;
     this.activityHeaderModel.status = currentActivityHeader.Status;
     this.activityHeaderModel.particular = currentActivityHeader.Particular;
-console.log(currentActivityHeader);
+
     this.listActivity();
     setTimeout(() => {
       this.activityListModalRef = this.modalService.show(activityListModalTemplate, {
@@ -373,6 +375,12 @@ console.log(currentActivityHeader);
       });
     }, 300);
   }
+
+
+
+  // ========
+  // Activity
+  // ========
 
   public modalCreateCboShowNumberOfRows(): void {
     for (var i = 0; i <= 4; i++) {
@@ -411,6 +419,9 @@ console.log(currentActivityHeader);
     this.modalListActivityCollectionView.refresh();
   }
 
+  // =============
+  // Activity List
+  // =============
   public listActivity(): void {
     if (!this.isActivityDataLoaded) {
       setTimeout(() => {
@@ -447,11 +458,15 @@ console.log(currentActivityHeader);
     }
   }
 
+  // =======================
+  // Current Activity Detail
+  // =======================
   public currentActivity(): void {
     let currentActivityHeader = this.listActivityHeaderCollectionView.currentItem;
     let leadId: number;
     let salesDeliveryId: number;
     let supportId: number;
+
     if (currentActivityHeader.DocType == "LEAD") {
       leadId = currentActivityHeader.Id;
       salesDeliveryId = null;
@@ -469,8 +484,6 @@ console.log(currentActivityHeader);
       salesDeliveryId = null;
       supportId = currentActivityHeader.Id;
     }
-    console.log(leadId, salesDeliveryId, supportId);
-
     if (this.isAddClicked) {
       this.activityModel = {
         Id: 0,
@@ -478,10 +491,10 @@ console.log(currentActivityHeader);
         ACDate: new Date(),
         UserId: 0,
         User: localStorage.getItem("username"),
-        FunctionalUserId: 0,
-        FunctionalUser: "",
-        TechnicalUserId: 0,
-        TechnicalUser: "",
+        FunctionalUserId: currentActivityHeader.AssignedToId,
+        FunctionalUser: currentActivityHeader.AssignedTo,
+        TechnicalUserId: currentActivityHeader.AssignedToId,
+        TechnicalUser: currentActivityHeader.AssignedTo,
         CRMStatus: this.activityModel.Status,
         Activity: "",
         StartDate: new Date(),
@@ -537,6 +550,9 @@ console.log(currentActivityHeader);
     }
   }
 
+  // ====================
+  // Add Activity - Modal
+  // ====================
   public btnAddActivityClick(activityModalTemplate: TemplateRef<any>): void {
     this.activitiyModalRef = this.modalService.show(activityModalTemplate, {
       backdrop: true,
@@ -555,6 +571,9 @@ console.log(currentActivityHeader);
     this.listActivityUsers();
   }
 
+  // =====================
+  // Edit Activity - Modal
+  // =====================
   public btnEditActivityClick(activityModalTemplate: TemplateRef<any>): void {
     this.activitiyModalRef = this.modalService.show(activityModalTemplate, {
       backdrop: true,
@@ -573,6 +592,9 @@ console.log(currentActivityHeader);
     this.listActivityUsers();
   }
 
+  // =============
+  // Save Activity
+  // =============
   public btnSaveActivityClick(): void {
     let btnSaveActivity: Element = document.getElementById("btnSaveActivity");
     let btnSaveActivityClickCloseModal: Element = document.getElementById("btnSaveActivityClickCloseModal");
@@ -603,62 +625,9 @@ console.log(currentActivityHeader);
     );
   }
 
-  public listActivityUsers(): void {
-    this.activityService.listActivityUsers();
-    this.cboListActivityUsersSub = this.activityService.listActivityUsersObservable.subscribe(
-      data => {
-        let usersObservableArray = new ObservableArray();
-
-        if (data != null) {
-          for (var i = 0; i <= data.length - 1; i++) {
-            usersObservableArray.push({
-              Id: data[i].Id,
-              FullName: data[i].FullName,
-              UserName: data[i].UserName
-            });
-          }
-        }
-
-        this.cboListActivityUsersObservableArray = usersObservableArray;
-
-        setTimeout(() => {
-          this.listActivityStatus();
-        }, 100);
-
-        if (this.cboListActivityUsersSub != null) this.cboListActivityUsersSub.unsubscribe();
-      }
-    );
-  }
-
-  public listActivityStatus(): void {
-    this.activityService.listActivityStatus();
-    this.cboListActivityStatusSub = this.activityService.listActivityStatusObservable.subscribe(
-      data => {
-        let statusObservableArray = new ObservableArray();
-
-        if (data != null) {
-          for (var i = 0; i <= data.length - 1; i++) {
-            statusObservableArray.push({
-              Id: data[i].Id,
-              Status: data[i].Status
-            });
-          }
-        }
-
-        this.cboListActivityStatusObservableArray = statusObservableArray;
-
-        setTimeout(() => {
-          this.currentActivity();
-        }, 100);
-
-        this.isActivityLoadingSpinnerHidden = true;
-        this.isActivityContentHidden = false;
-
-        if (this.cboListActivityStatusSub != null) this.cboListActivityStatusSub.unsubscribe();
-      }
-    );
-  }
-
+  // ==============
+  // Delete - Modal
+  // ==============
   public btnDeleteActivityClick(activityDeleteModalTemplate: TemplateRef<any>): void {
     this.deleteActivitiyModalRef = this.modalService.show(activityDeleteModalTemplate, {
       backdrop: true,
@@ -667,6 +636,9 @@ console.log(currentActivityHeader);
     });
   }
 
+  // ===============
+  // Delete Activity
+  // ===============
   public btnConfirmDeleteAcitivityClick() {
     let btnConfirmDeleteAcitivity: Element = document.getElementById("btnConfirmDeleteAcitivity");
     let btnCloseConfirmDeleteAcitivityModal: Element = document.getElementById("btnCloseConfirmDeleteAcitivityModal");
@@ -696,8 +668,74 @@ console.log(currentActivityHeader);
         if (this.deleteActivitySub != null) this.deleteActivitySub.unsubscribe();
       }
     );
+
+  }
+  public totalCost: number = 0;
+  public transportationCostTextChanged(): void {
+    this.totalCost = this.activityModel.TransportationCost + this.activityModel.OnSiteCost;
   }
 
+  // ========================
+  // ComboBox Activity - User
+  // ========================
+  public listActivityUsers(): void {
+    this.activityService.listActivityUsers();
+    this.cboListActivityUsersSub = this.activityService.listActivityUsersObservable.subscribe(
+      data => {
+        let usersObservableArray = new ObservableArray();
+
+        if (data != null) {
+          for (var i = 0; i <= data.length - 1; i++) {
+            usersObservableArray.push({
+              Id: data[i].Id,
+              FullName: data[i].FullName,
+              UserName: data[i].UserName
+            });
+          }
+        }
+
+        this.cboListActivityUsersObservableArray = usersObservableArray;
+
+        setTimeout(() => {
+          this.listActivityStatus();
+        }, 100);
+
+        if (this.cboListActivityUsersSub != null) this.cboListActivityUsersSub.unsubscribe();
+      }
+    );
+  }
+
+  // ==========================
+  // ComboBox Activity - Status
+  // ==========================
+  public listActivityStatus(): void {
+    this.activityService.listActivityStatus();
+    this.cboListActivityStatusSub = this.activityService.listActivityStatusObservable.subscribe(
+      data => {
+        let statusObservableArray = new ObservableArray();
+
+        if (data != null) {
+          for (var i = 0; i <= data.length - 1; i++) {
+            statusObservableArray.push({
+              Id: data[i].Id,
+              Status: data[i].Status
+            });
+          }
+        }
+
+        this.cboListActivityStatusObservableArray = statusObservableArray;
+
+        setTimeout(() => {
+          this.currentActivity();
+        }, 300);
+
+        this.isActivityLoadingSpinnerHidden = true;
+        this.isActivityContentHidden = false;
+
+        if (this.cboListActivityStatusSub != null) this.cboListActivityStatusSub.unsubscribe();
+      }
+    );
+  }
 
   ngOnDestroy() {
     if (this.cboListUserSub != null) this.cboListUserSub.unsubscribe();

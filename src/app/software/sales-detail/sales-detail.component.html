@@ -91,7 +91,7 @@
                 <div class="col-sm-8">
                   <wj-combo-box #cboProduct [(ngModel)]="salesDeliveryDetailModel.ProductId"
                     [itemsSource]="cboProductObservableArray" [isEditable]="false" [isRequired]="true"
-                    [displayMemberPath]="'ProductDescription'" [selectedValuePath]="'Id'"
+                    [displayMemberPath]="'ProductCode'" [selectedValuePath]="'Id'"
                     style="width: 100%; padding: 3px;" [disabled]="isLocked">
                   </wj-combo-box>
                 </div>
@@ -495,7 +495,7 @@
             <br /><br />
             <label for="" class="col-sm-3 col-form-label form-group-label">Date</label>
             <div class="col-sm-9">
-              <wj-input-date #cboActivityDate format="MMMM dd, yyyy" [(ngModel)]="salesDetailActivityModel.ACDate"
+              <wj-input-date #cboActivityDate format="MMMM dd, yyyy" [(ngModel)]="salesDetailActivityModel.ACDate" disabled
                 style="width: 100%; padding: 3px;">
               </wj-input-date>
             </div>
@@ -586,7 +586,7 @@
             <br /><br />
               <label for="" class="col-sm-4 col-form-label form-group-label">Total</label>
               <div class="col-sm-8">
-                <wj-input-number [(ngModel)]="totalCost"  style="width: 100%; padding: 3px;" #numTotalCost></wj-input-number>
+                <wj-input-number [(ngModel)]="totalCost" disabled style="width: 100%; padding: 3px;" #numTotalCost></wj-input-number>
               </div>
           </div>
         </div>

@@ -1,5 +1,4 @@
 <div class="card card-default">
-
   <div class="card-header">
     <table border="0" style="width: 100%; border: none;">
       <tr>
@@ -108,7 +107,7 @@
       <wj-flex-grid-column [header]="Edit" [isReadOnly]="true" [width]="80">
         <ng-template wjFlexGridCellTemplate [cellType]="'Cell'">
           <button type="button" class="btn btn-primary btn-block btn-xs"
-            (click)="btnActivityListClick(activityListModalTemplate)" id="btnActivity">
+            (click)="btnEditActivityListClick(activityListModalTemplate)" id="btnActivity">
             Edit
           </button>
         </ng-template>
@@ -150,8 +149,6 @@
     </div>
   </div>
 </div>
-
-
 <ng-template #activityListModalTemplate>
   <div class="modal-header">
     <h4 class="modal-title">
@@ -304,10 +301,8 @@
         </table>
     </div>
   </div>
-  
   </div>
   <div class="modal-footer">
-    
   </div>
 </ng-template>
 
@@ -359,7 +354,7 @@
             <br /><br />
             <label for="" class="col-sm-3 col-form-label form-group-label">Date</label>
             <div class="col-sm-9">
-              <wj-input-date #cboActivityDate format="MMMM dd, yyyy" [(ngModel)]="activityModel.ACDate"
+              <wj-input-date #cboActivityDate format="MMMM dd, yyyy" [(ngModel)]="activityModel.ACDate" disabled
                 style="width: 100%; padding: 3px;">
               </wj-input-date>
             </div>
@@ -442,13 +437,18 @@
             <label for="" class="col-sm-3 col-form-label form-group-label">Transpo.</label>
             <div class="col-sm-9">
               <wj-input-number [(ngModel)]="activityModel.TransportationCost" #numActivityTranspoCost
-                style="width: 100%; padding: 3px;"></wj-input-number>
+                style="width: 100%; padding: 3px;" (textChanged)="transportationCostTextChanged()"></wj-input-number>
             </div>
             <br /><br />
             <label for="" class="col-sm-3 col-form-label form-group-label">On-site</label>
             <div class="col-sm-9">
               <wj-input-number [(ngModel)]="activityModel.OnSiteCost" #numActivityOnsiteCost
-                style="width: 100%; padding: 3px;"></wj-input-number>
+                style="width: 100%; padding: 3px;" (textChanged)="transportationCostTextChanged()"></wj-input-number>
+            </div>
+            <br /><br />
+            <label for="" class="col-sm-3 col-form-label form-group-label">Total</label>
+            <div class="col-sm-9">
+              <wj-input-number [(ngModel)]="totalCost" disabled style="width: 100%; padding: 3px;" #numTotalCost></wj-input-number>
             </div>
           </div>
         </div>
@@ -465,7 +465,6 @@
     </button>
   </div>
 </ng-template>
-
 <ng-template #activityDeleteModalTemplate>
   <div class="modal-header">
     <h4 class="modal-title">

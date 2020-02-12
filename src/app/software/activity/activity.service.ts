@@ -130,6 +130,7 @@ export class ActivityService {
               Particular: results[i].Particular,
               LastActivity: results[i].LastActivity,
               Status: results[i].Status,
+              AssignedToId: results[i].AssignedToId,
               AssignedTo: results[i].AssignedTo,
               CreatedBy: results[i].CreatedBy
             });
