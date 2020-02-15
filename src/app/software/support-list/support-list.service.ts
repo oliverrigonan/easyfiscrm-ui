@@ -34,7 +34,7 @@ export class SupportListService {
   public addSupportObservable = this.addSupportSubject.asObservable();
 
   public deleteSupportSubject = new Subject<string[]>();
-  public deleteSupportObservable = this.addSupportSubject.asObservable();
+  public deleteSupportObservable = this.deleteSupportSubject.asObservable();
 
 
 

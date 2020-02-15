@@ -252,7 +252,7 @@
             <wj-flex-grid-column [header]="'No.'" [binding]="'ACNumber'" [isReadOnly]="true" [width]="110"></wj-flex-grid-column>
             <wj-flex-grid-column [header]="'Date'" [binding]="'ACDate'" [isReadOnly]="true" [width]="110"></wj-flex-grid-column>
             <wj-flex-grid-column [header]="'User'" [binding]="'User'" [isReadOnly]="true" [width]="'2*'"></wj-flex-grid-column>
-            <wj-flex-grid-column [header]="'CRM Status'" [binding]="'CRMStatus'" [isReadOnly]="true" [width]="'2*'"></wj-flex-grid-column>
+            <wj-flex-grid-column [header]="'LD Status'" [binding]="'CRMStatus'" [isReadOnly]="true" [width]="'2*'"></wj-flex-grid-column>
             <wj-flex-grid-column [header]="'Activity'" [binding]="'Activity'" [isReadOnly]="true" [width]="'3*'"></wj-flex-grid-column>
             <wj-flex-grid-column [header]="'Status'" [binding]="'Status'" [isReadOnly]="true" [width]="'2*'"></wj-flex-grid-column>
           </wj-flex-grid>
@@ -294,7 +294,119 @@
         <br /><br />
       </div>
       <div [hidden]="isActivityContentHidden">
-        <ul class="nav nav-tabs" id="myTab" role="tablist">
+        <div class="row">
+          <div class="col-lg-6">
+            <div class="form-group row">
+              <label for="" class="col-sm-3 col-form-label form-group-label" [hidden]="isActivityNumberHidden">No.</label>
+              <div class="col-sm-9" [hidden]="isActivityNumberHidden">
+                <input type="text" class="form-control" placeholder="Number..." [(ngModel)]="leadDetailActivityModel.ACNumber"
+                  disabled>
+              </div>
+              <div [hidden]="isActivityNumberHidden">
+                <br /><br />
+              </div>
+              <label for="" class="col-sm-3 col-form-label form-group-label">CRM</label>
+              <div class="col-sm-9">
+                <input type="text" class="form-control" placeholder="CRM Status..." [(ngModel)]="leadDetailActivityModel.CRMStatus"
+                  disabled>
+              </div>
+              <br /><br />
+              <label for="" class="col-sm-3 col-form-label form-group-label">Date</label>
+              <div class="col-sm-9">
+                <wj-input-date #cboActivityDate format="MMMM dd, yyyy" disabled [(ngModel)]="leadDetailActivityModel.ACDate"
+                  style="width: 100%; padding: 3px;">
+                </wj-input-date>
+              </div>
+              <br /><br />
+              <label for="" class="col-sm-3 col-form-label form-group-label">Functional</label>
+              <div class="col-sm-9">
+                <wj-combo-box #cboActivityFunctionalUser [(ngModel)]="leadDetailActivityModel.FunctionalUserId"
+                  [itemsSource]="cboListActivityUsersObservableArray" [isEditable]="false" [isRequired]="false"
+                  [displayMemberPath]="'FullName'" [selectedValuePath]="'Id'" style="width: 100%; padding: 3px;">
+                </wj-combo-box>
+              </div>
+              <br /><br />
+              <label for="" class="col-sm-3 col-form-label form-group-label">Technical</label>
+              <div class="col-sm-9">
+                <wj-combo-box #cboActivityTechnicalUser [(ngModel)]="leadDetailActivityModel.TechnicalUserId"
+                  [itemsSource]="cboListActivityUsersObservableArray" [isEditable]="false" [isRequired]="false"
+                  [displayMemberPath]="'FullName'" [selectedValuePath]="'Id'" style="width: 100%; padding: 3px;">
+                </wj-combo-box>
+              </div>
+              <br /><br />
+              <label for="" class="col-sm-3 col-form-label form-group-label">Start</label>
+              <div class="col-sm-9">
+                <table style="width: 100%;">
+                  <tr>
+                    <td style="width: 60%">
+                      <wj-input-date #cboActivityStartDate [(ngModel)]="leadDetailActivityModel.StartDate" format="MMMM dd, yyyy"></wj-input-date>
+                    </td>
+                    <td style="width: 1%"></td>
+                    <td style="width: 39%">
+                      <wj-input-time #cboActivityStartTime [(ngModel)]="leadDetailActivityModel.StartTime" format="h:mm tt"
+                        [step]="1"></wj-input-time>
+                    </td>
+                  </tr>
+                </table>
+              </div>
+              <br /><br />
+              <label for="" class="col-sm-3 col-form-label form-group-label">End</label>
+              <div class="col-sm-9">
+                <table style="width: 100%;">
+                  <tr>
+                    <td style="width: 60%">
+                      <wj-input-date #cboActivityEndDate [(ngModel)]="leadDetailActivityModel.EndDate" format="MMMM dd, yyyy"></wj-input-date>
+                    </td>
+                    <td style="width: 1%"></td>
+                    <td style="width: 39%">
+                      <wj-input-time #cboActivityEndTime [(ngModel)]="leadDetailActivityModel.EndTime" format="h:mm tt"
+                        [step]="1"></wj-input-time>
+                    </td>
+                  </tr>
+                </table>
+              </div>
+              <br /><br />
+              <label for="" class="col-sm-3 col-form-label form-group-label">Status</label>
+              <div class="col-sm-9">
+                <wj-combo-box #cboActivityStatus [(ngModel)]="leadDetailActivityModel.Status" [itemsSource]="cboListActivityStatusObservableArray"
+                  [isEditable]="false" [isRequired]="true" [displayMemberPath]="'Status'" [selectedValuePath]="'Status'"
+                  style="width: 100%; padding: 3px;">
+                </wj-combo-box>
+              </div>
+            </div>
+          </div>
+          <div class="col-lg-6">
+            <div class="form-group row">
+              <label for="" class="col-sm-4 col-form-label form-group-label">Activity No.</label>
+              <div class="col-sm-8">
+                <input type="text" class="form-control" placeholder="User..." [(ngModel)]="leadDetailActivityModel.User"
+                  disabled>
+              </div>
+              <br /><br />
+              <label for="" class="col-sm-4 col-form-label form-group-label">Activity</label>
+              <div class="col-sm-8">
+                <textarea [(ngModel)]="leadDetailActivityModel.Activity" type="text" class="form-control" style="resize: vertical"
+                  placeholder="Activity..." rows="5"></textarea>
+              </div>
+              <br /><br /><br /><br /><br /><br />
+              <label for="" class="col-sm-4 col-form-label form-group-label" style="font-size: 12px">Transportation Fee</label>
+              <div class="col-sm-8">
+                <wj-input-number [(ngModel)]="leadDetailActivityModel.TransportationCost" #numActivityTranspoCost style="width: 100%; padding: 3px;" (textChanged)="transportationCostTextChanged()"></wj-input-number>
+              </div>
+              <br /><br />
+              <label for="" class="col-sm-4 col-form-label form-group-label">On-Site Fee</label>
+              <div class="col-sm-8">
+                <wj-input-number [(ngModel)]="leadDetailActivityModel.OnSiteCost" #numActivityOnsiteCost style="width: 100%; padding: 3px;" (textChanged)="OnSiteCostTextChanged()"></wj-input-number>
+              </div>
+              <br /><br />
+              <label for="" class="col-sm-4 col-form-label form-group-label">Total</label>
+              <div class="col-sm-8">
+                <wj-input-number [(ngModel)]="totalCost" disabled style="width: 100%; padding: 3px;" #numTotalCost></wj-input-number>
+              </div>
+            </div>
+          </div>
+        </div>
+        <!-- <ul class="nav nav-tabs" id="myTab" role="tablist">
           <li class="nav-item">
             <a class="nav-link active" id="activity-detail-tab" data-toggle="tab" href="#activity-detail" role="tab"
               aria-controls="activity-detail" aria-selected="true">Detail</a>
@@ -307,11 +419,8 @@
             <a class="nav-link" id="activity-cost-tab" data-toggle="tab" href="#activity-cost" role="tab" aria-controls="activity-cost"
               aria-selected="false">Cost</a>
           </li>
-        </ul>
-
-        <br />
-
-        <div class="tab-content" id="myTabContent">
+        </ul> -->
+        <!-- <div class="tab-content" id="myTabContent">
           <div class="tab-pane fade show active" id="activity-detail" role="tabpanel" aria-labelledby="activity-detail-tab">
             <div class="form-group row">
               <label for="" class="col-sm-3 col-form-label form-group-label" [hidden]="isActivityNumberHidden">No.</label>
@@ -425,7 +534,7 @@
               </div>
             </div>
           </div>
-        </div>
+        </div> -->
       </div>
     </div>
     <div class="modal-footer">

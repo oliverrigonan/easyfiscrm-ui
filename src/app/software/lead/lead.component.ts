@@ -233,7 +233,6 @@ export class LeadComponent implements OnInit {
       data => {
         if (data[0] == "success") {
           this.toastr.success("Lead was successfully deleted.", "Success");
-
           setTimeout(() => {
             this.listLead();
             this.leadDeleteModalRef.hide();

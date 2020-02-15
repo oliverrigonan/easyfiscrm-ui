@@ -225,7 +225,7 @@ export class SupportListComponent implements OnInit {
     this.deleteSupportSub = this.supportListService.deleteSupportObservable.subscribe(
       data => {
         if (data[0] == "success") {
-          this.toastr.success("Sales successfully deleted!", "Success");
+          this.toastr.success("Support successfully deleted!", "Success");
           setTimeout(() => {
             this.listSupport();
             this.deleteSupportModalRef.hide();
