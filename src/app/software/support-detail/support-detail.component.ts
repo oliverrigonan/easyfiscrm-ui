@@ -533,7 +533,7 @@ public isSalesDeliveryDataLoaded: boolean = false;
     this.activitiyModalRef = this.modalService.show(activityModalTemplate, {
       backdrop: true,
       ignoreBackdropClick: true,
-      class: ""
+      class: "modal-lg"
     });
 
     this.isAddClicked = true;
@@ -682,7 +682,7 @@ public isSalesDeliveryDataLoaded: boolean = false;
     this.activitiyModalRef = this.modalService.show(activityModalTemplate, {
       backdrop: true,
       ignoreBackdropClick: true,
-      class: ""
+      class: "modal-lg"
     });
 
     this.isAddClicked = false;

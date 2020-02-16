@@ -796,7 +796,7 @@ export class SalesDetailComponent implements OnInit {
     this.activitiyModalRef = this.modalService.show(activityModalTemplate, {
       backdrop: true,
       ignoreBackdropClick: true,
-      class: ""
+      class: "modal-lg"
     });
 
     this.isAddClicked = true;
@@ -814,7 +814,7 @@ export class SalesDetailComponent implements OnInit {
     this.activitiyModalRef = this.modalService.show(activityModalTemplate, {
       backdrop: true,
       ignoreBackdropClick: true,
-      class: ""
+      class: "modal-lg"
     });
 
     this.isAddClicked = false;

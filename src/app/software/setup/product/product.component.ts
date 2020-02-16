@@ -210,6 +210,7 @@ export class ProductComponent implements OnInit {
       ignoreBackdropClick: true,
       class: "modal-lg"
     });
+    this.productModalTitle = "Add Product";
     this.isAddClick = true;
   }
 
@@ -219,6 +220,7 @@ export class ProductComponent implements OnInit {
       ignoreBackdropClick: true,
       class: "modal-lg"
     });
+    this.productModalTitle = "Edit Product";
     this.isAddClick = false;
     let currentProduct = this.listProductCollectionView.currentItem;
     this.productModel.Id = currentProduct.Id;

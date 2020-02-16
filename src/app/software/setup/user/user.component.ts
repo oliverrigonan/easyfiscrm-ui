@@ -163,6 +163,7 @@ export class UserComponent implements OnInit {
       class: "modal-lg"
     });
 
+
     let currentUserDetail = this.listUserCollectionView.currentItem;
     this.userModel.Id = currentUserDetail.Id;
     this.userModel.UserName = currentUserDetail.UserName;
@@ -367,6 +368,7 @@ export class UserComponent implements OnInit {
       ignoreBackdropClick: true,
       class: "modal-sm"
     });
+    this.userFormDetailModalHeaderTitle ="Edit User Form";
     this.createCboSysForm();
     setTimeout(() => {
       let currentUserForm = this.listUserFormCollectionView.currentItem;

@@ -235,6 +235,8 @@ export class StatusComponent implements OnInit {
       ignoreBackdropClick: true,
       class: "modal-md"
     });
+    this.statusModalTitle = "Add Status";
+
     this.isAddClick = true;
     this.createCboCategory();
   }
@@ -245,6 +247,8 @@ export class StatusComponent implements OnInit {
       ignoreBackdropClick: true,
       class: "modal-md"
     });
+
+    this.statusModalTitle = "Edit Status";
     this.isAddClick = false;
     this.createCboCategory();
 

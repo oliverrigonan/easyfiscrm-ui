@@ -32,7 +32,8 @@
                   id="btnUnlockSales" disabled>
                   <i class="fa fa-unlock fa-fw"></i> Unlock
                 </button>
-                <button class="btn btn-primary" (click)="btnPrintSalesDelivery()" style="margin-right: 5px;" id="btnPrint">
+                <button class="btn btn-primary" (click)="btnPrintSalesDelivery()" style="margin-right: 5px;"
+                  id="btnPrint">
                   <i class="fa fa-print fa-fw"></i> Print
                 </button>
                 <button class="btn btn-danger" routerLink="/software/trn/sales" id="btnCloseSales">
@@ -71,8 +72,9 @@
                 <label for="" class="col-sm-4 col-form-label form-group-label">Customer</label>
                 <div class="col-sm-8">
                   <div class="input-group">
-                    <input type="text" [(ngModel)]="selectedCustomer" class="form-control" aria-label="" [disabled]="isLocked">
-                    <div class="input-group-append" >
+                    <input type="text" [(ngModel)]="selectedCustomer" class="form-control" aria-label=""
+                      [disabled]="isLocked">
+                    <div class="input-group-append">
                       <span class="input-group-text" (click)="btnCustomerListClick(customerModalTemplate)"><i
                           class="fa fa-plus"></i></span>
                     </div>
@@ -83,7 +85,8 @@
                 <div class="col-sm-8">
                   <wj-combo-box #cboSalesInvoice [(ngModel)]="salesDeliveryDetailModel.SIId"
                     [itemsSource]="cboSalesInvoiceObservableArray" [isEditable]="false" [isRequired]="true"
-                    [displayMemberPath]="'SINumber'" [selectedValuePath]="'Id'" style="width: 100%; padding: 3px;" [disabled]="isLocked">
+                    [displayMemberPath]="'SINumber'" [selectedValuePath]="'Id'" style="width: 100%; padding: 3px;"
+                    [disabled]="isLocked">
                   </wj-combo-box>
                 </div>
                 <br /><br />
@@ -91,16 +94,17 @@
                 <div class="col-sm-8">
                   <wj-combo-box #cboProduct [(ngModel)]="salesDeliveryDetailModel.ProductId"
                     [itemsSource]="cboProductObservableArray" [isEditable]="false" [isRequired]="true"
-                    [displayMemberPath]="'ProductCode'" [selectedValuePath]="'Id'"
-                    style="width: 100%; padding: 3px;" [disabled]="isLocked">
+                    [displayMemberPath]="'ProductCode'" [selectedValuePath]="'Id'" style="width: 100%; padding: 3px;"
+                    [disabled]="isLocked">
                   </wj-combo-box>
                 </div>
                 <br /><br />
                 <label for="" class="col-sm-4 col-form-label form-group-label">Lead</label>
                 <div class="col-sm-8">
                   <div class="input-group">
-                    <input type="text" [(ngModel)]="selectedLead" class="form-control" aria-label="" [disabled]="isLocked">
-                    <div class="input-group-append" >
+                    <input type="text" [(ngModel)]="selectedLead" class="form-control" aria-label=""
+                      [disabled]="isLocked">
+                    <div class="input-group-append">
                       <span class="input-group-text" (click)="btnLeadListClick(leadModalTemplate)"><i
                           class="fa fa-plus"></i></span>
                     </div>
@@ -147,7 +151,8 @@
                 <div class="col-sm-8">
                   <wj-combo-box #cboAssignedToUser [(ngModel)]="salesDeliveryDetailModel.AssignedToUserId"
                     [itemsSource]="cboAssignedToUserObservable" [isEditable]="false" [isRequired]="true"
-                    [displayMemberPath]="'FullName'" [selectedValuePath]="'Id'" style="width: 100%; padding: 3px;" [disabled]="isLocked">
+                    [displayMemberPath]="'FullName'" [selectedValuePath]="'Id'" style="width: 100%; padding: 3px;"
+                    [disabled]="isLocked">
                   </wj-combo-box>
                 </div>
                 <br /><br />
@@ -388,8 +393,7 @@
   </div>
   <div class="modal-body">
     <mat-progress-bar [hidden]="isProgressBarHidden" [color]="'primary'" [mode]="'indeterminate'"></mat-progress-bar>
-    <wj-flex-grid #listLeadFlexGrid [itemsSource]="listLeadCollectionView" [selectionMode]="3"
-      [frozenColumns]="2">
+    <wj-flex-grid #listLeadFlexGrid [itemsSource]="listLeadCollectionView" [selectionMode]="3" [frozenColumns]="2">
       <wj-flex-grid-filter></wj-flex-grid-filter>
       <wj-flex-grid-column *ngIf="false" [header]="'Id'" [binding]="'Id'" [isReadOnly]="true" [width]="'1*'">
       </wj-flex-grid-column>
@@ -405,8 +409,7 @@
       </wj-flex-grid-column>
       <wj-flex-grid-column [header]="Pick" [isReadOnly]="true" [width]="80">
         <ng-template wjFlexGridCellTemplate [cellType]="'Cell'">
-          <button type="button" class="btn btn-primary btn-block btn-xs" (click)="btnPickLeadClick()"
-            id="btnPickLead">
+          <button type="button" class="btn btn-primary btn-block btn-xs" (click)="btnPickLeadClick()" id="btnPickLead">
             <i class="fa fa-edit fa-fw"></i> Pick
           </button>
         </ng-template>
@@ -458,45 +461,29 @@
       <mat-spinner style="margin: auto;"></mat-spinner>
       <br /><br />
     </div>
+    
     <div [hidden]="isActivityContentHidden">
-      <ul class="nav nav-tabs" id="myTab" role="tablist">
-        <li class="nav-item">
-          <a class="nav-link active" id="activity-detail-tab" data-toggle="tab" href="#activity-detail" role="tab"
-            aria-controls="activity-detail" aria-selected="true">Detail</a>
-        </li>
-        <li class="nav-item">
-          <a class="nav-link" id="activity-activity-tab" data-toggle="tab" href="#activity-activity" role="tab"
-            aria-controls="activity-activity" aria-selected="false">Activity</a>
-        </li>
-        <li class="nav-item">
-          <a class="nav-link" id="activity-cost-tab" data-toggle="tab" href="#activity-cost" role="tab" aria-controls="activity-cost"
-            aria-selected="false">Cost</a>
-        </li>
-      </ul>
-
-      <br />
-
-      <div class="tab-content" id="myTabContent">
-        <div class="tab-pane fade show active" id="activity-detail" role="tabpanel" aria-labelledby="activity-detail-tab">
+      <div class="row">
+        <div class="col-lg-6">
           <div class="form-group row">
             <label for="" class="col-sm-3 col-form-label form-group-label" [hidden]="isActivityNumberHidden">No.</label>
             <div class="col-sm-9" [hidden]="isActivityNumberHidden">
-              <input type="text" class="form-control" placeholder="Number..." [(ngModel)]="salesDetailActivityModel.ACNumber"
-                disabled>
+              <input type="text" class="form-control" placeholder="Number..."
+                [(ngModel)]="salesDetailActivityModel.ACNumber" disabled>
             </div>
             <div [hidden]="isActivityNumberHidden">
               <br /><br />
             </div>
             <label for="" class="col-sm-3 col-form-label form-group-label">CRM</label>
             <div class="col-sm-9">
-              <input type="text" class="form-control" placeholder="CRM Status..." [(ngModel)]="salesDetailActivityModel.CRMStatus"
-                disabled>
+              <input type="text" class="form-control" placeholder="CRM Status..."
+                [(ngModel)]="salesDetailActivityModel.CRMStatus" disabled>
             </div>
             <br /><br />
             <label for="" class="col-sm-3 col-form-label form-group-label">Date</label>
             <div class="col-sm-9">
-              <wj-input-date #cboActivityDate format="MMMM dd, yyyy" [(ngModel)]="salesDetailActivityModel.ACDate" disabled
-                style="width: 100%; padding: 3px;">
+              <wj-input-date #cboActivityDate format="MMMM dd, yyyy" [(ngModel)]="salesDetailActivityModel.ACDate"
+                disabled style="width: 100%; padding: 3px;">
               </wj-input-date>
             </div>
             <br /><br />
@@ -521,7 +508,8 @@
               <table style="width: 100%;">
                 <tr>
                   <td style="width: 60%">
-                    <wj-input-date #cboActivityStartDate [(ngModel)]="salesDetailActivityModel.StartDate" format="MMMM dd, yyyy"></wj-input-date>
+                    <wj-input-date #cboActivityStartDate [(ngModel)]="salesDetailActivityModel.StartDate"
+                      format="MMMM dd, yyyy"></wj-input-date>
                   </td>
                   <td style="width: 1%"></td>
                   <td style="width: 39%">
@@ -537,7 +525,8 @@
               <table style="width: 100%;">
                 <tr>
                   <td style="width: 60%">
-                    <wj-input-date #cboActivityEndDate [(ngModel)]="salesDetailActivityModel.EndDate" format="MMMM dd, yyyy"></wj-input-date>
+                    <wj-input-date #cboActivityEndDate [(ngModel)]="salesDetailActivityModel.EndDate"
+                      format="MMMM dd, yyyy"></wj-input-date>
                   </td>
                   <td style="width: 1%"></td>
                   <td style="width: 39%">
@@ -550,9 +539,146 @@
             <br /><br />
             <label for="" class="col-sm-3 col-form-label form-group-label">Status</label>
             <div class="col-sm-9">
-              <wj-combo-box #cboActivityStatus [(ngModel)]="salesDetailActivityModel.Status" [itemsSource]="cboListActivityStatusObservableArray"
-                [isEditable]="false" [isRequired]="true" [displayMemberPath]="'Status'" [selectedValuePath]="'Status'"
-                style="width: 100%; padding: 3px;">
+              <wj-combo-box #cboActivityStatus [(ngModel)]="salesDetailActivityModel.Status"
+                [itemsSource]="cboListActivityStatusObservableArray" [isEditable]="false" [isRequired]="true"
+                [displayMemberPath]="'Status'" [selectedValuePath]="'Status'" style="width: 100%; padding: 3px;">
+              </wj-combo-box>
+            </div>
+          </div>
+        </div>
+        <div class="col-lg-6">
+          <div class="form-group row">
+            <label for="" class="col-sm-4 col-form-label form-group-label">User</label>
+            <div class="col-sm-8">
+              <input type="text" class="form-control" placeholder="User..." [(ngModel)]="salesDetailActivityModel.User"
+                disabled>
+            </div>
+            <br /><br />
+            <label for="" class="col-sm-4 col-form-label form-group-label">Activity</label>
+            <div class="col-sm-8">
+              <textarea [(ngModel)]="salesDetailActivityModel.Activity" type="text" class="form-control"
+                style="resize: vertical" placeholder="Activity..." rows="5"></textarea>
+            </div>
+            <br /><br /><br /><br /><br /><br />
+            <label for="" class="col-sm-4 col-form-label form-group-label" style="font-size: 11px;">Transportation Fee</label>
+              <div class="col-sm-8">
+                <wj-input-number [(ngModel)]="salesDetailActivityModel.TransportationCost"
+                  (textChanged)="transportationCostTextChanged()" #numActivityTranspoCost
+                  style="width: 100%; padding: 3px;"></wj-input-number>
+              </div>
+              <br /><br />
+              <label for="" class="col-sm-4 col-form-label form-group-label">On-Site Fee</label>
+              <div class="col-sm-8">
+                <wj-input-number [(ngModel)]="salesDetailActivityModel.OnSiteCost"
+                  (textChanged)="transportationCostTextChanged()" #numActivityOnsiteCost
+                  style="width: 100%; padding: 3px;"></wj-input-number>
+              </div>
+              <br /><br />
+              <label for="" class="col-sm-4 col-form-label form-group-label">Total</label>
+              <div class="col-sm-8">
+                <wj-input-number [(ngModel)]="totalCost" disabled style="width: 100%; padding: 3px;" #numTotalCost>
+                </wj-input-number>
+              </div>
+          </div>
+        </div>
+      </div>
+      <!-- <ul class="nav nav-tabs" id="myTab" role="tablist">
+        <li class="nav-item">
+          <a class="nav-link active" id="activity-detail-tab" data-toggle="tab" href="#activity-detail" role="tab"
+            aria-controls="activity-detail" aria-selected="true">Detail</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" id="activity-activity-tab" data-toggle="tab" href="#activity-activity" role="tab"
+            aria-controls="activity-activity" aria-selected="false">Activity</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" id="activity-cost-tab" data-toggle="tab" href="#activity-cost" role="tab"
+            aria-controls="activity-cost" aria-selected="false">Cost</a>
+        </li>
+      </ul>
+
+      <br />
+
+      <div class="tab-content" id="myTabContent">
+        <div class="tab-pane fade show active" id="activity-detail" role="tabpanel"
+          aria-labelledby="activity-detail-tab">
+          <div class="form-group row">
+            <label for="" class="col-sm-3 col-form-label form-group-label" [hidden]="isActivityNumberHidden">No.</label>
+            <div class="col-sm-9" [hidden]="isActivityNumberHidden">
+              <input type="text" class="form-control" placeholder="Number..."
+                [(ngModel)]="salesDetailActivityModel.ACNumber" disabled>
+            </div>
+            <div [hidden]="isActivityNumberHidden">
+              <br /><br />
+            </div>
+            <label for="" class="col-sm-3 col-form-label form-group-label">CRM</label>
+            <div class="col-sm-9">
+              <input type="text" class="form-control" placeholder="CRM Status..."
+                [(ngModel)]="salesDetailActivityModel.CRMStatus" disabled>
+            </div>
+            <br /><br />
+            <label for="" class="col-sm-3 col-form-label form-group-label">Date</label>
+            <div class="col-sm-9">
+              <wj-input-date #cboActivityDate format="MMMM dd, yyyy" [(ngModel)]="salesDetailActivityModel.ACDate"
+                disabled style="width: 100%; padding: 3px;">
+              </wj-input-date>
+            </div>
+            <br /><br />
+            <label for="" class="col-sm-3 col-form-label form-group-label">Functional</label>
+            <div class="col-sm-9">
+              <wj-combo-box #cboActivityFunctionalUser [(ngModel)]="salesDetailActivityModel.FunctionalUserId"
+                [itemsSource]="cboListActivityUsersObservableArray" [isEditable]="false" [isRequired]="false"
+                [displayMemberPath]="'FullName'" [selectedValuePath]="'Id'" style="width: 100%; padding: 3px;">
+              </wj-combo-box>
+            </div>
+            <br /><br />
+            <label for="" class="col-sm-3 col-form-label form-group-label">Technical</label>
+            <div class="col-sm-9">
+              <wj-combo-box #cboActivityTechnicalUser [(ngModel)]="salesDetailActivityModel.TechnicalUserId"
+                [itemsSource]="cboListActivityUsersObservableArray" [isEditable]="false" [isRequired]="false"
+                [displayMemberPath]="'FullName'" [selectedValuePath]="'Id'" style="width: 100%; padding: 3px;">
+              </wj-combo-box>
+            </div>
+            <br /><br />
+            <label for="" class="col-sm-3 col-form-label form-group-label">Start</label>
+            <div class="col-sm-9">
+              <table style="width: 100%;">
+                <tr>
+                  <td style="width: 60%">
+                    <wj-input-date #cboActivityStartDate [(ngModel)]="salesDetailActivityModel.StartDate"
+                      format="MMMM dd, yyyy"></wj-input-date>
+                  </td>
+                  <td style="width: 1%"></td>
+                  <td style="width: 39%">
+                    <wj-input-time #cboActivityStartTime [(ngModel)]="salesDetailActivityModel.StartTime"
+                      format="h:mm tt" [step]="1"></wj-input-time>
+                  </td>
+                </tr>
+              </table>
+            </div>
+            <br /><br />
+            <label for="" class="col-sm-3 col-form-label form-group-label">End</label>
+            <div class="col-sm-9">
+              <table style="width: 100%;">
+                <tr>
+                  <td style="width: 60%">
+                    <wj-input-date #cboActivityEndDate [(ngModel)]="salesDetailActivityModel.EndDate"
+                      format="MMMM dd, yyyy"></wj-input-date>
+                  </td>
+                  <td style="width: 1%"></td>
+                  <td style="width: 39%">
+                    <wj-input-time #cboActivityEndTime [(ngModel)]="salesDetailActivityModel.EndTime" format="h:mm tt"
+                      [step]="1"></wj-input-time>
+                  </td>
+                </tr>
+              </table>
+            </div>
+            <br /><br />
+            <label for="" class="col-sm-3 col-form-label form-group-label">Status</label>
+            <div class="col-sm-9">
+              <wj-combo-box #cboActivityStatus [(ngModel)]="salesDetailActivityModel.Status"
+                [itemsSource]="cboListActivityStatusObservableArray" [isEditable]="false" [isRequired]="true"
+                [displayMemberPath]="'Status'" [selectedValuePath]="'Status'" style="width: 100%; padding: 3px;">
               </wj-combo-box>
             </div>
           </div>
@@ -567,8 +693,8 @@
             <br /><br />
             <label for="" class="col-sm-3 col-form-label form-group-label">Activity</label>
             <div class="col-sm-9">
-              <textarea [(ngModel)]="salesDetailActivityModel.Activity" type="text" class="form-control" style="resize: vertical"
-                placeholder="Activity..." rows="10"></textarea>
+              <textarea [(ngModel)]="salesDetailActivityModel.Activity" type="text" class="form-control"
+                style="resize: vertical" placeholder="Activity..." rows="10"></textarea>
             </div>
           </div>
         </div>
@@ -576,21 +702,26 @@
           <div class="form-group row">
             <label for="" class="col-sm-4 col-form-label form-group-label">Transportation Fee</label>
             <div class="col-sm-8">
-              <wj-input-number [(ngModel)]="salesDetailActivityModel.TransportationCost" (textChanged)="transportationCostTextChanged()" #numActivityTranspoCost style="width: 100%; padding: 3px;" ></wj-input-number>
+              <wj-input-number [(ngModel)]="salesDetailActivityModel.TransportationCost"
+                (textChanged)="transportationCostTextChanged()" #numActivityTranspoCost
+                style="width: 100%; padding: 3px;"></wj-input-number>
             </div>
             <br /><br />
             <label for="" class="col-sm-4 col-form-label form-group-label">On-Site Fee</label>
             <div class="col-sm-8">
-              <wj-input-number [(ngModel)]="salesDetailActivityModel.OnSiteCost" (textChanged)="transportationCostTextChanged()" #numActivityOnsiteCost style="width: 100%; padding: 3px;"></wj-input-number>
+              <wj-input-number [(ngModel)]="salesDetailActivityModel.OnSiteCost"
+                (textChanged)="transportationCostTextChanged()" #numActivityOnsiteCost
+                style="width: 100%; padding: 3px;"></wj-input-number>
             </div>
             <br /><br />
-              <label for="" class="col-sm-4 col-form-label form-group-label">Total</label>
-              <div class="col-sm-8">
-                <wj-input-number [(ngModel)]="totalCost" disabled style="width: 100%; padding: 3px;" #numTotalCost></wj-input-number>
-              </div>
+            <label for="" class="col-sm-4 col-form-label form-group-label">Total</label>
+            <div class="col-sm-8">
+              <wj-input-number [(ngModel)]="totalCost" disabled style="width: 100%; padding: 3px;" #numTotalCost>
+              </wj-input-number>
+            </div>
           </div>
         </div>
-      </div>
+      </div> -->
     </div>
   </div>
   <div class="modal-footer">
