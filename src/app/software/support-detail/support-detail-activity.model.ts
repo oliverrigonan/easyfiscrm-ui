@@ -1,5 +1,6 @@
 export class SupportDetailActivityModel {
     Id: number;
+    SPNumber: string;
     ACNumber: string;
     ACDate: Date;
     UserId: number;

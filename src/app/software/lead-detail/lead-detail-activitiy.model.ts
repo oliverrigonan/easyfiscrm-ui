@@ -1,5 +1,6 @@
 export class LeadDetailActivityModel {
     Id: number;
+    LDNumber: string;
     ACNumber: string;
     ACDate: Date;
     UserId: number;

@@ -105,6 +105,7 @@ export class ActivityComponent implements OnInit {
 
   public activityModel: ActivityModel = {
     Id: 0,
+    DocNumber: "",
     ACNumber: "",
     ACDate: new Date(),
     UserId: 0,
@@ -371,7 +372,7 @@ export class ActivityComponent implements OnInit {
       this.activityListModalRef = this.modalService.show(activityListModalTemplate, {
         backdrop: true,
         ignoreBackdropClick: true,
-        class: "modal-lg"
+        class: "modal-xl"
       });
     }, 300);
   }
@@ -487,7 +488,8 @@ export class ActivityComponent implements OnInit {
     if (this.isAddClicked) {
       this.activityModel = {
         Id: 0,
-        ACNumber: "0000000001",
+        DocNumber: this.activityHeaderModel.reference,
+        ACNumber: "0000000000",
         ACDate: new Date(),
         UserId: 0,
         User: localStorage.getItem("username"),
@@ -519,6 +521,7 @@ export class ActivityComponent implements OnInit {
       let currentActivity = this.modalListActivityCollectionView.currentItem;
       this.activityModel = {
         Id: currentActivity.Id,
+        DocNumber: this.activityHeaderModel.reference,
         ACNumber: currentActivity.ACNumber,
         ACDate: currentActivity.ACDate,
         UserId: currentActivity.UserId,
@@ -557,7 +560,7 @@ export class ActivityComponent implements OnInit {
     this.activitiyModalRef = this.modalService.show(activityModalTemplate, {
       backdrop: true,
       ignoreBackdropClick: true,
-      class: "modal-lg"
+      class: "modal-xl"
     });
 
     this.isAddClicked = true;
@@ -578,7 +581,7 @@ export class ActivityComponent implements OnInit {
     this.activitiyModalRef = this.modalService.show(activityModalTemplate, {
       backdrop: true,
       ignoreBackdropClick: true,
-      class: "modal-lg"
+      class: "modal-xl"
     });
 
     this.isAddClicked = false;

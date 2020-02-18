@@ -1,5 +1,6 @@
 export class ActivityModel {
     Id: number;
+    DocNumber: string;
     ACNumber: string;
     ACDate: Date;
     UserId: number;

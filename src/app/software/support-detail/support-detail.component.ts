@@ -170,10 +170,10 @@ export class SupportDetailComponent implements OnInit {
 
     this.customerModalRef.hide();
 
-    this.createCboSalesDelivery(this.supportModel.CustomerId);
+    this.getCboSalesDeliveryDetail(this.supportModel.CustomerId);
   }
 
-  public createCboSalesDelivery(customerId: number): void {
+  public getCboSalesDeliveryDetail(customerId: number): void {
     this.supportDetailService.listSalesDelivery(customerId);
     this.cboSalesDeliverySub = this.supportDetailService.listSalesDeliveryObservable.subscribe(
       data => {
@@ -193,6 +193,7 @@ export class SupportDetailComponent implements OnInit {
           this.toastr.error("No Sales Delivery");
         }
         this.isSalesDeliveryDataLoaded = true;
+        
         this.cboSalesDeliveryObservable = salesInvoiceObservableArray;
         if (this.cboSalesDeliverySub != null) this.cboSalesDeliverySub.unsubscribe();
       }
@@ -302,7 +303,7 @@ public isSalesDeliveryDataLoaded: boolean = false;
         }
 
         this.isSalesDeliveryDataLoaded = false;
-        this.createCboSalesDelivery(this.supportModel.CustomerId);
+        this.getCboSalesDeliveryDetail(this.supportModel.CustomerId);
 
 
         this.isLoadingSpinnerHidden = true;
@@ -426,6 +427,7 @@ public isSalesDeliveryDataLoaded: boolean = false;
 
   public supportDetailActivityModel: SupportDetailActivityModel = {
     Id: 0,
+    SPNumber: "",
     ACNumber: "",
     ACDate: new Date(),
     UserId: 0,
@@ -533,7 +535,7 @@ public isSalesDeliveryDataLoaded: boolean = false;
     this.activitiyModalRef = this.modalService.show(activityModalTemplate, {
       backdrop: true,
       ignoreBackdropClick: true,
-      class: "modal-lg"
+      class: "modal-xl"
     });
 
     this.isAddClicked = true;
@@ -615,7 +617,8 @@ public isSalesDeliveryDataLoaded: boolean = false;
     if (this.isAddClicked) {
       this.supportDetailActivityModel = {
         Id: 0,
-        ACNumber: "0000000001",
+        SPNumber: "0000000000",
+        ACNumber: "0000000000",
         ACDate: new Date(),
         UserId: 0,
         User: localStorage.getItem("username"),
@@ -647,6 +650,7 @@ public isSalesDeliveryDataLoaded: boolean = false;
       let currentActivity = this.listActivityCollectionView.currentItem;
       this.supportDetailActivityModel = {
         Id: currentActivity.Id,
+        SPNumber: this.supportModel.SPNumber,
         ACNumber: currentActivity.ACNumber,
         ACDate: currentActivity.ACDate,
         UserId: currentActivity.UserId,
@@ -682,7 +686,7 @@ public isSalesDeliveryDataLoaded: boolean = false;
     this.activitiyModalRef = this.modalService.show(activityModalTemplate, {
       backdrop: true,
       ignoreBackdropClick: true,
-      class: "modal-lg"
+      class: "modal-xl"
     });
 
     this.isAddClicked = false;

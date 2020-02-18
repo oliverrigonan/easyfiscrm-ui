@@ -1,5 +1,6 @@
 export class SalesDetailActivityModel {
     Id: number;
+    LDNumber: string;
     ACNumber: string;
     ACDate: Date;
     UserId: number;

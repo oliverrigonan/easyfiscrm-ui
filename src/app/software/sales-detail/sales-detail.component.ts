@@ -594,6 +594,7 @@ export class SalesDetailComponent implements OnInit {
   public salesDetailActivityModel: SalesDetailActivityModel = {
     Id: 0,
     ACNumber: "",
+    LDNumber: "",
     ACDate: new Date(),
     UserId: 0,
     User: "",
@@ -729,7 +730,8 @@ export class SalesDetailComponent implements OnInit {
     if (this.isAddClicked) {
       this.salesDetailActivityModel = {
         Id: 0,
-        ACNumber: "0000000001",
+        LDNumber: this.salesDeliveryDetailModel.SDNumber,
+        ACNumber: "0000000000",
         ACDate: new Date(),
         UserId: 0,
         User: localStorage.getItem("username"),
@@ -761,6 +763,7 @@ export class SalesDetailComponent implements OnInit {
       let currentActivity = this.listActivityCollectionView.currentItem;
       this.salesDetailActivityModel = {
         Id: currentActivity.Id,
+        LDNumber: this.salesDeliveryDetailModel.SDNumber,
         ACNumber: currentActivity.ACNumber,
         ACDate: currentActivity.ACDate,
         UserId: currentActivity.UserId,
@@ -796,7 +799,7 @@ export class SalesDetailComponent implements OnInit {
     this.activitiyModalRef = this.modalService.show(activityModalTemplate, {
       backdrop: true,
       ignoreBackdropClick: true,
-      class: "modal-lg"
+      class: "modal-xl"
     });
 
     this.isAddClicked = true;
@@ -814,7 +817,7 @@ export class SalesDetailComponent implements OnInit {
     this.activitiyModalRef = this.modalService.show(activityModalTemplate, {
       backdrop: true,
       ignoreBackdropClick: true,
-      class: "modal-lg"
+      class: "modal-xl"
     });
 
     this.isAddClicked = false;

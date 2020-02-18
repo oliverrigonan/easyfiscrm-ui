@@ -105,6 +105,7 @@ export class LeadDetailComponent implements OnInit {
 
   public leadDetailActivityModel: LeadDetailActivityModel = {
     Id: 0,
+    LDNumber: "",
     ACNumber: "",
     ACDate: new Date(),
     UserId: 0,
@@ -504,12 +505,13 @@ export class LeadDetailComponent implements OnInit {
     let LDId: number = 0;
     this.activatedRoute.params.subscribe(params => { LDId = params["id"]; });
 
-    this.leadDetailActivityModel.FunctionalUserId = this.leadDetailModel.AssignedToUserId;
-    this.leadDetailActivityModel.TechnicalUserId = this.leadDetailModel.AssignedToUserId;
+    // this.leadDetailActivityModel.FunctionalUserId = this.leadDetailModel.AssignedToUserId;
+    // this.leadDetailActivityModel.TechnicalUserId = this.leadDetailModel.AssignedToUserId;
     if (this.isAddClicked) {
       this.leadDetailActivityModel = {
         Id: 0,
-        ACNumber: "0000000001",
+        LDNumber: this.leadDetailModel.LDNumber,
+        ACNumber: "0000000000",
         ACDate: new Date(),
         UserId: 0,
         User: localStorage.getItem("username"),
@@ -541,6 +543,7 @@ export class LeadDetailComponent implements OnInit {
       let currentActivity = this.listActivityCollectionView.currentItem;
       this.leadDetailActivityModel = {
         Id: currentActivity.Id,
+        LDNumber: this.leadDetailModel.LDNumber,
         ACNumber: currentActivity.ACNumber,
         ACDate: currentActivity.ACDate,
         UserId: currentActivity.UserId,
@@ -576,7 +579,7 @@ export class LeadDetailComponent implements OnInit {
     this.activitiyModalRef = this.modalService.show(activityModalTemplate, {
       backdrop: true,
       ignoreBackdropClick: true,
-      class: "modal-lg"
+      class: "modal-xl"
     });
 
     this.isAddClicked = true;
@@ -594,7 +597,7 @@ export class LeadDetailComponent implements OnInit {
     this.activitiyModalRef = this.modalService.show(activityModalTemplate, {
       backdrop: true,
       ignoreBackdropClick: true,
-      class: "modal-lg"
+      class: "modal-xl"
     });
 
     this.isAddClicked = false;
