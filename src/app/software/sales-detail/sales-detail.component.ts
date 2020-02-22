@@ -14,6 +14,7 @@ import { SalesDeliveryDetailModel } from './sales-detail.model';
 import { SalesDetailService } from './sales-detail.service';
 import { SalesDetailActivityModel } from './sales-detail-activitiy.model';
 import { SalesDetailPrintDialogComponent } from './sales-detail-print-dialog/sales-detail-print-dialog.component';
+import { SalesDeliveryActivityPrintDialogComponent } from './sales-delivery-activity-print-dialog/sales-delivery-activity-print-dialog.component';
 
 @Component({
   selector: 'app-sales-detail',
@@ -868,6 +869,18 @@ export class SalesDetailComponent implements OnInit {
     this.casePrintCaseDialog.open(SalesDetailPrintDialogComponent, {
       width: '1000px',
       data: { objId: id },
+      disableClose: true
+    });
+  }
+
+  public btnPrintSalesDeliveryActivity(): void {
+    let currentActivityId: number = 0;
+    currentActivityId = this.listActivityCollectionView.currentItem.Id;
+    this.activitiyModalRef.hide()
+
+    this.casePrintCaseDialog.open(SalesDeliveryActivityPrintDialogComponent, {
+      width: '1000px',
+      data: { objId: currentActivityId },
       disableClose: true
     });
   }

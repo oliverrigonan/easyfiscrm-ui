@@ -5,26 +5,25 @@ import { ToastrService } from 'ngx-toastr';
 import { LeadDetailService } from '../lead-detail.service';
 
 @Component({
-  selector: 'app-lead-print-dialog',
-  templateUrl: './lead-print-dialog.component.html',
-  styleUrls: ['./lead-print-dialog.component.css']
+  selector: 'app-lead-activity-print-dialog',
+  templateUrl: './lead-activity-print-dialog.component.html',
+  styleUrls: ['./lead-activity-print-dialog.component.css']
 })
-export class LeadPrintDialogComponent implements OnInit {
+export class LeadActivityPrintDialogComponent implements OnInit {
 
   constructor(
     public leadDetailService: LeadDetailService,
-    public casePrintLeadDialogRef: MatDialogRef<LeadPrintDialogComponent>,
+    public casePrintLeadDialogRef: MatDialogRef<LeadActivityPrintDialogComponent>,
     @Inject(MAT_DIALOG_DATA) public caseData: any,
     private toastr: ToastrService
   ) { }
 
-  public printLeadSubscription: any;
+  public printLeadActivitySubscription: any;
   public pdfUrl: string;
 
   public printCase(): void {
-    this.leadDetailService.printLead(this.caseData.objId);
-    console.log("lead");
-    this.printLeadSubscription = this.leadDetailService.printLeadObservable.subscribe(
+    this.leadDetailService.printLeadActivity(this.caseData.objId);
+    this.printLeadActivitySubscription = this.leadDetailService.printLeadActivityObservable.subscribe(
       data => {
         var binaryData = [];
         binaryData.push(data);
@@ -33,17 +32,17 @@ export class LeadPrintDialogComponent implements OnInit {
         let printPDF: Element = document.getElementById("printPDF");
         printPDF.setAttribute("src", this.pdfUrl);
 
-        if (this.printLeadSubscription != null) this.printLeadSubscription.unsubscribe();
+        if (this.printLeadActivitySubscription != null) this.printLeadActivitySubscription.unsubscribe();
       }
     );
   }
 
   public btnClosePrintDialog(): void {
     this.casePrintLeadDialogRef.close();
-    if (this.printLeadSubscription != null) this.printLeadSubscription.unsubscribe();
+    if (this.printLeadActivitySubscription != null) this.printLeadActivitySubscription.unsubscribe();
   }
 
-  public btnPrintLead(): void {
+  public btnPrintLeadActivity(): void {
     window.frames["printPDF"].focus();
     window.frames["printPDF"].print();
   }
@@ -52,7 +51,7 @@ export class LeadPrintDialogComponent implements OnInit {
     this.printCase();
   }
 
-  ngOnDestroy() {
-    if (this.printLeadSubscription != null) this.printLeadSubscription.unsubscribe();
+  ngOnDestroy(){
+    if (this.printLeadActivitySubscription != null) this.printLeadActivitySubscription.unsubscribe();
   }
 }

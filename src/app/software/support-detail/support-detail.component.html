@@ -421,6 +421,10 @@
     </div>
     <div class="modal-footer">
       <button [hidden]="isActivityContentHidden" type="button" class="btn btn-primary" style="margin-right: 5px;"
+        (click)="btnPrintSupportActivity()" id="btnPrintctivity">
+        <i class="fa fa-save"></i> Print
+      </button>
+      <button [hidden]="isActivityContentHidden" type="button" class="btn btn-primary" style="margin-right: 5px;"
         (click)="btnSaveActivityClick()" id="btnSaveActivity">
         <i class="fa fa-save"></i> Save
       </button>

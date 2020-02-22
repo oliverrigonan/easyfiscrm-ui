@@ -50,6 +50,9 @@ export class LeadDetailService {
   public printLeadSubject = new Subject<Blob>();
   public printLeadObservable = this.printLeadSubject.asObservable();
 
+  public printLeadActivitySubject = new Subject<Blob>();
+  public printLeadActivityObservable = this.printLeadActivitySubject.asObservable();
+
   public listAssignedUsers(): void {
     let listAssignedToUsersObservableArray = new ObservableArray();
     this.listLeadAssignedToUsersSubject.next(listAssignedToUsersObservableArray);
@@ -310,11 +313,28 @@ export class LeadDetailService {
       }),
       responseType: "blob"
     };
+    console.log(id)
 
     this.httpClient.get(this.defaultAPIURLHost + "/api/pdf/report/list/lead/" + id, printCaseOptions).subscribe(
       response => {
         let results = new Blob([response], { type: 'application/pdf' });
         this.printLeadSubject.next(results);
+      }
+    );
+  }
+
+  public printLeadActivity(id: number): void {
+    let printCaseOptions: any = {
+      headers: new HttpHeaders({
+        'Content-Type': 'application/json',
+        'Authorization': 'Bearer ' + localStorage.getItem('access_token')
+      }),
+      responseType: "blob"
+    };
+    this.httpClient.get(this.defaultAPIURLHost + "/api/pdf/report/lead/activity/" + id, printCaseOptions).subscribe(
+      response => {
+        let results = new Blob([response], { type: 'application/pdf' });
+        this.printLeadActivitySubject.next(results);
       }
     );
   }

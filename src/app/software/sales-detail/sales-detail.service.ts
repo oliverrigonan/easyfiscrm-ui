@@ -432,9 +432,9 @@ export class SalesDetailService {
   }
 
   public printSalesDeliverySubject = new Subject<Blob>();
-  public printLeadObservable = this.printSalesDeliverySubject.asObservable();
+  public printSalesDeliveryObservable = this.printSalesDeliverySubject.asObservable();
 
-  public printLead(id: number): void {
+  public printSalesDelivery(id: number): void {
     let printCaseOptions: any = {
       headers: new HttpHeaders({
         'Content-Type': 'application/json',
@@ -447,6 +447,26 @@ export class SalesDetailService {
       response => {
         let results = new Blob([response], { type: 'application/pdf' });
         this.printSalesDeliverySubject.next(results);
+      }
+    );
+  }
+
+  public printSalesDeliveryActivitySubject = new Subject<Blob>();
+  public printSalesDeliveryActivityObservable = this.printSalesDeliveryActivitySubject.asObservable();
+
+  public printSalesDeliveryActivity(id: number): void {
+    let printCaseOptions: any = {
+      headers: new HttpHeaders({
+        'Content-Type': 'application/json',
+        'Authorization': 'Bearer ' + localStorage.getItem('access_token')
+      }),
+      responseType: "blob"
+    };
+
+    this.httpClient.get(this.defaultAPIURLHost + "/api/pdf/report/salesdelivery/activity/" + id, printCaseOptions).subscribe(
+      response => {
+        let results = new Blob([response], { type: 'application/pdf' });
+        this.printSalesDeliveryActivitySubject.next(results);
       }
     );
   }

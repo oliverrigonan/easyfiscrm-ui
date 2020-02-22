@@ -357,9 +357,9 @@ export class SupportDetailService {
   }
 
   public printSupportSubject = new Subject<Blob>();
-  public printLeadObservable = this.printSupportSubject.asObservable();
+  public printSupportObservable = this.printSupportSubject.asObservable();
 
-  public printLead(id: number): void {
+  public printSupport(id: number): void {
     let printCaseOptions: any = {
       headers: new HttpHeaders({
         'Content-Type': 'application/json',
@@ -372,6 +372,26 @@ export class SupportDetailService {
       response => {
         let results = new Blob([response], { type: 'application/pdf' });
         this.printSupportSubject.next(results);
+      }
+    );
+  }
+
+  public printSupportActivitySubject = new Subject<Blob>();
+  public printSupportActivityObservable = this.printSupportActivitySubject.asObservable();
+
+  public printSupportActivity(id: number): void {
+    let printCaseOptions: any = {
+      headers: new HttpHeaders({
+        'Content-Type': 'application/json',
+        'Authorization': 'Bearer ' + localStorage.getItem('access_token')
+      }),
+      responseType: "blob"
+    };
+
+    this.httpClient.get(this.defaultAPIURLHost + "/api/pdf/report/support/activity/" + id, printCaseOptions).subscribe(
+      response => {
+        let results = new Blob([response], { type: 'application/pdf' });
+        this.printSupportActivitySubject.next(results);
       }
     );
   }

@@ -16,6 +16,7 @@ import { BsModalRef } from 'ngx-bootstrap/modal/bs-modal-ref.service';
 
 import { LeadDetailActivityModel } from './lead-detail-activitiy.model';
 import { LeadPrintDialogComponent } from './lead-print-dialog/lead-print-dialog.component';
+import { LeadActivityPrintDialogComponent } from './lead-activity-print-dialog/lead-activity-print-dialog.component';
 
 @Component({
   selector: 'app-lead-detail',
@@ -31,7 +32,6 @@ export class LeadDetailComponent implements OnInit {
     private router: Router,
     private modalService: BsModalService,
     public casePrintCaseDialog: MatDialog,
-
   ) { }
 
   public cboAssignedToUsersSub: any;
@@ -687,6 +687,18 @@ export class LeadDetailComponent implements OnInit {
     this.casePrintCaseDialog.open(LeadPrintDialogComponent, {
       width: '1000px',
       data: { objId: LDId },
+      disableClose: true
+    });
+  }
+
+  public btnPrintLeadActivity(): void {
+    let currentActivityId: number = 0;
+    currentActivityId = this.listActivityCollectionView.currentItem.Id;
+    this.activitiyModalRef.hide()
+
+    this.casePrintCaseDialog.open(LeadActivityPrintDialogComponent, {
+      width: '1000px',
+      data: { objId: currentActivityId },
       disableClose: true
     });
   }

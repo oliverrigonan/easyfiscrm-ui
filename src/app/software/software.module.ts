@@ -40,9 +40,12 @@ import { ProductComponent } from './setup/product/product.component';
 import { StatusComponent } from './setup/status/status.component';
 import { SalesDetailPrintDialogComponent } from './sales-detail/sales-detail-print-dialog/sales-detail-print-dialog.component';
 import { SupportDetailPrintDialogComponent } from './support-detail/support-detail-print-dialog/support-detail-print-dialog.component';
+import { LeadActivityPrintDialogComponent } from './lead-detail/lead-activity-print-dialog/lead-activity-print-dialog.component';
+import { SalesDeliveryActivityPrintDialogComponent } from './sales-detail/sales-delivery-activity-print-dialog/sales-delivery-activity-print-dialog.component';
+import { SupportDetailActivityPrintDialogComponent } from './support-detail/support-detail-activity-print-dialog/support-detail-activity-print-dialog.component';
 
 @NgModule({
-  declarations: [LayoutComponent, DashboardComponent, LeadComponent, LeadDetailComponent, SalesListComponent, SalesDetailComponent, SupportListComponent, SupportDetailComponent, LeadReportComponent, SalesdeliveryReportComponent, SupportReportComponent, ActivityReportComponent, ActivityComponent, UserComponent, LeadPrintDialogComponent, ProductComponent, StatusComponent, SalesDetailPrintDialogComponent, SupportDetailPrintDialogComponent ],
+  declarations: [LayoutComponent, DashboardComponent, LeadComponent, LeadDetailComponent, SalesListComponent, SalesDetailComponent, SupportListComponent, SupportDetailComponent, LeadReportComponent, SalesdeliveryReportComponent, SupportReportComponent, ActivityReportComponent, ActivityComponent, UserComponent, LeadPrintDialogComponent, ProductComponent, StatusComponent, SalesDetailPrintDialogComponent, SupportDetailPrintDialogComponent, LeadActivityPrintDialogComponent, SalesDeliveryActivityPrintDialogComponent, SupportDetailActivityPrintDialogComponent ],
   imports: [
     CommonModule,
     FormsModule,
@@ -67,7 +70,10 @@ import { SupportDetailPrintDialogComponent } from './support-detail/support-deta
   entryComponents: [
     LeadPrintDialogComponent,
     SalesDetailPrintDialogComponent,
-    SupportDetailPrintDialogComponent
+    SupportDetailPrintDialogComponent,
+    LeadActivityPrintDialogComponent,
+    SalesDeliveryActivityPrintDialogComponent,
+    SupportDetailActivityPrintDialogComponent
   ]
 })
 export class SoftwareModule { }

@@ -1,29 +1,29 @@
-import { Component, OnInit, Inject, ViewContainerRef } from '@angular/core';
+import { Component, OnInit, Inject } from '@angular/core';
 import { MatDialog, MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
 import { Router, ActivatedRoute } from '@angular/router';
 import { ToastrService } from 'ngx-toastr';
 import { SalesDetailService } from '../sales-detail.service';
 
 @Component({
-  selector: 'app-sales-detail-print-dialog',
-  templateUrl: './sales-detail-print-dialog.component.html',
-  styleUrls: ['./sales-detail-print-dialog.component.css']
+  selector: 'app-sales-delivery-activity-print-dialog',
+  templateUrl: './sales-delivery-activity-print-dialog.component.html',
+  styleUrls: ['./sales-delivery-activity-print-dialog.component.css']
 })
-export class SalesDetailPrintDialogComponent implements OnInit {
+export class SalesDeliveryActivityPrintDialogComponent implements OnInit {
 
   constructor(
     public salesDeliveryDetailService: SalesDetailService,
-    public casePrintSalesDeliveryDialogRef: MatDialogRef<SalesDetailPrintDialogComponent>,
+    public casePrintSalesDeliveryDialogRef: MatDialogRef<SalesDeliveryActivityPrintDialogComponent>,
     @Inject(MAT_DIALOG_DATA) public caseData: any,
     private toastr: ToastrService
   ) { }
 
-  public printSalesDeliverySubscription: any;
+  public printSalesDeliveryActivitySubscription: any;
   public pdfUrl: string;
 
   public printCase(): void {
-    this.salesDeliveryDetailService.printSalesDelivery(this.caseData.objId);
-    this.printSalesDeliverySubscription = this.salesDeliveryDetailService.printSalesDeliveryObservable.subscribe(
+    this.salesDeliveryDetailService.printSalesDeliveryActivity(this.caseData.objId);
+    this.printSalesDeliveryActivitySubscription = this.salesDeliveryDetailService.printSalesDeliveryActivityObservable.subscribe(
       data => {
         var binaryData = [];
         binaryData.push(data);
@@ -32,14 +32,14 @@ export class SalesDetailPrintDialogComponent implements OnInit {
         let printPDF: Element = document.getElementById("printPDF");
         printPDF.setAttribute("src", this.pdfUrl);
 
-        if (this.printSalesDeliverySubscription != null) this.printSalesDeliverySubscription.unsubscribe();
+        if (this.printSalesDeliveryActivitySubscription != null) this.printSalesDeliveryActivitySubscription.unsubscribe();
       }
     );
   }
 
   public btnClosePrintDialog(): void {
     this.casePrintSalesDeliveryDialogRef.close();
-    if (this.printSalesDeliverySubscription != null) this.printSalesDeliverySubscription.unsubscribe();
+    if (this.printSalesDeliveryActivitySubscription != null) this.printSalesDeliveryActivitySubscription.unsubscribe();
   }
 
   public btnPrintSalesDelivery(): void {
@@ -52,7 +52,7 @@ export class SalesDetailPrintDialogComponent implements OnInit {
   }
 
   ngOnDestroy() {
-    if (this.printSalesDeliverySubscription != null) this.printSalesDeliverySubscription.unsubscribe();
+    if (this.printSalesDeliveryActivitySubscription != null) this.printSalesDeliveryActivitySubscription.unsubscribe();
   }
 
 }

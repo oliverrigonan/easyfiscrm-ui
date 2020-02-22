@@ -37,6 +37,7 @@
                 <button class="btn btn-primary" (click)="btnPrintLead()" style="margin-right: 5px;" id="btnPrint">
                   <i class="fa fa-print fa-fw"></i> Print
                 </button>
+                
                 <button class="btn btn-danger" routerLink="/software/trn/lead" id="btnCloseLead">
                   <i class="fa fa-close fa-fw"></i> Close
                 </button>
@@ -216,6 +217,7 @@
                 </div>
               </td>
               <td style="text-align: right;">
+                
                 <button class="btn btn-primary" (click)="btnAddActivityClick(activityModalTemplate)" style="margin-right: 5px;"
                   id="btnAddActivity">
                   <i class="fa fa-plus fa-fw"></i> Add
@@ -536,6 +538,9 @@
       </div>
     </div>
     <div class="modal-footer">
+      <button class="btn btn-primary" (click)="btnPrintLeadActivity()" style="margin-right: 5px;" id="btnPrint">
+        <i class="fa fa-print fa-fw"></i> Print
+      </button>
       <button [hidden]="isActivityContentHidden" type="button" class="btn btn-primary" style="margin-right: 5px;"
         (click)="btnSaveActivityClick()" id="btnSaveActivity">
         <i class="fa fa-save"></i> Save

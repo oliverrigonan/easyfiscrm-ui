@@ -5,25 +5,25 @@ import { ToastrService } from 'ngx-toastr';
 import { SupportDetailService } from '../support-detail.service';
 
 @Component({
-  selector: 'app-support-detail-print-dialog',
-  templateUrl: './support-detail-print-dialog.component.html',
-  styleUrls: ['./support-detail-print-dialog.component.css']
+  selector: 'app-support-detail-activity-print-dialog',
+  templateUrl: './support-detail-activity-print-dialog.component.html',
+  styleUrls: ['./support-detail-activity-print-dialog.component.css']
 })
-export class SupportDetailPrintDialogComponent implements OnInit {
-  
+export class SupportDetailActivityPrintDialogComponent implements OnInit {
+
   constructor(
     public supportDetailService: SupportDetailService,
-    public casePrintSupportDialogRef: MatDialogRef<SupportDetailPrintDialogComponent>,
+    public casePrintSupportActivityDialogRef: MatDialogRef<SupportDetailActivityPrintDialogComponent>,
     @Inject(MAT_DIALOG_DATA) public caseData: any,
     private toastr: ToastrService
   ) { }
 
-  public printSupportSubscription: any;
+  public printSupportActivitySubscription: any;
   public pdfUrl: string;
 
   public printCase(): void {
-    this.supportDetailService.printSupport(this.caseData.objId);
-    this.printSupportSubscription = this.supportDetailService.printSupportObservable.subscribe(
+    this.supportDetailService.printSupportActivity(this.caseData.objId);
+    this.printSupportActivitySubscription = this.supportDetailService.printSupportActivityObservable.subscribe(
       data => {
         var binaryData = [];
         binaryData.push(data);
@@ -32,17 +32,17 @@ export class SupportDetailPrintDialogComponent implements OnInit {
         let printPDF: Element = document.getElementById("printPDF");
         printPDF.setAttribute("src", this.pdfUrl);
 
-        if (this.printSupportSubscription != null) this.printSupportSubscription.unsubscribe();
+        if (this.printSupportActivitySubscription != null) this.printSupportActivitySubscription.unsubscribe();
       }
     );
   }
 
   public btnClosePrintDialog(): void {
-    this.casePrintSupportDialogRef.close();
-    if (this.printSupportSubscription != null) this.printSupportSubscription.unsubscribe();
+    this.casePrintSupportActivityDialogRef.close();
+    if (this.printSupportActivitySubscription != null) this.printSupportActivitySubscription.unsubscribe();
   }
 
-  public btnPrintSupport(): void {
+  public btnPrintSupportActivity(): void {
     window.frames["printPDF"].focus();
     window.frames["printPDF"].print();
   }
@@ -52,7 +52,7 @@ export class SupportDetailPrintDialogComponent implements OnInit {
   }
 
   ngOnDestroy() {
-    if (this.printSupportSubscription != null) this.printSupportSubscription.unsubscribe();
+    if (this.printSupportActivitySubscription != null) this.printSupportActivitySubscription.unsubscribe();
   }
 
 }

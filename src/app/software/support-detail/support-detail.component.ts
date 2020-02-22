@@ -14,6 +14,7 @@ import { SupportDetailService } from './support-detail.service';
 import { SupportModel } from '../support-list/support-list.model';
 import { SupportDetailActivityModel } from './support-detail-activity.model';
 import { SupportDetailPrintDialogComponent } from './support-detail-print-dialog/support-detail-print-dialog.component';
+import { SupportDetailActivityPrintDialogComponent } from './support-detail-activity-print-dialog/support-detail-activity-print-dialog.component';
 
 @Component({
   selector: 'app-support-detail',
@@ -776,6 +777,18 @@ public isSalesDeliveryDataLoaded: boolean = false;
     this.casePrintCaseDialog.open(SupportDetailPrintDialogComponent, {
       width: '1000px',
       data: { objId: LDId },
+      disableClose: true
+    });
+  }
+
+  public btnPrintSupportActivity(): void {
+    let currentActivityId: number = 0;
+    currentActivityId = this.listActivityCollectionView.currentItem.Id;
+    this.activitiyModalRef.hide()
+
+    this.casePrintCaseDialog.open(SupportDetailActivityPrintDialogComponent, {
+      width: '1000px',
+      data: { objId: currentActivityId },
       disableClose: true
     });
   }
