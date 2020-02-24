@@ -594,8 +594,10 @@ export class SalesDetailComponent implements OnInit {
 
   public salesDetailActivityModel: SalesDetailActivityModel = {
     Id: 0,
+    SDNumber: "",
+    SDDate: new Date(),
+    SDName: "",
     ACNumber: "",
-    LDNumber: "",
     ACDate: new Date(),
     UserId: 0,
     User: "",
@@ -731,7 +733,9 @@ export class SalesDetailComponent implements OnInit {
     if (this.isAddClicked) {
       this.salesDetailActivityModel = {
         Id: 0,
-        LDNumber: this.salesDeliveryDetailModel.SDNumber,
+        SDNumber: this.salesDeliveryDetailModel.SDNumber,
+        SDDate: this.salesDeliveryDetailModel.SDDate,
+        SDName: this.salesDeliveryDetailModel.Customer,
         ACNumber: "0000000000",
         ACDate: new Date(),
         UserId: 0,
@@ -764,7 +768,9 @@ export class SalesDetailComponent implements OnInit {
       let currentActivity = this.listActivityCollectionView.currentItem;
       this.salesDetailActivityModel = {
         Id: currentActivity.Id,
-        LDNumber: this.salesDeliveryDetailModel.SDNumber,
+        SDNumber: this.salesDeliveryDetailModel.SDNumber,
+        SDDate: this.salesDeliveryDetailModel.SDDate,
+        SDName: this.salesDeliveryDetailModel.Customer,
         ACNumber: currentActivity.ACNumber,
         ACDate: currentActivity.ACDate,
         UserId: currentActivity.UserId,
@@ -858,6 +864,45 @@ export class SalesDetailComponent implements OnInit {
         }
 
         if (this.saveActivitySub != null) this.saveActivitySub.unsubscribe();
+      }
+    );
+  }
+
+  public btnDeleteActivityClick(activityDeleteModalTemplate: TemplateRef<any>): void {
+    this.deleteActivitiyModalRef = this.modalService.show(activityDeleteModalTemplate, {
+      backdrop: true,
+      ignoreBackdropClick: true,
+      class: "modal-sm"
+    });
+  }
+
+  public btnConfirmDeleteAcitivityClick() {
+    let btnConfirmDeleteAcitivity: Element = document.getElementById("btnConfirmDeleteAcitivity");
+    let btnCloseConfirmDeleteAcitivityModal: Element = document.getElementById("btnCloseConfirmDeleteAcitivityModal");
+    (<HTMLButtonElement>btnConfirmDeleteAcitivity).disabled = true;
+    (<HTMLButtonElement>btnCloseConfirmDeleteAcitivityModal).disabled = true;
+
+    let currentActivity = this.listActivityCollectionView.currentItem;
+    this.salesDetailService.deleteActivity(currentActivity.Id);
+    this.deleteActivitySub = this.salesDetailService.deleteActivityObservable.subscribe(
+      data => {
+        if (data[0] == "success") {
+          this.toastr.success("Lead was successfully deleted.", "Success");
+
+          setTimeout(() => {
+            this.isDataLoaded = false;
+
+            this.listActivity();
+            this.deleteActivitiyModalRef.hide();
+          }, 100);
+        } else if (data[0] == "failed") {
+          this.toastr.error(data[1], "Error");
+
+          (<HTMLButtonElement>btnConfirmDeleteAcitivity).disabled = false;
+          (<HTMLButtonElement>btnCloseConfirmDeleteAcitivityModal).disabled = false;
+        }
+
+        if (this.deleteActivitySub != null) this.deleteActivitySub.unsubscribe();
       }
     );
   }

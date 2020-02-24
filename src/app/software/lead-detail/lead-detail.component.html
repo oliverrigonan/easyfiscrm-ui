@@ -299,23 +299,29 @@
         <div class="row">
           <div class="col-lg-6">
             <div class="form-group row">
-              <label for="" class="col-sm-4 col-form-label form-group-label">Lead No.</label>
+              <label for="" class="col-sm-4 col-form-label form-group-label">LD No.</label>
               <div class="col-sm-8">
                 <input type="text" class="form-control" placeholder="Number..." [(ngModel)]="leadDetailActivityModel.LDNumber"
                   disabled>
               </div>
               <br /><br />
-              <label for="" class="col-sm-4 col-form-label form-group-label">CRM</label>
+              <label for="" class="col-sm-4 col-form-label form-group-label">Lead Status</label>
               <div class="col-sm-8">
                 <input type="text" class="form-control" placeholder="CRM Status..." [(ngModel)]="leadDetailActivityModel.CRMStatus"
                   disabled>
               </div>
               <br /><br />
-              <label for="" class="col-sm-4 col-form-label form-group-label">Date</label>
+              <label for="" class="col-sm-4 col-form-label form-group-label">LD Date</label>
               <div class="col-sm-8">
-                <wj-input-date #cboActivityDate format="MMMM dd, yyyy" disabled [(ngModel)]="leadDetailActivityModel.ACDate"
+                <wj-input-date #cboActivityDate format="MMMM dd, yyyy" disabled [(ngModel)]="leadDetailActivityModel.LDDate"
                   style="width: 100%; padding: 3px;">
                 </wj-input-date>
+              </div>
+              <br /><br />
+              <label for="" class="col-sm-4 col-form-label form-group-label">Lead Name</label>
+              <div class="col-sm-8">
+                <input type="text" class="form-control" placeholder="Lead Name..." [(ngModel)]="leadDetailActivityModel.LDName"
+                  disabled>
               </div>
               <br /><br />
               <label for="" class="col-sm-4 col-form-label form-group-label">Functional</label>
@@ -386,9 +392,9 @@
               <label for="" class="col-sm-4 col-form-label form-group-label">Activity</label>
               <div class="col-sm-8">
                 <textarea [(ngModel)]="leadDetailActivityModel.Activity" type="text" class="form-control" style="resize: vertical"
-                  placeholder="Activity..." rows="5"></textarea>
+                  placeholder="Activity..." rows="7"></textarea>
               </div>
-              <br /><br /><br /><br /><br /><br />
+              <br /><br /><br /><br /><br /><br /><br /><br />
               <label for="" class="col-sm-4 col-form-label form-group-label">Transportation Fee</label>
               <div class="col-sm-8">
                 <wj-input-number [(ngModel)]="leadDetailActivityModel.TransportationCost" #numActivityTranspoCost style="width: 100%; padding: 3px;" (textChanged)="transportationCostTextChanged()"></wj-input-number>

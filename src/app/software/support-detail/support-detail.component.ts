@@ -428,7 +428,9 @@ public isSalesDeliveryDataLoaded: boolean = false;
 
   public supportDetailActivityModel: SupportDetailActivityModel = {
     Id: 0,
+    SPDate: new Date(),
     SPNumber: "",
+    SPName: "",
     ACNumber: "",
     ACDate: new Date(),
     UserId: 0,
@@ -618,7 +620,9 @@ public isSalesDeliveryDataLoaded: boolean = false;
     if (this.isAddClicked) {
       this.supportDetailActivityModel = {
         Id: 0,
-        SPNumber: "0000000000",
+        SPDate: this.supportModel.SPDate,
+        SPNumber: this.supportModel.SPNumber,
+        SPName: this.supportModel.Customer,
         ACNumber: "0000000000",
         ACDate: new Date(),
         UserId: 0,
@@ -651,7 +655,9 @@ public isSalesDeliveryDataLoaded: boolean = false;
       let currentActivity = this.listActivityCollectionView.currentItem;
       this.supportDetailActivityModel = {
         Id: currentActivity.Id,
+        SPDate: this.supportModel.SPDate,
         SPNumber: this.supportModel.SPNumber,
+        SPName: this.supportModel.Customer,
         ACNumber: currentActivity.ACNumber,
         ACDate: currentActivity.ACDate,
         UserId: currentActivity.UserId,

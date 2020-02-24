@@ -309,17 +309,23 @@
                   [(ngModel)]="supportDetailActivityModel.SPNumber" disabled>
               </div>
               <br /><br />
-              <label for="" class="col-sm-4 col-form-label form-group-label">CRM</label>
+              <label for="" class="col-sm-4 col-form-label form-group-label">SP Date</label>
+              <div class="col-sm-8">
+                <wj-input-date #cboActivityDate format="MMMM dd, yyyy" [(ngModel)]="supportDetailActivityModel.SPDate"
+                  disabled style="width: 100%; padding: 3px;">
+                </wj-input-date>
+              </div>
+              <br /><br />
+              <label for="" class="col-sm-4 col-form-label form-group-label">SP Name</label>
+              <div class="col-sm-8">
+                <input type="text" class="form-control" placeholder="CRM Status..."
+                  [(ngModel)]="supportDetailActivityModel.SPName" disabled>
+              </div>
+              <br /><br />
+              <label for="" class="col-sm-4 col-form-label form-group-label">SP Status</label>
               <div class="col-sm-8">
                 <input type="text" class="form-control" placeholder="CRM Status..."
                   [(ngModel)]="supportDetailActivityModel.CRMStatus" disabled>
-              </div>
-              <br /><br />
-              <label for="" class="col-sm-4 col-form-label form-group-label">Date</label>
-              <div class="col-sm-8">
-                <wj-input-date #cboActivityDate format="MMMM dd, yyyy" [(ngModel)]="supportDetailActivityModel.ACDate"
-                  disabled style="width: 100%; padding: 3px;">
-                </wj-input-date>
               </div>
               <br /><br />
               <label for="" class="col-sm-4 col-form-label form-group-label">Functional</label>
@@ -383,7 +389,7 @@
           </div>
           <div class="col-lg-6">
             <div class="form-group row">
-              <label for="" class="col-sm-4 col-form-label form-group-label" >No.</label>
+              <label for="" class="col-sm-4 col-form-label form-group-label" >Activity No.</label>
               <div class="col-sm-8">
                 <input type="text" class="form-control" placeholder="Number..."
                   [(ngModel)]="supportDetailActivityModel.ACNumber" disabled>

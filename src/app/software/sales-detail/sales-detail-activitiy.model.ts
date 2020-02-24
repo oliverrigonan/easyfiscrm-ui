@@ -1,6 +1,8 @@
 export class SalesDetailActivityModel {
     Id: number;
-    LDNumber: string;
+    SDDate: Date;
+    SDNumber: string;
+    SDName: string;
     ACNumber: string;
     ACDate: Date;
     UserId: number;

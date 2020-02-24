@@ -106,6 +106,8 @@ export class LeadDetailComponent implements OnInit {
   public leadDetailActivityModel: LeadDetailActivityModel = {
     Id: 0,
     LDNumber: "",
+    LDDate: new Date(),
+    LDName: "",
     ACNumber: "",
     ACDate: new Date(),
     UserId: 0,
@@ -511,6 +513,8 @@ export class LeadDetailComponent implements OnInit {
       this.leadDetailActivityModel = {
         Id: 0,
         LDNumber: this.leadDetailModel.LDNumber,
+        LDDate: this.leadDetailModel.LDDate,
+        LDName: this.leadDetailModel.Name,
         ACNumber: "0000000000",
         ACDate: new Date(),
         UserId: 0,
@@ -544,6 +548,8 @@ export class LeadDetailComponent implements OnInit {
       this.leadDetailActivityModel = {
         Id: currentActivity.Id,
         LDNumber: this.leadDetailModel.LDNumber,
+        LDDate: this.leadDetailModel.LDDate,
+        LDName: this.leadDetailModel.Name,
         ACNumber: currentActivity.ACNumber,
         ACDate: currentActivity.ACDate,
         UserId: currentActivity.UserId,
