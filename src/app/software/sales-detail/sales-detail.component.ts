@@ -433,6 +433,7 @@ export class SalesDetailComponent implements OnInit {
     let currentCustomer = this.listCustomerCollectionView.currentItem;
     this.selectedCustomer = currentCustomer.Article;
     this.salesDeliveryDetailModel.CustomerId = currentCustomer.Id;
+    this.salesDeliveryDetailModel.Customer = currentCustomer.Article;
 
     this.customerModalRef.hide();
 
@@ -460,6 +461,7 @@ export class SalesDetailComponent implements OnInit {
     (<HTMLButtonElement>btnUnlockSales).disabled = true;
 
     this.salesDetailService.saveSales(this.salesDeliveryDetailModel)
+    console.log(this.salesDeliveryDetailModel);
     this.saveSalesSub = this.salesDetailService.saveSalesObservable.subscribe(
       data => {
         if (data[0] == "success") {
