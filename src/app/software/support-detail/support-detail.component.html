@@ -266,7 +266,7 @@
         </wj-flex-grid>
       </div>
       <div class="card-footer">
-        <div class="col-sm-12 btn-group" style="padding: 5px 0px 5px 0px;">
+        <div class="col-sm-4 btn-group" style="padding: 5px 0px 5px 0px;">
           <button type="button" class="btn btn-secondary" (click)="listActivityCollectionView.moveToFirstPage()">
             <i class="fa fa-fast-backward"></i>
           </button>
@@ -283,6 +283,8 @@
             <i class="fa fa-fast-forward"></i>
           </button>
         </div>
+        <div class="col-sm-8"></div>
+
       </div>
     </div>
   </div>
@@ -389,7 +391,7 @@
           </div>
           <div class="col-lg-6">
             <div class="form-group row">
-              <label for="" class="col-sm-4 col-form-label form-group-label" >Activity No.</label>
+              <label for="" class="col-sm-4 col-form-label form-group-label">Activity No.</label>
               <div class="col-sm-8">
                 <input type="text" class="form-control" placeholder="Number..."
                   [(ngModel)]="supportDetailActivityModel.ACNumber" disabled>
@@ -525,8 +527,8 @@
           </div>
         </td>
         <td style="padding-left: 147%;">
-          <button type="button" class="btn btn-danger float-right" (click)="customerModalRef.hide()" style="width: 90px !important;"
-            id="btnCustomerClickCloseModal">
+          <button type="button" class="btn btn-danger float-right" (click)="customerModalRef.hide()"
+            style="width: 90px !important;" id="btnCustomerClickCloseModal">
             <i class="fa fa-close"></i> Cancel
           </button>
         </td>
