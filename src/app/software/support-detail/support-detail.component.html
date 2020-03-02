@@ -74,7 +74,7 @@
               <br /><br />
               <label for="" class="col-sm-4 col-form-label form-group-label">SD Number</label>
               <div class="col-sm-8">
-                <wj-combo-box #cboSalesInvoice [(ngModel)]="supportModel.SDId"
+                <wj-combo-box #cboSalesInvoice [(ngModel)]="supportModel.SDNumber"
                   [itemsSource]="cboSalesDeliveryObservable" [isEditable]="false" [isRequired]="true"
                   [displayMemberPath]="'SDNumber'" [selectedValuePath]="'Id'" style="width: 100%; padding: 3px;"
                   [disabled]="isLocked" (selectedIndexChanged)="cboSalesInvoice_SelectedIndexChange(cboSalesInvoice)">

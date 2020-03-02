@@ -200,9 +200,12 @@ export class SupportDetailComponent implements OnInit {
       }
     );
   }
+
 public isSalesDeliveryDataLoaded: boolean = false;
+
   public cboSalesInvoice_SelectedIndexChange(cboSalesInvoice: any): void {
     if (this.isSalesDeliveryDataLoaded) {
+      this.supportModel.SDId = this.cboSalesInvoice.selectedItem["Id"],
       this.supportModel.ContactPerson = this.cboSalesInvoice.selectedItem["ContactPerson"];
       this.supportModel.ContactPosition = this.cboSalesInvoice.selectedItem["ContactPosition"];
       this.supportModel.ContactEmail = this.cboSalesInvoice.selectedItem["ContactEmail"];
@@ -263,25 +266,10 @@ public isSalesDeliveryDataLoaded: boolean = false;
     this.supportDetailService.detailSupport(id);
     this.detailSupportSub = this.supportDetailService.detailSupportObservable.subscribe(
       data => {
-        this.supportModel.Id = data.Id;
-        this.supportModel.SPNumber = data.SPNumber;
-        this.supportModel.CustomerId = data.CustomerId;
-        this.supportModel.Customer = data.Customer;
-        this.supportModel.ContactPerson = data.ContactPerson;
-        this.supportModel.ContactPosition = data.ContactPosition;
-        this.supportModel.ContactEmail = data.ContactEmail;
-        this.supportModel.ContactPhoneNumber = data.ContactPhoneNumber;
-        this.supportModel.Issue = data.Issue;
-        this.supportModel.AssignedToUserId = data.AssignedToUserId;
-        this.supportModel.AssignedToUserId = data.AssignedToUserId;
-        this.supportModel.Status = data.Status;
-        this.supportModel.IsLocked = data.IsLocked;
-        this.supportModel.CreatedByUserId = data.CreatedByUserId;
-        this.supportModel.CreatedByUser = data.CreatedByUser;
-        this.supportModel.CreatedDateTime = data.CreatedDateTime;
-        this.supportModel.UpdatedByUserId = data.UpdatedByUserId;
-        this.supportModel.UpdatedByUser = data.UpdatedByUser;
-        this.supportModel.UpdatedDateTime = data.UpdatedDateTime;
+        this.getCboSalesDeliveryDetail(data.CustomerId);
+        setTimeout(()=>{
+          this.loadSupportDetail(data);
+        },1000);
 
         let btnSaveSupport: Element = document.getElementById("btnSaveSupport");
         let btnLockSupport: Element = document.getElementById("btnLockSupport");
@@ -304,19 +292,36 @@ public isSalesDeliveryDataLoaded: boolean = false;
         }
 
         this.isSalesDeliveryDataLoaded = false;
-        this.getCboSalesDeliveryDetail(this.supportModel.CustomerId);
-
-
         this.isLoadingSpinnerHidden = true;
         this.isContentHidden = false;
-        setTimeout(() => {
-          this.supportModel.SDId = data.SDId;
-
-        }, 100);
         if (this.detailSupportSub != null) this.detailSupportSub.unsubscribe();
       }
     );
   }
+
+  public loadSupportDetail(objSupport: any): void{
+    this.supportModel.Id = objSupport.Id;
+    this.supportModel.SPNumber = objSupport.SPNumber;
+    this.supportModel.CustomerId = objSupport.CustomerId;
+    this.supportModel.Customer = objSupport.Customer;
+    this.supportModel.SDId = objSupport.SDId,
+    this.supportModel.SDNumber = objSupport.SDNumber,
+    this.supportModel.ContactPerson = objSupport.ContactPerson;
+    this.supportModel.ContactPosition = objSupport.ContactPosition;
+    this.supportModel.ContactEmail = objSupport.ContactEmail;
+    this.supportModel.ContactPhoneNumber = objSupport.ContactPhoneNumber;
+    this.supportModel.Issue = objSupport.Issue;
+    this.supportModel.AssignedToUserId = objSupport.AssignedToUserId;
+    this.supportModel.AssignedToUserId = objSupport.AssignedToUserId;
+    this.supportModel.Status = objSupport.Status;
+    this.supportModel.IsLocked = objSupport.IsLocked;
+    this.supportModel.CreatedByUserId = objSupport.CreatedByUserId;
+    this.supportModel.CreatedByUser = objSupport.CreatedByUser;
+    this.supportModel.CreatedDateTime = objSupport.CreatedDateTime;
+    this.supportModel.UpdatedByUserId = objSupport.UpdatedByUserId;
+    this.supportModel.UpdatedByUser = objSupport.UpdatedByUser;
+    this.supportModel.UpdatedDateTime = objSupport.UpdatedDateTime;
+  } 
 
   public btnSaveSupportClick(): void {
     let btnSaveSupport: Element = document.getElementById("btnSaveSupport");
