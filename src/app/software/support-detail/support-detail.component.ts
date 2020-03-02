@@ -95,6 +95,7 @@ export class SupportDetailComponent implements OnInit {
   public deleteActivitiyModalRef: BsModalRef;
 
   public isAddClicked: boolean = false;
+  public isSalesDeliveryDataLoaded: boolean = false;
 
   public supportModel: SupportModel = {
     Id: 0,
@@ -194,18 +195,15 @@ export class SupportDetailComponent implements OnInit {
           this.toastr.error("No Sales Delivery");
         }
         this.isSalesDeliveryDataLoaded = true;
-        
+
         this.cboSalesDeliveryObservable = salesInvoiceObservableArray;
         if (this.cboSalesDeliverySub != null) this.cboSalesDeliverySub.unsubscribe();
       }
     );
   }
 
-public isSalesDeliveryDataLoaded: boolean = false;
-
   public cboSalesInvoice_SelectedIndexChange(cboSalesInvoice: any): void {
     if (this.isSalesDeliveryDataLoaded) {
-      this.supportModel.SDId = this.cboSalesInvoice.selectedItem["Id"],
       this.supportModel.ContactPerson = this.cboSalesInvoice.selectedItem["ContactPerson"];
       this.supportModel.ContactPosition = this.cboSalesInvoice.selectedItem["ContactPosition"];
       this.supportModel.ContactEmail = this.cboSalesInvoice.selectedItem["ContactEmail"];
@@ -267,14 +265,13 @@ public isSalesDeliveryDataLoaded: boolean = false;
     this.detailSupportSub = this.supportDetailService.detailSupportObservable.subscribe(
       data => {
         this.getCboSalesDeliveryDetail(data.CustomerId);
-        setTimeout(()=>{
+        setTimeout(() => {
           this.loadSupportDetail(data);
-        },1000);
+        }, 100);
 
         let btnSaveSupport: Element = document.getElementById("btnSaveSupport");
         let btnLockSupport: Element = document.getElementById("btnLockSupport");
         let btnUnlockSupport: Element = document.getElementById("btnUnlockSupport");
-
         this.selectedCustomer = data.Customer;
 
         (<HTMLButtonElement>btnSaveSupport).disabled = false;
@@ -287,7 +284,6 @@ public isSalesDeliveryDataLoaded: boolean = false;
           (<HTMLButtonElement>btnSaveSupport).disabled = true;
           (<HTMLButtonElement>btnLockSupport).disabled = true;
           (<HTMLButtonElement>btnUnlockSupport).disabled = false;
-
           this.isActivityTabHidden = false;
         }
 
@@ -299,14 +295,14 @@ public isSalesDeliveryDataLoaded: boolean = false;
     );
   }
 
-  public loadSupportDetail(objSupport: any): void{
+  public loadSupportDetail(objSupport: any): void {
     this.supportModel.Id = objSupport.Id;
     this.supportModel.SPNumber = objSupport.SPNumber;
     this.supportModel.CustomerId = objSupport.CustomerId;
     this.supportModel.Customer = objSupport.Customer;
     this.supportModel.SDId = objSupport.SDId,
-    this.supportModel.SDNumber = objSupport.SDNumber,
-    this.supportModel.ContactPerson = objSupport.ContactPerson;
+      this.supportModel.SDNumber = objSupport.SDNumber,
+      this.supportModel.ContactPerson = objSupport.ContactPerson;
     this.supportModel.ContactPosition = objSupport.ContactPosition;
     this.supportModel.ContactEmail = objSupport.ContactEmail;
     this.supportModel.ContactPhoneNumber = objSupport.ContactPhoneNumber;
@@ -321,7 +317,7 @@ public isSalesDeliveryDataLoaded: boolean = false;
     this.supportModel.UpdatedByUserId = objSupport.UpdatedByUserId;
     this.supportModel.UpdatedByUser = objSupport.UpdatedByUser;
     this.supportModel.UpdatedDateTime = objSupport.UpdatedDateTime;
-  } 
+  }
 
   public btnSaveSupportClick(): void {
     let btnSaveSupport: Element = document.getElementById("btnSaveSupport");
@@ -349,7 +345,6 @@ public isSalesDeliveryDataLoaded: boolean = false;
           (<HTMLButtonElement>btnLockSupport).disabled = false;
           (<HTMLButtonElement>btnUnlockSupport).disabled = true;
         }
-
         if (this.saveSupportSub != null) this.saveSupportSub.unsubscribe();
       }
     );
@@ -392,14 +387,13 @@ public isSalesDeliveryDataLoaded: boolean = false;
   }
 
   public btnUnlockSupportClick(): void {
-    this.isActivityTabHidden = true;
-
     let btnSaveSupport: Element = document.getElementById("btnSaveSupport");
     let btnLockSupport: Element = document.getElementById("btnLockSupport");
     let btnUnlockSupport: Element = document.getElementById("btnUnlockSupport");
     (<HTMLButtonElement>btnSaveSupport).disabled = true;
     (<HTMLButtonElement>btnLockSupport).disabled = true;
     (<HTMLButtonElement>btnUnlockSupport).disabled = true;
+    this.isActivityTabHidden = true;
 
     this.supportDetailService.unlockSupport(this.supportModel);
     this.unlockSupportSub = this.supportDetailService.unlockSupportObservable.subscribe(
@@ -496,7 +490,6 @@ public isSalesDeliveryDataLoaded: boolean = false;
 
   public cboShowNumberOfRowsOnSelectedIndexChanged(selectedValue: any): void {
     this.listActivityPageIndex = selectedValue;
-
     this.listActivityCollectionView.pageSize = this.listActivityPageIndex;
     this.listActivityCollectionView.refresh();
     this.listActivityCollectionView.refresh();
@@ -531,7 +524,6 @@ public isSalesDeliveryDataLoaded: boolean = false;
 
             this.isDataLoaded = true;
             this.isProgressBarHidden = true;
-
             if (this.listActivitySub != null) this.listActivitySub.unsubscribe();
           }
         );
@@ -546,14 +538,11 @@ public isSalesDeliveryDataLoaded: boolean = false;
       class: "modal-xl"
     });
 
-    this.isAddClicked = true;
-
     this.activityModalHeaderTitle = "Add Activity";
-    this.isActivityNumberHidden = true;
-
     this.isActivityLoadingSpinnerHidden = false;
     this.isActivityContentHidden = true;
-
+    this.isActivityNumberHidden = true;
+    this.isAddClicked = true;
     this.listActivityUsers();
   }
 
@@ -579,11 +568,9 @@ public isSalesDeliveryDataLoaded: boolean = false;
         }
 
         this.cboListActivityUsersObservableArray = usersObservableArray;
-
         setTimeout(() => {
           this.listActivityStatus();
         }, 100);
-
         if (this.cboListActivityUsersSub != null) this.cboListActivityUsersSub.unsubscribe();
       }
     );
@@ -605,14 +592,12 @@ public isSalesDeliveryDataLoaded: boolean = false;
         }
 
         this.cboListActivityStatusObservableArray = statusObservableArray;
-
         setTimeout(() => {
           this.currentActivity();
         }, 100);
 
         this.isActivityLoadingSpinnerHidden = true;
         this.isActivityContentHidden = false;
-
         if (this.cboListActivityStatusSub != null) this.cboListActivityStatusSub.unsubscribe();
       }
     );
@@ -701,22 +686,19 @@ public isSalesDeliveryDataLoaded: boolean = false;
       class: "modal-xl"
     });
 
-    this.isAddClicked = false;
-
     this.activityModalHeaderTitle = "Edit Activity";
-    this.isActivityNumberHidden = false;
-
     this.isActivityLoadingSpinnerHidden = false;
+    this.isActivityNumberHidden = false;
     this.isActivityContentHidden = true;
-
+    this.isAddClicked = false;
     this.listActivityUsers();
   }
 
   public btnSaveActivityClick(): void {
-    let btnSaveActivity: Element = document.getElementById("btnSaveActivity");
     let btnSaveActivityClickCloseModal: Element = document.getElementById("btnSaveActivityClickCloseModal");
-    (<HTMLButtonElement>btnSaveActivity).disabled = true;
+    let btnSaveActivity: Element = document.getElementById("btnSaveActivity");
     (<HTMLButtonElement>btnSaveActivityClickCloseModal).disabled = true;
+    (<HTMLButtonElement>btnSaveActivity).disabled = true;
 
     this.supportDetailService.saveActivity(this.supportDetailActivityModel);
     this.saveActivitySub = this.supportDetailService.saveActivityObservable.subscribe(
@@ -725,16 +707,15 @@ public isSalesDeliveryDataLoaded: boolean = false;
           this.toastr.success("Activity was successfully saved.", "Success");
 
           setTimeout(() => {
-            this.isDataLoaded = false;
-
-            this.listActivity();
             this.activitiyModalRef.hide();
+            this.isDataLoaded = false;
+            this.listActivity();
           }, 100);
         } else if (data[0] == "failed") {
           this.toastr.error(data[1], "Error");
 
-          (<HTMLButtonElement>btnSaveActivity).disabled = false;
           (<HTMLButtonElement>btnSaveActivityClickCloseModal).disabled = false;
+          (<HTMLButtonElement>btnSaveActivity).disabled = false;
         }
 
         if (this.saveActivitySub != null) this.saveActivitySub.unsubscribe();
@@ -764,16 +745,14 @@ public isSalesDeliveryDataLoaded: boolean = false;
           this.toastr.success("Lead was successfully deleted.", "Success");
 
           setTimeout(() => {
-            this.isDataLoaded = false;
-
-            this.listActivity();
             this.deleteActivitiyModalRef.hide();
+            this.isDataLoaded = false;
+            this.listActivity();
           }, 100);
         } else if (data[0] == "failed") {
           this.toastr.error(data[1], "Error");
-
-          (<HTMLButtonElement>btnConfirmDeleteAcitivity).disabled = false;
           (<HTMLButtonElement>btnCloseConfirmDeleteAcitivityModal).disabled = false;
+          (<HTMLButtonElement>btnConfirmDeleteAcitivity).disabled = false;
         }
 
         if (this.deleteActivitySub != null) this.deleteActivitySub.unsubscribe();
@@ -783,8 +762,8 @@ public isSalesDeliveryDataLoaded: boolean = false;
 
   public btnPrintSupport(): void {
     let LDId: number = 0;
+    
     this.activatedRoute.params.subscribe(params => { LDId = params["id"]; });
-
     this.casePrintCaseDialog.open(SupportDetailPrintDialogComponent, {
       width: '1000px',
       data: { objId: LDId },

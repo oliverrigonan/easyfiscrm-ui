@@ -367,14 +367,12 @@ export class ActivityComponent implements OnInit {
     this.activityHeaderModel.status = currentActivityHeader.Status;
     this.activityHeaderModel.particular = currentActivityHeader.Particular;
 
+    this.activityListModalRef = this.modalService.show(activityListModalTemplate, {
+      backdrop: true,
+      ignoreBackdropClick: true,
+      class: "modal-xl"
+    });
     this.listActivity();
-    setTimeout(() => {
-      this.activityListModalRef = this.modalService.show(activityListModalTemplate, {
-        backdrop: true,
-        ignoreBackdropClick: true,
-        class: "modal-xl"
-      });
-    }, 300);
   }
 
 
