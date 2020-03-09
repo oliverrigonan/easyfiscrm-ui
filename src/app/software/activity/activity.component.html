@@ -77,8 +77,8 @@
             <td>
               <div class="form-group">
                 <span class="badge badge-info" style="margin-bottom: 5px;"><i class="fa fa-question-circle fa-fw"></i>
-                  User</span>
-                <wj-combo-box #cboActivityUser [itemsSource]="cboActivityUserObservableArray" [isEditable]="false"
+                  Functional</span>
+                <wj-combo-box #cboActivityUser [itemsSource]="cboActivityFunctionalObservableArray" [isEditable]="false"
                   [isRequired]="true" [displayMemberPath]="'FullName'" [selectedValuePath]="'Id'"
                   (selectedIndexChanged)="cboActivityUserSelectedIndexChanged(cboActivityUser.selectedValue)"
                   style="width: 100%;">
@@ -112,20 +112,26 @@
           </button>
         </ng-template>
       </wj-flex-grid-column>
-      <wj-flex-grid-column [header]="'Date'" [binding]="'Date'" [isReadOnly]="true" [width]="'2*'">
+      <wj-flex-grid-column [header]="'Activity No.'" [binding]="'ACNumber'" [isReadOnly]="true" [width]="'2*'">
       </wj-flex-grid-column>
-      <wj-flex-grid-column [header]="'Document'" [binding]="'DocType'" [isReadOnly]="true" [width]="'2*'">
+      <wj-flex-grid-column [header]="'ACDate'" [binding]="'ACDate'" [isReadOnly]="true" [width]="'2*'">
       </wj-flex-grid-column>
-      <wj-flex-grid-column [header]="'Document No.'" [binding]="'Reference'" [isReadOnly]="true" [width]="'2*'">
+      <wj-flex-grid-column [header]="'DocumentNumber'" [binding]="'DocumentNumber'" [isReadOnly]="true" [width]="'2*'">
       </wj-flex-grid-column>
       <wj-flex-grid-column [header]="'Customer'" [binding]="'Customer'" [isReadOnly]="true" [width]="'2*'">
       </wj-flex-grid-column>
-      <wj-flex-grid-column [header]="'Particular/Remarks/Issues'" [binding]="'Particular'" [isReadOnly]="true"
+      <wj-flex-grid-column [header]="'Product'" [binding]="'Product'" [isReadOnly]="true"
         [width]="'2*'">
       </wj-flex-grid-column>
-      <wj-flex-grid-column [header]="'Last Activity'" [binding]="'LastActivity'" [isReadOnly]="true" [width]="'2*'">
+      <wj-flex-grid-column [header]="'Activity'" [binding]="'Activity'" [isReadOnly]="true" [width]="'2*'">
+      </wj-flex-grid-column>
+      <wj-flex-grid-column [header]="'Functional Staff'" [binding]="'FunctionalStaff'" [isReadOnly]="true" [width]="'2*'">
+      </wj-flex-grid-column>
+      <wj-flex-grid-column [header]="'Technical Staff'" [binding]="'TechnicalStaff'" [isReadOnly]="true" [width]="'2*'">
       </wj-flex-grid-column>
       <wj-flex-grid-column [header]="'Status'" [binding]="'Status'" [isReadOnly]="true" [width]="'2*'">
+      </wj-flex-grid-column>
+      <wj-flex-grid-column [header]="'Total Amount'" [binding]="'TotalAmount'" [isReadOnly]="true" [width]="'2*'">
       </wj-flex-grid-column>
     </wj-flex-grid>
   </div>

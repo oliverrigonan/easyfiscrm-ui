@@ -66,6 +66,7 @@ export class LeadService {
               LDNumber: results[i].LDNumber,
               LDDate: results[i].LDDate,
               Name: results[i].Name,
+              Poduct: results[i].ProductDescription,
               Address: results[i].Address,
               ContactPerson: results[i].ContactPerson,
               ContactPosition: results[i].ContactPosition,

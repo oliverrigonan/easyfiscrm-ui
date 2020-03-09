@@ -44,7 +44,7 @@ export class ActivityComponent implements OnInit {
   public ActivityStartDateFilterData = new Date();
   public ActivityEndDateFilterData = new Date();
 
-  public cboActivityUserObservableArray: ObservableArray = new ObservableArray();
+  public cboActivityFunctionalObservableArray: ObservableArray = new ObservableArray();
   public cboActivityUserSelectedValue: number = 0;
 
   public cboActivityStatusObservableArray: ObservableArray = new ObservableArray();
@@ -218,7 +218,7 @@ export class ActivityComponent implements OnInit {
           }
         }
 
-        this.cboActivityUserObservableArray = userObservableArray;
+        this.cboActivityFunctionalObservableArray = userObservableArray;
         if (this.cboListUserSub != null) this.cboListUserSub.unsubscribe();
       }
     );
@@ -267,18 +267,18 @@ export class ActivityComponent implements OnInit {
   public cboDocumentSelectedIndexChanged(selectedValue: any): void {
     this.cboActivityDocumentSelectedValue = selectedValue;
 
-    if (this.isDataLoaded) {
-      setTimeout(() => {
-        this.createCboActivityStatus();
-      }, 100);
-    }
+    // if (this.isDataLoaded) {
+    //   setTimeout(() => {
+    //     this.createCboActivityStatus();
+    //   }, 100);
+    // }
   }
 
   // ===============
   // ComboBox Status
   // ===============
   public createCboActivityStatus(): void {
-    this.activityService.listStatus(this.cboActivityDocumentSelectedValue);
+    this.activityService.listStatus();
     this.cboListStatusSub = this.activityService.listStatusObservable.subscribe(
       data => {
         let statusObservableArray = new ObservableArray();
@@ -296,9 +296,6 @@ export class ActivityComponent implements OnInit {
             });
           }
         }
-
-        console.log("Good!");
-
         this.cboActivityStatusObservableArray = statusObservableArray;
         if (this.cboListStatusSub != null) this.cboListStatusSub.unsubscribe();
       }
@@ -435,7 +432,7 @@ export class ActivityComponent implements OnInit {
 
         let currentActivityHeader = this.listActivityHeaderCollectionView.currentItem;
 
-        this.activityService.listActivity(currentActivityHeader.DocType, currentActivityHeader.Id);
+        this.activityService.listActivity(currentActivityHeader.Document, currentActivityHeader.DocumentId);
         this.listActivitySub = this.activityService.listActivityObservable.subscribe(
           data => {
             if (data.length > 0) {

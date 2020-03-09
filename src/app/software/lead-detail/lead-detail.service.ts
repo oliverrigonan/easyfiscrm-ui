@@ -25,6 +25,8 @@ export class LeadDetailService {
 
   public listLeadAssignedToUsersSubject = new Subject<ObservableArray>();
   public listLeadAssignedToUsersObservable = this.listLeadAssignedToUsersSubject.asObservable();
+  public listProductSubject = new Subject<ObservableArray>();
+  public listProductObservable = this.listProductSubject.asObservable();
   public listStatusSubject = new Subject<ObservableArray>();
   public listStatusObservable = this.listStatusSubject.asObservable();
   public detailLeadSubject = new Subject<LeadDetailModel>();
@@ -52,6 +54,26 @@ export class LeadDetailService {
 
   public printLeadActivitySubject = new Subject<Blob>();
   public printLeadActivityObservable = this.printLeadActivitySubject.asObservable();
+
+  public listProduct(): void {
+    let listProductObservableArray = new ObservableArray();
+    this.listProductSubject.next(listProductObservableArray);
+
+    this.httpClient.get(this.defaultAPIURLHost + "/api/crm/trn/lead/list/product", this.options).subscribe(
+      response => {
+        var results = response;
+        if (results["length"] > 0) {
+          for (var i = 0; i <= results["length"] - 1; i++) {
+            listProductObservableArray.push({
+              Id: results[i].Id,
+              ProductDescription: results[i].ProductDescription
+            });
+          }
+        }
+        this.listProductSubject.next(listProductObservableArray);
+      }
+    );
+  }
 
   public listAssignedUsers(): void {
     let listAssignedToUsersObservableArray = new ObservableArray();
@@ -109,6 +131,7 @@ export class LeadDetailService {
             LDNumber: results["LDNumber"],
             LDDate: results["LDDate"],
             Name: results["Name"],
+            ProductId: results["ProductId"],
             Address: results["Address"],
             ContactPerson: results["ContactPerson"],
             ContactPosition: results["ContactPosition"],

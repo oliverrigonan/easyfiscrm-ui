@@ -51,7 +51,7 @@ export class ActivityService {
     let listUserObservableArray = new ObservableArray();
     this.listUserSubject.next(listUserObservableArray);
 
-    this.httpClient.get(this.defaultAPIURLHost + "/api/crm/trn/activity/users", this.options).subscribe(
+    this.httpClient.get(this.defaultAPIURLHost + "/api/crm/trn/activity/functional", this.options).subscribe(
       response => {
         var results = response;
         if (results["length"] > 0) {
@@ -90,11 +90,11 @@ export class ActivityService {
     );
   }
 
-  public listStatus(document: string): void {
+  public listStatus(): void {
     let listStatusObservableArray = new ObservableArray();
     this.listStatusSubject.next(listStatusObservableArray);
 
-    this.httpClient.get(this.defaultAPIURLHost + "/api/crm/trn/activity/list/status/" + document, this.options).subscribe(
+    this.httpClient.get(this.defaultAPIURLHost + "/api/crm/trn/activity/list/status/activity", this.options).subscribe(
       response => {
         var results = response;
         if (results["length"] > 0) {
@@ -122,31 +122,31 @@ export class ActivityService {
           for (let i = 0; i <= results["length"] - 1; i++) {
             listActivityHeaderObservableArray.push({
               Id: results[i].Id,
-              Date: results[i].Date,
-              DocType: results[i].DocType,
-              Reference: results[i].Reference,
+              ACNumber: results[i].ACNumber,
+              ACDate: results[i].ACDate,
+              DocumentId: results[i].DocumentId, 
+              DocumentNumber: results[i].DocumentNumber,
+              Document: results[i].Document,
               Customer: results[i].Customer,
               Product: results[i].Product,
-              Particular: results[i].Particular,
-              LastActivity: results[i].LastActivity,
+              Activity: results[i].Activity ,
+              FunctionalStaff: results[i].FunctionalStaff,
+              TechnicalStaff: results[i].TechnicalStaff,
               Status: results[i].Status,
-              AssignedToId: results[i].AssignedToId,
-              AssignedTo: results[i].AssignedTo,
-              CreatedBy: results[i].CreatedBy
+              TotalAmount: results[i].TotalAmount
             });
           }
         }
-
         this.listActivityHeaderSubject.next(listActivityHeaderObservableArray);
       }
     );
   }
 
-  public listActivity(document: number, supportId: number): void {
+  public listActivity(document: number, documentId: number): void {
     let listActivityObservableArray = new ObservableArray();
     this.listActivitySubject.next(listActivityObservableArray);
 
-    this.httpClient.get(this.defaultAPIURLHost + "/api/crm/trn/activity/list/" + document+ "/" + supportId, this.options).subscribe(
+    this.httpClient.get(this.defaultAPIURLHost + "/api/crm/trn/activity/list/" + document+ "/" + documentId, this.options).subscribe(
       response => {
         let results = response;
 

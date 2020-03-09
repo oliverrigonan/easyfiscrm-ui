@@ -51,6 +51,7 @@ export class LeadDetailComponent implements OnInit {
     LDNumber: "",
     LDDate: new Date(),
     Name: "",
+    ProductId: 0,
     Address: "",
     ContactPerson: "",
     ContactPosition: "",
@@ -86,6 +87,9 @@ export class LeadDetailComponent implements OnInit {
   public listActivitySub: any;
   public saveActivitySub: any;
   public deleteActivitySub: any;
+
+  public cboProductSub: any;
+  public cboProductObservableArray: ObservableArray = new ObservableArray();
 
   public isLoadingSpinnerHidden: boolean = false;
   public isContentHidden: boolean = true;
@@ -138,6 +142,30 @@ export class LeadDetailComponent implements OnInit {
   };
 
   public isAddClicked: boolean = false;
+
+  public createCboProduct(): void {
+    this.leadDetailService.listProduct();
+    this.cboProductSub = this.leadDetailService.listProductObservable.subscribe(
+      data => {
+        let productObservableArray = new ObservableArray();
+        if (data.length > 0) {
+          for (var i = 0; i <= data.length - 1; ++i) {
+            productObservableArray.push({
+              Id: data[i].Id,
+              ProductDescription: data[i].ProductDescription
+            });
+          }
+        }
+
+        this.cboProductObservableArray = productObservableArray;
+
+        setTimeout(() => {
+          this.createCboAssignedToUser();
+        }, 100);
+        if (this.cboProductSub != null) this.cboProductSub.unsubscribe();
+      }
+    );
+  }
 
   public createCboAssignedToUser() {
     this.leadDetailService.listAssignedUsers();
@@ -211,6 +239,7 @@ export class LeadDetailComponent implements OnInit {
           this.leadDetailModel.LDNumber = data.LDNumber;
           this.leadDetailModel.LDDate = data.LDDate;
           this.leadDetailModel.Name = data.Name;
+          this.leadDetailModel.ProductId = data.ProductId;
           this.leadDetailModel.Address = data.Address;
           this.leadDetailModel.ContactPerson = data.ContactPerson;
           this.leadDetailModel.ContactPosition = data.ContactPosition;
@@ -710,7 +739,7 @@ export class LeadDetailComponent implements OnInit {
   }
 
   ngOnInit() {
-    this.createCboAssignedToUser();
+    this.createCboProduct();
     this.createCboShowNumberOfRows();
   }
 
@@ -720,7 +749,7 @@ export class LeadDetailComponent implements OnInit {
     if (this.detailLeadSub != null) this.detailLeadSub.unsubscribe();
     if (this.lockLeadSub != null) this.lockLeadSub.unsubscribe();
     if (this.unlockLeadSub != null) this.unlockLeadSub.unsubscribe();
-
+    if (this.cboProductSub != null) this.cboProductSub.unsubscribe();
     if (this.cboListActivityUsersSub != null) this.cboListActivityUsersSub.unsubscribe();
     if (this.cboListActivityStatusSub != null) this.cboListActivityStatusSub.unsubscribe();
 

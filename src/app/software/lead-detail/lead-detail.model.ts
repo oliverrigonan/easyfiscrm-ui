@@ -2,6 +2,7 @@ export class LeadDetailModel {
     Id: number;
     LDNumber: string;
     LDDate: Date;
+    ProductId: number;
     Name: string;
     Address: string;
     ContactPerson: string;

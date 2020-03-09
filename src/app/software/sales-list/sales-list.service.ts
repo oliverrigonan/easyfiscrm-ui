@@ -12,7 +12,7 @@ export class SalesListService {
   constructor(
     private appSettings: AppSettings,
     private httpClient: HttpClient
-    ) { }
+  ) { }
 
   public options = {
     headers: new HttpHeaders({
@@ -80,10 +80,12 @@ export class SalesListService {
               ContactPosition: results[i].ContactPosition,
               ContactEmail: results[i].ContactEmail,
               ContactPhoneNumber: results[i].ContactPhoneNumber,
-              Particulars: results[i].Particulars,
+              Remarks: results[i].Particulars,
               AssignedToUserId: results[i].AssignedToUserId,
               AssignedToUser: results[i].AssignedToUser,
               Status: results[i].Status,
+              LastActivity: results[i].LastActivity,
+              LastActivityDate: results[i].LastActivityDate,
               IsLocked: results[i].IsLocked,
               CreatedByUserId: results[i].CreatedByUserId,
               CreatedByUser: results[i].CreatedByUser,
@@ -112,7 +114,7 @@ export class SalesListService {
     );
   }
 
-  public DeleteSalesDelivery(id: number){
+  public DeleteSalesDelivery(id: number) {
     this.httpClient.delete(this.defaultAPIURLHost + "/api/crm/trn/sales/delete/" + id, this.options).subscribe(
       response => {
         let responseResults: string[] = ["success", ""];

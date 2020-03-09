@@ -165,13 +165,15 @@ export class SupportDetailComponent implements OnInit {
     }, 100);
   }
 
+  public pickCutomerButtonClick: boolean = false;
+
   public btnPickCustomerClick(): void {
     let currentCustomer = this.listCustomerCollectionView.currentItem;
     this.selectedCustomer = currentCustomer.Article;
     this.supportModel.CustomerId = currentCustomer.Id;
 
     this.customerModalRef.hide();
-
+    this.pickCutomerButtonClick = true;
     this.getCboSalesDeliveryDetail(this.supportModel.CustomerId);
   }
 
@@ -192,18 +194,27 @@ export class SupportDetailComponent implements OnInit {
             });
           }
         } else {
-          this.toastr.error("No Sales Delivery");
-        }
-        this.isSalesDeliveryDataLoaded = true;
+          this.toastr.error("No sales delivery!");
 
-        this.cboSalesDeliveryObservable = salesInvoiceObservableArray;
+          salesInvoiceObservableArray.push({
+            Id: 0,
+            SDNumber: "",
+            ContactPerson: "NA",
+            ContactPosition: "NA",
+            ContactEmail: "NA",
+            ContactPhoneNumber: "NA"
+          });
+        }
+        if (salesInvoiceObservableArray != null) {
+          this.cboSalesDeliveryObservable = salesInvoiceObservableArray;
+        }
         if (this.cboSalesDeliverySub != null) this.cboSalesDeliverySub.unsubscribe();
       }
     );
   }
 
   public cboSalesInvoice_SelectedIndexChange(cboSalesInvoice: any): void {
-    if (this.isSalesDeliveryDataLoaded) {
+    if (this.pickCutomerButtonClick) {
       this.supportModel.ContactPerson = this.cboSalesInvoice.selectedItem["ContactPerson"];
       this.supportModel.ContactPosition = this.cboSalesInvoice.selectedItem["ContactPosition"];
       this.supportModel.ContactEmail = this.cboSalesInvoice.selectedItem["ContactEmail"];
@@ -280,14 +291,11 @@ export class SupportDetailComponent implements OnInit {
 
         if (data.IsLocked) {
           this.isLocked = true;
-
           (<HTMLButtonElement>btnSaveSupport).disabled = true;
           (<HTMLButtonElement>btnLockSupport).disabled = true;
           (<HTMLButtonElement>btnUnlockSupport).disabled = false;
           this.isActivityTabHidden = false;
         }
-
-        this.isSalesDeliveryDataLoaded = false;
         this.isLoadingSpinnerHidden = true;
         this.isContentHidden = false;
         if (this.detailSupportSub != null) this.detailSupportSub.unsubscribe();
@@ -363,19 +371,15 @@ export class SupportDetailComponent implements OnInit {
       data => {
         if (data[0] == "success") {
           this.toastr.success("Support was successfully locked.", "Success");
-
           setTimeout(() => {
             this.isLocked = true;
-
             (<HTMLButtonElement>btnSaveSupport).disabled = true;
             (<HTMLButtonElement>btnLockSupport).disabled = true;
             (<HTMLButtonElement>btnUnlockSupport).disabled = false;
-
             this.isActivityTabHidden = false;
           }, 500);
         } else if (data[0] == "failed") {
           this.toastr.error(data[1], "Error");
-
           (<HTMLButtonElement>btnSaveSupport).disabled = false;
           (<HTMLButtonElement>btnLockSupport).disabled = false;
           (<HTMLButtonElement>btnUnlockSupport).disabled = true;
@@ -762,7 +766,7 @@ export class SupportDetailComponent implements OnInit {
 
   public btnPrintSupport(): void {
     let LDId: number = 0;
-    
+
     this.activatedRoute.params.subscribe(params => { LDId = params["id"]; });
     this.casePrintCaseDialog.open(SupportDetailPrintDialogComponent, {
       width: '1000px',

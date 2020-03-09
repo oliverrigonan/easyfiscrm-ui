@@ -69,6 +69,15 @@
                     placeholder="Name...">
                 </div>
                 <br /><br />
+                <label for="" class="col-sm-4 col-form-label form-group-label">Product</label>
+                <div class="col-sm-8">
+                  <wj-combo-box #cboProduct [(ngModel)]="leadDetailModel.ProductId"
+                    [itemsSource]="cboProductObservableArray" [isEditable]="false" [isRequired]="true"
+                    [displayMemberPath]="'ProductDescription'" [selectedValuePath]="'Id'" style="width: 100%; padding: 3px;"
+                    [disabled]="isLocked">
+                  </wj-combo-box>
+                </div>
+                <br /><br />
                 <label for="" class="col-sm-4 col-form-label form-group-label">Address</label>
                 <div class="col-sm-8">
                   <textarea type="text" class="form-control" style="resize: none" [disabled]="isLocked" [(ngModel)]="leadDetailModel.Address"
