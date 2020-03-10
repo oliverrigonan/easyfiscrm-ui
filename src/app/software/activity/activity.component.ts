@@ -356,14 +356,13 @@ export class ActivityComponent implements OnInit {
     this.isActivityDataLoaded = false;
 
     let currentActivityHeader = this.listActivityHeaderCollectionView.currentItem;
-    this.activityHeaderModel.docType = currentActivityHeader.DocType;
-    this.activityHeaderModel.reference = currentActivityHeader.Reference;
+    this.activityHeaderModel.docType = currentActivityHeader.Document;
+    this.activityHeaderModel.reference = currentActivityHeader.DocumentNumber;
     this.activityHeaderModel.assignedTo = currentActivityHeader.AssignedTo;
     this.activityHeaderModel.createdBy = currentActivityHeader.CreatedBy;
     this.activityHeaderModel.product = currentActivityHeader.Product;
     this.activityHeaderModel.status = currentActivityHeader.Status;
-    this.activityHeaderModel.particular = currentActivityHeader.Particular;
-
+    this.activityHeaderModel.particular = currentActivityHeader.Particulars;
     this.activityListModalRef = this.modalService.show(activityListModalTemplate, {
       backdrop: true,
       ignoreBackdropClick: true,
@@ -463,19 +462,19 @@ export class ActivityComponent implements OnInit {
     let salesDeliveryId: number;
     let supportId: number;
 
-    if (currentActivityHeader.DocType == "LEAD") {
+    if (currentActivityHeader.Document == "LEAD") {
       leadId = currentActivityHeader.Id;
       salesDeliveryId = null;
       supportId = null;
     }
 
-    if (currentActivityHeader.DocType == "SALES DELIVERY") {
+    if (currentActivityHeader.Document == "SALES DELIVERY") {
       leadId = null;
       salesDeliveryId = currentActivityHeader.Id;
       supportId = null;
     }
 
-    if (currentActivityHeader.DocType == "SUPPORT") {
+    if (currentActivityHeader.Document == "SUPPORT") {
       leadId = null;
       salesDeliveryId = null;
       supportId = currentActivityHeader.Id;
@@ -545,6 +544,7 @@ export class ActivityComponent implements OnInit {
         UpdatedByUser: currentActivity.UpdatedByUser,
         UpdatedDateTime: currentActivity.UpdatedDateTime
       };
+      console.log(currentActivity);
     }
   }
 
@@ -632,6 +632,11 @@ export class ActivityComponent implements OnInit {
       ignoreBackdropClick: true,
       class: "modal-sm"
     });
+  }
+
+  public btnCloseActivity(): void {
+    this.activityListModalRef.hide();
+    this.listActivityHeader();
   }
 
   // ===============

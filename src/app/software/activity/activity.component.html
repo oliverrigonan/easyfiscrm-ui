@@ -192,9 +192,9 @@
                   [readonly]="true" [(ngModel)]="activityHeaderModel.createdBy">
               </div>
               <br /><br />
-              <label for="" *ngIf="activityHeaderModel.docType != 'LEAD'"
+              <label for="" *ngIf="activityHeaderModel.Document != 'LEAD'"
                 class="col-sm-4 col-form-label form-group-label">Product</label>
-              <div class="col-sm-8" *ngIf="activityHeaderModel.docType != 'LEAD'">
+              <div class="col-sm-8" *ngIf="activityHeaderModel.Document != 'LEAD'">
                 <input type="text" class="form-control" [disabled]="isLocked" placeholder="Product..." [readonly]="true"
                   [(ngModel)]="activityHeaderModel.product">
               </div>
@@ -244,7 +244,7 @@
                 style="margin-right: 5px;" id="btnAddActivity">
                 <i class="fa fa-plus fa-fw"></i> Add
               </button>
-              <button class="btn btn-danger" (click)="activityListModalRef.hide()" id="btnCloseActivity">
+              <button class="btn btn-danger" (click)="btnCloseActivity()" id="btnCloseActivity">
                 <i class="fa fa-close fa-fw"></i> Close
               </button>
             </td>

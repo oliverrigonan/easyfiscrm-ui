@@ -124,12 +124,16 @@ export class ActivityService {
               Id: results[i].Id,
               ACNumber: results[i].ACNumber,
               ACDate: results[i].ACDate,
-              DocumentId: results[i].DocumentId, 
+              DocumentId: results[i].DocumentId,
               DocumentNumber: results[i].DocumentNumber,
               Document: results[i].Document,
               Customer: results[i].Customer,
               Product: results[i].Product,
-              Activity: results[i].Activity ,
+              AssignedToId: results[i].AssignedToId,
+              AssignedTo: results[i].AssignedTo,
+              CreatedBy: results[i].CreatedBy,
+              Particulars: results[i].Particulars,
+              Activity: results[i].Activity,
               FunctionalStaff: results[i].FunctionalStaff,
               TechnicalStaff: results[i].TechnicalStaff,
               Status: results[i].Status,
@@ -146,7 +150,7 @@ export class ActivityService {
     let listActivityObservableArray = new ObservableArray();
     this.listActivitySubject.next(listActivityObservableArray);
 
-    this.httpClient.get(this.defaultAPIURLHost + "/api/crm/trn/activity/list/" + document+ "/" + documentId, this.options).subscribe(
+    this.httpClient.get(this.defaultAPIURLHost + "/api/crm/trn/activity/list/" + document + "/" + documentId, this.options).subscribe(
       response => {
         let results = response;
 
@@ -171,7 +175,7 @@ export class ActivityService {
               TransportationCost: results[i].TransportationCost,
               OnSiteCost: results[i].OnSiteCost,
               LDId: results[i].LDId,
-              SDId: results[i].SIId,
+              SDId: results[i].SDId,
               SPId: results[i].SPId,
               LastActivity: results[i].LastActivity,
               Status: results[i].Status,
@@ -184,6 +188,8 @@ export class ActivityService {
               UpdatedDateTime: results[i].UpdatedDateTime,
             });
           }
+          console.log(results);
+
         }
         this.listActivitySubject.next(listActivityObservableArray);
       }
@@ -234,6 +240,7 @@ export class ActivityService {
   }
 
   public saveActivity(objActivity: ActivityModel): void {
+    console.log(objActivity);
     if (objActivity.Id == 0) {
       this.httpClient.post(this.defaultAPIURLHost + "/api/crm/trn/activity/add", JSON.stringify(objActivity), this.options).subscribe(
         response => {
