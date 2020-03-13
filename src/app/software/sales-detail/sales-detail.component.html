@@ -94,8 +94,8 @@
                 <div class="col-sm-8">
                   <wj-combo-box #cboProduct [(ngModel)]="salesDeliveryDetailModel.ProductId"
                     [itemsSource]="cboProductObservableArray" [isEditable]="false" [isRequired]="true"
-                    [displayMemberPath]="'ProductDescription'" [selectedValuePath]="'Id'" style="width: 100%; padding: 3px;"
-                    [disabled]="isLocked">
+                    [displayMemberPath]="'ProductDescription'" [selectedValuePath]="'Id'"
+                    style="width: 100%; padding: 3px;" [disabled]="isLocked">
                   </wj-combo-box>
                 </div>
                 <br /><br />
@@ -291,6 +291,10 @@
             <wj-flex-grid-column [header]="'SD Status'" [binding]="'CRMStatus'" [isReadOnly]="true" [width]="'2*'">
             </wj-flex-grid-column>
             <wj-flex-grid-column [header]="'Activity'" [binding]="'Activity'" [isReadOnly]="true" [width]="'3*'">
+            </wj-flex-grid-column>
+            <wj-flex-grid-column [header]="'StartDate'" [binding]="'StartDate'" [isReadOnly]="true" [width]="'1*'">
+            </wj-flex-grid-column>
+            <wj-flex-grid-column [header]="'EndDate'" [binding]="'EndDate'" [isReadOnly]="true" [width]="'1*'">
             </wj-flex-grid-column>
             <wj-flex-grid-column [header]="'Status'" [binding]="'Status'" [isReadOnly]="true" [width]="'2*'">
             </wj-flex-grid-column>

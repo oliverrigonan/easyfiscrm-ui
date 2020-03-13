@@ -134,6 +134,8 @@ export class ActivityService {
               CreatedBy: results[i].CreatedBy,
               Particulars: results[i].Particulars,
               Activity: results[i].Activity,
+              StartDate: results[i].StartDate,
+              EndDate: results[i].EndDate,
               FunctionalStaff: results[i].FunctionalStaff,
               TechnicalStaff: results[i].TechnicalStaff,
               Status: results[i].Status,

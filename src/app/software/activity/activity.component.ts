@@ -31,9 +31,6 @@ export class ActivityComponent implements OnInit {
     this.createCboActivityDocument();
     this.createCboActivityStatus();
     this.createCboActivityUser();
-    setTimeout(() => {
-      this.listActivityHeader();
-    }, 300);
   }
 
   // ===============
@@ -146,11 +143,9 @@ export class ActivityComponent implements OnInit {
     status: "",
   };
 
-
   // ===============
   // Activity Header
   // ===============
-
   public createCboShowNumberOfRows(): void {
     for (var i = 0; i <= 4; i++) {
       var rows = 0;
@@ -266,12 +261,6 @@ export class ActivityComponent implements OnInit {
 
   public cboDocumentSelectedIndexChanged(selectedValue: any): void {
     this.cboActivityDocumentSelectedValue = selectedValue;
-
-    // if (this.isDataLoaded) {
-    //   setTimeout(() => {
-    //     this.createCboActivityStatus();
-    //   }, 100);
-    // }
   }
 
   // ===============
@@ -329,7 +318,6 @@ export class ActivityComponent implements OnInit {
     this.activityService.listActivityHeader(startDate, endDate, this.cboActivityDocumentSelectedValue, this.cboActivityStatusSelectedValue, this.cboActivityUserSelectedValue);
     this.listActivityHeaderSub = this.activityService.listActivityHeadingObservable.subscribe(
       data => {
-        console.log(data);
         if (data.length > 0) {
           this.clistActivityHeaderObservableArray = data;
           this.listActivityHeaderCollectionView = new CollectionView(this.clistActivityHeaderObservableArray);
@@ -338,7 +326,6 @@ export class ActivityComponent implements OnInit {
           this.listActivityHeaderCollectionView.refresh();
           this.listActivityFlexGrid.refresh();
         }
-
         this.isDataLoaded = true;
         this.isProgressBarHidden = true;
 
@@ -370,8 +357,6 @@ export class ActivityComponent implements OnInit {
     });
     this.listActivity();
   }
-
-
 
   // ========
   // Activity
@@ -544,7 +529,6 @@ export class ActivityComponent implements OnInit {
         UpdatedByUser: currentActivity.UpdatedByUser,
         UpdatedDateTime: currentActivity.UpdatedDateTime
       };
-      console.log(currentActivity);
     }
   }
 

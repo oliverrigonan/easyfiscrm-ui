@@ -46,6 +46,7 @@ export class SupportDetailComponent implements OnInit {
 
   public cboCustomerSub: any;
   public cboCustomerObservableArray: ObservableArray = new ObservableArray();
+  public pickCutomerButtonClick: boolean = false;
 
   public cboAssignedToUserSub: any;
   public cboAssignedToUserObservable: ObservableArray = new ObservableArray();
@@ -164,8 +165,6 @@ export class SupportDetailComponent implements OnInit {
       });
     }, 100);
   }
-
-  public pickCutomerButtonClick: boolean = false;
 
   public btnPickCustomerClick(): void {
     let currentCustomer = this.listCustomerCollectionView.currentItem;
@@ -306,11 +305,12 @@ export class SupportDetailComponent implements OnInit {
   public loadSupportDetail(objSupport: any): void {
     this.supportModel.Id = objSupport.Id;
     this.supportModel.SPNumber = objSupport.SPNumber;
+    this.supportModel.SPDate = objSupport.SPDate;
     this.supportModel.CustomerId = objSupport.CustomerId;
     this.supportModel.Customer = objSupport.Customer;
     this.supportModel.SDId = objSupport.SDId,
-      this.supportModel.SDNumber = objSupport.SDNumber,
-      this.supportModel.ContactPerson = objSupport.ContactPerson;
+    this.supportModel.SDNumber = objSupport.SDNumber,
+    this.supportModel.ContactPerson = objSupport.ContactPerson;
     this.supportModel.ContactPosition = objSupport.ContactPosition;
     this.supportModel.ContactEmail = objSupport.ContactEmail;
     this.supportModel.ContactPhoneNumber = objSupport.ContactPhoneNumber;

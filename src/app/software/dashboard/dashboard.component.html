@@ -107,4 +107,81 @@
       <br />
     </div>
   </div>
+  <div class="row">
+    <div class="col-lg-4">
+      <table border="0" style="width: 100%; border: none; margin-top: -15px;">
+        <tr>
+          <td>
+            <div class="form-group">
+              <span class="badge badge-info" style="margin-bottom: 5px;"><i class="fa fa-calendar fa-fw"></i>
+                Start Date</span>
+              <wj-input-date #cboLeadStartDateFilter [(ngModel)]="leadStartDateFilterData"
+                [ngModelOptions]="{standalone: true}" (textChanged)="cboStartDateTextChanged()"
+                format="MMMM dd, yyyy" style="width: 100%;">
+              </wj-input-date>
+            </div>
+          </td>
+          <td>
+            <div class="form-group">
+              <span class="badge badge-info" style="margin-bottom: 5px;"><i class="fa fa-calendar fa-fw"></i>
+                End Date</span>
+              <wj-input-date #cboLeadEndDateFilter [(ngModel)]="leadEndDateFilterData"
+                [ngModelOptions]="{standalone: true}" (textChanged)="cboEndDateTextChanged()" format="MMMM dd, yyyy"
+                style="width: 100%;">
+              </wj-input-date>
+            </div>
+          </td>
+        </tr>
+      </table>
+    </div>
+    <div class="col-lg-8"></div>
+  </div>
+  <div class="row">
+    <div class="col-lg-4">
+      <div class="card card-default" style="margin-top: 10px;">
+        <div class="card-header">
+          Lead
+        </div>
+        <div class="card-body">
+          <table width="100%">
+            <tr *ngFor="let lead of listLeadSummaryObservableArray">
+              <td width="70%">{{lead.Status}}</td>
+              <td width="30%" align="right"><a href="">{{lead.NoOfTransaction}}</a></td>
+            </tr>
+          </table>
+          
+        </div>
+      </div>
+    </div>
+    <div class="col-lg-4">
+      <div class="card card-default" style="margin-top: 10px;">
+        <div class="card-header">
+          Sales Delivery
+        </div>
+        <div class="card-body">
+          <table width="100%">
+            <tr *ngFor="let salesDelivery of listSalesDeliverySummaryObservableArray">
+              <td width="70%">{{salesDelivery.Status}}</td>
+              <td width="30%" align="right"><a href="">{{salesDelivery.NoOfTransaction}}</a></td>
+            </tr>
+          </table>
+        </div>
+      </div>
+    </div>
+    <div class="col-lg-4">
+      <div class="card card-default" style="margin-top: 10px;">
+        <div class="card-header">
+          Support
+        </div>
+        <div class="card-body">
+          <table width="100%">
+            <tr *ngFor="let support of listSupportSummaryObservableArray">
+              <td width="70%">{{support.Status}}</td>
+              <td width="30%" align="right"><a href="">{{support.NoOfTransaction}}</a></td>
+            </tr>
+          </table>
+        </div>
+      </div>
+    </div>
+  </div>
 </div>
