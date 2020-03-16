@@ -1,5 +1,5 @@
 import { Component, OnInit, ViewChild, TemplateRef } from '@angular/core';
-import { Router } from '@angular/router';
+import { Router, ActivatedRoute } from '@angular/router';
 
 import { ObservableArray, CollectionView } from 'wijmo/wijmo';
 import { WjFlexGrid } from 'wijmo/wijmo.angular2.grid';
@@ -22,7 +22,9 @@ export class LeadComponent implements OnInit {
     private leadService: LeadService,
     private modalService: BsModalService,
     private toastr: ToastrService,
-    private router: Router
+    private router: Router,
+    private activatedRoute: ActivatedRoute,
+
   ) { }
 
   ngOnInit() {
@@ -155,36 +157,82 @@ export class LeadComponent implements OnInit {
   }
 
   public listLead(): void {
-    this.listLeadObservableArray = new ObservableArray();
-    this.listLeadCollectionView = new CollectionView(this.listLeadObservableArray);
-    this.listLeadCollectionView.pageSize = 15;
-    this.listLeadCollectionView.trackChanges = true;
-    this.listLeadCollectionView.refresh();
-    this.listLeadFlexGrid.refresh();
 
-    let startDate = [this.leadStartDateFilterData.getFullYear(), this.leadStartDateFilterData.getMonth() + 1, this.leadStartDateFilterData.getDate()].join('-');
-    let endDate = [this.leadEndDateFilterData.getFullYear(), this.leadEndDateFilterData.getMonth() + 1, this.leadEndDateFilterData.getDate()].join('-');
+    let isDashboard: boolean = false;
+    let userId;
+    let startDate;
+    let endDate;
 
-    this.isProgressBarHidden = false;
+    this.activatedRoute.params.subscribe(params => { isDashboard = params["dashboard"]; });
 
-    this.leadService.listLead(startDate, endDate, this.cboLeadStatusSelectedValue);
-    this.listLeadSub = this.leadService.listLeadObservable.subscribe(
-      data => {
-        if (data.length > 0) {
-          this.listLeadObservableArray = data;
-          this.listLeadCollectionView = new CollectionView(this.listLeadObservableArray);
-          this.listLeadCollectionView.pageSize = this.listLeadPageIndex;
-          this.listLeadCollectionView.trackChanges = true;
-          this.listLeadCollectionView.refresh();
-          this.listLeadFlexGrid.refresh();
+    if (isDashboard) {
+      this.activatedRoute.params.subscribe(params => { startDate = params["startDate"]; });
+      this.activatedRoute.params.subscribe(params => { endDate = params["endDate"]; });
+      this.activatedRoute.params.subscribe(params => { this.cboLeadStatusSelectedValue = params["status"]; });
+      this.activatedRoute.params.subscribe(params => { userId = params["userId"]; });
+      this.leadStartDateFilterData = startDate;
+      this.leadEndDateFilterData = endDate;
+
+      this.listLeadObservableArray = new ObservableArray();
+      this.listLeadCollectionView = new CollectionView(this.listLeadObservableArray);
+      this.listLeadCollectionView.pageSize = 15;
+      this.listLeadCollectionView.trackChanges = true;
+      this.listLeadCollectionView.refresh();
+      this.listLeadFlexGrid.refresh();
+
+      this.isProgressBarHidden = false;
+
+      this.leadService.listLeadFilteredByUser(startDate, endDate, this.cboLeadStatusSelectedValue, userId);
+      this.listLeadSub = this.leadService.listLeadObservable.subscribe(
+        data => {
+          if (data.length > 0) {
+            this.listLeadObservableArray = data;
+            this.listLeadCollectionView = new CollectionView(this.listLeadObservableArray);
+            this.listLeadCollectionView.pageSize = this.listLeadPageIndex;
+            this.listLeadCollectionView.trackChanges = true;
+            this.listLeadCollectionView.refresh();
+            this.listLeadFlexGrid.refresh();
+          }
+
+          this.isDataLoaded = true;
+          this.isProgressBarHidden = true;
+
+          if (this.listLeadSub != null) this.listLeadSub.unsubscribe();
         }
+      );
+    }
+    else {
+      startDate = [this.leadStartDateFilterData.getFullYear(), this.leadStartDateFilterData.getMonth() + 1, this.leadStartDateFilterData.getDate()].join('-');
+      endDate = [this.leadEndDateFilterData.getFullYear(), this.leadEndDateFilterData.getMonth() + 1, this.leadEndDateFilterData.getDate()].join('-');
 
-        this.isDataLoaded = true;
-        this.isProgressBarHidden = true;
+      this.listLeadObservableArray = new ObservableArray();
+      this.listLeadCollectionView = new CollectionView(this.listLeadObservableArray);
+      this.listLeadCollectionView.pageSize = 15;
+      this.listLeadCollectionView.trackChanges = true;
+      this.listLeadCollectionView.refresh();
+      this.listLeadFlexGrid.refresh();
 
-        if (this.listLeadSub != null) this.listLeadSub.unsubscribe();
-      }
-    );
+      this.isProgressBarHidden = false;
+
+      this.leadService.listLead(startDate, endDate, this.cboLeadStatusSelectedValue);
+      this.listLeadSub = this.leadService.listLeadObservable.subscribe(
+        data => {
+          if (data.length > 0) {
+            this.listLeadObservableArray = data;
+            this.listLeadCollectionView = new CollectionView(this.listLeadObservableArray);
+            this.listLeadCollectionView.pageSize = this.listLeadPageIndex;
+            this.listLeadCollectionView.trackChanges = true;
+            this.listLeadCollectionView.refresh();
+            this.listLeadFlexGrid.refresh();
+          }
+
+          this.isDataLoaded = true;
+          this.isProgressBarHidden = true;
+
+          if (this.listLeadSub != null) this.listLeadSub.unsubscribe();
+        }
+      );
+    }
   }
 
   public btnAddLeadClick() {

@@ -60,7 +60,7 @@
               <div class="form-group">
                 <span class="badge badge-info" style="margin-bottom: 5px;"><i class="fa fa-question-circle fa-fw"></i>
                   Status</span>
-                <wj-combo-box #cboSupportStatus [itemsSource]="cboSupportStatusObservableArray" [isEditable]="false"
+                <wj-combo-box #cboSupportStatus [(ngModel)]="cboSupportStatusSelectedValue" [itemsSource]="cboSupportStatusObservableArray" [isEditable]="false"
                   [isRequired]="true" [displayMemberPath]="'Status'" [selectedValuePath]="'Status'"
                   (selectedIndexChanged)="cboSupportStatusSelectedIndexChanged(cboSupportStatus.selectedValue)"
                   style="width: 100%;">

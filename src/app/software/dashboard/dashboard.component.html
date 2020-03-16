@@ -107,8 +107,9 @@
       <br />
     </div>
   </div>
+  <br>
   <div class="row">
-    <div class="col-lg-4">
+    <div class="col-lg-6">
       <table border="0" style="width: 100%; border: none; margin-top: -15px;">
         <tr>
           <td>
@@ -131,10 +132,21 @@
               </wj-input-date>
             </div>
           </td>
+          <td>
+            <div class="form-group">
+              <span class="badge badge-info" style="margin-bottom: 5px;"><i class="fa fa-question-circle fa-fw"></i>
+                User</span>
+              <wj-combo-box #cboUser [itemsSource]="cboUserObservableArray" [isEditable]="false"
+                [isRequired]="true" [displayMemberPath]="'FullName'" [selectedValuePath]="'Id'"
+                (selectedIndexChanged)="cboUserSelectedIndexChanged(cboUser.selectedValue)"
+                style="width: 100%;">
+              </wj-combo-box>
+            </div>
+          </td>
         </tr>
       </table>
     </div>
-    <div class="col-lg-8"></div>
+    <div class="col-lg-6"></div>
   </div>
   <div class="row">
     <div class="col-lg-4">
@@ -146,7 +158,7 @@
           <table width="100%">
             <tr *ngFor="let lead of listLeadSummaryObservableArray">
               <td width="70%">{{lead.Status}}</td>
-              <td width="30%" align="right"><a href="">{{lead.NoOfTransaction}}</a></td>
+              <td width="30%" align="right"><a (click)="goToLeadList(lead)" style="color:blue;cursor: pointer;">{{lead.NoOfTransaction}}</a></td>
             </tr>
           </table>
           
@@ -162,7 +174,7 @@
           <table width="100%">
             <tr *ngFor="let salesDelivery of listSalesDeliverySummaryObservableArray">
               <td width="70%">{{salesDelivery.Status}}</td>
-              <td width="30%" align="right"><a href="">{{salesDelivery.NoOfTransaction}}</a></td>
+              <td width="30%" align="right"><a (click)="goToSalesDeliveryList(salesDelivery)" style="color:blue;cursor: pointer;">{{salesDelivery.NoOfTransaction}}</a></td>
             </tr>
           </table>
         </div>
@@ -177,7 +189,7 @@
           <table width="100%">
             <tr *ngFor="let support of listSupportSummaryObservableArray">
               <td width="70%">{{support.Status}}</td>
-              <td width="30%" align="right"><a href="">{{support.NoOfTransaction}}</a></td>
+              <td width="30%" align="right"><a (click)="goToSupportList(support)" style="color:blue;cursor: pointer;">{{support.NoOfTransaction}}</a></td>
             </tr>
           </table>
         </div>

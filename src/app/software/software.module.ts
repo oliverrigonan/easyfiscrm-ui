@@ -65,7 +65,8 @@ import { SupportDetailActivityPrintDialogComponent } from './support-detail/supp
     PdfViewerModule
   ],
   providers: [
-    SoftwareRouterActivate
+    SoftwareRouterActivate,
+    LeadComponent,
   ],
   entryComponents: [
     LeadPrintDialogComponent,

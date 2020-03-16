@@ -536,8 +536,6 @@ export class LeadDetailComponent implements OnInit {
     let LDId: number = 0;
     this.activatedRoute.params.subscribe(params => { LDId = params["id"]; });
 
-    // this.leadDetailActivityModel.FunctionalUserId = this.leadDetailModel.AssignedToUserId;
-    // this.leadDetailActivityModel.TechnicalUserId = this.leadDetailModel.AssignedToUserId;
     if (this.isAddClicked) {
       this.leadDetailActivityModel = {
         Id: 0,

@@ -155,35 +155,81 @@ export class SupportListComponent implements OnInit {
   }
 
   public listSupport(): void {
-    this.listSupportObservableArray = new ObservableArray();
-    this.listSupportCollectionView = new CollectionView(this.listSupportObservableArray);
-    this.listSupportCollectionView.pageSize = 15;
-    this.listSupportCollectionView.trackChanges = true;
-    this.listSupportCollectionView.refresh();
-    this.listSupportFlexGrid.refresh();
+    let isDashboard: boolean = false;
+    let userId;
+    let startDate;
+    let endDate;
 
-    let startDate = [this.supportStartDateFilterData.getFullYear(), this.supportStartDateFilterData.getMonth() + 1, this.supportStartDateFilterData.getDate()].join('-');
-    let endDate = [this.supportEndDateFilterData.getFullYear(), this.supportEndDateFilterData.getMonth() + 1, this.supportEndDateFilterData.getDate()].join('-');
+    this.activatedRoute.params.subscribe(params => { isDashboard = params["dashboard"]; });
 
-    this.isProgressBarHidden = false;
+    if (isDashboard) {
+      this.activatedRoute.params.subscribe(params => { startDate = params["startDate"]; });
+      this.activatedRoute.params.subscribe(params => { endDate = params["endDate"]; });
+      this.activatedRoute.params.subscribe(params => { this.cboSupportStatusSelectedValue = params["status"]; });
+      this.activatedRoute.params.subscribe(params => { userId = params["userId"]; });
+      this.supportStartDateFilterData = startDate;
+      this.supportEndDateFilterData = endDate;
 
-    this.supportListService.listSupport(startDate, endDate, this.cboSupportStatusSelectedValue);
-    this.listSupportSub = this.supportListService.listSupportObservable.subscribe(
-      data => {
-        if (data.length > 0) {
-          this.listSupportObservableArray = data;
-          this.listSupportCollectionView = new CollectionView(this.listSupportObservableArray);
-          this.listSupportCollectionView.pageSize = this.listSupportPageIndex;
-          this.listSupportCollectionView.trackChanges = true;
-          this.listSupportCollectionView.refresh();
-          this.listSupportFlexGrid.refresh();
+      this.listSupportObservableArray = new ObservableArray();
+      this.listSupportCollectionView = new CollectionView(this.listSupportObservableArray);
+      this.listSupportCollectionView.pageSize = 15;
+      this.listSupportCollectionView.trackChanges = true;
+      this.listSupportCollectionView.refresh();
+      this.listSupportFlexGrid.refresh();
+
+      this.isProgressBarHidden = false;
+
+      this.supportListService.listSupportFilteredByUser(startDate, endDate, this.cboSupportStatusSelectedValue, userId);
+      this.listSupportSub = this.supportListService.listSupportObservable.subscribe(
+        data => {
+          if (data.length > 0) {
+            this.listSupportObservableArray = data;
+            this.listSupportCollectionView = new CollectionView(this.listSupportObservableArray);
+            this.listSupportCollectionView.pageSize = this.listSupportPageIndex;
+            this.listSupportCollectionView.trackChanges = true;
+            this.listSupportCollectionView.refresh();
+            this.listSupportFlexGrid.refresh();
+          }
+          this.isDataLoaded = true;
+          this.isProgressBarHidden = true;
+
+          if (this.listSupportSub != null) this.listSupportSub.unsubscribe();
         }
-        this.isDataLoaded = true;
-        this.isProgressBarHidden = true;
+      );
+    }
+    else {
+      startDate = [this.supportStartDateFilterData.getFullYear(), this.supportStartDateFilterData.getMonth() + 1, this.supportStartDateFilterData.getDate()].join('-');
+      endDate = [this.supportEndDateFilterData.getFullYear(), this.supportEndDateFilterData.getMonth() + 1, this.supportEndDateFilterData.getDate()].join('-');
 
-        if (this.listSupportSub != null) this.listSupportSub.unsubscribe();
-      }
-    );
+      this.listSupportObservableArray = new ObservableArray();
+      this.listSupportCollectionView = new CollectionView(this.listSupportObservableArray);
+      this.listSupportCollectionView.pageSize = 15;
+      this.listSupportCollectionView.trackChanges = true;
+      this.listSupportCollectionView.refresh();
+      this.listSupportFlexGrid.refresh();
+
+      this.isProgressBarHidden = false;
+
+      this.supportListService.listSupport(startDate, endDate, this.cboSupportStatusSelectedValue);
+      this.listSupportSub = this.supportListService.listSupportObservable.subscribe(
+        data => {
+          if (data.length > 0) {
+            this.listSupportObservableArray = data;
+            this.listSupportCollectionView = new CollectionView(this.listSupportObservableArray);
+            this.listSupportCollectionView.pageSize = this.listSupportPageIndex;
+            this.listSupportCollectionView.trackChanges = true;
+            this.listSupportCollectionView.refresh();
+            this.listSupportFlexGrid.refresh();
+          }
+          this.isDataLoaded = true;
+          this.isProgressBarHidden = true;
+
+          if (this.listSupportSub != null) this.listSupportSub.unsubscribe();
+        }
+      );
+    }
+
+
   }
 
   public btnAddSupportClick(): void {

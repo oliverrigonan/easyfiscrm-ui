@@ -31,6 +31,7 @@ export class ActivityComponent implements OnInit {
     this.createCboActivityDocument();
     this.createCboActivityStatus();
     this.createCboActivityUser();
+    
   }
 
   // ===============
@@ -54,7 +55,7 @@ export class ActivityComponent implements OnInit {
   public listActivityHeaderCollectionView: CollectionView = new CollectionView(this.clistActivityHeaderObservableArray);
   public listActivityPageIndex: number = 15;
   @ViewChild('listActivityFlexGrid') listActivityFlexGrid: WjFlexGrid;
-  public isProgressBarHidden = false;
+  public isProgressBarHidden = true;
   public isDataLoaded: boolean = false;
 
   public cboListUserSub: any;
@@ -248,12 +249,6 @@ export class ActivityComponent implements OnInit {
         }
 
         this.cboActivityDocumentObservableArray = documentObservableArray;
-        if (this.cboActivityDocumentObservableArray.length > 0) {
-          setTimeout(() => {
-            this.listActivityHeader();
-          }, 100);
-        }
-
         if (this.cboListDocumentSub != null) this.cboListDocumentSub.unsubscribe();
       }
     );

@@ -159,35 +159,81 @@ export class SalesListComponent implements OnInit {
   }
 
   public listSales(): void {
-    this.listSalesObservableArray = new ObservableArray();
-    this.listSalesCollectionView = new CollectionView(this.listSalesObservableArray);
-    this.listSalesCollectionView.pageSize = 15;
-    this.listSalesCollectionView.trackChanges = true;
-    this.listSalesCollectionView.refresh();
-    this.listSalesFlexGrid.refresh();
 
-    let startDate = [this.salesStartDateFilterData.getFullYear(), this.salesStartDateFilterData.getMonth() + 1, this.salesStartDateFilterData.getDate()].join('-');
-    let endDate = [this.salesEndDateFilterData.getFullYear(), this.salesEndDateFilterData.getMonth() + 1, this.salesEndDateFilterData.getDate()].join('-');
+    let isDashboard: boolean = false;
+    let userId;
+    let startDate;
+    let endDate;
 
-    this.isProgressBarHidden = false;
+    this.activatedRoute.params.subscribe(params => { isDashboard = params["dashboard"]; });
 
-    this.salesListService.listSales(startDate, endDate, this.cboSalesStatusSelectedValue);
-    this.listSalesSub = this.salesListService.listSalesObservable.subscribe(
-      data => {
-        if (data.length > 0) {
-          this.listSalesObservableArray = data;
-          this.listSalesCollectionView = new CollectionView(this.listSalesObservableArray);
-          this.listSalesCollectionView.pageSize = this.listActivityPageIndex;
-          this.listSalesCollectionView.trackChanges = true;
-          this.listSalesCollectionView.refresh();
-          this.listSalesFlexGrid.refresh();
+    if (isDashboard) {
+      this.activatedRoute.params.subscribe(params => { startDate = params["startDate"]; });
+      this.activatedRoute.params.subscribe(params => { endDate = params["endDate"]; });
+      this.activatedRoute.params.subscribe(params => { this.cboSalesStatusSelectedValue = params["status"]; });
+      this.activatedRoute.params.subscribe(params => { userId = params["userId"]; });
+      this.salesStartDateFilterData = startDate;
+      this.salesEndDateFilterData = endDate;
+
+      this.listSalesObservableArray = new ObservableArray();
+      this.listSalesCollectionView = new CollectionView(this.listSalesObservableArray);
+      this.listSalesCollectionView.pageSize = 15;
+      this.listSalesCollectionView.trackChanges = true;
+      this.listSalesCollectionView.refresh();
+      this.listSalesFlexGrid.refresh();
+
+      this.isProgressBarHidden = false;
+
+      this.salesListService.listSalesFilteredByUser(startDate, endDate, this.cboSalesStatusSelectedValue, userId);
+      this.listSalesSub = this.salesListService.listSalesObservable.subscribe(
+        data => {
+          if (data.length > 0) {
+            this.listSalesObservableArray = data;
+            this.listSalesCollectionView = new CollectionView(this.listSalesObservableArray);
+            this.listSalesCollectionView.pageSize = this.listActivityPageIndex;
+            this.listSalesCollectionView.trackChanges = true;
+            this.listSalesCollectionView.refresh();
+            this.listSalesFlexGrid.refresh();
+          }
+          this.isDataLoaded = true;
+          this.isProgressBarHidden = true;
+
+          if (this.listSalesSub != null) this.listSalesSub.unsubscribe();
         }
-        this.isDataLoaded = true;
-        this.isProgressBarHidden = true;
+      );
+    }
+    else {
+      startDate = [this.salesStartDateFilterData.getFullYear(), this.salesStartDateFilterData.getMonth() + 1, this.salesStartDateFilterData.getDate()].join('-');
+      endDate = [this.salesEndDateFilterData.getFullYear(), this.salesEndDateFilterData.getMonth() + 1, this.salesEndDateFilterData.getDate()].join('-');
 
-        if (this.listSalesSub != null) this.listSalesSub.unsubscribe();
-      }
-    );
+      this.listSalesObservableArray = new ObservableArray();
+      this.listSalesCollectionView = new CollectionView(this.listSalesObservableArray);
+      this.listSalesCollectionView.pageSize = 15;
+      this.listSalesCollectionView.trackChanges = true;
+      this.listSalesCollectionView.refresh();
+      this.listSalesFlexGrid.refresh();
+
+      this.isProgressBarHidden = false;
+
+      this.salesListService.listSales(startDate, endDate, this.cboSalesStatusSelectedValue);
+      this.listSalesSub = this.salesListService.listSalesObservable.subscribe(
+        data => {
+          if (data.length > 0) {
+            this.listSalesObservableArray = data;
+            this.listSalesCollectionView = new CollectionView(this.listSalesObservableArray);
+            this.listSalesCollectionView.pageSize = this.listActivityPageIndex;
+            this.listSalesCollectionView.trackChanges = true;
+            this.listSalesCollectionView.refresh();
+            this.listSalesFlexGrid.refresh();
+          }
+          this.isDataLoaded = true;
+          this.isProgressBarHidden = true;
+
+          if (this.listSalesSub != null) this.listSalesSub.unsubscribe();
+        }
+      );
+    }
+
   }
 
   public btnAddSalesClick() {
@@ -210,7 +256,7 @@ export class SalesListComponent implements OnInit {
     );
   }
 
-  
+
 
   public btnDeleteSalesDeliveryClick(salesDeliveryDeleteModalTemplate: TemplateRef<any>): void {
     this.deleteSalesDeliveryModalRef = this.modalService.show(salesDeliveryDeleteModalTemplate, {

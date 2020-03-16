@@ -95,6 +95,50 @@ export class LeadService {
     );
   }
 
+  public listLeadFilteredByUser(startDate: string, endDate: string, status: string, userId: number): void {
+    let listLeadObservableArray = new ObservableArray();
+    this.listLeadSubject.next(listLeadObservableArray);
+
+    this.httpClient.get(this.defaultAPIURLHost + "/api/crm/trn/lead/list/" + startDate + "/" + endDate + "/" + status+ "/" + userId, this.options).subscribe(
+      response => {
+        let results = response;
+
+        if (results["length"] > 0) {
+          for (let i = 0; i <= results["length"] - 1; i++) {
+            listLeadObservableArray.push({
+              Id: results[i].Id,
+              LDNumber: results[i].LDNumber,
+              LDDate: results[i].LDDate,
+              Name: results[i].Name,
+              Poduct: results[i].ProductDescription,
+              Address: results[i].Address,
+              ContactPerson: results[i].ContactPerson,
+              ContactPosition: results[i].ContactPosition,
+              ContactEmail: results[i].ContactEmail,
+              ContactPhoneNumber: results[i].ContactPhoneNumber,
+              ReferredBy: results[i].ReferredBy,
+              Remarks: results[i].Remarks,
+              AssignedToUserId: results[i].AssignedToUserId,
+              AssignedToUser: results[i].AssignedToUser,
+              LastActivity: results[i].LastActivity,
+              LastActivityDate: results[i].LastActivityDate,
+              Status: results[i].Status,
+              IsLocked: results[i].IsLocked,
+              CreatedByUserId: results[i].CreatedByUserId,
+              CreatedByUser: results[i].CreatedByUser,
+              CreatedDateTime: results[i].CreatedDateTime,
+              UpdatedByUserId: results[i].UpdatedByUserId,
+              UpdatedByUser: results[i].UpdatedByUser,
+              UpdatedDateTime: results[i].UpdatedDateTime,
+            });
+          }
+        }
+
+        this.listLeadSubject.next(listLeadObservableArray);
+      }
+    );
+  }
+
   public addLead(): void {
     this.httpClient.post(this.defaultAPIURLHost + "/api/crm/trn/lead/add", "", this.options).subscribe(
       response => {

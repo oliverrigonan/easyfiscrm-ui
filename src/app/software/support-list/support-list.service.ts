@@ -102,6 +102,49 @@ export class SupportListService {
     );
   }
 
+  public listSupportFilteredByUser(startDate: string, endDate: string, status: string, userId:number ): void {
+    let listSupportObservableArray = new ObservableArray();
+    this.listSupportSubject.next(listSupportObservableArray);
+
+    this.httpClient.get(this.defaultAPIURLHost + "/api/crm/trn/support/list/" + startDate + "/" + endDate + "/" + status + "/" + userId, this.options).subscribe(
+      response => {
+        var results = response;
+        if (results["length"] > 0) {
+          for (var i = 0; i <= results["length"] - 1; i++) {
+            listSupportObservableArray.push({
+              Id: results[i].Id,
+              SPNumber: results[i].SPNumber,
+              SPDate: results[i].SPDate,
+              CustomerId: results[i].CustomerId,
+              Customer: results[i].Customer,
+              SDId: results[i].SDId,
+              Product: results[i].Product,
+              SDNumber: results[i].SDNumber,
+              ContactPerson: results[i].ContactPerson,
+              ContactPosition: results[i].ContactPosition,
+              ContactEmail: results[i].ContactEmail,
+              ContactPhoneNumber: results[i].ContactPhoneNumber,
+              Issue: results[i].Issue,
+              AssignedToUserId: results[i].AssignedToUserId,
+              AssignedToUser: results[i].AssignedToUser,
+              Status: results[i].Status,
+              LastActivity: results[i].LastActivity,
+              LastActivityDate: results[i].LastActivityDate,
+              IsLocked: results[i].IsLocked,
+              CreatedByUserId: results[i].CreatedByUserId,
+              CreatedByUser: results[i].CreatedByUser,
+              CreatedDateTime: results[i].CreatedDateTime,
+              UpdatedByUserId: results[i].UpdatedByUserId,
+              UpdatedByUser: results[i].UpdatedByUser,
+              UpdatedDateTime: results[i].UpdatedDateTime,
+            });
+          }
+        }
+        this.listSupportSubject.next(listSupportObservableArray);
+      }
+    );
+  }
+
   public AddSupport(): void {
     this.httpClient.post(this.defaultAPIURLHost + "/api/crm/trn/support/add", "", this.options).subscribe(
       response => {
