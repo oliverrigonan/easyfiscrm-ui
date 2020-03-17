@@ -3,7 +3,6 @@ import { SecurityService } from '../security/security.service';
 import { ObservableArray, CollectionView } from 'wijmo/wijmo';
 import { WjFlexGrid } from 'wijmo/wijmo.angular2.grid';
 import { DashboardService } from './dashboard.service';
-import { LeadComponent } from '../lead/lead.component';
 import { Router, ActivatedRoute } from '@angular/router';
 
 
@@ -25,7 +24,6 @@ export class DashboardComponent implements OnInit {
     private securityService: SecurityService,
     private dashboardService: DashboardService,
     private router: Router,
-    private LeadComponent: LeadComponent
   ) { }
 
 
@@ -96,7 +94,6 @@ export class DashboardComponent implements OnInit {
 
         this.cboUserObservableArray = userObservableArray;
         setTimeout(() => { this.listLeadSummary(); }, 100);
-        if (this.cboListUserSub != null) this.cboListUserSub.unsubscribe();
       }
     );
   }
@@ -122,7 +119,6 @@ export class DashboardComponent implements OnInit {
           this.isDataLoaded = true;
         }
         setTimeout(() => { this.listSalesDeliverySummary() }, 100);
-        if (this.listLeadSummarySub != null) this.listLeadSummarySub.unsubscribe();
       }
     );
   }
@@ -140,8 +136,6 @@ export class DashboardComponent implements OnInit {
           this.isDataLoaded = true;
         }
         setTimeout(() => { this.listSupportSummary() }, 100);
-
-        if (this.listSalesDeliverySummarySub != null) this.listSalesDeliverySummarySub.unsubscribe();
       }
     );
   }
@@ -158,7 +152,6 @@ export class DashboardComponent implements OnInit {
           this.listSupportSummaryObservableArray = data;
           this.isDataLoaded = true;
         }
-        if (this.listSupportSummarySub != null) this.listSupportSummarySub.unsubscribe();
       }
     );
   }

@@ -1,7 +1,6 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { Routes, RouterModule } from '@angular/router';
-
+import { RouterModule, Routes } from '@angular/router';
 import { SoftwareRouterActivate } from './software.router.activate';
 
 import { LayoutComponent } from './layout/layout.component';
@@ -44,8 +43,6 @@ const routes: Routes = [
       { path: 'setup/user', component: UserComponent, canActivate: [SoftwareRouterActivate] },
       { path: 'setup/product', component: ProductComponent, canActivate: [SoftwareRouterActivate] },
       { path: 'setup/status', component: StatusComponent, canActivate: [SoftwareRouterActivate] },
-
-
     ]
   }
 ];

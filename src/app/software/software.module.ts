@@ -43,6 +43,7 @@ import { SupportDetailPrintDialogComponent } from './support-detail/support-deta
 import { LeadActivityPrintDialogComponent } from './lead-detail/lead-activity-print-dialog/lead-activity-print-dialog.component';
 import { SalesDeliveryActivityPrintDialogComponent } from './sales-detail/sales-delivery-activity-print-dialog/sales-delivery-activity-print-dialog.component';
 import { SupportDetailActivityPrintDialogComponent } from './support-detail/support-detail-activity-print-dialog/support-detail-activity-print-dialog.component';
+import { SoftwareRouteReuseStrategy } from './software-route-reuse-strategy';
 
 @NgModule({
   declarations: [LayoutComponent, DashboardComponent, LeadComponent, LeadDetailComponent, SalesListComponent, SalesDetailComponent, SupportListComponent, SupportDetailComponent, LeadReportComponent, SalesdeliveryReportComponent, SupportReportComponent, ActivityReportComponent, ActivityComponent, UserComponent, LeadPrintDialogComponent, ProductComponent, StatusComponent, SalesDetailPrintDialogComponent, SupportDetailPrintDialogComponent, LeadActivityPrintDialogComponent, SalesDeliveryActivityPrintDialogComponent, SupportDetailActivityPrintDialogComponent ],
@@ -66,7 +67,6 @@ import { SupportDetailActivityPrintDialogComponent } from './support-detail/supp
   ],
   providers: [
     SoftwareRouterActivate,
-    LeadComponent,
   ],
   entryComponents: [
     LeadPrintDialogComponent,

@@ -11,8 +11,11 @@ import { AppRoutingModule } from './app-routing.module';
 import { AppRouterActivate } from './app.router.activate';
 import { CurrencyPipe } from '@angular/common';
 
+import { RouterModule, Routes, RouteReuseStrategy } from '@angular/router';
+
 
 import { AppComponent } from './app.component';
+import { SoftwareRouteReuseStrategy } from './software/software-route-reuse-strategy';
 
 @NgModule({
   declarations: [
@@ -30,7 +33,8 @@ import { AppComponent } from './app.component';
   providers: [
     AppSettings,
     AppRouterActivate,
-    CurrencyPipe
+    CurrencyPipe,
+    { provide: RouteReuseStrategy, useClass: SoftwareRouteReuseStrategy }
   ],
   bootstrap: [AppComponent]
 })
