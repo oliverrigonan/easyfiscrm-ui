@@ -461,7 +461,6 @@ export class SalesDetailComponent implements OnInit {
     (<HTMLButtonElement>btnUnlockSales).disabled = true;
 
     this.salesDetailService.saveSales(this.salesDeliveryDetailModel)
-    console.log(this.salesDeliveryDetailModel);
     this.saveSalesSub = this.salesDetailService.saveSalesObservable.subscribe(
       data => {
         if (data[0] == "success") {

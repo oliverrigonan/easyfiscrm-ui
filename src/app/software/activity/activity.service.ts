@@ -190,8 +190,6 @@ export class ActivityService {
               UpdatedDateTime: results[i].UpdatedDateTime,
             });
           }
-          console.log(results);
-
         }
         this.listActivitySubject.next(listActivityObservableArray);
       }
@@ -242,7 +240,6 @@ export class ActivityService {
   }
 
   public saveActivity(objActivity: ActivityModel): void {
-    console.log(objActivity);
     if (objActivity.Id == 0) {
       this.httpClient.post(this.defaultAPIURLHost + "/api/crm/trn/activity/add", JSON.stringify(objActivity), this.options).subscribe(
         response => {

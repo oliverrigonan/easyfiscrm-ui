@@ -200,7 +200,6 @@ export class ActivityReportComponent implements OnInit {
     this.activityReportService.listActivity(startDate, endDate, this.cboActivityDocumentSelectedValue, this.cboActivityStatusSelectedValue);
     this.listActivitySub = this.activityReportService.listActivityObservable.subscribe(
       data => {
-        console.log(data);
         if (data.length > 0) {
           this.listActivityObservableArray = data;
           this.listActivityCollectionView = new CollectionView(this.listActivityObservableArray);

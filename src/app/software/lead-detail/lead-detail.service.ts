@@ -336,8 +336,6 @@ export class LeadDetailService {
       }),
       responseType: "blob"
     };
-    console.log(id)
-
     this.httpClient.get(this.defaultAPIURLHost + "/api/pdf/report/list/lead/" + id, printCaseOptions).subscribe(
       response => {
         let results = new Blob([response], { type: 'application/pdf' });

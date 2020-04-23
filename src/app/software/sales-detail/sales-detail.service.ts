@@ -74,7 +74,6 @@ export class SalesDetailService {
     this.httpClient.get(this.defaultAPIURLHost + "/api/crm/trn/sales/list/customer", this.options).subscribe(
       response => {
         var results = response;
-        console.log(results);
         if (results["length"] > 0) {
           for (var i = 0; i <= results["length"] - 1; i++) {
             listCustomerObservableArray.push({

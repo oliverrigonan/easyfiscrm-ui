@@ -99,7 +99,6 @@ export class DashboardService {
   public listSupportSummary(startDate: string, endDate: string, userId: number): void {
     let listSupportSummaryObservableArray = new ObservableArray();
     this.listSupportSummarySubject.next(listSupportSummaryObservableArray);
-console.log(userId)
     this.httpClient.get(this.defaultAPIURLHost + "/api/crm/trn/summary/dashboard/support/" + startDate + "/" + endDate + "/" + userId, this.options).subscribe(
       response => {
         var results = response;

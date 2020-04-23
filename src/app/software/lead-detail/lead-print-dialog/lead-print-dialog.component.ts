@@ -23,7 +23,6 @@ export class LeadPrintDialogComponent implements OnInit {
 
   public printCase(): void {
     this.leadDetailService.printLead(this.caseData.objId);
-    console.log("lead");
     this.printLeadSubscription = this.leadDetailService.printLeadObservable.subscribe(
       data => {
         var binaryData = [];

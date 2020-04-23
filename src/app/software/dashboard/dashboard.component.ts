@@ -100,7 +100,6 @@ export class DashboardComponent implements OnInit {
 
   public cboUserSelectedIndexChanged(selectedValue: any): void {
     this.cboUserSelectedValue = selectedValue;
-    console.log(this.isDataLoaded);
     if (this.isDataLoaded) {
       this.listLeadSummary();
     }
