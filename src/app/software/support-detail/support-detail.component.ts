@@ -339,7 +339,7 @@ export class SupportDetailComponent implements OnInit {
     this.saveSupportSub = this.supportDetailService.saveSupportObservable.subscribe(
       data => {
         if (data[0] == "success") {
-          this.toastr.success("Support was successfully saved.", "Success");
+          this.toastr.success("Successfully saved!", "Success");
 
           setTimeout(() => {
             (<HTMLButtonElement>btnSaveSupport).disabled = false;
@@ -370,7 +370,7 @@ export class SupportDetailComponent implements OnInit {
     this.lockSupportSub = this.supportDetailService.lockSupportObservable.subscribe(
       data => {
         if (data[0] == "success") {
-          this.toastr.success("Support was successfully locked.", "Success");
+          this.toastr.success("Successfully locked!", "Success");
           setTimeout(() => {
             this.isLocked = true;
             (<HTMLButtonElement>btnSaveSupport).disabled = true;
@@ -403,7 +403,7 @@ export class SupportDetailComponent implements OnInit {
     this.unlockSupportSub = this.supportDetailService.unlockSupportObservable.subscribe(
       data => {
         if (data[0] == "success") {
-          this.toastr.success("Support was successfully unlocked.", "Success");
+          this.toastr.success("Successfully unlocked!", "Success");
 
           setTimeout(() => {
             this.isLocked = false;
@@ -708,7 +708,7 @@ export class SupportDetailComponent implements OnInit {
     this.saveActivitySub = this.supportDetailService.saveActivityObservable.subscribe(
       data => {
         if (data[0] == "success") {
-          this.toastr.success("Activity was successfully saved.", "Success");
+          this.toastr.success("Successfully saved!", "Success");
 
           setTimeout(() => {
             this.activitiyModalRef.hide();
@@ -746,7 +746,7 @@ export class SupportDetailComponent implements OnInit {
     this.deleteActivitySub = this.supportDetailService.deleteActivityObservable.subscribe(
       data => {
         if (data[0] == "success") {
-          this.toastr.success("Lead was successfully deleted.", "Success");
+          this.toastr.success("Successfully deleted!", "Success");
 
           setTimeout(() => {
             this.deleteActivitiyModalRef.hide();

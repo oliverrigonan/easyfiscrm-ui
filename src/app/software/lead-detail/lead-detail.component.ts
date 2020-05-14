@@ -296,7 +296,7 @@ export class LeadDetailComponent implements OnInit {
     this.saveLeadSub = this.leadDetailService.saveLeadObservable.subscribe(
       data => {
         if (data[0] == "success") {
-          this.toastr.success("Lead was successfully saved.", "Success");
+          this.toastr.success("Successfully saved.", "Success");
 
           setTimeout(() => {
             (<HTMLButtonElement>btnSaveLead).disabled = false;
@@ -328,7 +328,7 @@ export class LeadDetailComponent implements OnInit {
     this.lockLeadSub = this.leadDetailService.lockLeadObservable.subscribe(
       data => {
         if (data[0] == "success") {
-          this.toastr.success("Lead was successfully locked.", "Success");
+          this.toastr.success("Successfully locked.", "Success");
 
           setTimeout(() => {
             this.isLocked = true;
@@ -366,7 +366,7 @@ export class LeadDetailComponent implements OnInit {
     this.unlockLeadSub = this.leadDetailService.unlockLeadObservable.subscribe(
       data => {
         if (data[0] == "success") {
-          this.toastr.success("Lead was successfully unlocked.", "Success");
+          this.toastr.success("Successfully unlocked.", "Success");
 
           setTimeout(() => {
             this.isLocked = false;
@@ -654,7 +654,7 @@ export class LeadDetailComponent implements OnInit {
     this.saveActivitySub = this.leadDetailService.saveActivityObservable.subscribe(
       data => {
         if (data[0] == "success") {
-          this.toastr.success("Activity was successfully saved.", "Success");
+          this.toastr.success("Successfully saved.", "Success");
 
           setTimeout(() => {
             this.isDataLoaded = false;
@@ -693,7 +693,7 @@ export class LeadDetailComponent implements OnInit {
     this.deleteActivitySub = this.leadDetailService.deleteActivityObservable.subscribe(
       data => {
         if (data[0] == "success") {
-          this.toastr.success("Lead was successfully deleted.", "Success");
+          this.toastr.success("Successfully deleted.", "Success");
 
           setTimeout(() => {
             this.isDataLoaded = false;

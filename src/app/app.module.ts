@@ -1,5 +1,5 @@
-import { NgModule } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
+import { NgModule } from '@angular/core';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { HttpClientModule } from '@angular/common/http';
 
@@ -25,7 +25,7 @@ import { SoftwareRouteReuseStrategy } from './software/software-route-reuse-stra
     BrowserModule,
     BrowserAnimationsModule,
     ToastrModule.forRoot({
-      progressBar: true
+      // progressBar: true
     }),
     HttpClientModule,
     AppRoutingModule

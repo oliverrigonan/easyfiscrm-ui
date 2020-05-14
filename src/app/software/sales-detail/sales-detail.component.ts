@@ -464,7 +464,7 @@ export class SalesDetailComponent implements OnInit {
     this.saveSalesSub = this.salesDetailService.saveSalesObservable.subscribe(
       data => {
         if (data[0] == "success") {
-          this.toastr.success("Sales was successfully saved.", "Success");
+          this.toastr.success("Successfully saved.", "Success");
 
           setTimeout(() => {
             (<HTMLButtonElement>btnSaveSales).disabled = false;
@@ -496,7 +496,7 @@ export class SalesDetailComponent implements OnInit {
     this.lockSalesSub = this.salesDetailService.lockSalesObservable.subscribe(
       data => {
         if (data[0] == "success") {
-          this.toastr.success("Sales was successfully saved.", "Success");
+          this.toastr.success("Successfully Locked.", "Success");
           setTimeout(() => {
             this.isLocked = true;
 
@@ -531,7 +531,7 @@ export class SalesDetailComponent implements OnInit {
     this.unlockSalesSub = this.salesDetailService.unlockSalesObservable.subscribe(
       data => {
         if (data[0] == "success") {
-          this.toastr.success("Sales was successfully unlocked.", "Success");
+          this.toastr.success("Successfully unlocked.", "Success");
 
           setTimeout(() => {
             this.isLocked = false;
@@ -849,7 +849,7 @@ export class SalesDetailComponent implements OnInit {
     this.saveActivitySub = this.salesDetailService.saveActivityObservable.subscribe(
       data => {
         if (data[0] == "success") {
-          this.toastr.success("Activity was successfully saved.", "Success");
+          this.toastr.success("Successfully saved.", "Success");
 
           setTimeout(() => {
             this.isDataLoaded = false;
@@ -888,7 +888,7 @@ export class SalesDetailComponent implements OnInit {
     this.deleteActivitySub = this.salesDetailService.deleteActivityObservable.subscribe(
       data => {
         if (data[0] == "success") {
-          this.toastr.success("Lead was successfully deleted.", "Success");
+          this.toastr.success("Successfully deleted.", "Success");
 
           setTimeout(() => {
             this.isDataLoaded = false;

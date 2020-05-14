@@ -22,7 +22,6 @@
     width: 250px;
     padding-top: 10px;
     padding-bottom: 10px;
-    /* background: transparent; */
     background: linear-gradient( rgba(0, 0, 0, 0.5), rgba(19, 19, 19, 0.8) ), url(../../../assets/img/bg/sidemenubg.jpeg) no-repeat center center;
     border-right: 1px solid #323232;
 }
@@ -30,13 +29,11 @@
 .list-group-item {
     background: transparent;
     color: white;
-    /* border: 1px solid rgb(59, 59, 59); */
     border: none;
 }
 
 .list-group-item:hover {
     background: #7a0400;
-    /* transition: 1s all; */
     color: white;
 }
 
@@ -66,7 +63,12 @@
 #signOut {
     background: transparent;
     color: white;
-    /* border: 1px solid rgb(59, 59, 59); */
+    border: none;
+    cursor: pointer;
+}
+
+#signOut:hover  {
+    background: #7a0400;
     border: none;
 }
 

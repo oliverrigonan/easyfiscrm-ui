@@ -373,28 +373,23 @@
 </ng-template>
 
 <ng-template #userFormDeleteModalTemplate>
-  <div class="modal-header">
-    <h4 class="modal-title">
+  <div class="modal-header" style="background-color: white;">
+    <h4 class="modal-title" style="color: black;">
       Delete
     </h4>
   </div>
   <div class="modal-body">
-    Are you sure you want to delete this form
-    <br /> <br />
-    Form:
-    <b>
-      {{
-        listUserFormCollectionView.items.length > 0 ?
-        listUserFormCollectionView.currentItem.Form : 'NA'
-      }}
-    </b>
+    Do you want to delete form {{
+      listUserFormCollectionView.items.length > 0 ?
+      listUserFormCollectionView.currentItem.Form : 'NA'
+    }}?
   </div>
   <div class="modal-footer">
     <button type="button" class="btn btn-danger" style="margin-right: 5px;" (click)="btnConfirmDeleteUserFormClick()"
       id="btnConfirmDeleteAcitivity">
       <i class="fa fa-trash"></i> Delete
     </button>
-    <button type="button" class="btn" (click)="deleteActivitiyModalRef.hide()" id="btnCloseConfirmDeleteAcitivityModal">
+    <button type="button" class="btn btn-light" (click)="userFormDeleteModalRef.hide()" id="btnCloseConfirmDeleteAcitivityModal">
       <i class="fa fa-close"></i> Cancel
     </button>
   </div>

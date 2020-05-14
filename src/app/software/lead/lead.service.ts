@@ -99,7 +99,7 @@ export class LeadService {
     let listLeadObservableArray = new ObservableArray();
     this.listLeadSubject.next(listLeadObservableArray);
 
-    this.httpClient.get(this.defaultAPIURLHost + "/api/crm/trn/lead/list/" + startDate + "/" + endDate + "/" + status+ "/" + userId, this.options).subscribe(
+    this.httpClient.get(this.defaultAPIURLHost + "/api/crm/trn/lead/list/" + startDate + "/" + endDate + "/" + status + "/" + userId, this.options).subscribe(
       response => {
         let results = response;
 

@@ -7,10 +7,6 @@
     border-radius: 0.2rem !important;
 }
 
-.toast {
-    box-shadow: none !important;
-}
-
 @media (min-width: 768px) {
     .form-group-label {
         text-align: right;
@@ -57,4 +53,23 @@ input[disabled] {
 
 .nav-tabs .nav-link:hover {
     border: 1px solid transparent;
+}
+
+#toast-container > div {
+	opacity:1;
+}
+.toast {
+	font-size: initial !important;
+	border: initial !important;
+	backdrop-filter: blur(0) !important;
+}
+.toast-success {
+	background-color: #51A351 !important;
+}
+.toast-error{
+	background-color: #BD362f !important;
+}.toast-info {
+	background-color: #2F96B4 !important;
+}.toast-warning{
+	background-color: #F89406 !important;
 }

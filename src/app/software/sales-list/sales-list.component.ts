@@ -244,7 +244,7 @@ export class SalesListComponent implements OnInit {
     this.addSalesSub = this.salesListService.addSalesObservable.subscribe(
       data => {
         if (data[0] == "success") {
-          this.toastr.success("Sales was successfully added.", "Success");
+          this.toastr.success("Successfully added.", "Success");
           this.router.navigate(['/software/trn/sales/detail/', data[1]]);
         }
         else if (data[0] == "failed") {
@@ -278,7 +278,7 @@ export class SalesListComponent implements OnInit {
     this.deleteSalesDeliverySub = this.salesListService.deleteSalesDeliveryObservable.subscribe(
       data => {
         if (data[0] == "success") {
-          this.toastr.success("Sales successfully deleted!", "Success");
+          this.toastr.success("Successfully deleted!", "Success");
           setTimeout(() => {
             this.listSales();
             this.deleteSalesDeliveryModalRef.hide();

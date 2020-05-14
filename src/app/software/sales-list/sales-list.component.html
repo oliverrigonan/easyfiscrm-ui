@@ -60,8 +60,9 @@
               <div class="form-group">
                 <span class="badge badge-info" style="margin-bottom: 5px;"><i class="fa fa-question-circle fa-fw"></i>
                   Status</span>
-                <wj-combo-box #cboSalesStatus [(ngModel)]="cboSalesStatusSelectedValue" [itemsSource]="cboSalesStatusObservableArray" [isEditable]="false"
-                  [isRequired]="true" [displayMemberPath]="'Status'" [selectedValuePath]="'Status'"
+                <wj-combo-box #cboSalesStatus [(ngModel)]="cboSalesStatusSelectedValue"
+                  [itemsSource]="cboSalesStatusObservableArray" [isEditable]="false" [isRequired]="true"
+                  [displayMemberPath]="'Status'" [selectedValuePath]="'Status'"
                   (selectedIndexChanged)="cboSalesStatusSelectedIndexChanged(cboSalesStatus.selectedValue)"
                   style="width: 100%;">
                 </wj-combo-box>
@@ -103,15 +104,16 @@
       </wj-flex-grid-column>
       <wj-flex-grid-column *ngIf="false" [header]="'SIId'" [binding]="'SIId'" [isReadOnly]="true" [width]="'2*'">
       </wj-flex-grid-column>
-      <wj-flex-grid-column [header]="'Product'" [binding]="'ProductDescription'" [isReadOnly]="true"
-      [width]="'2*'"></wj-flex-grid-column>
+      <wj-flex-grid-column [header]="'Product'" [binding]="'ProductDescription'" [isReadOnly]="true" [width]="'2*'">
+      </wj-flex-grid-column>
       <wj-flex-grid-column [header]="'Remarks'" [binding]="'Remarks'" [isReadOnly]="true" [width]="'2*'">
       </wj-flex-grid-column>
       <wj-flex-grid-column [header]="'Assigned To'" [binding]="'AssignedToUser'" [isReadOnly]="true" [width]="'2*'">
       </wj-flex-grid-column>
       <wj-flex-grid-column [header]="'LastActivity'" [binding]="'LastActivity'" [isReadOnly]="true" [width]="'2*'">
       </wj-flex-grid-column>
-      <wj-flex-grid-column [header]="'Last Activity Date'" [binding]="'LastActivityDate'" [isReadOnly]="true" [width]="'2*'">
+      <wj-flex-grid-column [header]="'Last Activity Date'" [binding]="'LastActivityDate'" [isReadOnly]="true"
+        [width]="'2*'">
       </wj-flex-grid-column>
       <wj-flex-grid-column [header]="'Status'" [binding]="'Status'" [isReadOnly]="true" [width]="150">
       </wj-flex-grid-column>
@@ -199,29 +201,23 @@
 </div>
 <div>
   <ng-template #salesDeliveryDeleteModalTemplate>
-    <div class="modal-header">
-      <h4 class="modal-title">
+    <div class="modal-header" style="background-color: white;">
+      <h4 class="modal-title" style="color: black">
         Delete
       </h4>
     </div>
     <div class="modal-body">
-      Are you sure you want to delete this sales delivery?
-      <br /> <br />
-
-      SD Number:
-      <b>
-        {{
-      listSalesCollectionView.items.length > 0 ?
-      listSalesCollectionView.currentItem.SDNumber : 'NA'
-      }}
-      </b>
+      Do you want to delete sales delivery {{
+        listSalesCollectionView.items.length > 0 ?
+        listSalesCollectionView.currentItem.SDNumber : 'NA'
+        }}?
     </div>
     <div class="modal-footer">
       <button type="button" class="btn btn-danger" style="margin-right: 5px;"
         (click)="btnConfirmDeleteSalesDeliveryClick()" id="btnConfirmDeleteSalesDelivery">
         <i class="fa fa-trash"></i> Delete
       </button>
-      <button type="button" class="btn" (click)="deleteSalesDeliveryModalRef.hide()"
+      <button type="button" class="btn btn-light" (click)="deleteSalesDeliveryModalRef.hide()"
         id="btnCloseConfirmDeleteSalesDeliveryModal">
         <i class="fa fa-close"></i> Cancel
       </button>

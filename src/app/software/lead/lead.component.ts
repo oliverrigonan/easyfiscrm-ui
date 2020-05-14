@@ -236,18 +236,20 @@ export class LeadComponent implements OnInit {
   }
 
   public btnAddLeadClick() {
+
     let btnAddLead: Element = document.getElementById("btnAddLead");
     (<HTMLButtonElement>btnAddLead).disabled = true;
 
     this.leadService.addLead();
+
     this.addLeadSub = this.leadService.addLeadObservable.subscribe(
       data => {
         if (data[0] == "success") {
-          this.toastr.success("Lead was successfully added.", "Success");
+          this.toastr.success("Successfully added.", "Success");
           this.router.navigate(['/software/trn/lead/detail/', data[1]]);
-        } else if (data[0] == "failed") {
+        } 
+        if (data[0] == "failed") {
           this.toastr.error(data[1], "Error");
-
           (<HTMLButtonElement>btnAddLead).disabled = false;
         }
 
@@ -280,7 +282,7 @@ export class LeadComponent implements OnInit {
     this.deleteLeadSub = this.leadService.deleteLeadObservable.subscribe(
       data => {
         if (data[0] == "success") {
-          this.toastr.success("Lead was successfully deleted.", "Success");
+          this.toastr.success("Successfully deleted.", "Success");
           setTimeout(() => {
             this.listLead();
             this.leadDeleteModalRef.hide();

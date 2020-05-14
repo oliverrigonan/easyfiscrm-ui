@@ -58,8 +58,6 @@
             <a class="list-group-item list-group-item-action" id="signOut" (click)="btnSignOutlick(logOutModalTemplate)">
                 <img src="../../../assets/img/icons/logout.png" height="30" alt=""> &nbsp; Sign Out
             </a>
-
-
             <mat-menu #menuReport="matMenu" xPosition="after" width="1000">
                 <button class="btn-submenu" mat-menu-item routerLink="/software/report/lead">
                     <img src="../../../assets/img/icons/print.png" height="30" alt=""> &nbsp; Lead Report
@@ -88,8 +86,6 @@
                     &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;;&nbsp;&nbsp;&nbsp;&nbsp;
                 </button>
             </mat-menu>
-
-
         </div>
     </mat-drawer>
     <mat-drawer-content>
@@ -125,14 +121,13 @@
     </div>
     <div class="modal-body">
       Sign-Out?
-      
     </div>
     <div class="modal-footer">
       <button type="button" class="btn btn-danger" style="margin-right: 5px;" (click)="signOut()"
         id="btnConfirmSignOut">
             <i class="fa fa-power-off fa-fw"></i> Sign Out
       </button>
-      <button type="button" class="btn" (click)="logOutModalRef.hide()" id="btnCloseModal">
+      <button type="button" class="btn btn-light" (click)="logOutModalRef.hide()" id="btnCloseModal">
         <i class="fa fa-close"></i> Cancel
       </button>
     </div>

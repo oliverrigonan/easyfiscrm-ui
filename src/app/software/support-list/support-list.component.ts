@@ -240,7 +240,7 @@ export class SupportListComponent implements OnInit {
     this.addSupportSub = this.supportListService.addSupportObservable.subscribe(
       data => {
         if (data[0] == "success") {
-          this.toastr.success("Sales was successfully added.", "Success");
+          this.toastr.success("Successfully added!", "Success");
           this.router.navigate(['/software/trn/support/detail/', data[1]]);
         }
         else if (data[0] == "failed") {
@@ -271,7 +271,7 @@ export class SupportListComponent implements OnInit {
     this.deleteSupportSub = this.supportListService.deleteSupportObservable.subscribe(
       data => {
         if (data[0] == "success") {
-          this.toastr.success("Support successfully deleted!", "Success");
+          this.toastr.success("Successfully deleted!", "Success");
           setTimeout(() => {
             this.listSupport();
             this.deleteSupportModalRef.hide();
