@@ -247,7 +247,6 @@ export class LeadDetailService {
     this.httpClient.get(this.defaultAPIURLHost + "/api/crm/trn/activity/lead/list/" + leadId, this.options).subscribe(
       response => {
         let results = response;
-
         if (results["length"] > 0) {
           for (let i = 0; i <= results["length"] - 1; i++) {
             listActivityObservableArray.push({

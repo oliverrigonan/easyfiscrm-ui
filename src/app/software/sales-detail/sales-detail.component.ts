@@ -659,7 +659,6 @@ export class SalesDetailComponent implements OnInit {
 
             this.isDataLoaded = true;
             this.isProgressBarHidden = true;
-            console.log("Hello world");
             if (this.listActivitySub != null) this.listActivitySub.unsubscribe();
           }
         );
