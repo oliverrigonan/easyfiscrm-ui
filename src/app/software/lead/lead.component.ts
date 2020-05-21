@@ -157,7 +157,6 @@ export class LeadComponent implements OnInit {
   }
 
   public listLead(): void {
-
     let isDashboard: boolean = false;
     let userId;
     let startDate;

@@ -24,9 +24,7 @@ import { SoftwareRouteReuseStrategy } from './software/software-route-reuse-stra
   imports: [
     BrowserModule,
     BrowserAnimationsModule,
-    ToastrModule.forRoot({
-      // progressBar: true
-    }),
+    ToastrModule.forRoot(),
     HttpClientModule,
     AppRoutingModule
   ],

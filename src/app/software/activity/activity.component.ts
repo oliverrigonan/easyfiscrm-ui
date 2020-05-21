@@ -134,6 +134,7 @@ export class ActivityComponent implements OnInit {
   };
 
   public activityHeaderModel: ActivityHeaderModel = {
+    doctypeId: 0,
     docType: "",
     reference: "",
     particular: "",
@@ -443,22 +444,23 @@ export class ActivityComponent implements OnInit {
     let supportId: number;
 
     if (currentActivityHeader.Document == "LEAD") {
-      leadId = currentActivityHeader.Id;
+      leadId = currentActivityHeader.DocumentId;
       salesDeliveryId = null;
       supportId = null;
     }
 
     if (currentActivityHeader.Document == "SALES DELIVERY") {
       leadId = null;
-      salesDeliveryId = currentActivityHeader.Id;
+      salesDeliveryId = currentActivityHeader.DocumentId;
       supportId = null;
     }
 
     if (currentActivityHeader.Document == "SUPPORT") {
       leadId = null;
       salesDeliveryId = null;
-      supportId = currentActivityHeader.Id;
+      supportId = currentActivityHeader.DocumentId;
     }
+    
     if (this.isAddClicked) {
       this.activityModel = {
         Id: 0,
@@ -583,20 +585,16 @@ export class ActivityComponent implements OnInit {
       data => {
         if (data[0] == "success") {
           this.toastr.success("Activity was successfully saved.", "Success");
-
           setTimeout(() => {
             this.isActivityDataLoaded = false;
-
-            this.listActivity();
             this.activitiyModalRef.hide();
+            this.listActivity();
           }, 100);
         } else if (data[0] == "failed") {
           this.toastr.error(data[1], "Error");
-
           (<HTMLButtonElement>btnSaveActivity).disabled = false;
           (<HTMLButtonElement>btnSaveActivityClickCloseModal).disabled = false;
         }
-
         if (this.saveActivitySub != null) this.saveActivitySub.unsubscribe();
       }
     );

@@ -1,4 +1,5 @@
 export class ActivityHeaderModel {
+    doctypeId: number;
     docType: string;
     reference: string;
     assignedToId: number
