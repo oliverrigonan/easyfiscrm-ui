@@ -241,6 +241,7 @@ export class SupportListComponent implements OnInit {
       data => {
         if (data[0] == "success") {
           this.toastr.success("Successfully added!", "Success");
+          (<HTMLButtonElement>btnAddSupport).disabled = false;
           this.router.navigate(['/software/trn/support/detail/', data[1]]);
         }
         else if (data[0] == "failed") {

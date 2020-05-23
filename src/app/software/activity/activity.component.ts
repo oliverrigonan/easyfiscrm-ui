@@ -344,7 +344,7 @@ export class ActivityComponent implements OnInit {
     this.activityHeaderModel.assignedTo = currentActivityHeader.AssignedTo;
     this.activityHeaderModel.createdBy = currentActivityHeader.CreatedBy;
     this.activityHeaderModel.product = currentActivityHeader.Product;
-    this.activityHeaderModel.status = currentActivityHeader.Status;
+    this.activityHeaderModel.status = currentActivityHeader.DocumentStatus;
     this.activityHeaderModel.particular = currentActivityHeader.Particulars;
     this.activityListModalRef = this.modalService.show(activityListModalTemplate, {
       backdrop: true,
@@ -460,7 +460,7 @@ export class ActivityComponent implements OnInit {
       salesDeliveryId = null;
       supportId = currentActivityHeader.DocumentId;
     }
-    
+
     if (this.isAddClicked) {
       this.activityModel = {
         Id: 0,

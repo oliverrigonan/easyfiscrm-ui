@@ -127,6 +127,7 @@ export class ActivityService {
               DocumentId: results[i].DocumentId,
               DocumentNumber: results[i].DocumentNumber,
               Document: results[i].Document,
+              DocumentStatus: results[i].DocumentStatus,
               Customer: results[i].Customer,
               Product: results[i].Product,
               AssignedToId: results[i].AssignedToId,

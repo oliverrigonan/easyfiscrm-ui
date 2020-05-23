@@ -245,6 +245,7 @@ export class SalesListComponent implements OnInit {
       data => {
         if (data[0] == "success") {
           this.toastr.success("Successfully added.", "Success");
+          (<HTMLButtonElement>btnAddSales).disabled = false;
           this.router.navigate(['/software/trn/sales/detail/', data[1]]);
         }
         else if (data[0] == "failed") {

@@ -245,6 +245,7 @@ export class LeadComponent implements OnInit {
       data => {
         if (data[0] == "success") {
           this.toastr.success("Successfully added.", "Success");
+          (<HTMLButtonElement>btnAddLead).disabled = false;
           this.router.navigate(['/software/trn/lead/detail/', data[1]]);
         } 
         if (data[0] == "failed") {
