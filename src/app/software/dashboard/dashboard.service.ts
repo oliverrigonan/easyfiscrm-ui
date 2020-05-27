@@ -89,7 +89,6 @@ export class DashboardService {
             });
           }
         }
-        console.log(listTransactionSummaryObservableArray);
         this.listTrnsactionSummarySubject.next(listTransactionSummaryObservableArray);
       }
     );

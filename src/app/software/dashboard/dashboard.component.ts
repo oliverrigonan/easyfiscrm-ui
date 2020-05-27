@@ -51,15 +51,13 @@ export class DashboardComponent implements OnInit {
   ngAfterViewInit() {
   }
 
-  
-
   public getFirsDayOftheMonth() {
     var date = new Date();
     this.startDateFilterData = new Date(date.getFullYear(), date.getMonth(), 1);
     this.endDateFilterData = new Date(date.getFullYear(), date.getMonth() + 1, 0);
   }
 
-  
+
 
   public cboStartDateTextChanged(): void {
     if (this.isDataLoaded) {
@@ -121,6 +119,7 @@ export class DashboardComponent implements OnInit {
 
   public pieChart(): void {
     this.chart = am4core.create("chartdiv", am4charts.PieChart);
+
     this.chart.data = this.listTrnSummaryObservableArray;
 
     // Add and configure Series
@@ -147,13 +146,16 @@ export class DashboardComponent implements OnInit {
     let userId = this.cboUserSelectedValue == null ? 0 : this.cboUserSelectedValue;
     this.dashboardService.listTransactionSummary(startDate, endDate, userId);
 
-    this.listTrnSummaryPerStatusSub = this.dashboardService.listTrnSummaryObservable.subscribe(
+    this.listTrnSummarySub = this.dashboardService.listTrnSummaryObservable.subscribe(
       data => {
         if (data.length > 0) {
-          this.listTrnSummaryObservableArray = data;
+          this.chart.data = data;
           this.isDataLoaded = true;
+        } else {
+          this.chart.data = [];
         }
-        this.chart.data = this.listTrnSummaryObservableArray;
+
+        this.listTrnSummaryObservableArray;
         setTimeout(() => {
           this.listTrnSummary();
         }, 100);
@@ -226,6 +228,7 @@ export class DashboardComponent implements OnInit {
   ngOnDestroy() {
     if (this.listTrnSummaryPerStatusSub != null) this.listTrnSummarySub.unsubscribe();
     if (this.listTrnSummarySub != null) this.listTrnSummarySub.unsubscribe();
+    if (this.listTrnSummarySub != null) this.chart.disposed();
     if (this.cboListUserSub != null) this.cboListUserSub.unsubscribe();
   }
 
