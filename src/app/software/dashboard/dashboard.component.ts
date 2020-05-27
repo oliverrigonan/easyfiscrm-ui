@@ -63,7 +63,7 @@ export class DashboardComponent implements OnInit {
     if (this.isDataLoaded) {
       setTimeout(() => {
         this.pieChart();
-      }, 500);
+      }, 100);
     }
   }
 
@@ -71,7 +71,7 @@ export class DashboardComponent implements OnInit {
     if (this.isDataLoaded) {
       setTimeout(() => {
         this.pieChart();
-      }, 500);
+      }, 100);
     }
   }
 
@@ -88,13 +88,14 @@ export class DashboardComponent implements OnInit {
       data => {
         let userObservableArray = new ObservableArray();
 
-        userObservableArray.push({
-          Id: 0,
-          UserName: '',
-          FullName: 'All Users'
-        });
-
         if (data != null) {
+          if (data.length > 1) {
+            userObservableArray.push({
+              Id: 0,
+              UserName: '',
+              FullName: 'All Users'
+            });
+          }
           for (var i = 0; i <= data.length - 1; i++) {
             userObservableArray.push({
               Id: data[i].Id,
@@ -150,12 +151,12 @@ export class DashboardComponent implements OnInit {
       data => {
         if (data.length > 0) {
           this.chart.data = data;
-          this.isDataLoaded = true;
         } else {
           this.chart.data = [];
         }
 
-        this.listTrnSummaryObservableArray;
+        this.isDataLoaded = true;
+
         setTimeout(() => {
           this.listTrnSummary();
         }, 100);

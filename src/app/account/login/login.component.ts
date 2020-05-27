@@ -49,7 +49,7 @@ export class LoginComponent implements OnInit {
             setTimeout(() => {
               this.router.navigate(['/software']);
               this.toastr.success(data[1], 'Success');
-            }, 100);
+            }, 300);
           } else {
             this.toastr.error(data[1], 'Error');
             btnLogin.removeAttribute("disabled");

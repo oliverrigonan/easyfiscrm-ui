@@ -1,8 +1,8 @@
-.nav-link, td {
-    font-size: 10px;
+.nav-link {
+    font-size: 12px;
 }
 
-.form-group {
-    font-size: 10px;
+.form-group, td {
+    font-size: 12px;
     margin-bottom: 0;
 }
