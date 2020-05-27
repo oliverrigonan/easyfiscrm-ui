@@ -23,20 +23,17 @@ export class DashboardService {
   public listUserSubject = new Subject<ObservableArray>();
   public listUserObservable = this.listUserSubject.asObservable();
 
-  public listLeadSummarySubject = new Subject<ObservableArray>();
-  public listLeadSummaryObservable = this.listLeadSummarySubject.asObservable();
+  public listTrnsactionSummarySubject = new Subject<ObservableArray>();
+  public listTrnSummaryObservable = this.listTrnsactionSummarySubject.asObservable();
 
-  public listSalesDeliverySummarySubject = new Subject<ObservableArray>();
-  public listSalesDeliverySummaryObservable = this.listSalesDeliverySummarySubject.asObservable();
-
-  public listSupportSummarySubject = new Subject<ObservableArray>();
-  public listSupportSummaryObservable = this.listSupportSummarySubject.asObservable();
+  public listTrnsactionSummaryPerStatusSubject = new Subject<ObservableArray>();
+  public listTrnSummaryPerStatusObservable = this.listTrnsactionSummaryPerStatusSubject.asObservable();
 
   public listUser(): void {
     let listUserObservableArray = new ObservableArray();
     this.listUserSubject.next(listUserObservableArray);
 
-    this.httpClient.get(this.defaultAPIURLHost + "/api/crm/trn/summary/dashboard/users", this.options).subscribe(
+    this.httpClient.get(this.defaultAPIURLHost + "/api/crm/dashboard/users", this.options).subscribe(
       response => {
         var results = response;
         if (results["length"] > 0) {
@@ -48,72 +45,53 @@ export class DashboardService {
             });
           }
         }
-
         this.listUserSubject.next(listUserObservableArray);
       }
     );
   }
 
-  public listLeadSummary(startDate: string, endDate: string, userId: number): void {
-    let listLeadSummaryObservableArray = new ObservableArray();
-    this.listLeadSummarySubject.next(listLeadSummaryObservableArray);
+  public listTransactionFilterByStatusSummary(startDate: string, endDate: string, userId: number): void {
+    let listTnrSummaryFilterByStatusObservableArray = new ObservableArray();
 
-    this.httpClient.get(this.defaultAPIURLHost + "/api/crm/trn/summary/dashboard/lead/" + startDate + "/" + endDate + "/" + userId, this.options).subscribe(
+    this.listTrnsactionSummaryPerStatusSubject.next(listTnrSummaryFilterByStatusObservableArray);
+
+    this.httpClient.get(this.defaultAPIURLHost + "/api/crm/dashboard/trnSummary/status/" + startDate + "/" + endDate + "/" + userId, this.options).subscribe(
       response => {
         var results = response;
         if (results["length"] > 0) {
           for (var i = 0; i <= results["length"] - 1; i++) {
-            listLeadSummaryObservableArray.push({
+            listTnrSummaryFilterByStatusObservableArray.push({
+              Document: results[i].Document,
               Status: results[i].Status,
               NoOfTransaction: results[i].NoOfTransaction
             });
           }
         }
-
-        this.listLeadSummarySubject.next(listLeadSummaryObservableArray);
+        this.listTrnsactionSummaryPerStatusSubject.next(listTnrSummaryFilterByStatusObservableArray);
       }
     );
   }
 
-  public listSalesDeliverySummary(startDate: string, endDate: string, userId: number): void {
-    let listSalesDeliverySummaryObservableArray = new ObservableArray();
-    this.listSalesDeliverySummarySubject.next(listSalesDeliverySummaryObservableArray);
+  public listTransactionSummary(startDate: string, endDate: string, userId: number): void {
+    let listTransactionSummaryObservableArray = new ObservableArray();
 
-    this.httpClient.get(this.defaultAPIURLHost + "/api/crm/trn/summary/dashboard/salesDelivery/" + startDate + "/" + endDate + "/" + userId, this.options).subscribe(
+    this.listTrnsactionSummarySubject.next(listTransactionSummaryObservableArray);
+
+    this.httpClient.get(this.defaultAPIURLHost + "/api/crm/dashboard/trnSummary/" + startDate + "/" + endDate + "/" + userId, this.options).subscribe(
       response => {
         var results = response;
         if (results["length"] > 0) {
           for (var i = 0; i <= results["length"] - 1; i++) {
-            listSalesDeliverySummaryObservableArray.push({
+            listTransactionSummaryObservableArray.push({
+              Document: results[i].Document,
               Status: results[i].Status,
               NoOfTransaction: results[i].NoOfTransaction
             });
           }
         }
-
-        this.listSalesDeliverySummarySubject.next(listSalesDeliverySummaryObservableArray);
+        console.log(listTransactionSummaryObservableArray);
+        this.listTrnsactionSummarySubject.next(listTransactionSummaryObservableArray);
       }
     );
   }
-
-  public listSupportSummary(startDate: string, endDate: string, userId: number): void {
-    let listSupportSummaryObservableArray = new ObservableArray();
-    this.listSupportSummarySubject.next(listSupportSummaryObservableArray);
-    this.httpClient.get(this.defaultAPIURLHost + "/api/crm/trn/summary/dashboard/support/" + startDate + "/" + endDate + "/" + userId, this.options).subscribe(
-      response => {
-        var results = response;
-        if (results["length"] > 0) {
-          for (var i = 0; i <= results["length"] - 1; i++) {
-            listSupportSummaryObservableArray.push({
-              Status: results[i].Status,
-              NoOfTransaction: results[i].NoOfTransaction
-            });
-          }
-        }
-
-        this.listSupportSummarySubject.next(listSupportSummaryObservableArray);
-      }
-    );
-  }
-
 }

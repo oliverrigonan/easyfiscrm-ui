@@ -109,89 +109,127 @@
   </div>
   <br>
   <div class="row">
-    <div class="col-lg-6">
-      <table border="0" style="width: 100%; border: none; margin-top: -15px;">
-        <tr>
-          <td>
-            <div class="form-group">
-              <span class="badge badge-info" style="margin-bottom: 5px;"><i class="fa fa-calendar fa-fw"></i>
-                Start Date</span>
-              <wj-input-date #cboLeadStartDateFilter [(ngModel)]="leadStartDateFilterData"
-                [ngModelOptions]="{standalone: true}" (textChanged)="cboStartDateTextChanged()"
-                format="MMMM dd, yyyy" style="width: 100%;">
-              </wj-input-date>
-            </div>
-          </td>
-          <td>
-            <div class="form-group">
-              <span class="badge badge-info" style="margin-bottom: 5px;"><i class="fa fa-calendar fa-fw"></i>
-                End Date</span>
-              <wj-input-date #cboLeadEndDateFilter [(ngModel)]="leadEndDateFilterData"
-                [ngModelOptions]="{standalone: true}" (textChanged)="cboEndDateTextChanged()" format="MMMM dd, yyyy"
-                style="width: 100%;">
-              </wj-input-date>
-            </div>
-          </td>
-          <td>
-            <div class="form-group">
-              <span class="badge badge-info" style="margin-bottom: 5px;"><i class="fa fa-question-circle fa-fw"></i>
-                User</span>
-              <wj-combo-box #cboUser [itemsSource]="cboUserObservableArray" [isEditable]="false"
-                [isRequired]="true" [displayMemberPath]="'FullName'" [selectedValuePath]="'Id'"
-                (selectedIndexChanged)="cboUserSelectedIndexChanged(cboUser.selectedValue)"
-                style="width: 100%;">
-              </wj-combo-box>
-            </div>
-          </td>
-        </tr>
-      </table>
-    </div>
-    <div class="col-lg-6"></div>
-  </div>
-  <div class="row">
-    <div class="col-lg-4">
-      <div class="card card-default" style="margin-top: 10px;">
-        <div class="card-header">
-          Leads
-        </div>
+    <div class="col-lg-3">
+      <div class="card card-default">
+        <!-- <div class="card-header">
+        </div> -->
         <div class="card-body">
-          <table width="100%">
-            <tr *ngFor="let lead of listLeadSummaryObservableArray">
-              <td width="70%">{{lead.Status}}</td>
-              <td width="30%" align="right"><a (click)="goToLeadList(lead)" style="color:blue;cursor: pointer;">{{lead.NoOfTransaction}}</a></td>
-            </tr>
-          </table>
-          
+          <div class="form-group">
+            <span class="badge badge-info" style="margin-bottom: 5px;"><i class="fa fa-calendar fa-fw"></i>
+              Start Date</span>
+            <wj-input-date #cboLeadStartDateFilter [(ngModel)]="startDateFilterData"
+              [ngModelOptions]="{standalone: true}" (textChanged)="cboStartDateTextChanged()" format="MMMM dd, yyyy"
+              style="width: 100%;">
+            </wj-input-date>
+          </div>
+          <div class="form-group">
+            <span class="badge badge-info" style="margin-bottom: 5px;"><i class="fa fa-calendar fa-fw"></i>
+              End Date</span>
+            <wj-input-date #cboLeadEndDateFilter [(ngModel)]="endDateFilterData" [ngModelOptions]="{standalone: true}"
+              (textChanged)="cboEndDateTextChanged()" format="MMMM dd, yyyy" style="width: 100%;">
+            </wj-input-date>
+          </div>
+          <div class="form-group">
+            <span class="badge badge-info" style="margin-bottom: 5px;"><i class="fa fa-question-circle fa-fw"></i>
+              User</span>
+            <wj-combo-box #cboUser [itemsSource]="cboUserObservableArray" [isEditable]="false" [isRequired]="true"
+              [displayMemberPath]="'FullName'" [selectedValuePath]="'Id'"
+              (selectedIndexChanged)="cboUserSelectedIndexChanged(cboUser.selectedValue)" style="width: 100%;">
+            </wj-combo-box>
+          </div>
         </div>
+        <!-- <div class="card-footer">
+        </div> -->
+      </div>
+    </div>
+    <div class="col-lg-5">
+      <div class="card card-default">
+        <!-- <div class="card-header">
+        </div> -->
+        <div class="card-body">
+          <div id="chartdiv" style="width:100%; height: 100%; padding: 0;"></div>
+        </div>
+        <!-- <div class="card-footer">
+        </div> -->
       </div>
     </div>
     <div class="col-lg-4">
-      <div class="card card-default" style="margin-top: 10px;">
-        <div class="card-header">
-          Sales Delivery
-        </div>
+      <div class="card card-default">
+        <!-- <div class="card-header">
+        </div> -->
         <div class="card-body">
-          <table width="100%">
-            <tr *ngFor="let salesDelivery of listSalesDeliverySummaryObservableArray">
-              <td width="70%">{{salesDelivery.Status}}</td>
-              <td width="30%" align="right"><a (click)="goToSalesDeliveryList(salesDelivery)" style="color:blue;cursor: pointer;">{{salesDelivery.NoOfTransaction}}</a></td>
-            </tr>
-          </table>
-        </div>
-      </div>
-    </div>
-    <div class="col-lg-4">
-      <div class="card card-default" style="margin-top: 10px;">
-        <div class="card-header">
-          Support
-        </div>
-        <div class="card-body">
-          <table width="100%">
-            <tr *ngFor="let support of listSupportSummaryObservableArray">
-              <td width="70%">{{support.Status}}</td>
-              <td width="30%" align="right"><a (click)="goToSupportList(support)" style="color:blue;cursor: pointer;">{{support.NoOfTransaction}}</a></td>
-            </tr>
-          </table>
+          <ul class="nav nav-tabs" id="myTab" role="tablist">
+            <li class="nav-item">
+              <a class="nav-link active" id="leads-tab" data-toggle="tab" href="#leads" role="tab" aria-controls="leads"
+                aria-selected="true">Leads</a>
+            </li>
+            <li class="nav-item" [hidden]="isTransactionTabHidden">
+              <a class="nav-link" id="sales-delivery-tab" data-toggle="tab" href="#salesDelivery" role="tab"
+                aria-controls="salesDelivery" aria-selected="false">Sales Delivery</a>
+            </li>
+            <li class="nav-item" [hidden]="isTransactionTabHidden">
+              <a class="nav-link" id="support-tab" data-toggle="tab" href="#support" role="tab" aria-controls="support"
+                aria-selected="false">Support</a>
+            </li>
+          </ul>
+          <div class="tab-content" id="myTabContent">
+            <div class="tab-pane fade show active" id="leads" role="tabpanel" aria-labelledby="leads-tab">
+              <div class="card card-default" style="margin-top: 10px;">
+                <!-- <div class="card-header">
+                </div> -->
+                <div class="card-body">
+                  <ng-container *ngFor="let lead of listTrnSummaryFilterByStatusObservableArray">
+                    <tr *ngIf="lead.Document == 'LD'" width="70%">
+                      <td *ngIf="lead.Document == 'LD'" width="70%">{{lead.Status}} - <a (click)="goToLeadList(lead)"
+                          style="color:blue;cursor: pointer;">{{lead.NoOfTransaction}}</a>
+                      </td>
+                    </tr>
+                  </ng-container>
+                </div>
+                <!-- <div class="card-footer">
+                </div> -->
+              </div>
+            </div>
+            <div class="tab-pane fade" id="salesDelivery" role="tabpanel" aria-labelledby="sales-delivery-tab"
+              [hidden]="isTransactionTabHidden">
+              <div class="card card-default" style="margin-top: 10px;">
+                <!-- <div class="card-header">
+                </div> -->
+                <div class="card-body">
+                  <ng-container *ngFor="let salesDelivery of listTrnSummaryFilterByStatusObservableArray">
+                    <tr *ngIf="salesDelivery.Document == 'SD'" width="70%">
+                      <td *ngIf="salesDelivery.Document == 'SD'" width="70%">{{salesDelivery.Status}} - <a
+                          (click)="goToSalesDeliveryList(salesDelivery)"
+                          style="color:blue;cursor: pointer;">{{salesDelivery.NoOfTransaction}}</a>
+                      </td>
+                    </tr>
+                  </ng-container>
+                </div>
+                <!-- <div class="card-footer">
+                </div> -->
+              </div>
+            </div>
+            <div class="tab-pane fade" id="support" role="tabpanel" aria-labelledby="support-tab"
+              [hidden]="isTransactionTabHidden">
+              <div class="card card-default" style="margin-top: 10px;">
+                <!-- <div class="card-header">
+                </div> -->
+                <div class="card-body">
+                  <ng-container *ngFor="let support of listTrnSummaryFilterByStatusObservableArray">
+                    <tr *ngIf="support.Document === 'SP'; else elseBlock" width="70%">
+                      <td>{{support.Status}} - <a (click)="goToSupportList(support)"
+                          style="color:blue;cursor: pointer;">{{support.NoOfTransaction}}</a>
+                      </td>
+                    </tr>
+                  </ng-container>
+                </div>
+                <!-- <div class="card-footer">
+                </div> -->
+              </div>
+            </div>
+          </div>
+          <!-- <div class="card-footer">
+        </div> -->
         </div>
       </div>
     </div>

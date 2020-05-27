@@ -63,7 +63,7 @@ import { SoftwareRouteReuseStrategy } from './software-route-reuse-strategy';
     WjGridModule,
     WjInputModule,
     ModalModule.forRoot(),
-    PdfViewerModule
+    PdfViewerModule,
   ],
   providers: [
     SoftwareRouterActivate,

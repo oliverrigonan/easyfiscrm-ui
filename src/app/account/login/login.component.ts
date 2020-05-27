@@ -46,17 +46,18 @@ export class LoginComponent implements OnInit {
       this.loginSub = this.loginService.loginObservable.subscribe(
         data => {
           if (data[0]) {
-            this.router.navigate(['/software']);
-            this.toastr.success(data[1], 'Success');
+            setTimeout(() => {
+              this.router.navigate(['/software']);
+              this.toastr.success(data[1], 'Success');
+            }, 100);
           } else {
             this.toastr.error(data[1], 'Error');
-
             btnLogin.removeAttribute("disabled");
             btnLogin.setAttribute("value", "Sign in");
             inpUsername.removeAttribute("disabled");
             inpPassword.removeAttribute("disabled");
           }
-          
+
           if (this.loginSub != null) this.loginSub.unsubscribe();
         }
       );

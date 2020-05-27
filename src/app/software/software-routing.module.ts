@@ -24,9 +24,9 @@ const routes: Routes = [
   {
     path: '', component: LayoutComponent, canActivate: [SoftwareRouterActivate],
     children: [
-      { path: '', component: DashboardComponent, canActivate: [SoftwareRouterActivate] },
+      { path: '', component: DashboardComponent,canActivate: [SoftwareRouterActivate] },
       { path: 'sys/dashboard', component: DashboardComponent, canActivate: [SoftwareRouterActivate] },
-      { path: 'trn/lead', component: LeadComponent, canActivate: [SoftwareRouterActivate] },
+      { path: 'trn/lead', component: LeadComponent, data: { shouldReuse: true},canActivate: [SoftwareRouterActivate] },
       { path: 'trn/lead/:startDate/:endDate/:status/:userId/:dashboard', component: LeadComponent, canActivate: [SoftwareRouterActivate] },
       { path: 'trn/lead/detail/:id', component: LeadDetailComponent, canActivate: [SoftwareRouterActivate] },
       { path: 'trn/sales', component: SalesListComponent, canActivate: [SoftwareRouterActivate] },

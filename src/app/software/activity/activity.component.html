@@ -160,6 +160,62 @@
     <div class="col-sm-8"></div>
   </div>
 </div>
+
+<div class="card card-default" style="margin-top: 10px;">
+  <div class="card-header">
+    User stamp
+  </div>
+  <div class="card-body">
+    <div class="row">
+      <div class="col-md-6">
+        <p>Created by:</p>
+        <div style="padding-left: 10px;">
+          <i class="fa fa-key"></i>&nbsp;
+          <label id="createdBy">
+            {{
+            listActivityHeaderCollectionView.items.length > 0 ?
+            listActivityHeaderCollectionView.currentItem.CreatedByUser : 'NA'
+            }}
+          </label>
+          <br />
+          <small>
+            <i class="fa fa-calendar"></i>&nbsp;&nbsp;
+            <span id="createdDate">
+              {{
+              listActivityHeaderCollectionView.items.length > 0 ?
+              listActivityHeaderCollectionView.currentItem.CreatedDateTime : 'mm/dd/yyyy'
+              }}
+            </span>
+          </small>
+        </div>
+        <br />
+      </div>
+      <div class="col-md-6">
+        <p>Updated by:</p>
+        <div style="padding-left: 10px;">
+          <i class="fa fa-key"></i>&nbsp;
+          <label id="updatedBy">
+            {{
+            listActivityHeaderCollectionView.items.length > 0 ?
+            listActivityHeaderCollectionView.currentItem.UpdatedByUser : 'NA'
+            }}
+          </label>
+          <br />
+          <small>
+            <i class="fa fa-calendar"></i>&nbsp;&nbsp;
+            <span id="updatedDate">
+              {{
+              listActivityHeaderCollectionView.items.length > 0 ?
+              listActivityHeaderCollectionView.currentItem.UpdatedDateTime : 'mm/dd/yyyy'
+              }}
+            </span>
+          </small>
+        </div>
+        <br />
+      </div>
+    </div>
+  </div>
+</div>
 <ng-template #activityListModalTemplate>
   <div class="modal-header">
     <h4 class="modal-title">

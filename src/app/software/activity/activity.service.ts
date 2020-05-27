@@ -140,7 +140,13 @@ export class ActivityService {
               FunctionalStaff: results[i].FunctionalStaff,
               TechnicalStaff: results[i].TechnicalStaff,
               Status: results[i].Status,
-              TotalAmount: results[i].TotalAmount
+              TotalAmount: results[i].TotalAmount,
+              CreatedByUserId: results[i].CreatedByUserId,
+              CreatedByUser: results[i].CreatedByUser,
+              CreatedDateTime: results[i].CreatedDateTime,
+              UpdatedByUserId: results[i].UpdatedByUserId,
+              UpdatedByUser: results[i].UpdatedByUser,
+              UpdatedDateTime: results[i].UpdatedDateTime,
             });
           }
         }

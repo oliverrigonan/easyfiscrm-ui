@@ -101,7 +101,7 @@ export class LayoutComponent implements OnInit {
     localStorage.removeItem('expires_in');
     localStorage.removeItem('token_type');
     localStorage.removeItem('username');
-
+    localStorage.removeItem('userRights');
     this.username = "";
 
     location.reload();
