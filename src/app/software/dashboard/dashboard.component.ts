@@ -118,29 +118,35 @@ export class DashboardComponent implements OnInit {
     }
   }
 
+  public OnClickDiv(): void {
+
+  }
+
   public pieChart(): void {
     this.chart = am4core.create("chartdiv", am4charts.PieChart);
 
     this.chart.data = this.listTrnSummaryObservableArray;
+    this.chart.radius = am4core.percent(95)
 
     // Add and configure Series
     let pieSeries = this.chart.series.push(new am4charts.PieSeries());
     pieSeries.dataFields.value = "NoOfTransaction";
     pieSeries.dataFields.category = "Document";
+    pieSeries.legendSettings.itemValueText = "{value} - ({value.percent.formatNumber('#.00')}%)";
     pieSeries.colors.step = 2;
 
     pieSeries.slices.template.propertyFields.isActive = "pulled";
     pieSeries.ticks.template.disabled = true;
     pieSeries.labels.template.disabled = true;
-
+    
     this.chart.legend = new am4charts.Legend();
     this.chart.legend.valueLabels.template.align = "left";
     this.chart.legend.valueLabels.template.textAlign = "end";
     this.chart.legend.position = "right";
 
-    this.chart.legend.itemContainers.template.events.on("hit", function (ev) {
-      console.log("Clicked on", ev.target);
-    });
+    // this.chart.legend.itemContainers.template.events.on("hit", function (ev) {
+    //   console.log("Clicked on", ev.target);
+    // });
 
     let startDate = [this.startDateFilterData.getFullYear(), this.startDateFilterData.getMonth() + 1, this.startDateFilterData.getDate()].join('-');
     let endDate = [this.endDateFilterData.getFullYear(), this.endDateFilterData.getMonth() + 1, this.endDateFilterData.getDate()].join('-');
