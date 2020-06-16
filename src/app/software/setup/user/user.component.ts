@@ -30,6 +30,7 @@ export class UserComponent implements OnInit {
 
   public cboShowNumberOfRows: ObservableArray = new ObservableArray();
   public cboSysFormObservable: ObservableArray = new ObservableArray();
+  public cboGroupObservable: ObservableArray = new ObservableArray();
 
   public listUserObservableArray: ObservableArray = new ObservableArray();
   public listUserCollectionView: CollectionView = new CollectionView(this.listUserObservableArray);
@@ -52,6 +53,7 @@ export class UserComponent implements OnInit {
   public userFormDetailModalHeaderTitle: string;
 
   public cboSysFormSub: any;
+  public cboGroupSub: any;
   public listUserSub: any;
   public addUserSub: any;
   public addUserFormSub: any;
@@ -61,6 +63,7 @@ export class UserComponent implements OnInit {
   public currentUserId: number = 0;
   public IsAddButtonClick: Boolean;
 
+  public cboGroupSelectedValue: string;
 
   ngOnInit() {
     this.createCboShowNumberOfRows();
@@ -73,7 +76,8 @@ export class UserComponent implements OnInit {
     FullName: '',
     Email: '',
     Password: '',
-    ConfirmPassword: ''
+    ConfirmPassword: '',
+    CRMUserGroup: ''
   };
 
   public userFormModel: UserFormModel = {
@@ -170,11 +174,45 @@ export class UserComponent implements OnInit {
     this.userModel.FullName = currentUserDetail.FullName;
     this.userModel.Email = currentUserDetail.Email;
     this.userModel.Password = currentUserDetail.Password;
+    this.userModel.CRMUserGroup = currentUserDetail.CRMUserGroup;
 
     this.userDetailModalHeaderTitle = "User Detail";
     this.IsAddButtonClick = false;
     this.currentUserId = currentUserDetail.Id;
     this.userFormModel.UserId = currentUserDetail.Id;
+
+    this.createCboGroup(this.userModel.CRMUserGroup);
+  }
+
+
+  public createCboGroup(group: string): void {
+    let groupObservableArray = new ObservableArray();
+
+    groupObservableArray.push({ Group: "Assign Group" });
+    this.userService.listGroup();
+
+
+    this.cboGroupSub = this.userService.groupUserObservable.subscribe(
+      data => {
+        if (data.length > 0) {
+          for (var i = 0; i <= data.length - 1; ++i) {
+            groupObservableArray.push(data[i]);
+          }
+        }
+        this.cboGroupObservable = groupObservableArray;
+
+        setTimeout(() => {
+          if (group !== null) {
+            this.cboGroupSelectedValue = group;
+          }
+        });
+        if (this.cboGroupSub != null) this.cboGroupSub.unsubscribe();
+      }
+    );
+  }
+
+  public cboGroupSelectedIndexChanged(selectedValue: any): void {
+    this.userModel.CRMUserGroup = selectedValue;
   }
 
   public btnAddUserClick(addDetailModalTemplate: TemplateRef<any>): void {
@@ -203,57 +241,28 @@ export class UserComponent implements OnInit {
     this.createCboSysForm();
   }
 
-  public btnSaveUserClick(): void {
-    if (this.IsAddButtonClick == true) {
-      if (this.userModel.UserName !== "" || this.userModel.FullName !== "" || this.userModel.Email !== "" || this.userModel.Password !== "") {
-        this.userService.saveUser(this.userModel);
+  public btnSaveUserClick() {
+    let btnUpdateUser: Element = document.getElementById('btnUpdateUser');
+    (<HTMLButtonElement>btnUpdateUser).disabled = true;
 
-        this.addUserSub = this.userService.saveUserObservable.subscribe(
-          data => {
-            if (data[0] == "success") {
-              this.userDetailModalRef.hide();
-              this.toastr.success("User is successfully added.", "Success");
-              setTimeout(() => {
-                this.isDataLoaded = false;
-                this.listUserData();
-                this.resetUserForm();
-              }, 100);
-
-            } else if (data[0] == "failed") {
-              this.toastr.error(data[1], "Error");
-            }
-            if (this.addUserSub != null) this.addUserSub.unsubscribe();
-          }
-        );
-      } else {
-        this.toastr.error("Please don't leave empty fields.", "Error");
-      }
-    } else {
-      if (this.userModel.UserName !== "" || this.userModel.FullName !== "" || this.userModel.Email !== "" || this.userModel.Password !== "") {
-        this.userService.saveUser(this.userModel);
-
-        this.addUserSub = this.userService.saveUserObservable.subscribe(
-          data => {
-            if (data[0] == "success") {
-              this.userDetailModalRef.hide();
-              this.toastr.success("Updated successfully.", "Success");
-              setTimeout(() => {
-                this.isDataLoaded = false;
-
-                this.listUserData();
-                this.resetUserForm();
-              }, 100);
-
-            } else if (data[0] == "failed") {
-              this.toastr.error(data[1], "Error");
-            }
-            if (this.addUserSub != null) this.addUserSub.unsubscribe();
-          }
-        );
-      } else {
-        this.toastr.error("Please don't leave empty fields.", "Error");
-      }
+    if (this.userModel.CRMUserGroup === 'Assign Group') {
+      this.userModel.CRMUserGroup = null;
     }
+
+    this.userService.updateUser(this.userModel);
+
+    this.cboGroupSub = this.userService.saveUserObservable.subscribe(
+      data => {
+        if (data[0] == "success") {
+          this.toastr.success("User is successfully added.", "Success");
+          (<HTMLButtonElement>btnUpdateUser).disabled = false;
+          this.listUserData();
+        } else if (data[0] == "failed") {
+          this.toastr.error(data[1], "Error");
+        }
+        if (this.cboGroupSub != null) this.cboGroupSub.unsubscribe();
+      }
+    );
   }
 
   public btnLockUserClick(): void {
@@ -282,7 +291,6 @@ export class UserComponent implements OnInit {
       this.toastr.error("Please don't leave empty fields.", "Error");
     }
   }
-
 
   public createCboSysForm(): void {
     this.userService.listSysForm();
@@ -368,7 +376,7 @@ export class UserComponent implements OnInit {
       ignoreBackdropClick: true,
       class: "modal-sm"
     });
-    this.userFormDetailModalHeaderTitle ="Edit User Form";
+    this.userFormDetailModalHeaderTitle = "Edit User Form";
     this.createCboSysForm();
     setTimeout(() => {
       let currentUserForm = this.listUserFormCollectionView.currentItem;
@@ -460,6 +468,7 @@ export class UserComponent implements OnInit {
   ngOnDestroy() {
     if (this.listUserSub != null) this.listUserSub.unsubscribe();
     if (this.addUserSub != null) this.addUserSub.unsubscribe();
+    if (this.cboGroupSub != null) this.cboGroupSub.unsubscribe();
     if (this.addUserSub != null) this.addUserSub.unsubscribe();
     if (this.addUserSub != null) this.addUserSub.unsubscribe();
     if (this.cboSysFormSub != null) this.cboSysFormSub.unsubscribe();

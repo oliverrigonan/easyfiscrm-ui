@@ -75,13 +75,13 @@ export class LeadDetailComponent implements OnInit {
   public activitiyModalRef: BsModalRef;
   public deleteActivitiyModalRef: BsModalRef;
 
-  public cboShowNumberOfRows: ObservableArray = new ObservableArray();
+  public cboActivityShowNumberOfRows: ObservableArray = new ObservableArray();
 
   public listActivityObservableArray: ObservableArray = new ObservableArray();
   public listActivityCollectionView: CollectionView = new CollectionView(this.listActivityObservableArray);
   public listActivityPageIndex: number = 15;
   @ViewChild('listActivityFlexGrid') listActivityFlexGrid: WjFlexGrid;
-  public isProgressBarHidden = false;
+  public isActivityProgressBarHidden = false;
   public isDataLoaded: boolean = false;
 
   public listActivitySub: any;
@@ -414,7 +414,7 @@ export class LeadDetailComponent implements OnInit {
         rowsString = "Show 200";
       }
 
-      this.cboShowNumberOfRows.push({
+      this.cboActivityShowNumberOfRows.push({
         rowNumber: rows,
         rowString: rowsString
       });
@@ -430,6 +430,7 @@ export class LeadDetailComponent implements OnInit {
   }
 
   public totalCost: number = 0;
+
   public transportationCostTextChanged(): void {
     this.totalCost = this.leadDetailActivityModel.TransportationCost + this.leadDetailActivityModel.OnSiteCost;
   }
@@ -448,7 +449,7 @@ export class LeadDetailComponent implements OnInit {
         this.listActivityCollectionView.refresh();
         this.listActivityFlexGrid.refresh();
 
-        this.isProgressBarHidden = false;
+        this.isActivityProgressBarHidden = false;
 
         let id: number = 0;
         this.activatedRoute.params.subscribe(params => { id = params["id"]; });
@@ -466,7 +467,7 @@ export class LeadDetailComponent implements OnInit {
             }
 
             this.isDataLoaded = true;
-            this.isProgressBarHidden = true;
+            this.isActivityProgressBarHidden = true;
 
             if (this.listActivitySub != null) this.listActivitySub.unsubscribe();
           }

@@ -39,9 +39,12 @@ export class UserService {
 
   public saveUserFormSubject = new Subject<string[]>();
   public saveserFormObservable = this.saveUserFormSubject.asObservable();
-  
+
   public deleteUserFormSubject = new Subject<string[]>();
   public deleteUserFormObservable = this.deleteUserFormSubject.asObservable();
+
+  public groupUserSubject = new Subject<ObservableArray>();
+  public groupUserObservable = this.groupUserSubject.asObservable();
 
   public listUser(): void {
     let userListObservableArray = new ObservableArray();
@@ -59,6 +62,7 @@ export class UserService {
               Email: results[i].Email,
               Password: results[i].Password,
               IsLocked: results[i].IsLocked,
+              CRMUserGroup: results[i].CRMUserGroup,
               CreatedBy: results[i].CreatedBy,
               CreatedDateTime: results[i].CreatedDateTime,
               UpdatedBy: results[i].UpdatedBy,
@@ -67,6 +71,23 @@ export class UserService {
           }
         }
         this.userListSubject.next(userListObservableArray);
+      }
+    );
+  }
+
+  public listGroup(): void {
+    let groupObservableArray = new ObservableArray();
+    this.groupUserSubject.next(groupObservableArray);
+
+    this.httpClient.get(this.defaultAPIURLHost + "/api/crm/user/list/group", this.options).subscribe(
+      response => {
+        var results = response;
+        if (results["length"] > 0) {
+          for (var i = 0; i <= results["length"] - 1; i++) {
+            groupObservableArray.push({ Group: results[i].Group });
+          }
+        }
+        this.groupUserSubject.next(groupObservableArray);
       }
     );
   }
@@ -124,17 +145,21 @@ export class UserService {
       )
     }
     else {
-      this.httpClient.put(this.defaultAPIURLHost + "/api/crm/user/update/" + objUser.Id, JSON.stringify(objUser), this.options).subscribe(
-        response => {
-          let responseResults: string[] = ["success", ""];
-          this.saveUserSubject.next(responseResults);
-        },
-        error => {
-          let errorResults: string[] = ["failed", error["error"]];
-          this.saveUserSubject.next(errorResults);
-        }
-      );
+
     }
+  }
+
+  public updateUser(objUser: UserModel) {
+    this.httpClient.put(this.defaultAPIURLHost + "/api/crm/user/update/" + objUser.Id, JSON.stringify(objUser), this.options).subscribe(
+      response => {
+        let responseResults: string[] = ["success", ""];
+        this.saveUserSubject.next(responseResults);
+      },
+      error => {
+        let errorResults: string[] = ["failed", error["error"]];
+        this.saveUserSubject.next(errorResults);
+      }
+    );
   }
 
   public listSysForm(): void {
@@ -189,7 +214,7 @@ export class UserService {
   }
 
   public SaveUserForm(objUserForm: UserFormModel): void {
-    if(objUserForm.Id == 0){
+    if (objUserForm.Id == 0) {
       this.httpClient.post(this.defaultAPIURLHost + "/api/crm/mst/user/form/add", JSON.stringify(objUserForm), this.options).subscribe(
         response => {
           let responseResults: string[] = ["success", ""];
@@ -201,7 +226,7 @@ export class UserService {
         }
       );
     }
-    else{
+    else {
       this.httpClient.put(this.defaultAPIURLHost + "/api/crm/mst/user/form/update", JSON.stringify(objUserForm), this.options).subscribe(
         response => {
           let responseResults: string[] = ["success", ""];
@@ -213,7 +238,7 @@ export class UserService {
         }
       );
     }
-    
+
   }
 
   public DeleteUserForm(id: number): void {

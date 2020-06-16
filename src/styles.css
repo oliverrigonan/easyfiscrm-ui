@@ -1,12 +1,12 @@
 /* You can add global styles to this file, and also import other style files */
 @import "~@angular/material/prebuilt-themes/indigo-pink.css";
 
-body {
+/* body {
     font-size: 14px;
 }
 .input-group-text {
     font-size: 13px;
-}
+} */
 
 .btn-xs {
     padding: 0.1rem 0.1rem !important;

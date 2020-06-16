@@ -221,7 +221,7 @@
                       </b>
                     </div>
                   </div>
-                  <wj-combo-box #cboNumberOfRows [itemsSource]="cboShowNumberOfRows" [isEditable]="false"
+                  <wj-combo-box #cboNumberOfRows [itemsSource]="cboActivityShowNumberOfRows" [isEditable]="false"
                     [isRequired]="true" [displayMemberPath]="'rowString'" [selectedValuePath]="'rowNumber'"
                     (selectedIndexChanged)="cboShowNumberOfRowsOnSelectedIndexChanged(cboNumberOfRows.selectedValue)"
                     style="width: 140px;">
@@ -243,7 +243,7 @@
         </div>
 
         <div class="card-body">
-          <mat-progress-bar [hidden]="isProgressBarHidden" [color]="'primary'" [mode]="'indeterminate'">
+          <mat-progress-bar [hidden]="isActivityProgressBarHidden" [color]="'primary'" [mode]="'indeterminate'">
           </mat-progress-bar>
           <wj-flex-grid #listActivityFlexGrid [itemsSource]="listActivityCollectionView" [selectionMode]="3"
             [frozenColumns]="2">

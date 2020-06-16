@@ -5,6 +5,7 @@ import { ObservableArray } from 'wijmo/wijmo';
 import { Subject } from 'rxjs';
 import { LeadDetailModel } from './lead-detail.model'
 import { LeadDetailActivityModel } from './lead-detail-activitiy.model'
+import { DocumentModel } from './lead-document.model';
 
 @Injectable({
   providedIn: 'root'
@@ -48,10 +49,16 @@ export class LeadDetailService {
   public saveActivityObservable = this.saveActivitySubject.asObservable();
   public deleteActivitySubject = new Subject<string[]>();
   public deleteActivityObservable = this.deleteActivitySubject.asObservable();
+
+  public listDocumentSubject = new Subject<ObservableArray>();
+  public listDocumentObservable = this.listActivitySubject.asObservable();
+  public saveDocumentSubject = new Subject<string[]>();
+  public saveDocumentObservable = this.saveActivitySubject.asObservable();
+  public deleteDocumentSubject = new Subject<string[]>();
+  public deleteDocumentObservable = this.deleteActivitySubject.asObservable();
   
   public printLeadSubject = new Subject<Blob>();
   public printLeadObservable = this.printLeadSubject.asObservable();
-
   public printLeadActivitySubject = new Subject<Blob>();
   public printLeadActivityObservable = this.printLeadActivitySubject.asObservable();
 
@@ -357,5 +364,74 @@ export class LeadDetailService {
         this.printLeadActivitySubject.next(results);
       }
     );
+  }
+
+  public listDocument(document: string): void {
+    let listDocumentObservableArray = new ObservableArray();
+    this.listActivitySubject.next(listDocumentObservableArray);
+
+    this.httpClient.get(this.defaultAPIURLHost + "/api/crm/mst/document/list/" + document, this.options).subscribe(
+      response => {
+        let results = response;
+        if (results["length"] > 0) {
+          for (let i = 0; i <= results["length"] - 1; i++) {
+            listDocumentObservableArray.push({
+              Id: results[i].Id,
+              DocumentName: results[i].DocumentName,
+              DocumentURL: results[i].DocumentURL,
+              DocumentGroup: results[i].DocumentGroup,
+              DateUploaded: results[i].DateUploaded,
+              Particulars: results[i].Particulars,
+              CreatedByUserId: results[i].CreatedByUserId,
+              CreatedByUser: results[i].CreatedByUser,
+              CreatedDateTime: results[i].CreatedDateTime,
+              UpdatedByUserId: results[i].UpdatedByUserId,
+              UpdatedByUser: results[i].UpdatedByUser,
+              UpdatedDateTime: results[i].UpdatedDateTime,
+            });
+          }
+        }
+        this.listDocumentSubject.next(listDocumentObservableArray);
+      }
+    );
+  }
+
+  public saveDocument(objDocument: DocumentModel): void {
+    if (objDocument.Id == 0) {
+      this.httpClient.post(this.defaultAPIURLHost + "/api/crm/mst/document/add", JSON.stringify(objDocument), this.options).subscribe(
+        response => {
+          let responseResults: string[] = ["success", ""];
+          this.saveActivitySubject.next(responseResults);
+        },
+        error => {
+          let errorResults: string[] = ["failed", error["error"]];
+          this.saveActivitySubject.next(errorResults);
+        }
+      )
+    } else {
+      this.httpClient.put(this.defaultAPIURLHost + "/api/crm/mst/document/update/" + objDocument.Id, JSON.stringify(objDocument), this.options).subscribe(
+        response => {
+          let responseResults: string[] = ["success", ""];
+          this.saveActivitySubject.next(responseResults);
+        },
+        error => {
+          let errorResults: string[] = ["failed", error["error"]];
+          this.saveActivitySubject.next(errorResults);
+        }
+      )
+    }
+  }
+
+  public deleteDocument(id: number): void {
+    this.httpClient.delete(this.defaultAPIURLHost + "/api/crm/mst/document/delete/" + id, this.options).subscribe(
+      response => {
+        let responseResults: string[] = ["success", ""];
+        this.deleteActivitySubject.next(responseResults);
+      },
+      error => {
+        let errorResults: string[] = ["failed", error["error"]];
+        this.deleteActivitySubject.next(errorResults);
+      }
+    )
   }
 }

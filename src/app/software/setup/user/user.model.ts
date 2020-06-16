@@ -5,4 +5,5 @@ export class UserModel {
     Email: string;
     Password: string;
     ConfirmPassword: string;
+    CRMUserGroup: string;
 }
