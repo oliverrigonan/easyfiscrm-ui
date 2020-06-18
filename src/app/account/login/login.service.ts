@@ -33,6 +33,7 @@ export class LoginService {
 
         this.getUserRights(response["userName"]);
         this.getUserGroup(response["userName"]);
+
         this.loginSource.next([true, "Login Successful."]);
       },
       error => {
@@ -92,8 +93,9 @@ export class LoginService {
 
     this.httpClient.get(this.defaultAPIHostURL + "/api/crm/user/userGroup/" + username, options).subscribe(
       response => {
-        let result = response
+        let result = response;
         localStorage.setItem('userGroup', result.toString());
+        console.log(response);
       }
     );
   }

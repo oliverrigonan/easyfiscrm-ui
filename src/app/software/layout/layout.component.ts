@@ -103,60 +103,37 @@ export class LayoutComponent implements OnInit {
     localStorage.removeItem('username');
     localStorage.removeItem('userRights');
     localStorage.removeItem('userGroup');
-    this.username = "";
-
     location.reload();
+    this.username = "";
   }
 
   ngOnInit() {
     this.openSideBar();
-    this.username = localStorage.getItem("username");
-    let userGroup = localStorage.getItem("userGroup");
-    console.log(userGroup);
-    if (userGroup == "Sales" || userGroup == "Sales Manager" || userGroup == "Easyfis Staff") {
-      this.crmLead = true;
-    }
-    if (userGroup == "Delivery" || userGroup == "Delivery Manager" || userGroup == "Easyfis Staff") {
-      this.crmSalesDelivery = true;
-    }
-    if (userGroup == "Support" || userGroup == "Support Manager" || userGroup == "Easyfis Staff" || userGroup == "Customer") {
-      this.crmSupport = true;
-    }
-    if (userGroup == "Easyfis Staff" || userGroup == "Delivery Manager" || userGroup == "Sales Manager" || userGroup == "Support Manager") {
-      this.crmActivity = true;
-    }
-    if (userGroup == "Easyfis Staff" || userGroup == "Delivery Manager" || userGroup == "Sales Manager" || userGroup == "Support Manager") {
-      this.crmReport = true;
-    }
-
-    if (userGroup == "Easyfis Staff" && this.username.toLowerCase() == 'admin') {
-      this.crmAdmin = true;
-    }
-    // if (this.securityService.openPage("CRMLead") == true) {
-    //   this.crmLead = true;
-    // }
-    // if (this.securityService.openPage("CRMSalesDelivery") == true) {
-    //   this.crmSalesDelivery = true;
-    // }
-    // if (this.securityService.openPage("CRMSupport") == true) {
-    //   this.crmSupport = true;
-    // }
-    // if (this.securityService.openPage("CRMActivity") == true) {
-    //   this.crmActivity = true;
-    // }
-    // if (this.securityService.openPage("CRMReport") == true) {
-    //   this.crmReport = true;
-    // }
-    // if (this.securityService.openPage("CRMReport") == true) {
-    //   this.crmReport = true;
-    // }
-    // if (this.securityService.openPage("CRMAdmin") == true) {
-    //   this.crmAdmin = true;
-    // }
+    setTimeout(() => {
+      this.username = localStorage.getItem("username");
+      if (this.securityService.openGroupPage("Lead") == true) {
+        this.crmLead = true;
+      }
+      if (this.securityService.openGroupPage("Delivery") == true) {
+        this.crmSalesDelivery = true;
+      }
+      if (this.securityService.openGroupPage("Support") == true) {
+        this.crmSupport = true;
+      }
+      if (this.securityService.openGroupPage("Activity") == true) {
+        this.crmActivity = true;
+      }
+      if (this.securityService.openGroupPage("Report") == true) {
+        this.crmReport = true;
+      }
+      if (this.securityService.openGroupPage("Admin") == true) {
+        this.crmAdmin = true;
+      }
+    }, 1000);
   }
 
-  public btnSignOutlick(deleltestatusDetailModalTemplate: TemplateRef<any>): void {
-    this.logOutModalRef = this.modalService.show(deleltestatusDetailModalTemplate, {
+  public btnSignOutlick(logOutModalTemplate: TemplateRef<any>): void {
+    this.logOutModalRef = this.modalService.show(logOutModalTemplate, {
       backdrop: true,
       ignoreBackdropClick: true,
       class: "modal-sm"
