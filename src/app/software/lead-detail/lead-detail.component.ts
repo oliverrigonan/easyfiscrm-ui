@@ -17,6 +17,10 @@ import { BsModalRef } from 'ngx-bootstrap/modal/bs-modal-ref.service';
 import { LeadDetailActivityModel } from './lead-detail-activitiy.model';
 import { LeadPrintDialogComponent } from './lead-print-dialog/lead-print-dialog.component';
 import { LeadActivityPrintDialogComponent } from './lead-activity-print-dialog/lead-activity-print-dialog.component';
+import { DocumentModel } from '../document/document.model';
+import { DocumentService } from '../document/document.service';
+import { DocumentDeleteComponent } from '../document/document-delete/document-delete.component';
+import { LeadDocumentDetailComponent } from '../document/lead-document-detail/lead-document-detail.component';
 
 @Component({
   selector: 'app-lead-detail',
@@ -31,7 +35,8 @@ export class LeadDetailComponent implements OnInit {
     private activatedRoute: ActivatedRoute,
     private router: Router,
     private modalService: BsModalService,
-    public casePrintCaseDialog: MatDialog,
+    public caseDetailCaseDialog: MatDialog,
+    private documentService: DocumentService
   ) { }
 
   public cboAssignedToUsersSub: any;
@@ -441,38 +446,38 @@ export class LeadDetailComponent implements OnInit {
 
   public listActivity(): void {
     if (!this.isDataLoaded) {
-      setTimeout(() => {
-        this.listActivityObservableArray = new ObservableArray();
-        this.listActivityCollectionView = new CollectionView(this.listActivityObservableArray);
-        this.listActivityCollectionView.pageSize = 15;
-        this.listActivityCollectionView.trackChanges = true;
-        this.listActivityCollectionView.refresh();
-        this.listActivityFlexGrid.refresh();
+      this.listActivityObservableArray = new ObservableArray();
+      this.listActivityCollectionView = new CollectionView(this.listActivityObservableArray);
+      this.listActivityCollectionView.pageSize = 15;
+      this.listActivityCollectionView.trackChanges = true;
+      this.listActivityCollectionView.refresh();
+      this.listActivityFlexGrid.refresh();
 
-        this.isActivityProgressBarHidden = false;
+      this.isActivityProgressBarHidden = false;
 
-        let id: number = 0;
-        this.activatedRoute.params.subscribe(params => { id = params["id"]; });
+      let id: number = 0;
+      this.activatedRoute.params.subscribe(params => { id = params["id"]; });
 
-        this.leadDetailService.listActivity(id);
-        this.listActivitySub = this.leadDetailService.listActivityObservable.subscribe(
-          data => {
-            if (data.length > 0) {
-              this.listActivityObservableArray = data;
-              this.listActivityCollectionView = new CollectionView(this.listActivityObservableArray);
-              this.listActivityCollectionView.pageSize = this.listActivityPageIndex;
-              this.listActivityCollectionView.trackChanges = true;
-              this.listActivityCollectionView.refresh();
-              this.listActivityFlexGrid.refresh();
-            }
+      this.leadDetailService.listActivity(id);
+      this.listActivitySub = this.leadDetailService.listActivityObservable.subscribe(
+        data => {
+          if (data.length > 0) {
+            this.listActivityObservableArray = data;
+            this.listActivityCollectionView = new CollectionView(this.listActivityObservableArray);
+            this.listActivityCollectionView.pageSize = this.listActivityPageIndex;
+            this.listActivityCollectionView.trackChanges = true;
+          }
 
+          setTimeout(() => {
+            this.listActivityCollectionView.refresh();
+            this.listActivityFlexGrid.refresh();
             this.isDataLoaded = true;
             this.isActivityProgressBarHidden = true;
+          }, 300);
 
-            if (this.listActivitySub != null) this.listActivitySub.unsubscribe();
-          }
-        );
-      }, 100);
+          if (this.listActivitySub != null) this.listActivitySub.unsubscribe();
+        }
+      );
     }
   }
 
@@ -718,7 +723,7 @@ export class LeadDetailComponent implements OnInit {
     let LDId: number = 0;
     this.activatedRoute.params.subscribe(params => { LDId = params["id"]; });
 
-    this.casePrintCaseDialog.open(LeadPrintDialogComponent, {
+    const printCaseDialog = this.caseDetailCaseDialog.open(LeadPrintDialogComponent, {
       width: '1000px',
       data: { objId: LDId },
       disableClose: true
@@ -730,16 +735,193 @@ export class LeadDetailComponent implements OnInit {
     currentActivityId = this.listActivityCollectionView.currentItem.Id;
     this.activitiyModalRef.hide()
 
-    this.casePrintCaseDialog.open(LeadActivityPrintDialogComponent, {
+    const printCaseDialog = this.caseDetailCaseDialog.open(LeadActivityPrintDialogComponent, {
       width: '1000px',
       data: { objId: currentActivityId },
       disableClose: true
+    });
+
+    printCaseDialog.afterClosed().subscribe(result => {
     });
   }
 
   ngOnInit() {
     this.createCboProduct();
-    this.createCboShowNumberOfRows();
+  }
+
+
+
+  public listDocumentObservableArray: ObservableArray = new ObservableArray();
+  public listDocumentCollectionView: CollectionView = new CollectionView(this.listDocumentObservableArray);
+  public listDocumentageIndex: number = 15;
+  @ViewChild('listDocumentFlexGrid') listDocumentFlexGrid: WjFlexGrid;
+  public isDocumentProgressBarHidden = false;
+  public isDocumentDataLoaded: boolean = false;
+
+  public listDocumentSub: any;
+
+  private documentModel: DocumentModel = {
+    Id: 0,
+    DocumentName: '',
+    DocumentURL: '',
+    DocumentGroup: '',
+    DateUploaded: new Date(),
+    Particulars: '',
+    CreatedByUserId: 0,
+    CreatedByUser: '',
+    CreatedDateTime: '',
+    UpdatedByUserId: 0,
+    UpdatedByUser: '',
+    UpdatedDateTime: ''
+  }
+
+  public listDocument(): void {
+    setTimeout(() => {
+      if (!this.isDocumentDataLoaded) {
+        this.listDocumentObservableArray = new ObservableArray();
+        this.listDocumentCollectionView = new CollectionView(this.listDocumentObservableArray);
+        this.listDocumentCollectionView.pageSize = 15;
+        this.listDocumentCollectionView.trackChanges = true;
+        this.listDocumentCollectionView.refresh();
+        this.listDocumentFlexGrid.refresh();
+
+        this.isDocumentProgressBarHidden = true;
+
+        this.documentService.listDocument("Sales");
+        this.listDocumentSub = this.documentService.listDocumentObservable.subscribe(
+          data => {
+            if (data.length > 0) {
+              this.listDocumentObservableArray = data;
+              this.listDocumentCollectionView = new CollectionView(this.listDocumentObservableArray);
+              this.listDocumentCollectionView.pageSize = this.listDocumentageIndex;
+              this.listDocumentCollectionView.trackChanges = true;
+            }
+
+            setTimeout(() => {
+              this.listDocumentCollectionView.refresh();
+              this.listDocumentFlexGrid.refresh();
+              this.isDocumentDataLoaded = true;
+              this.isDocumentProgressBarHidden = true;
+            }, 300);
+
+            console.log('Client', this.listDocumentObservableArray);
+
+            if (this.listDocumentSub != null) this.listDocumentSub.unsubscribe();
+          });
+      }
+    }, 300);
+  }
+
+  public btnAddDocument(): void {
+    this.isDocumentDataLoaded = false;
+    const caseDetailDialogRef = this.caseDetailCaseDialog.open(LeadDocumentDetailComponent, {
+      width: '1200px',
+      height: '80%',
+      data: {
+        objDialogTitle: "Add Lead Document",
+        objDialogEvent: "add",
+        objDialogGroupDocument: "Sales",
+        objCaseModel: this.documentModel
+      },
+      disableClose: true
+    });
+
+    caseDetailDialogRef.afterClosed().subscribe(result => {
+      if (result.data == 200) {
+        this.listDocument();
+      }
+      else {
+        this.isDocumentDataLoaded = true;
+      }
+    });
+  }
+
+  public btnEditDocument(): void {
+    this.isDocumentDataLoaded = false;
+
+    let currentDocument = this.listDocumentCollectionView.currentItem;
+    this.documentModel.Id = currentDocument.Id;
+    this.documentModel.DocumentName = currentDocument.DocumentName;
+    this.documentModel.DocumentURL = currentDocument.DocumentURL;
+    this.documentModel.DocumentGroup = currentDocument.DocumentGroup;
+    this.documentModel.DateUploaded = currentDocument.DateUploaded;
+    this.documentModel.Particulars = currentDocument.Particulars;
+    this.documentModel.CreatedByUserId = currentDocument.CreatedByUserId;
+    this.documentModel.CreatedByUser = currentDocument.CreatedByUser;
+    this.documentModel.CreatedDateTime = currentDocument.CreatedDateTime;
+    this.documentModel.UpdatedByUserId = currentDocument.UpdatedByUserId;
+    this.documentModel.UpdatedByUser = currentDocument.UpdatedByUser;
+    this.documentModel.UpdatedDateTime = currentDocument.UpdatedDateTime;
+
+    const caseDetailDialogRef = this.caseDetailCaseDialog.open(LeadDocumentDetailComponent, {
+      width: '1200px',
+      height: '80%',
+      data: {
+        objDialogTitle: "Edit Lead Document",
+        objDialogEvent: "edit",
+        objDialogGroupDocument: "Sales",
+        objCaseModel: this.documentModel
+      },
+      disableClose: true
+    });
+
+    caseDetailDialogRef.afterClosed().subscribe(result => {
+      if (result.data == 200) {
+        console.log('Client', result.data == 200);
+        this.listDocument();
+        this.clearDataDocumentModel();
+      }
+      else {
+        this.isDocumentDataLoaded = true;
+        this.clearDataDocumentModel();
+      }
+    });
+  }
+
+  private clearDataDocumentModel(): void {
+    this.documentModel.Id = 0;
+    this.documentModel.DocumentName = '';
+    this.documentModel.DocumentURL = '';
+    this.documentModel.DocumentGroup = '';
+    this.documentModel.DateUploaded = new Date();
+    this.documentModel.Particulars = '';
+    this.documentModel.CreatedByUserId = 0;
+    this.documentModel.CreatedByUser = '';
+    this.documentModel.CreatedDateTime = '';
+    this.documentModel.UpdatedByUserId = 0;
+    this.documentModel.UpdatedByUser = '';
+    this.documentModel.UpdatedDateTime = '';
+  }
+
+  public btnDeleteDocument(): void {
+    this.isDocumentDataLoaded = false;
+
+    let currentDocument = this.listDocumentCollectionView.currentItem;
+    this.documentModel.Id = currentDocument.Id;
+    this.documentModel.DocumentName = currentDocument.DocumentName;
+
+    const caseDetailDialogRef = this.caseDetailCaseDialog.open(DocumentDeleteComponent, {
+      width: '400px',
+      height: '200px',
+      data: {
+        objDialogTitle: "Delete Lead Document",
+        objDialogEvent: "delete",
+        objDialogGroupDocument: "Sales",
+        objCaseModel: this.documentModel
+      },
+      disableClose: true
+    });
+
+    caseDetailDialogRef.afterClosed().subscribe(result => {
+      if (result.data == 200) {
+        this.listDocument();
+        this.clearDataDocumentModel();
+      }
+      else {
+        this.isDocumentDataLoaded = true;
+        this.clearDataDocumentModel();
+      }
+    });
   }
 
   ngOnDestroy() {
@@ -755,5 +937,7 @@ export class LeadDetailComponent implements OnInit {
     if (this.listActivitySub != null) this.listActivitySub.unsubscribe();
     if (this.saveActivitySub != null) this.saveActivitySub.unsubscribe();
     if (this.deleteActivitySub != null) this.deleteActivitySub.unsubscribe();
+    if (this.listDocumentSub != null) this.listDocumentSub.unsubscribe();
+
   }
 }

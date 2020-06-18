@@ -2,6 +2,7 @@ import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { PdfViewerModule } from 'ng2-pdf-viewer';
+import { NgxDocViewerModule } from 'ngx-doc-viewer';
 
 import { SoftwareRoutingModule } from './software-routing.module';
 import { SoftwareRouterActivate } from './software.router.activate';
@@ -18,7 +19,7 @@ import { MatMenuModule } from '@angular/material/menu';
 import { MatDialogModule } from '@angular/material/dialog';
 import { MatButtonModule } from '@angular/material/button';
 import { MatToolbarModule } from '@angular/material/toolbar';
-import {MatDividerModule} from '@angular/material/divider';
+import { MatDividerModule } from '@angular/material/divider';
 
 import { WjGridFilterModule } from 'wijmo/wijmo.angular2.grid.filter';
 import { WjGridModule } from 'wijmo/wijmo.angular2.grid';
@@ -44,9 +45,36 @@ import { LeadActivityPrintDialogComponent } from './lead-detail/lead-activity-pr
 import { SalesDeliveryActivityPrintDialogComponent } from './sales-detail/sales-delivery-activity-print-dialog/sales-delivery-activity-print-dialog.component';
 import { SupportDetailActivityPrintDialogComponent } from './support-detail/support-detail-activity-print-dialog/support-detail-activity-print-dialog.component';
 import { SoftwareRouteReuseStrategy } from './software-route-reuse-strategy';
+import { DocumentDeleteComponent } from './document/document-delete/document-delete.component';
+import { LeadDocumentDetailComponent } from './document/lead-document-detail/lead-document-detail.component';
 
 @NgModule({
-  declarations: [LayoutComponent, DashboardComponent, LeadComponent, LeadDetailComponent, SalesListComponent, SalesDetailComponent, SupportListComponent, SupportDetailComponent, LeadReportComponent, SalesdeliveryReportComponent, SupportReportComponent, ActivityReportComponent, ActivityComponent, UserComponent, LeadPrintDialogComponent, ProductComponent, StatusComponent, SalesDetailPrintDialogComponent, SupportDetailPrintDialogComponent, LeadActivityPrintDialogComponent, SalesDeliveryActivityPrintDialogComponent, SupportDetailActivityPrintDialogComponent ],
+  declarations: [
+    LayoutComponent,
+    DashboardComponent,
+    LeadComponent,
+    LeadDetailComponent,
+    SalesListComponent,
+    SalesDetailComponent,
+    SupportListComponent,
+    SupportDetailComponent,
+    LeadReportComponent,
+    SalesdeliveryReportComponent,
+    SupportReportComponent,
+    ActivityReportComponent,
+    ActivityComponent,
+    UserComponent,
+    LeadPrintDialogComponent,
+    ProductComponent,
+    StatusComponent,
+    SalesDetailPrintDialogComponent,
+    SupportDetailPrintDialogComponent,
+    LeadActivityPrintDialogComponent,
+    SalesDeliveryActivityPrintDialogComponent,
+    SupportDetailActivityPrintDialogComponent,
+    LeadDocumentDetailComponent,
+    DocumentDeleteComponent
+  ],
   imports: [
     CommonModule,
     FormsModule,
@@ -64,6 +92,7 @@ import { SoftwareRouteReuseStrategy } from './software-route-reuse-strategy';
     WjInputModule,
     ModalModule.forRoot(),
     PdfViewerModule,
+    NgxDocViewerModule
   ],
   providers: [
     SoftwareRouterActivate,
@@ -74,7 +103,9 @@ import { SoftwareRouteReuseStrategy } from './software-route-reuse-strategy';
     SupportDetailPrintDialogComponent,
     LeadActivityPrintDialogComponent,
     SalesDeliveryActivityPrintDialogComponent,
-    SupportDetailActivityPrintDialogComponent
+    SupportDetailActivityPrintDialogComponent,
+    LeadDocumentDetailComponent,
+    DocumentDeleteComponent
   ]
 })
 export class SoftwareModule { }

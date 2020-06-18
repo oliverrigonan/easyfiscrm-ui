@@ -15,6 +15,10 @@ import { SalesDetailService } from './sales-detail.service';
 import { SalesDetailActivityModel } from './sales-detail-activitiy.model';
 import { SalesDetailPrintDialogComponent } from './sales-detail-print-dialog/sales-detail-print-dialog.component';
 import { SalesDeliveryActivityPrintDialogComponent } from './sales-delivery-activity-print-dialog/sales-delivery-activity-print-dialog.component';
+import { DocumentModel } from '../document/document.model';
+import { DocumentService } from '../document/document.service';
+import { LeadDocumentDetailComponent } from '../document/lead-document-detail/lead-document-detail.component';
+import { DocumentDeleteComponent } from '../document/document-delete/document-delete.component';
 
 @Component({
   selector: 'app-sales-detail',
@@ -29,8 +33,8 @@ export class SalesDetailComponent implements OnInit {
     private activatedRoute: ActivatedRoute,
     private router: Router,
     private modalService: BsModalService,
-    public casePrintCaseDialog: MatDialog,
-
+    public caseDetailCaseDialog: MatDialog,
+    private documentService: DocumentService
   ) { }
 
   public isLoadingSpinnerHidden: boolean = false;
@@ -632,37 +636,36 @@ export class SalesDetailComponent implements OnInit {
   // ========
   public listActivity(): void {
     if (!this.isDataLoaded) {
-      setTimeout(() => {
-        this.listActivityObservableArray = new ObservableArray();
-        this.listActivityCollectionView = new CollectionView(this.listActivityObservableArray);
-        this.listActivityCollectionView.pageSize = 15;
-        this.listActivityCollectionView.trackChanges = true;
-        this.listActivityCollectionView.refresh();
-        this.listActivityFlexGrid.refresh();
+      this.listActivityObservableArray = new ObservableArray();
+      this.listActivityCollectionView = new CollectionView(this.listActivityObservableArray);
+      this.listActivityCollectionView.pageSize = 15;
+      this.listActivityCollectionView.trackChanges = true;
+      this.listActivityCollectionView.refresh();
+      this.listActivityFlexGrid.refresh();
 
-        this.isProgressBarHidden = false;
+      this.isProgressBarHidden = false;
 
-        let id: number = 0;
-        this.activatedRoute.params.subscribe(params => { id = params["id"]; });
+      let id: number = 0;
+      this.activatedRoute.params.subscribe(params => { id = params["id"]; });
 
-        this.salesDetailService.listActivity(id);
-        this.listActivitySub = this.salesDetailService.listActivityObservable.subscribe(
-          data => {
-            if (data.length > 0) {
-              this.listActivityObservableArray = data;
-              this.listActivityCollectionView = new CollectionView(this.listActivityObservableArray);
-              this.listActivityCollectionView.pageSize = this.listActivityPageIndex;
-              this.listActivityCollectionView.trackChanges = true;
-              this.listActivityCollectionView.refresh();
-              this.listActivityFlexGrid.refresh();
-            }
-
+      this.salesDetailService.listActivity(id);
+      this.listActivitySub = this.salesDetailService.listActivityObservable.subscribe(
+        data => {
+          if (data.length > 0) {
+            this.listActivityObservableArray = data;
+            this.listActivityCollectionView = new CollectionView(this.listActivityObservableArray);
+            this.listActivityCollectionView.pageSize = this.listActivityPageIndex;
+            this.listActivityCollectionView.trackChanges = true;
+          }
+          setTimeout(() => {
+            this.listActivityCollectionView.refresh();
+            this.listActivityFlexGrid.refresh();
             this.isDataLoaded = true;
             this.isProgressBarHidden = true;
-            if (this.listActivitySub != null) this.listActivitySub.unsubscribe();
-          }
-        );
-      }, 100);
+          }, 300);
+          if (this.listActivitySub != null) this.listActivitySub.unsubscribe();
+        }
+      );
     }
   }
 
@@ -911,7 +914,7 @@ export class SalesDetailComponent implements OnInit {
     let id: number = 0;
     this.activatedRoute.params.subscribe(params => { id = params["id"]; });
 
-    this.casePrintCaseDialog.open(SalesDetailPrintDialogComponent, {
+    this.caseDetailCaseDialog.open(SalesDetailPrintDialogComponent, {
       width: '1000px',
       data: { objId: id },
       disableClose: true
@@ -923,10 +926,183 @@ export class SalesDetailComponent implements OnInit {
     currentActivityId = this.listActivityCollectionView.currentItem.Id;
     this.activitiyModalRef.hide()
 
-    this.casePrintCaseDialog.open(SalesDeliveryActivityPrintDialogComponent, {
+    this.caseDetailCaseDialog.open(SalesDeliveryActivityPrintDialogComponent, {
       width: '1000px',
       data: { objId: currentActivityId },
       disableClose: true
+    });
+  }
+
+  public listDocumentObservableArray: ObservableArray = new ObservableArray();
+  public listDocumentCollectionView: CollectionView = new CollectionView(this.listDocumentObservableArray);
+  public listDocumentageIndex: number = 15;
+  @ViewChild('listDocumentFlexGrid') listDocumentFlexGrid: WjFlexGrid;
+  public isDocumentProgressBarHidden = false;
+  public isDocumentDataLoaded: boolean = false;
+
+  public listDocumentSub: any;
+
+  private documentModel: DocumentModel = {
+    Id: 0,
+    DocumentName: '',
+    DocumentURL: '',
+    DocumentGroup: '',
+    DateUploaded: new Date(),
+    Particulars: '',
+    CreatedByUserId: 0,
+    CreatedByUser: '',
+    CreatedDateTime: '',
+    UpdatedByUserId: 0,
+    UpdatedByUser: '',
+    UpdatedDateTime: ''
+  }
+
+  public listDocument(): void {
+    setTimeout(() => {
+      if (!this.isDocumentDataLoaded) {
+        this.listDocumentObservableArray = new ObservableArray();
+        this.listDocumentCollectionView = new CollectionView(this.listDocumentObservableArray);
+        this.listDocumentCollectionView.pageSize = 15;
+        this.listDocumentCollectionView.trackChanges = true;
+        this.listDocumentCollectionView.refresh();
+        this.listDocumentFlexGrid.refresh();
+
+        this.isDocumentProgressBarHidden = true;
+
+        this.documentService.listDocument("Delivery");
+        this.listDocumentSub = this.documentService.listDocumentObservable.subscribe(
+          data => {
+            if (data.length > 0) {
+              this.listDocumentObservableArray = data;
+              this.listDocumentCollectionView = new CollectionView(this.listDocumentObservableArray);
+              this.listDocumentCollectionView.pageSize = this.listDocumentageIndex;
+              this.listDocumentCollectionView.trackChanges = true;
+            }
+
+            setTimeout(() => {
+              this.listDocumentCollectionView.refresh();
+              this.listDocumentFlexGrid.refresh();
+              this.isDocumentDataLoaded = true;
+              this.isDocumentProgressBarHidden = true;
+            }, 300);
+
+            console.log('Client', this.listDocumentObservableArray);
+
+            if (this.listDocumentSub != null) this.listDocumentSub.unsubscribe();
+          });
+      }
+    }, 300);
+  }
+
+  public btnAddDocument(): void {
+    this.isDocumentDataLoaded = false;
+    const caseDetailDialogRef = this.caseDetailCaseDialog.open(LeadDocumentDetailComponent, {
+      width: '1200px',
+      height: '80%',
+      data: {
+        objDialogTitle: "Add Delivery Document",
+        objDialogEvent: "add",
+        objDialogGroupDocument: "Delivery",
+        objCaseModel: this.documentModel
+      },
+      disableClose: true
+    });
+
+    caseDetailDialogRef.afterClosed().subscribe(result => {
+      if (result.data == 200) {
+        this.listDocument();
+      }
+      else {
+        this.isDocumentDataLoaded = true;
+      }
+    });
+  }
+
+  public btnEditDocument(): void {
+    this.isDocumentDataLoaded = false;
+
+    let currentDocument = this.listDocumentCollectionView.currentItem;
+    this.documentModel.Id = currentDocument.Id;
+    this.documentModel.DocumentName = currentDocument.DocumentName;
+    this.documentModel.DocumentURL = currentDocument.DocumentURL;
+    this.documentModel.DocumentGroup = currentDocument.DocumentGroup;
+    this.documentModel.DateUploaded = currentDocument.DateUploaded;
+    this.documentModel.Particulars = currentDocument.Particulars;
+    this.documentModel.CreatedByUserId = currentDocument.CreatedByUserId;
+    this.documentModel.CreatedByUser = currentDocument.CreatedByUser;
+    this.documentModel.CreatedDateTime = currentDocument.CreatedDateTime;
+    this.documentModel.UpdatedByUserId = currentDocument.UpdatedByUserId;
+    this.documentModel.UpdatedByUser = currentDocument.UpdatedByUser;
+    this.documentModel.UpdatedDateTime = currentDocument.UpdatedDateTime;
+
+    const caseDetailDialogRef = this.caseDetailCaseDialog.open(LeadDocumentDetailComponent, {
+      width: '1200px',
+      height: '80%',
+      data: {
+        objDialogTitle: "Edit Delivery Document",
+        objDialogEvent: "edit",
+        objDialogGroupDocument: "Delivery",
+        objCaseModel: this.documentModel
+      },
+      disableClose: true
+    });
+
+    caseDetailDialogRef.afterClosed().subscribe(result => {
+      if (result.data == 200) {
+        console.log('Client', result.data == 200);
+        this.listDocument();
+        this.clearDataDocumentModel();
+      }
+      else {
+        this.isDocumentDataLoaded = true;
+        this.clearDataDocumentModel();
+      }
+    });
+  }
+
+  private clearDataDocumentModel(): void {
+    this.documentModel.Id = 0;
+    this.documentModel.DocumentName = '';
+    this.documentModel.DocumentURL = '';
+    this.documentModel.DocumentGroup = '';
+    this.documentModel.DateUploaded = new Date();
+    this.documentModel.Particulars = '';
+    this.documentModel.CreatedByUserId = 0;
+    this.documentModel.CreatedByUser = '';
+    this.documentModel.CreatedDateTime = '';
+    this.documentModel.UpdatedByUserId = 0;
+    this.documentModel.UpdatedByUser = '';
+    this.documentModel.UpdatedDateTime = '';
+  }
+
+  public btnDeleteDocument(): void {
+    this.isDocumentDataLoaded = false;
+
+    let currentDocument = this.listDocumentCollectionView.currentItem;
+    this.documentModel.Id = currentDocument.Id;
+    this.documentModel.DocumentName = currentDocument.DocumentName;
+
+    const caseDetailDialogRef = this.caseDetailCaseDialog.open(DocumentDeleteComponent, {
+      width: '400px',
+      height: '200px',
+      data: {
+        objDialogTitle: "Delete Delivery Document",
+        objDialogEvent: "delete",
+        objDialogGroupDocument: "Delivery",
+        objCaseModel: this.documentModel
+      },
+      disableClose: true
+    });
+
+    caseDetailDialogRef.afterClosed().subscribe(result => {
+      if (result.data == 200) {
+        this.listDocument();
+        this.clearDataDocumentModel();
+      }
+      else {
+        this.isDocumentDataLoaded = true;
+        this.clearDataDocumentModel();
+      }
     });
   }
 

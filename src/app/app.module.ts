@@ -19,7 +19,7 @@ import { SoftwareRouteReuseStrategy } from './software/software-route-reuse-stra
 
 @NgModule({
   declarations: [
-    AppComponent
+    AppComponent,
   ],
   imports: [
     BrowserModule,

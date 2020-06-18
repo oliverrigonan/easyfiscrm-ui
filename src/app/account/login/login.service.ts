@@ -32,6 +32,7 @@ export class LoginService {
         localStorage.setItem('username', response["userName"]);
 
         this.getUserRights(response["userName"]);
+        this.getUserGroup(response["userName"]);
         this.loginSource.next([true, "Login Successful."]);
       },
       error => {
@@ -73,6 +74,26 @@ export class LoginService {
           }
         }
         localStorage.setItem('userRights', JSON.stringify(userRights));
+      }
+    );
+  }
+
+  public getUserGroup(username: string): void {
+
+    let url = this.defaultAPIHostURL + '/token';
+    let options = {
+      headers: new HttpHeaders({
+        'Content-Type': 'application/json',
+        'Authorization': 'Bearer ' + localStorage.getItem('access_token')
+      })
+    };
+
+    let userGroup: any;
+
+    this.httpClient.get(this.defaultAPIHostURL + "/api/crm/user/userGroup/" + username, options).subscribe(
+      response => {
+        let result = response
+        localStorage.setItem('userGroup', result.toString());
       }
     );
   }

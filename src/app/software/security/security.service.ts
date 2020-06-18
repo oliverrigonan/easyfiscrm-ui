@@ -23,4 +23,19 @@ export class SecurityService {
     }
     return openFlag;
   }
+
+  public getGroup() {
+    let group = '';
+    if (localStorage.getItem("userGroup") != null) {
+      try {
+        let userGroup = JSON.parse(localStorage.getItem("userGroup"));
+        for (var i = 0; i <= userGroup.length - 1; i++) {
+          group = userGroup[i].userGroup;
+        }
+      } catch (e) {
+        console.log(e);
+      }
+    }
+    return group;
+  }
 }

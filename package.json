@@ -28,10 +28,11 @@
     "jquery": "^3.3.1",
     "ng2-pdf-viewer": "^6.0.2",
     "ngx-bootstrap": "^3.2.0",
+    "ngx-doc-viewer": "^1.1.0",
     "ngx-toastr": "^9.1.1",
     "popper.js": "^1.16.1",
     "rxjs": "~6.3.3",
-    "tslib": "^1.9.0",
+    "tslib": "^1.13.0",
     "wijmo": "^5.20183.568",
     "zone.js": "~0.8.26"
   },

@@ -84,7 +84,7 @@ export class LayoutComponent implements OnInit {
       } else if (this.router.url == "/software/setup/status") {
         this.ToolbarTitle = "Status";
         toolBarImage.setAttribute("src", "../../assets/img/icons/status.png");
-      } 
+      }
       else {
 
         // this.ToolbarTitle = "Easyfis CRM";
@@ -102,6 +102,7 @@ export class LayoutComponent implements OnInit {
     localStorage.removeItem('token_type');
     localStorage.removeItem('username');
     localStorage.removeItem('userRights');
+    localStorage.removeItem('userGroup');
     this.username = "";
 
     location.reload();
@@ -110,27 +111,48 @@ export class LayoutComponent implements OnInit {
   ngOnInit() {
     this.openSideBar();
     this.username = localStorage.getItem("username");
-    if (this.securityService.openPage("CRMLead") == true) {
+    let userGroup = localStorage.getItem("userGroup");
+    console.log(userGroup);
+    if (userGroup == "Sales" || userGroup == "Sales Manager" || userGroup == "Easyfis Staff") {
       this.crmLead = true;
     }
-    if (this.securityService.openPage("CRMSalesDelivery") == true) {
+    if (userGroup == "Delivery" || userGroup == "Delivery Manager" || userGroup == "Easyfis Staff") {
       this.crmSalesDelivery = true;
     }
-    if (this.securityService.openPage("CRMSupport") == true) {
+    if (userGroup == "Support" || userGroup == "Support Manager" || userGroup == "Easyfis Staff" || userGroup == "Customer") {
       this.crmSupport = true;
     }
-    if (this.securityService.openPage("CRMActivity") == true) {
+    if (userGroup == "Easyfis Staff" || userGroup == "Delivery Manager" || userGroup == "Sales Manager" || userGroup == "Support Manager") {
       this.crmActivity = true;
     }
-    if (this.securityService.openPage("CRMReport") == true) {
+    if (userGroup == "Easyfis Staff" || userGroup == "Delivery Manager" || userGroup == "Sales Manager" || userGroup == "Support Manager") {
       this.crmReport = true;
     }
-    if (this.securityService.openPage("CRMReport") == true) {
-      this.crmReport = true;
-    }
-    if (this.securityService.openPage("CRMAdmin") == true) {
+
+    if (userGroup == "Easyfis Staff" && this.username.toLowerCase() == 'admin') {
       this.crmAdmin = true;
     }
+    // if (this.securityService.openPage("CRMLead") == true) {
+    //   this.crmLead = true;
+    // }
+    // if (this.securityService.openPage("CRMSalesDelivery") == true) {
+    //   this.crmSalesDelivery = true;
+    // }
+    // if (this.securityService.openPage("CRMSupport") == true) {
+    //   this.crmSupport = true;
+    // }
+    // if (this.securityService.openPage("CRMActivity") == true) {
+    //   this.crmActivity = true;
+    // }
+    // if (this.securityService.openPage("CRMReport") == true) {
+    //   this.crmReport = true;
+    // }
+    // if (this.securityService.openPage("CRMReport") == true) {
+    //   this.crmReport = true;
+    // }
+    // if (this.securityService.openPage("CRMAdmin") == true) {
+    //   this.crmAdmin = true;
+    // }
   }
 
   public btnSignOutlick(deleltestatusDetailModalTemplate: TemplateRef<any>): void {

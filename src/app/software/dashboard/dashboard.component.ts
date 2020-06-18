@@ -138,7 +138,7 @@ export class DashboardComponent implements OnInit {
     pieSeries.slices.template.propertyFields.isActive = "pulled";
     pieSeries.ticks.template.disabled = true;
     pieSeries.labels.template.disabled = true;
-    
+
     this.chart.legend = new am4charts.Legend();
     this.chart.legend.valueLabels.template.align = "left";
     this.chart.legend.valueLabels.template.textAlign = "end";
@@ -207,25 +207,26 @@ export class DashboardComponent implements OnInit {
   }
 
   ngOnInit() {
-    if (this.securityService.openPage("CRMLead") == true) {
+    let username = localStorage.getItem("username");
+    let userGroup = localStorage.getItem("userGroup");
+    console.log(userGroup);
+    if (userGroup == "Sales" || userGroup == "Sales Manager" || userGroup == "Easyfis Staff") {
       this.crmLead = true;
     }
-    if (this.securityService.openPage("CRMSalesDelivery") == true) {
+    if (userGroup == "Delivery" || userGroup == "Delivery Manager" || userGroup == "Easyfis Staff") {
       this.crmSalesDelivery = true;
     }
-    if (this.securityService.openPage("CRMSupport") == true) {
+    if (userGroup == "Support" || userGroup == "Support Manager" || userGroup == "Easyfis Staff" || userGroup == "Customer") {
       this.crmSupport = true;
     }
-    if (this.securityService.openPage("CRMActivity") == true) {
+    if (userGroup == "Easyfis Staff" || userGroup == "Delivery Manager" || userGroup == "Sales Manager" || userGroup == "Support Manager") {
       this.crmActivity = true;
     }
-    if (this.securityService.openPage("CRMReport") == true) {
+    if (userGroup == "Easyfis Staff" || userGroup == "Delivery Manager" || userGroup == "Sales Manager" || userGroup == "Support Manager") {
       this.crmReport = true;
     }
-    if (this.securityService.openPage("CRMReport") == true) {
-      this.crmReport = true;
-    }
-    if (this.securityService.openPage("CRMAdmin") == true) {
+
+    if (userGroup == "Easyfis Staff" && username.toLowerCase() == 'admin') {
       this.crmAdmin = true;
     }
     this.getFirsDayOftheMonth();

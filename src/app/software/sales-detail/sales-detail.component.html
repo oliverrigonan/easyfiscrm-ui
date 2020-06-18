@@ -11,6 +11,10 @@
       <a class="nav-link" id="activities-tab" data-toggle="tab" href="#activities" role="tab" aria-controls="activities"
         aria-selected="false" (click)="listActivity()">Activities</a>
     </li>
+    <li class="nav-item" [hidden]="isActivityTabHidden">
+      <a class="nav-link" id="document-tab" data-toggle="tab" href="#document" role="tab" aria-controls="document"
+        aria-selected="false" (click)="listDocument()">Document</a>
+    </li>
   </ul>
 
   <div class="tab-content" id="myTabContent">
@@ -233,7 +237,7 @@
             <tr>
               <td>
                 <div class="input-group">
-                  <div class="input-group-prepend">
+                  <!-- <div class="input-group-prepend">
                     <div class="input-group-text">
                       <b>
                         <i class="fa fa-table"></i>
@@ -244,7 +248,7 @@
                     [isRequired]="true" [displayMemberPath]="'rowString'" [selectedValuePath]="'rowNumber'"
                     (selectedIndexChanged)="cboShowNumberOfRowsOnSelectedIndexChanged(cboNumberOfRows.selectedValue)"
                     style="width: 140px;">
-                  </wj-combo-box>
+                  </wj-combo-box> -->
                 </div>
               </td>
               <td style="text-align: right;">
@@ -286,7 +290,8 @@
             </wj-flex-grid-column>
             <wj-flex-grid-column [header]="'Date'" [binding]="'ACDate'" [isReadOnly]="true" [width]="110">
             </wj-flex-grid-column>
-            <wj-flex-grid-column [header]="'Functional'" [binding]="'FunctionalUser'" [isReadOnly]="true" [width]="'2*'">
+            <wj-flex-grid-column [header]="'Functional'" [binding]="'FunctionalUser'" [isReadOnly]="true"
+              [width]="'2*'">
             </wj-flex-grid-column>
             <wj-flex-grid-column [header]="'Technical'" [binding]="'TechnicalUser'" [isReadOnly]="true" [width]="'2*'">
             </wj-flex-grid-column>
@@ -322,6 +327,94 @@
           </div>
           <div class="col-sm-8"></div>
 
+        </div>
+      </div>
+    </div>
+
+    <div class="tab-pane fade" id="document" role="tabpanel" aria-labelledby="document-tab" [hidden]="false">
+      <div class="card card-default">
+
+        <div class="card-header">
+          <table border="0" style="width: 100%; border: none;">
+            <tr>
+              <td>
+                <div class="input-group">
+                </div>
+              </td>
+              <td style="text-align: right;">
+
+                <button class="btn btn-primary" (click)="btnAddDocument()"
+                  style="margin-right: 5px;" id="btnAddDocument">
+                  <i class="fa fa-plus fa-fw"></i> Add
+                </button>
+                <button class="btn btn-danger" routerLink="/software/trn/lead" id="btnCloseActivity">
+                  <i class="fa fa-close fa-fw"></i> Close
+                </button>
+              </td>
+            </tr>
+          </table>
+        </div>
+        <div class="card-body">
+          <mat-progress-bar [hidden]="isDocumentProgressBarHidden" [color]="'primary'" [mode]="'indeterminate'">
+          </mat-progress-bar>
+          <wj-flex-grid #listDocumentFlexGrid [itemsSource]="listDocumentCollectionView" [selectionMode]="3"
+            [frozenColumns]="2">
+            <wj-flex-grid-filter></wj-flex-grid-filter>
+            <wj-flex-grid-column [header]="Edit" [isReadOnly]="true" [width]="80">
+              <ng-template wjFlexGridCellTemplate [cellType]="'Cell'">
+                <button type="button" class="btn btn-primary btn-block btn-xs" id="btnEditDocument"
+                  (click)="btnEditDocument()">
+                  <i class="fa fa-edit fa-fw"></i> Edit
+                </button>
+              </ng-template>
+            </wj-flex-grid-column>
+            <wj-flex-grid-column [header]="Delete" [isReadOnly]="true" [width]="90">
+              <ng-template wjFlexGridCellTemplate [cellType]="'Cell'">
+                <button type="button" class="btn btn-danger btn-block btn-xs" id="btnDeleteActivity" (click)="btnDeleteDocument()">
+                  <i class="fa fa-trash fa-fw"></i> Delete
+                </button>
+              </ng-template>
+            </wj-flex-grid-column>
+
+            <wj-flex-grid-column [header]="'Document'" [binding]="'DocumentName'" [isReadOnly]="true" [width]="'2*'">
+            </wj-flex-grid-column>
+
+            <wj-flex-grid-column [header]="'URL'" [binding]="'DocumentURL'" [isReadOnly]="true" [width]="'2*'">
+            </wj-flex-grid-column>
+
+            <wj-flex-grid-column [header]="'DocumentGroup'" [binding]="'DocumentGroup'" [isReadOnly]="true"
+              [width]="'2*'">
+            </wj-flex-grid-column>
+
+            <wj-flex-grid-column [header]="'Date Uploaded'" [binding]="'DateUploaded'" [isReadOnly]="true"
+              [width]="'2*'">
+            </wj-flex-grid-column>
+
+            <wj-flex-grid-column [header]="'Particulars'" [binding]="'Particulars'" [isReadOnly]="true" [width]="'2*'">
+            </wj-flex-grid-column>
+
+          </wj-flex-grid>
+        </div>
+
+        <div class="card-footer">
+          <div class="col-sm-4 btn-group" style="padding: 5px 0px 5px 0px;">
+            <button type="button" class="btn btn-secondary" (click)="listDocumentCollectionView.moveToFirstPage()">
+              <i class="fa fa-fast-backward"></i>
+            </button>
+            <button type="button" class="btn btn-secondary" (click)="listDocumentCollectionView.moveToPreviousPage()">
+              <i class="fa fa-step-backward"></i>
+            </button>
+            <button type="button" class="btn btn-secondary" disabled style="width:100px">
+              {{ listDocumentCollectionView.pageIndex + 1 }} / {{ listDocumentCollectionView.pageCount }}
+            </button>
+            <button type="button" class="btn btn-secondary" (click)="listDocumentCollectionView.moveToNextPage()">
+              <i class="fa fa-step-forward"></i>
+            </button>
+            <button type="button" class="btn btn-secondary" (click)="listDocumentCollectionView.moveToLastPage()">
+              <i class="fa fa-fast-forward"></i>
+            </button>
+          </div>
+          <div class="col-sm-8"></div>
         </div>
       </div>
     </div>
@@ -630,7 +723,8 @@
       id="btnConfirmDeleteAcitivity">
       <i class="fa fa-trash"></i> Delete
     </button>
-    <button type="button" class="btn btn-light" (click)="deleteActivitiyModalRef.hide()" id="btnCloseConfirmDeleteAcitivityModal">
+    <button type="button" class="btn btn-light" (click)="deleteActivitiyModalRef.hide()"
+      id="btnCloseConfirmDeleteAcitivityModal">
       <i class="fa fa-close"></i> Cancel
     </button>
   </div>
