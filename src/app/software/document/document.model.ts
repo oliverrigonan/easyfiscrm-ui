@@ -1,6 +1,7 @@
 export class DocumentModel {
     Id: number;
     DocumentName: string;
+    DocumentType: string;
     DocumentURL: string;
     DocumentGroup: string;
     DateUploaded: Date;

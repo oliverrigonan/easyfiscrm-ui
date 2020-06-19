@@ -5,3 +5,16 @@
 .mat-dialog-actions {
     justify-content: flex-end;
 }
+
+#documentFrame {
+    justify-content: center;
+}
+
+.select {
+    padding: 3px;
+}
+
+iframe{
+    width: 80% !important;
+    height: 80% !important;
+}

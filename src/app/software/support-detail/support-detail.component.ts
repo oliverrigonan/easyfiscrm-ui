@@ -804,6 +804,7 @@ export class SupportDetailComponent implements OnInit {
   private documentModel: DocumentModel = {
     Id: 0,
     DocumentName: '',
+    DocumentType: '',
     DocumentURL: '',
     DocumentGroup: '',
     DateUploaded: new Date(),
@@ -856,8 +857,8 @@ export class SupportDetailComponent implements OnInit {
   public btnAddDocument(): void {
     this.isDocumentDataLoaded = false;
     const caseDetailDialogRef = this.caseDetailCaseDialog.open(LeadDocumentDetailComponent, {
-      width: '1200px',
-      height: '80%',
+      width: '1350px',
+      height: '85%',
       data: {
         objDialogTitle: "Add Support Document",
         objDialogEvent: "add",
@@ -883,6 +884,7 @@ export class SupportDetailComponent implements OnInit {
     let currentDocument = this.listDocumentCollectionView.currentItem;
     this.documentModel.Id = currentDocument.Id;
     this.documentModel.DocumentName = currentDocument.DocumentName;
+    this.documentModel.DocumentType = currentDocument.DocumentType;
     this.documentModel.DocumentURL = currentDocument.DocumentURL;
     this.documentModel.DocumentGroup = currentDocument.DocumentGroup;
     this.documentModel.DateUploaded = currentDocument.DateUploaded;
@@ -895,10 +897,10 @@ export class SupportDetailComponent implements OnInit {
     this.documentModel.UpdatedDateTime = currentDocument.UpdatedDateTime;
 
     const caseDetailDialogRef = this.caseDetailCaseDialog.open(LeadDocumentDetailComponent, {
-      width: '1200px',
-      height: '80%',
+      width: '1350px',
+      height: '85%',
       data: {
-        objDialogTitle: "Edit Support Document",
+        objDialogTitle: "Support Document",
         objDialogEvent: "edit",
         objDialogGroupDocument: "Support",
         objCaseModel: this.documentModel
@@ -922,6 +924,7 @@ export class SupportDetailComponent implements OnInit {
   private clearDataDocumentModel(): void {
     this.documentModel.Id = 0;
     this.documentModel.DocumentName = '';
+    this.documentModel.DocumentType = '';
     this.documentModel.DocumentURL = '';
     this.documentModel.DocumentGroup = '';
     this.documentModel.DateUploaded = new Date();

@@ -29,6 +29,7 @@ export class DocumentDeleteComponent implements OnInit {
   private documentModel: DocumentModel = {
     Id: 0,
     DocumentName: '',
+    DocumentType: '',
     DocumentURL: '',
     DocumentGroup: '',
     DateUploaded: new Date(),

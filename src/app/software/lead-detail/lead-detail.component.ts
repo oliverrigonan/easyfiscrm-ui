@@ -21,6 +21,7 @@ import { DocumentModel } from '../document/document.model';
 import { DocumentService } from '../document/document.service';
 import { DocumentDeleteComponent } from '../document/document-delete/document-delete.component';
 import { LeadDocumentDetailComponent } from '../document/lead-document-detail/lead-document-detail.component';
+import { SecurityService } from '../security/security.service';
 
 @Component({
   selector: 'app-lead-detail',
@@ -36,8 +37,12 @@ export class LeadDetailComponent implements OnInit {
     private router: Router,
     private modalService: BsModalService,
     public caseDetailCaseDialog: MatDialog,
-    private documentService: DocumentService
+    private documentService: DocumentService,
+    private securityService: SecurityService
+
   ) { }
+
+  private isAdmin = false;
 
   public cboAssignedToUsersSub: any;
   public cboLeadAssignedToUsersObservableArray: ObservableArray = new ObservableArray();
@@ -745,7 +750,15 @@ export class LeadDetailComponent implements OnInit {
     });
   }
 
+  private documentEditButtonLabel = "Open";
+
   ngOnInit() {
+    setTimeout(() => {
+      if (this.securityService.openGroupPage("Admin") == true) {
+        this.isAdmin = true;
+        this.documentEditButtonLabel = "Edit"
+      }
+    }, 100);
     this.createCboProduct();
   }
 
@@ -763,6 +776,7 @@ export class LeadDetailComponent implements OnInit {
   private documentModel: DocumentModel = {
     Id: 0,
     DocumentName: '',
+    DocumentType: '',
     DocumentURL: '',
     DocumentGroup: '',
     DateUploaded: new Date(),
@@ -815,8 +829,8 @@ export class LeadDetailComponent implements OnInit {
   public btnAddDocument(): void {
     this.isDocumentDataLoaded = false;
     const caseDetailDialogRef = this.caseDetailCaseDialog.open(LeadDocumentDetailComponent, {
-      width: '1200px',
-      height: '80%',
+      width: '1350px',
+      height: '85%',
       data: {
         objDialogTitle: "Add Lead Document",
         objDialogEvent: "add",
@@ -842,6 +856,7 @@ export class LeadDetailComponent implements OnInit {
     let currentDocument = this.listDocumentCollectionView.currentItem;
     this.documentModel.Id = currentDocument.Id;
     this.documentModel.DocumentName = currentDocument.DocumentName;
+    this.documentModel.DocumentType = currentDocument.DocumentType;
     this.documentModel.DocumentURL = currentDocument.DocumentURL;
     this.documentModel.DocumentGroup = currentDocument.DocumentGroup;
     this.documentModel.DateUploaded = currentDocument.DateUploaded;
@@ -854,10 +869,10 @@ export class LeadDetailComponent implements OnInit {
     this.documentModel.UpdatedDateTime = currentDocument.UpdatedDateTime;
 
     const caseDetailDialogRef = this.caseDetailCaseDialog.open(LeadDocumentDetailComponent, {
-      width: '1200px',
-      height: '80%',
+      width: '1350px',
+      height: '85%',
       data: {
-        objDialogTitle: "Edit Lead Document",
+        objDialogTitle: "Lead Document",
         objDialogEvent: "edit",
         objDialogGroupDocument: "Sales",
         objCaseModel: this.documentModel
@@ -880,6 +895,7 @@ export class LeadDetailComponent implements OnInit {
 
   private clearDataDocumentModel(): void {
     this.documentModel.Id = 0;
+    this.documentModel.DocumentType = '';
     this.documentModel.DocumentName = '';
     this.documentModel.DocumentURL = '';
     this.documentModel.DocumentGroup = '';
@@ -933,7 +949,6 @@ export class LeadDetailComponent implements OnInit {
     if (this.cboProductSub != null) this.cboProductSub.unsubscribe();
     if (this.cboListActivityUsersSub != null) this.cboListActivityUsersSub.unsubscribe();
     if (this.cboListActivityStatusSub != null) this.cboListActivityStatusSub.unsubscribe();
-
     if (this.listActivitySub != null) this.listActivitySub.unsubscribe();
     if (this.saveActivitySub != null) this.saveActivitySub.unsubscribe();
     if (this.deleteActivitySub != null) this.deleteActivitySub.unsubscribe();

@@ -2,7 +2,7 @@
   {{ title }}
 </h1>
 <mat-divider></mat-divider>
-<div mat-dialog-content>
+<div mat-dialog-content style="height: 90%;">
   <div class="modal-body">
     <div [hidden]="isDocumentLoadingSpinnerHidden">
       <br /><br />
@@ -13,26 +13,43 @@
       <div class="row">
         <div class="col-lg-12">
           <div class="form-group row">
-            <label for="" class="col-sm-2 col-form-label form-group-label">document</label>
+            <label for="" class="col-sm-2 col-form-label form-group-label">Document</label>
             <div class="col-sm-10">
-              <input type="text" class="form-control" placeholder="Number..." [(ngModel)]="documentModel.DocumentName">
+              <input type="text" class="form-control" placeholder="Document..." [disabled]="!crmAdmin"
+                [(ngModel)]="documentModel.DocumentName">
             </div>
             <br /><br />
-            <label for="" class="col-sm-2 col-form-label form-group-label">DocumentURL</label>
+            <label for="" class="col-sm-2 col-form-label form-group-label">Document Type</label>
             <div class="col-sm-10">
-              <input type="text" class="form-control" (change)="addDocumentUrl()" placeholder="url..." [(ngModel)]="documentModel.DocumentURL">
+              <select [(ngModel)]="documentModel.DocumentType" class="form-control" [disabled]="!crmAdmin">
+                <option *ngFor="let docType of cboDocumentTypesObservable" value="{{docType.docType}}">
+                  {{ docType.docType }}
+                </option>
+              </select>
+              <!-- <wj-combo-box #cboDocType [(ngModel)]="documentModel.DocumentType"
+                [itemsSource]="cboDocumentTypesObservable" [isEditable]="false" [isRequired]="true"
+                [displayMemberPath]="'docType'" [selectedValuePath]="'docType'"
+                (selectedIndexChanged)="cboDocumentTypeSelectedIndexChanged(cboDocType.selectedValue)"
+                style="width: 40%; padding: 3px;">
+              </wj-combo-box> -->
             </div>
             <br /><br />
-            <label for="" class="col-sm-2 col-form-label form-group-label">DateUploaded</label>
+            <label for="" class="col-sm-2 col-form-label form-group-label">Document URL</label>
             <div class="col-sm-10">
-              <wj-input-date #cboDateUploadedDate format="MMMM dd, yyyy" [(ngModel)]="documentModel.DateUploaded"
-                style="width: 100%; padding: 3px;">
-              </wj-input-date>
+              <input type="text" class="form-control" placeholder="Document url..."
+                [(ngModel)]="documentModel.DocumentURL" [disabled]="!crmAdmin">
+            </div>
+            <br /><br />
+            <label for="" class="col-sm-2 col-form-label form-group-label">Date Uploaded</label>
+            <div class="col-sm-10">
+              <wj-input-date #cboDateUploadedDate format="MMMM dd, yyyy" [(ngModel)]="documentModel.DateUploaded" [disabled]="!crmAdmin"
+                style="width: 40%; padding: 3px;">
+              </wj-input-date >
             </div>
             <br /><br />
             <label for="" class="col-sm-2 col-form-label form-group-label">Particulars</label>
             <div class="col-sm-10">
-              <textarea type="text" class="form-control" placeholder="Particulars"
+              <textarea type="text" class="form-control" placeholder="Particulars..." [disabled]="!crmAdmin"
                 [(ngModel)]="documentModel.Particulars" rows="5">
               </textarea>
             </div>
@@ -41,14 +58,26 @@
       </div>
     </div>
   </div>
-  <ngx-doc-viewer name="printDoc" [url]="docUrl" viewer="url" style="width:100%;height:50vh;"></ngx-doc-viewer>
+
+  <div id="documentVideoFrame" *ngIf="showVideoDocument" class="col-sm-12" style="height:50vh;">
+
+  </div>
+  <div id="documentFrame"  *ngIf="showDocument"  class="col-sm-12" style="height:720px">
+    <ngx-doc-viewer name="printDoc" [url]="docUrl" viewer="url" class="col-sm-12" style="height:720px;">
+    </ngx-doc-viewer>
+  </div>
 </div>
 <mat-divider></mat-divider>
 <div mat-dialog-actions align="right">
-  <button mat-flat-button color="primary" align-self="right" style="margin-right: 5px;" (click)="btnSaveDocumentClick()"
+  <button mat-flat-button color="primary" align-self="right" style="margin-right: 5px;" (click)="btnSaveDocumentClick()" *ngIf="crmAdmin"
     id="btnSave">
     <i class="fa fa-save fa-fw"></i>
     Save
+  </button>
+  <button mat-flat-button color="primary" align-self="right" style="margin-right: 5px;" (click)="viewDocumentUrl()"
+    id="btnSave">
+    <i class="fa fa-file fa-fw"></i>
+    View
   </button>
   <button mat-flat-button color="warn" slot="end" (click)="btnCloseDocumentDialog()" id="btnCloseDialog">
     <i class="fa fa-close fa-fw"></i>Close

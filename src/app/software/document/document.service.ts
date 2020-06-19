@@ -41,6 +41,7 @@ export class DocumentService {
             listDocumentObservableArray.push({
               Id: results[i].Id,
               DocumentName: results[i].DocumentName,
+              DocumentType: results[i].DocumentType,
               DocumentURL: results[i].DocumentURL,
               DocumentGroup: results[i].DocumentGroup,
               DateUploaded: results[i].DateUploaded,
