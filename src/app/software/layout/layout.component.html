@@ -60,12 +60,12 @@
             </a>
             <mat-menu #menuReport="matMenu" xPosition="after" width="1000">
                 <button class="btn-submenu" mat-menu-item routerLink="/software/report/lead">
-                    <img src="../../../assets/img/icons/print.png" height="30" alt=""> &nbsp; Lead Report
+                    <img src="../../../assets/img/icons/print.png" height="30" alt="" *ngIf="crmLead"> &nbsp; Lead Report
                 </button>
-                <button class="btn-submenu" mat-menu-item routerLink="/software/report/sales/delivery">
+                <button class="btn-submenu" mat-menu-item routerLink="/software/report/sales/delivery" *ngIf="crmSalesDelivery">
                     <img src="../../../assets/img/icons/print.png" height="30" alt=""> &nbsp; Sales Delivery Report
                 </button>
-                <button class="btn-submenu" mat-menu-item routerLink="/software/report/support">
+                <button class="btn-submenu" mat-menu-item routerLink="/software/report/support" *ngIf="crmSupport">
                     <img src="../../../assets/img/icons/print.png" height="30" alt=""> &nbsp; Support Report
                 </button>
                 <button class="btn-submenu" mat-menu-item routerLink="/software/report/activity">

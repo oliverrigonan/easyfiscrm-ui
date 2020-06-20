@@ -21,6 +21,9 @@ export class DocumentService {
     })
   };
   public defaultAPIURLHost: string = this.appSettings.defaultAPIURLHost;
+
+  public documentTypeSubject = new Subject<ObservableArray>();
+  public documentTypeObservable = this.documentTypeSubject.asObservable();
   
   public listDocumentSubject = new Subject<ObservableArray>();
   public listDocumentObservable = this.listDocumentSubject.asObservable();
@@ -28,6 +31,23 @@ export class DocumentService {
   public saveDocumentObservable = this.saveDocumentSubject.asObservable();
   public deleteDocumentSubject = new Subject<string[]>();
   public deleteDocumentObservable = this.deleteDocumentSubject.asObservable();
+
+  public listDocumentType(): void {
+    let groupObservableArray = new ObservableArray();
+    this.documentTypeSubject.next(groupObservableArray);
+
+    this.httpClient.get(this.defaultAPIURLHost + "/api/crm/mst/document/list/doctype", this.options).subscribe(
+      response => {
+        var results = response;
+        if (results["length"] > 0) {
+          for (var i = 0; i <= results["length"] - 1; i++) {
+            groupObservableArray.push({ DocumentType: results[i].DocumentType });
+          }
+        }
+        this.documentTypeSubject.next(groupObservableArray);
+      }
+    );
+  }
 
   public listDocument(document: string): void {
     let listDocumentObservableArray = new ObservableArray();

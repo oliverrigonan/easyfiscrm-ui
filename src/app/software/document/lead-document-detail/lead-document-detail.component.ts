@@ -42,6 +42,7 @@ export class LeadDocumentDetailComponent implements OnInit {
   private isDocumentLoadingSpinnerHidden: boolean = false;
 
   private saveDocumentSub: any;
+  private cboDocumentTypeObservable: any;
 
   public docUrl: string;
 
@@ -81,12 +82,28 @@ export class LeadDocumentDetailComponent implements OnInit {
     this.getDocumentTypeList()
   }
 
-  private getDocumentTypeList() {
-    let statusObservableArray = new ObservableArray();
-    statusObservableArray.push({ docType: 'Document' });
-    statusObservableArray.push({ docType: 'Video' });
-    this.cboDocumentTypesObservable = statusObservableArray;
+  public getDocumentTypeList(): void {
+    let documentTypeObservableArray = new ObservableArray();
+    this.documentService.listDocumentType();
 
+
+    this.cboDocumentTypeObservable = this.documentService.documentTypeObservable.subscribe(
+      data => {
+        if (data.length > 0) {
+          for (var i = 0; i <= data.length - 1; ++i) {
+            documentTypeObservableArray.push(data[i]);
+          }
+        }
+
+        this.cboDocumentTypesObservable = documentTypeObservableArray;
+
+
+        setTimeout(() => {
+
+        });
+        if (this.cboDocumentTypeObservable != null) this.cboDocumentTypeObservable.unsubscribe();
+      }
+    );
     this.getDocumentData();
   }
 
@@ -102,37 +119,42 @@ export class LeadDocumentDetailComponent implements OnInit {
   }
 
   private btnSaveDocumentClick(): void {
-    let btnSave: Element = document.getElementById("btnSave");
-    (<HTMLButtonElement>btnSave).disabled = true;
 
-    this.documentService.saveDocument(this.documentModel, this.groupDocument);
-    this.saveDocumentSub = this.documentService.saveDocumentObservable.subscribe(
-      data => {
-        if (data[0] == "success") {
-          this.toastr.success("Successfully saved.", "Success");
-          this.caseLeadDocumentDialogRef.close({ data: 200 });
-          (<HTMLButtonElement>btnSave).disabled = false;
-        } else if (data[0] == "failed") {
-          this.toastr.error(data[1], "Error");
-          (<HTMLButtonElement>btnSave).disabled = false;
+    if (this.documentModel.DocumentName !== '' && this.documentModel.DocumentType !== '' && this.documentModel.DocumentURL !== '') {
+      let btnSave: Element = document.getElementById("btnSave");
+      (<HTMLButtonElement>btnSave).disabled = true;
+
+      this.documentService.saveDocument(this.documentModel, this.groupDocument);
+      this.saveDocumentSub = this.documentService.saveDocumentObservable.subscribe(
+        data => {
+          if (data[0] == "success") {
+            this.toastr.success("Successfully saved.", "Success");
+            (<HTMLButtonElement>btnSave).disabled = false;
+          } else if (data[0] == "failed") {
+            this.toastr.error(data[1], "Error");
+            (<HTMLButtonElement>btnSave).disabled = false;
+          }
+          if (this.saveDocumentSub != null) this.saveDocumentSub.unsubscribe();
         }
-        if (this.saveDocumentSub != null) this.saveDocumentSub.unsubscribe();
-      }
-    );
+      );
+    } else {
+      this.toastr.error("Document, Document Type or Document Url is empty!", "Error");
+    }
+
   }
 
   private btnCloseDocumentDialog(): void {
-    this.caseLeadDocumentDialogRef.close({ data: '' });
+    this.caseLeadDocumentDialogRef.close({ data: 200 });
     if (this.saveDocumentSub != null) this.saveDocumentSub.unsubscribe();
   }
 
 
   viewDocumentUrl() {
-    try {
+    if (this.documentModel.DocumentType !== '' && this.documentModel.DocumentURL !== '') {
       let documentType = this.documentModel.DocumentType;
       let documentUrl = this.documentModel.DocumentURL;
 
-      if (documentType == 'Video') {
+      if (documentType == 'YOUTUBE') {
         this.showVideoDocument = true;
         this.showDocument = false;
         console.log(documentUrl);
@@ -142,19 +164,16 @@ export class LeadDocumentDetailComponent implements OnInit {
         }, 1000);
       }
 
-      if (documentType == 'Document') {
+      if (documentType != 'YOUTUBE') {
         this.showDocument = true;
         this.showVideoDocument = false;
         setTimeout(() => {
           this.docUrl = documentUrl;
         }, 1000);
       }
+    } else {
+      this.toastr.error("Document Type or Url is empty!", "Error");
     }
-    catch (e) {
-      this.toastr.error(e, "Error");
-    }
-
-
   }
 
 }

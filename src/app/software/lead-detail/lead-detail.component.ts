@@ -830,7 +830,7 @@ export class LeadDetailComponent implements OnInit {
     this.isDocumentDataLoaded = false;
     const caseDetailDialogRef = this.caseDetailCaseDialog.open(LeadDocumentDetailComponent, {
       width: '1350px',
-      height: '85%',
+      height: '80%',
       data: {
         objDialogTitle: "Add Lead Document",
         objDialogEvent: "add",
@@ -870,7 +870,7 @@ export class LeadDetailComponent implements OnInit {
 
     const caseDetailDialogRef = this.caseDetailCaseDialog.open(LeadDocumentDetailComponent, {
       width: '1350px',
-      height: '85%',
+      height: '80%',
       data: {
         objDialogTitle: "Lead Document",
         objDialogEvent: "edit",

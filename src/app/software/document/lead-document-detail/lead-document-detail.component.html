@@ -22,16 +22,10 @@
             <label for="" class="col-sm-2 col-form-label form-group-label">Document Type</label>
             <div class="col-sm-10">
               <select [(ngModel)]="documentModel.DocumentType" class="form-control" [disabled]="!crmAdmin">
-                <option *ngFor="let docType of cboDocumentTypesObservable" value="{{docType.docType}}">
-                  {{ docType.docType }}
+                <option *ngFor="let docType of cboDocumentTypesObservable" value="{{docType.DocumentType}}">
+                  {{ docType.DocumentType }}
                 </option>
               </select>
-              <!-- <wj-combo-box #cboDocType [(ngModel)]="documentModel.DocumentType"
-                [itemsSource]="cboDocumentTypesObservable" [isEditable]="false" [isRequired]="true"
-                [displayMemberPath]="'docType'" [selectedValuePath]="'docType'"
-                (selectedIndexChanged)="cboDocumentTypeSelectedIndexChanged(cboDocType.selectedValue)"
-                style="width: 40%; padding: 3px;">
-              </wj-combo-box> -->
             </div>
             <br /><br />
             <label for="" class="col-sm-2 col-form-label form-group-label">Document URL</label>
@@ -42,15 +36,15 @@
             <br /><br />
             <label for="" class="col-sm-2 col-form-label form-group-label">Date Uploaded</label>
             <div class="col-sm-10">
-              <wj-input-date #cboDateUploadedDate format="MMMM dd, yyyy" [(ngModel)]="documentModel.DateUploaded" [disabled]="!crmAdmin"
-                style="width: 40%; padding: 3px;">
-              </wj-input-date >
+              <wj-input-date #cboDateUploadedDate format="MMMM dd, yyyy" [(ngModel)]="documentModel.DateUploaded"
+                [disabled]="!crmAdmin" style="width: 40%; padding: 3px;">
+              </wj-input-date>
             </div>
             <br /><br />
             <label for="" class="col-sm-2 col-form-label form-group-label">Particulars</label>
             <div class="col-sm-10">
               <textarea type="text" class="form-control" placeholder="Particulars..." [disabled]="!crmAdmin"
-                [(ngModel)]="documentModel.Particulars" rows="5">
+                [(ngModel)]="documentModel.Particulars" rows="8">
               </textarea>
             </div>
           </div>
@@ -59,18 +53,18 @@
     </div>
   </div>
 
-  <div id="documentVideoFrame" *ngIf="showVideoDocument" class="col-sm-12" style="height:50vh;">
+  <div id="documentVideoFrame" class="documentDiv" *ngIf="showVideoDocument" class="col-sm-12" style="height:50vh;">
 
   </div>
-  <div id="documentFrame"  *ngIf="showDocument"  class="col-sm-12" style="height:720px">
+  <div id="documentFrame" class="documentDiv" *ngIf="showDocument" class="col-sm-12" style="height:720px">
     <ngx-doc-viewer name="printDoc" [url]="docUrl" viewer="url" class="col-sm-12" style="height:720px;">
     </ngx-doc-viewer>
   </div>
 </div>
 <mat-divider></mat-divider>
 <div mat-dialog-actions align="right">
-  <button mat-flat-button color="primary" align-self="right" style="margin-right: 5px;" (click)="btnSaveDocumentClick()" *ngIf="crmAdmin"
-    id="btnSave">
+  <button mat-flat-button color="primary" align-self="right" style="margin-right: 5px;" (click)="btnSaveDocumentClick()"
+    *ngIf="crmAdmin" id="btnSave">
     <i class="fa fa-save fa-fw"></i>
     Save
   </button>

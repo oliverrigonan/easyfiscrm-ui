@@ -332,13 +332,13 @@
             <wj-flex-grid-filter></wj-flex-grid-filter>
             <wj-flex-grid-column [header]="Edit" [isReadOnly]="true" [width]="80">
               <ng-template wjFlexGridCellTemplate [cellType]="'Cell'">
-                <button type="button" class="btn btn-primary btn-block btn-xs" id="btnEditDocument"
+                <button type="button" class="btn btn-primary btn-block btn-xs" id="btnEditDocument" 
                   (click)="btnEditDocument()">
                   <i class="fa fa-edit fa-fw"></i> {{ documentEditButtonLabel }}
                 </button>
               </ng-template>
             </wj-flex-grid-column>
-            <wj-flex-grid-column [header]="Delete" [isReadOnly]="true" [width]="90">
+            <wj-flex-grid-column [header]="Delete" [isReadOnly]="true" [width]="90" *ngIf="isAdmin">
               <ng-template wjFlexGridCellTemplate [cellType]="'Cell'">
                 <button type="button" class="btn btn-danger btn-block btn-xs" id="btnDeleteActivity" (click)="btnDeleteDocument()">
                   <i class="fa fa-trash fa-fw"></i> Delete
