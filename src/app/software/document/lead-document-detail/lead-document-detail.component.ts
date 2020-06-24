@@ -6,10 +6,7 @@ import { MatDialog, MatDialogRef, MAT_DIALOG_DATA, MatDialogConfig } from '@angu
 import { DomSanitizer, SafeResourceUrl } from '@angular/platform-browser';
 import { DocumentService } from '../document.service';
 import { Router } from '@angular/router';
-import { WjComboBox } from 'wijmo/wijmo.angular2.input';
 import { ObservableArray, CollectionView } from 'wijmo/wijmo';
-import * as wjcInput from 'wijmo/wijmo.input';
-import * as wjcCore from 'wijmo/wijmo';
 import { SecurityService } from '../../security/security.service';
 
 @Component({
@@ -50,8 +47,8 @@ export class LeadDocumentDetailComponent implements OnInit {
 
   private showFrame: boolean = false;
 
-  showVideoDocument: boolean = false;
-  showDocument: boolean = false;
+  private showVideoDocument: boolean = false;
+  private showDocument: boolean = false;
 
   private documentModel: DocumentModel = {
     Id: 0,
@@ -119,7 +116,6 @@ export class LeadDocumentDetailComponent implements OnInit {
   }
 
   private btnSaveDocumentClick(): void {
-
     if (this.documentModel.DocumentName !== '' && this.documentModel.DocumentType !== '' && this.documentModel.DocumentURL !== '') {
       let btnSave: Element = document.getElementById("btnSave");
       (<HTMLButtonElement>btnSave).disabled = true;

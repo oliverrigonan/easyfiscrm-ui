@@ -274,7 +274,7 @@
               <ng-template wjFlexGridCellTemplate [cellType]="'Cell'">
                 <button type="button" class="btn btn-primary btn-block btn-xs"
                   (click)="btnEditActivityClick(activityModalTemplate)" id="btnEditActivity">
-                  <i class="fa fa-edit fa-fw"></i> Edit
+                  <i class="fa fa-edit fa-fw"></i> {{ documentEditButtonLabel }}
                 </button>
               </ng-template>
             </wj-flex-grid-column>
@@ -343,7 +343,7 @@
               </td>
               <td style="text-align: right;">
 
-                <button class="btn btn-primary" (click)="btnAddDocument()"
+                <button class="btn btn-primary" (click)="btnAddDocument()" *ngIf="isAdmin"
                   style="margin-right: 5px;" id="btnAddDocument">
                   <i class="fa fa-plus fa-fw"></i> Add
                 </button>
@@ -363,12 +363,12 @@
             <wj-flex-grid-column [header]="Edit" [isReadOnly]="true" [width]="80">
               <ng-template wjFlexGridCellTemplate [cellType]="'Cell'">
                 <button type="button" class="btn btn-primary btn-block btn-xs" id="btnEditDocument"
-                  (click)="btnEditDocument()">
-                  <i class="fa fa-edit fa-fw"></i> Edit
+                  (click)="btnEditDocument()"><i class="fa fa-edit fa-fw" *ngIf="isAdmin"></i> 
+                  <i class="fa fa-file fa-fw" *ngIf="!isAdmin"></i> {{ documentEditButtonLabel }}
                 </button>
               </ng-template>
             </wj-flex-grid-column>
-            <wj-flex-grid-column [header]="Delete" [isReadOnly]="true" [width]="90">
+            <wj-flex-grid-column [header]="Delete" [isReadOnly]="true" [width]="90" *ngIf="isAdmin">
               <ng-template wjFlexGridCellTemplate [cellType]="'Cell'">
                 <button type="button" class="btn btn-danger btn-block btn-xs" id="btnDeleteActivity" (click)="btnDeleteDocument()">
                   <i class="fa fa-trash fa-fw"></i> Delete

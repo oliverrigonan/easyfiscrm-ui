@@ -333,8 +333,8 @@
             <wj-flex-grid-column [header]="Edit" [isReadOnly]="true" [width]="80">
               <ng-template wjFlexGridCellTemplate [cellType]="'Cell'">
                 <button type="button" class="btn btn-primary btn-block btn-xs" id="btnEditDocument" 
-                  (click)="btnEditDocument()">
-                  <i class="fa fa-edit fa-fw"></i> {{ documentEditButtonLabel }}
+                  (click)="btnEditDocument()"><i class="fa fa-edit fa-fw" *ngIf="isAdmin"></i> 
+                  <i class="fa fa-file fa-fw" *ngIf="!isAdmin"></i> {{ documentEditButtonLabel }}
                 </button>
               </ng-template>
             </wj-flex-grid-column>

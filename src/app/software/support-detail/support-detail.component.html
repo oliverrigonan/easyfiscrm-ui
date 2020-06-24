@@ -7,6 +7,10 @@
       <a class="nav-link active" id="sales-tab" data-toggle="tab" href="#support" role="tab" aria-controls="support"
         aria-selected="true">Support Detail</a>
     </li>
+    <li class="nav-item">
+      <a class="nav-link" id="attachment-tab" data-toggle="tab" href="#attachment" role="tab" aria-controls="attachment"
+        aria-selected="false" (click)="listAttachment()">Attachment</a>
+    </li>
     <li class="nav-item" [hidden]="isActivityTabHidden">
       <a class="nav-link" id="activities-tab" data-toggle="tab" href="#activities" role="tab" aria-controls="activities"
         aria-selected="false" (click)="listActivity()">Activities</a>
@@ -135,6 +139,14 @@
                   [itemsSource]="cboSupportStatusObservable" [isEditable]="false" [isRequired]="true"
                   [displayMemberPath]="'Status'" [selectedValuePath]="'Status'" style="width: 100%; padding: 3px;">
                 </wj-combo-box>
+              </div>
+              <br /><br />
+              <label for="" class="col-sm-4 col-form-label form-group-label">Attachment</label>
+              <div class="col-sm-8">
+                <input style="width: 85%; border: 0 !important;" type="file" (change)="onFileChanged($event)" #fileInput [disabled]="isLocked">
+                <!-- <button (click)="fileInput.click()">Select File</button> -->
+                <button (click)="onUpload()" [disabled]="isLocked"> <i class="fa fa-upload fa-fw"></i></button>
+                <button (click)="onUpload()" [disabled]="!isLocked"><i class="fa fa-download fa-fw"></i></button>
               </div>
             </div>
           </div>
@@ -310,11 +322,11 @@
             </td>
             <td style="text-align: right;">
 
-              <button class="btn btn-primary" (click)="btnAddDocument()"
-                style="margin-right: 5px;" id="btnAddDocument">
+              <button class="btn btn-primary" (click)="btnAddDocument()" *ngIf="isAdmin" style="margin-right: 5px;"
+                id="btnAddDocument">
                 <i class="fa fa-plus fa-fw"></i> Add
               </button>
-              <button class="btn btn-danger" routerLink="/software/trn/lead" id="btnCloseActivity">
+              <button class="btn btn-danger" routerLink="/software/trn/support" id="btnCloseActivity">
                 <i class="fa fa-close fa-fw"></i> Close
               </button>
             </td>
@@ -330,14 +342,15 @@
           <wj-flex-grid-column [header]="Edit" [isReadOnly]="true" [width]="80">
             <ng-template wjFlexGridCellTemplate [cellType]="'Cell'">
               <button type="button" class="btn btn-primary btn-block btn-xs" id="btnEditDocument"
-                (click)="btnEditDocument()">
-                <i class="fa fa-edit fa-fw"></i> Edit
+                (click)="btnEditDocument()"><i class="fa fa-edit fa-fw" *ngIf="isAdmin"></i>
+                <i class="fa fa-file fa-fw" *ngIf="!isAdmin"></i> {{ documentEditButtonLabel }}
               </button>
             </ng-template>
           </wj-flex-grid-column>
-          <wj-flex-grid-column [header]="Delete" [isReadOnly]="true" [width]="90">
+          <wj-flex-grid-column [header]="Delete" [isReadOnly]="true" [width]="90" *ngIf="isAdmin">
             <ng-template wjFlexGridCellTemplate [cellType]="'Cell'">
-              <button type="button" class="btn btn-danger btn-block btn-xs" id="btnDeleteActivity" (click)="btnDeleteDocument()">
+              <button type="button" class="btn btn-danger btn-block btn-xs" id="btnDeleteActivity"
+                (click)="btnDeleteDocument()">
                 <i class="fa fa-trash fa-fw"></i> Delete
               </button>
             </ng-template>
@@ -353,8 +366,7 @@
             [width]="'2*'">
           </wj-flex-grid-column>
 
-          <wj-flex-grid-column [header]="'Date Uploaded'" [binding]="'DateUploaded'" [isReadOnly]="true"
-            [width]="'2*'">
+          <wj-flex-grid-column [header]="'Date Uploaded'" [binding]="'DateUploaded'" [isReadOnly]="true" [width]="'2*'">
           </wj-flex-grid-column>
 
           <wj-flex-grid-column [header]="'Particulars'" [binding]="'Particulars'" [isReadOnly]="true" [width]="'2*'">
@@ -378,6 +390,84 @@
             <i class="fa fa-step-forward"></i>
           </button>
           <button type="button" class="btn btn-secondary" (click)="listDocumentCollectionView.moveToLastPage()">
+            <i class="fa fa-fast-forward"></i>
+          </button>
+        </div>
+        <div class="col-sm-8"></div>
+      </div>
+    </div>
+  </div>
+  <div class="tab-pane fade" id="attachment" role="tabpanel" aria-labelledby="document-tab" [hidden]="false">
+    <div class="card card-default">
+
+      <div class="card-header">
+        <table border="0" style="width: 100%; border: none;">
+          <tr>
+            <td>
+              <div class="input-group">
+              </div>
+            </td>
+            <td style="text-align: right;">
+
+              <button class="btn btn-primary" (click)="btnAddAttachment()" *ngIf="isAdmin" style="margin-right: 5px;"
+                id="btnAddDocument">
+                <i class="fa fa-plus fa-fw"></i> Add
+              </button>
+              <button class="btn btn-danger" routerLink="/software/trn/support" id="btnCloseActivity">
+                <i class="fa fa-close fa-fw"></i> Close
+              </button>
+            </td>
+          </tr>
+        </table>
+      </div>
+      <div class="card-body">
+        <mat-progress-bar [hidden]="isAttachmentProgressBarHidden" [color]="'primary'" [mode]="'indeterminate'">
+        </mat-progress-bar>
+        <wj-flex-grid #listAttachmentFlexGrid [itemsSource]="listAttachmentCollectionView" [selectionMode]="3"
+          [frozenColumns]="2">
+          <wj-flex-grid-filter></wj-flex-grid-filter>
+          <wj-flex-grid-column [header]="Edit" [isReadOnly]="true" [width]="80">
+            <ng-template wjFlexGridCellTemplate [cellType]="'Cell'">
+              <button type="button" class="btn btn-primary btn-block btn-xs" id="btnEditAttachment"
+                (click)="btnAEditttachment()"><i class="fa fa-edit fa-fw" *ngIf="isAdmin"></i>Edit
+              </button>
+            </ng-template>
+          </wj-flex-grid-column>
+          <wj-flex-grid-column [header]="Delete" [isReadOnly]="true" [width]="90" *ngIf="isAdmin">
+            <ng-template wjFlexGridCellTemplate [cellType]="'Cell'">
+              <button type="button" class="btn btn-danger btn-block btn-xs" id="btnDeleteAttachment"
+                (click)="btnDeleteAttachment()">
+                <i class="fa fa-trash fa-fw"></i> Delete
+              </button>
+            </ng-template>
+          </wj-flex-grid-column>
+          <wj-flex-grid-column [header]="'Attachment'" [binding]="'Attachment'" [isReadOnly]="true" [width]="'2*'">
+          </wj-flex-grid-column>
+          <wj-flex-grid-column [header]="'URL'" [binding]="'AttachmentURL'" [isReadOnly]="true" [width]="'2*'">
+          </wj-flex-grid-column>
+          <wj-flex-grid-column [header]="'AttachmentType'" [binding]="'AttachmentType'" [isReadOnly]="true"
+            [width]="'2*'">
+          </wj-flex-grid-column>
+          <wj-flex-grid-column [header]="'Particulars'" [binding]="'Particulars'" [isReadOnly]="true" [width]="'2*'">
+          </wj-flex-grid-column>
+        </wj-flex-grid>
+      </div>
+
+      <div class="card-footer">
+        <div class="col-sm-4 btn-group" style="padding: 5px 0px 5px 0px;">
+          <button type="button" class="btn btn-secondary" (click)="listAttachmentCollectionView.moveToFirstPage()">
+            <i class="fa fa-fast-backward"></i>
+          </button>
+          <button type="button" class="btn btn-secondary" (click)="listAttachmentCollectionView.moveToPreviousPage()">
+            <i class="fa fa-step-backward"></i>
+          </button>
+          <button type="button" class="btn btn-secondary" disabled style="width:100px">
+            {{ listAttachmentCollectionView.pageIndex + 1 }} / {{ listAttachmentCollectionView.pageCount }}
+          </button>
+          <button type="button" class="btn btn-secondary" (click)="listAttachmentCollectionView.moveToNextPage()">
+            <i class="fa fa-step-forward"></i>
+          </button>
+          <button type="button" class="btn btn-secondary" (click)="listAttachmentCollectionView.moveToLastPage()">
             <i class="fa fa-fast-forward"></i>
           </button>
         </div>

@@ -47,6 +47,8 @@ import { SupportDetailActivityPrintDialogComponent } from './support-detail/supp
 import { SoftwareRouteReuseStrategy } from './software-route-reuse-strategy';
 import { DocumentDeleteComponent } from './document/document-delete/document-delete.component';
 import { LeadDocumentDetailComponent } from './document/lead-document-detail/lead-document-detail.component';
+import { AttachmentComponent } from './attachment/attachment/attachment.component';
+import { AttachmentDeleteComponent } from './attachment/attachment-delete/attachment-delete.component';
 
 @NgModule({
   declarations: [
@@ -73,7 +75,9 @@ import { LeadDocumentDetailComponent } from './document/lead-document-detail/lea
     SalesDeliveryActivityPrintDialogComponent,
     SupportDetailActivityPrintDialogComponent,
     LeadDocumentDetailComponent,
-    DocumentDeleteComponent
+    DocumentDeleteComponent,
+    AttachmentComponent,
+    AttachmentDeleteComponent
   ],
   imports: [
     CommonModule,
@@ -105,7 +109,9 @@ import { LeadDocumentDetailComponent } from './document/lead-document-detail/lea
     SalesDeliveryActivityPrintDialogComponent,
     SupportDetailActivityPrintDialogComponent,
     LeadDocumentDetailComponent,
-    DocumentDeleteComponent
+    DocumentDeleteComponent,
+    AttachmentComponent,
+    AttachmentDeleteComponent
   ]
 })
 export class SoftwareModule { }

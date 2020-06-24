@@ -394,4 +394,24 @@ export class SupportDetailService {
       }
     );
   }
+
+  public uploadFileSubject = new Subject<string[]>();
+  public uploadFileObservable = this.uploadFileSubject.asObservable();
+
+  public uploadPhotoCitizen(file: File, fileName: string, citizenId: number): void {
+    var formData: FormData = new FormData();
+    formData.append("file", file, fileName);
+
+    this.httpClient.post(this.defaultAPIURLHost + "/api/mst/citizen/uploadPhoto/" + citizenId, formData).subscribe(
+      response => {
+        let responseResults: string[] = ["success", response.toString()];
+        this.uploadFileSubject.next(responseResults);
+      },
+      error => {
+        let errorResults: string[] = ["failed", error["error"]];
+        this.uploadFileSubject.next(errorResults);
+      }
+    );
+  }
+
 }

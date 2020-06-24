@@ -19,6 +19,7 @@ import { DocumentModel } from '../document/document.model';
 import { DocumentService } from '../document/document.service';
 import { LeadDocumentDetailComponent } from '../document/lead-document-detail/lead-document-detail.component';
 import { DocumentDeleteComponent } from '../document/document-delete/document-delete.component';
+import { SecurityService } from '../security/security.service';
 
 @Component({
   selector: 'app-sales-detail',
@@ -34,7 +35,8 @@ export class SalesDetailComponent implements OnInit {
     private router: Router,
     private modalService: BsModalService,
     public caseDetailCaseDialog: MatDialog,
-    private documentService: DocumentService
+    private documentService: DocumentService,
+    private securityService: SecurityService
   ) { }
 
   public isLoadingSpinnerHidden: boolean = false;
@@ -165,8 +167,17 @@ export class SalesDetailComponent implements OnInit {
 
   // public isLoadingSpinnerHidden: boolean = false;
   // public isContentHidden: boolean = true;
+  private documentEditButtonLabel = "Open";
+  private isAdmin = false;
 
   ngOnInit() {
+    setTimeout(() => {
+      if (this.securityService.openGroupPage("Admin") == true) {
+        this.isAdmin = true;
+        this.documentEditButtonLabel = "Edit"
+      }
+    }, 100);
+
     this.createCboProduct();
     this.createCboShowNumberOfRows();
   }
@@ -999,7 +1010,7 @@ export class SalesDetailComponent implements OnInit {
     this.isDocumentDataLoaded = false;
     const caseDetailDialogRef = this.caseDetailCaseDialog.open(LeadDocumentDetailComponent, {
       width: '1350px',
-      height: '85%',
+      height: '80%',
       data: {
         objDialogTitle: "Add Delivery Document",
         objDialogEvent: "add",
@@ -1040,7 +1051,7 @@ export class SalesDetailComponent implements OnInit {
 
     const caseDetailDialogRef = this.caseDetailCaseDialog.open(LeadDocumentDetailComponent, {
       width: '1350px',
-      height: '85%',
+      height: '80%',
       data: {
         objDialogTitle: "Delivery Document",
         objDialogEvent: "edit",

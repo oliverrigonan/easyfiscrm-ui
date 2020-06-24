@@ -1,0 +1,18 @@
+<h1 mat-dialog-title>
+  {{ title }}
+</h1>
+<mat-divider></mat-divider>
+<div mat-dialog-content>
+  Delete {{attachmentModel.Attachment}} attachment?
+</div>
+<mat-divider></mat-divider>
+<div mat-dialog-actions align="right">
+  <button mat-flat-button color="primary" align-self="right" style="margin-right: 5px;" (click)="btnConfirmDelete()"
+    id="btnDelete">
+    <i class="fa fa-trash fa-fw"></i>
+    Confirm
+  </button>
+  <button mat-flat-button color="warn" (click)="btnCloseDocumentDialog()" id="btnCloseDialog">
+    <i class="fa fa-close fa-fw"></i>Close
+  </button>
+</div>

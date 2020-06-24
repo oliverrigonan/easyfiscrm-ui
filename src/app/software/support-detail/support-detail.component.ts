@@ -19,6 +19,11 @@ import { DocumentService } from '../document/document.service';
 import { DocumentDeleteComponent } from '../document/document-delete/document-delete.component';
 import { LeadDocumentDetailComponent } from '../document/lead-document-detail/lead-document-detail.component';
 import { DocumentModel } from '../document/document.model';
+import { SecurityService } from '../security/security.service';
+import { FileAttachmentModel } from '../attachment/attachment.model';
+import { AttachmentComponent } from '../attachment/attachment/attachment.component';
+import { AttachmentDeleteComponent } from '../attachment/attachment-delete/attachment-delete.component';
+import { AttachmentService } from '../attachment/attachment.service';
 
 @Component({
   selector: 'app-support-detail',
@@ -34,8 +39,9 @@ export class SupportDetailComponent implements OnInit {
     private router: Router,
     private modalService: BsModalService,
     public caseDetailCaseDialog: MatDialog,
-    private documentService: DocumentService
-
+    private documentService: DocumentService,
+    private attachmentService: AttachmentService,
+    private securityService: SecurityService
   ) { }
 
   public IsLoaded: Boolean = false;
@@ -129,7 +135,16 @@ export class SupportDetailComponent implements OnInit {
     UpdatedDateTime: new Date()
   }
 
+  private documentEditButtonLabel = "Open";
+  private isAdmin: boolean = false;
+
   ngOnInit() {
+    setTimeout(() => {
+      if (this.securityService.openGroupPage("Admin") == true) {
+        this.isAdmin = true;
+        this.documentEditButtonLabel = "Edit"
+      }
+    }, 100);
     this.createCboAssignedToUser();
     this.createCboShowNumberOfRows();
   }
@@ -794,7 +809,7 @@ export class SupportDetailComponent implements OnInit {
 
   public listDocumentObservableArray: ObservableArray = new ObservableArray();
   public listDocumentCollectionView: CollectionView = new CollectionView(this.listDocumentObservableArray);
-  public listDocumentageIndex: number = 15;
+  public listDocumentPageIndex: number = 15;
   @ViewChild('listDocumentFlexGrid') listDocumentFlexGrid: WjFlexGrid;
   public isDocumentProgressBarHidden = false;
   public isDocumentDataLoaded: boolean = false;
@@ -835,7 +850,7 @@ export class SupportDetailComponent implements OnInit {
             if (data.length > 0) {
               this.listDocumentObservableArray = data;
               this.listDocumentCollectionView = new CollectionView(this.listDocumentObservableArray);
-              this.listDocumentCollectionView.pageSize = this.listDocumentageIndex;
+              this.listDocumentCollectionView.pageSize = this.listDocumentPageIndex;
               this.listDocumentCollectionView.trackChanges = true;
             }
 
@@ -858,7 +873,7 @@ export class SupportDetailComponent implements OnInit {
     this.isDocumentDataLoaded = false;
     const caseDetailDialogRef = this.caseDetailCaseDialog.open(LeadDocumentDetailComponent, {
       width: '1350px',
-      height: '85%',
+      height: '80%',
       data: {
         objDialogTitle: "Add Support Document",
         objDialogEvent: "add",
@@ -898,7 +913,7 @@ export class SupportDetailComponent implements OnInit {
 
     const caseDetailDialogRef = this.caseDetailCaseDialog.open(LeadDocumentDetailComponent, {
       width: '1350px',
-      height: '85%',
+      height: '80%',
       data: {
         objDialogTitle: "Support Document",
         objDialogEvent: "edit",
@@ -966,6 +981,172 @@ export class SupportDetailComponent implements OnInit {
         this.clearDataDocumentModel();
       }
     });
+  }
+
+  public listAttachmentObservableArray: ObservableArray = new ObservableArray();
+  public listAttachmentCollectionView: CollectionView = new CollectionView(this.listAttachmentObservableArray);
+  public listAttachmentPageIndex: number = 15;
+  @ViewChild('listAttachmentFlexGrid') listAttachmentFlexGrid: WjFlexGrid;
+  public isAttachmentProgressBarHidden = false;
+  public isAttachmentDataLoaded: boolean = false;
+
+  public listAttachmentSub: any;
+
+  private attachmentModel: FileAttachmentModel = {
+    Id: 0,
+    SPId: 0,
+    Attachment: '',
+    AttachmentURL: '',
+    AttachmentType: '',
+    Particulars: ''
+  }
+
+  public listAttachment(): void {
+    setTimeout(() => {
+      if (!this.isAttachmentDataLoaded) {
+        this.listAttachmentObservableArray = new ObservableArray();
+        this.listAttachmentCollectionView = new CollectionView(this.listAttachmentObservableArray);
+        this.listAttachmentCollectionView.pageSize = 15;
+        this.listAttachmentCollectionView.trackChanges = true;
+        this.listAttachmentCollectionView.refresh();
+        this.listAttachmentFlexGrid.refresh();
+
+        this.isAttachmentProgressBarHidden = true;
+
+        this.attachmentService.listAttachment(this.supportModel.Id);
+        this.listDocumentSub = this.attachmentService.listAttachmentObservable.subscribe(
+          data => {
+            if (data.length > 0) {
+              this.listAttachmentObservableArray = data;
+              this.listAttachmentCollectionView = new CollectionView(this.listAttachmentObservableArray);
+              this.listAttachmentCollectionView.pageSize = this.listAttachmentPageIndex;
+              this.listAttachmentCollectionView.trackChanges = true;
+            }
+
+            setTimeout(() => {
+              this.listAttachmentCollectionView.refresh();
+              this.listAttachmentFlexGrid.refresh();
+              this.isAttachmentDataLoaded = true;
+              this.isAttachmentProgressBarHidden = true;
+            }, 300);
+
+            console.log('Client', this.listDocumentObservableArray);
+
+            if (this.listDocumentSub != null) this.listDocumentSub.unsubscribe();
+          });
+      }
+    }, 300);
+  }
+
+  private clearAttachmentModel(): void {
+    this.attachmentModel.Id = 0;
+    this.attachmentModel.SPId = 0;
+    this.attachmentModel.Attachment = '';
+    this.attachmentModel.AttachmentURL = '';
+    this.attachmentModel.AttachmentType = '';
+    this.attachmentModel.Particulars = '';
+  }
+
+  public btnAddAttachment(): void {
+    this.isAttachmentDataLoaded = false;
+    this.attachmentModel.SPId = this.supportModel.Id;
+    console.log("SupportId: ", this.attachmentModel.SPId);
+    const caseDetailDialogRef = this.caseDetailCaseDialog.open(AttachmentComponent, {
+      width: '1350px',
+      height: '80%',
+      data: {
+        objDialogTitle: "Add Support Attachment",
+        objDialogEvent: "add",
+        objDialogGroupDocument: "Support",
+        objCaseModel: this.attachmentModel
+      },
+      disableClose: true
+    });
+
+    caseDetailDialogRef.afterClosed().subscribe(result => {
+      if (result.data == 200) {
+        this.listAttachment();
+      }
+      else {
+        this.isAttachmentDataLoaded = true;
+      }
+    });
+  }
+
+  public btnAEditttachment(): void {
+    this.isAttachmentDataLoaded = false;
+
+    let currentAttachment = this.listAttachmentCollectionView.currentItem;
+    this.attachmentModel.Id = currentAttachment.Id;
+    this.attachmentModel.SPId = currentAttachment.SPId;
+    this.attachmentModel.Attachment = currentAttachment.Attachment;
+    this.attachmentModel.AttachmentURL = currentAttachment.AttachmentURL;
+    this.attachmentModel.AttachmentType = currentAttachment.AttachmentType;
+    this.attachmentModel.Particulars = currentAttachment.Particulars;
+
+
+    const caseDetailDialogRef = this.caseDetailCaseDialog.open(AttachmentComponent, {
+      width: '1350px',
+      height: '80%',
+      data: {
+        objDialogTitle: "Support Attachment",
+        objDialogEvent: "edit",
+        objDialogGroupDocument: "Support",
+        objCaseModel: this.attachmentModel
+      },
+      disableClose: true
+    });
+
+    caseDetailDialogRef.afterClosed().subscribe(result => {
+      if (result.data == 200) {
+        console.log('Client', result.data == 200);
+        this.listAttachment();
+        this.clearAttachmentModel();
+      }
+      else {
+        this.isAttachmentDataLoaded = true;
+        this.clearAttachmentModel();
+      }
+    });
+  }
+
+  public btnDeleteAttachment(): void {
+    this.isAttachmentDataLoaded = false;
+
+    let currentAttachment = this.listAttachmentCollectionView.currentItem;
+    this.attachmentModel.Id = currentAttachment.Id;
+    this.attachmentModel.Attachment = currentAttachment.Attachment;
+
+    const caseDetailDialogRef = this.caseDetailCaseDialog.open(AttachmentDeleteComponent, {
+      width: '400px',
+      height: '200px',
+      data: {
+        objDialogTitle: "Delete Support Attachment",
+        objDialogEvent: "delete",
+        objDialogGroupDocument: "Support",
+        objCaseModel: this.attachmentModel
+      },
+      disableClose: true
+    });
+
+    caseDetailDialogRef.afterClosed().subscribe(result => {
+      if (result.data == 200) {
+        setTimeout(() => {
+          this.clearAttachmentModel();
+          this.listAttachment();
+        }, 300);
+      }
+      else {
+        this.isAttachmentDataLoaded = true;
+        this.clearAttachmentModel();
+      }
+    });
+  }
+
+  selectedFile: File
+
+  onFileChanged(event) {
+    this.selectedFile = event.target.files[0]
   }
 
   ngOnDestry() {
