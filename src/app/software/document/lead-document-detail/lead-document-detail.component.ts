@@ -50,6 +50,12 @@ export class LeadDocumentDetailComponent implements OnInit {
   private showVideoDocument: boolean = false;
   private showDocument: boolean = false;
 
+  private isAllowChoseFile: boolean = true;
+  private isUploadButtonDisable: boolean = true;
+  private AttachmentFile: string = '';
+
+  private uploadFileSubscription: any;
+
   private documentModel: DocumentModel = {
     Id: 0,
     DocumentName: '',
@@ -76,7 +82,8 @@ export class LeadDocumentDetailComponent implements OnInit {
     this.title = this.caseData.objDialogTitle;
     this.eventName = this.caseData.objDialogEvent;
     this.isDocumentLoadingSpinnerHidden = true;
-    this.getDocumentTypeList()
+    this.getDocumentTypeList();
+    this.checkAttachmentDetail();
   }
 
   public getDocumentTypeList(): void {
@@ -93,11 +100,6 @@ export class LeadDocumentDetailComponent implements OnInit {
         }
 
         this.cboDocumentTypesObservable = documentTypeObservableArray;
-
-
-        setTimeout(() => {
-
-        });
         if (this.cboDocumentTypeObservable != null) this.cboDocumentTypeObservable.unsubscribe();
       }
     );
@@ -144,31 +146,91 @@ export class LeadDocumentDetailComponent implements OnInit {
     if (this.saveDocumentSub != null) this.saveDocumentSub.unsubscribe();
   }
 
+  private documentOnChange() {
+    this.checkAttachmentDetail();
+  }
+
+  checkAttachmentDetail() {
+    if (this.documentModel.DocumentType !== '' && this.documentModel.DocumentName !== '') {
+      this.isAllowChoseFile = false;
+    } else {
+      this.isAllowChoseFile = true;
+    }
+  }
+
+  private documentFileOnChange() {
+    if (this.AttachmentFile !== '') {
+      this.isUploadButtonDisable = false;
+    } else {
+      this.isUploadButtonDisable = true;
+    }
+  }
+
+
+
+  // viewDocumentUrl() {
+  //   if (this.documentModel.DocumentType !== '' && this.documentModel.DocumentURL !== '') {
+  //     let documentType = this.documentModel.DocumentType;
+  //     let documentUrl = this.documentModel.DocumentURL;
+
+  //     if (documentType == 'YOUTUBE') {
+  //       this.showVideoDocument = true;
+  //       this.showDocument = false;
+  //       console.log(documentUrl);
+  //       setTimeout(() => {
+  //         let documentVideoFrame: Element = document.getElementById("documentVideoFrame");
+  //         documentVideoFrame.innerHTML = documentUrl;
+  //       }, 1000);
+  //     }
+
+  //     if (documentType != 'YOUTUBE') {
+  //       this.showDocument = true;
+  //       this.showVideoDocument = false;
+  //       setTimeout(() => {
+  //         this.docUrl = documentUrl;
+  //       }, 1000);
+  //     }
+  //   } else {
+  //     this.toastr.error("Document Type or Url is empty!", "Error");
+  //   }
+  // }
 
   viewDocumentUrl() {
     if (this.documentModel.DocumentType !== '' && this.documentModel.DocumentURL !== '') {
       let documentType = this.documentModel.DocumentType;
       let documentUrl = this.documentModel.DocumentURL;
-
-      if (documentType == 'YOUTUBE') {
-        this.showVideoDocument = true;
-        this.showDocument = false;
-        console.log(documentUrl);
-        setTimeout(() => {
-          let documentVideoFrame: Element = document.getElementById("documentVideoFrame");
-          documentVideoFrame.innerHTML = documentUrl;
-        }, 1000);
-      }
-
-      if (documentType != 'YOUTUBE') {
-        this.showDocument = true;
-        this.showVideoDocument = false;
-        setTimeout(() => {
-          this.docUrl = documentUrl;
-        }, 1000);
-      }
+      window.open(documentUrl);
     } else {
       this.toastr.error("Document Type or Url is empty!", "Error");
+    }
+  }
+
+  public btnUploadFile(): void {
+    let btnUploadFile: Element = document.getElementById("btnUploadFile");
+    btnUploadFile.setAttribute("disabled", "disabled");
+
+    let inputFileImage = document.getElementById("inputFileUpload") as HTMLInputElement;
+
+    if (inputFileImage.files.length > 0) {
+      this.documentService.uploadFile(inputFileImage.files[0], this.documentModel.DocumentType, this.documentModel.DocumentName);
+      this.uploadFileSubscription = this.documentService.uploadFileObservable.subscribe(
+        data => {
+          console.log(data);
+          if (data[0] == "success") {
+            this.toastr.success("File was successfully uploaded.", "Success");
+            btnUploadFile.removeAttribute("disabled");
+            this.documentModel.DocumentURL = data[1];
+          } else if (data[0] == "failed") {
+            this.toastr.error("Unsupported file.", "Error");
+            btnUploadFile.removeAttribute("disabled");
+          }
+
+          if (this.uploadFileSubscription != null) this.uploadFileSubscription.unsubscribe();
+        }
+      );
+    } else {
+      this.toastr.error("No file selected.", "Error");
+      btnUploadFile.removeAttribute("disabled");
     }
   }
 

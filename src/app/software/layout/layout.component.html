@@ -53,38 +53,87 @@
             </a>
             <button [matMenuTriggerFor]="menuReport" class="list-group-item list-group-item-action" id="list-home-list"
                 *ngIf="crmReport">
-                <img src="../../../assets/img/icons/print.png" height="30" alt=""> &nbsp; Report
+                <img src="../../../assets/img/icons/report.png" height="30" alt=""> &nbsp; Report
             </button>
-            <a class="list-group-item list-group-item-action" id="signOut" (click)="btnSignOutlick(logOutModalTemplate)">
+            <a class="list-group-item list-group-item-action" id="signOut"
+                (click)="btnSignOutlick(logOutModalTemplate)">
                 <img src="../../../assets/img/icons/logout.png" height="30" alt=""> &nbsp; Sign Out
             </a>
             <mat-menu #menuReport="matMenu" xPosition="after" width="1000">
-                <button class="btn-submenu" mat-menu-item routerLink="/software/report/lead">
-                    <img src="../../../assets/img/icons/print.png" height="30" alt="" *ngIf="crmLead"> &nbsp; Lead Report
+
+                <button class="btn-submenu" mat-menu-item [matMenuTriggerFor]="menuStaffReport">
+                    <img src="../../../assets/img/report/growth.png" height="30" alt=""> &nbsp; Staff Report
                 </button>
-                <button class="btn-submenu" mat-menu-item routerLink="/software/report/sales/delivery" *ngIf="crmSalesDelivery">
-                    <img src="../../../assets/img/icons/print.png" height="30" alt=""> &nbsp; Sales Delivery Report
-                </button>
-                <button class="btn-submenu" mat-menu-item routerLink="/software/report/support" *ngIf="crmSupport">
-                    <img src="../../../assets/img/icons/print.png" height="30" alt=""> &nbsp; Support Report
-                </button>
-                <button class="btn-submenu" mat-menu-item routerLink="/software/report/activity">
-                    <img src="../../../assets/img/icons/print.png" height="30" alt=""> &nbsp; Activity Report
-                    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-                </button>
+                <a class="sub-menu-link" routerLink="/software/report/lead" *ngIf="crmLead">
+                    <button class="btn-submenu" mat-menu-item>
+                        <!-- <img src="../../../assets/img/report/lead-report.png" height="30" alt="" *ngIf="crmLead"> &nbsp; -->
+                        <img src="../../../assets/img/report/file-leads-report.png" height="30" alt="" *ngIf="crmLead">
+                        &nbsp;
+                        Lead Report
+                    </button>
+                </a>
+                <a class="sub-menu-link" routerLink="/software/report/sales/delivery" *ngIf="crmSalesDelivery">
+                    <button class="btn-submenu" mat-menu-item>
+                        <img src="../../../assets/img/report/file-sales-delivery.png" height="30" alt=""> &nbsp; Sales
+                        Delivery
+                        Report
+                    </button>
+                </a>
+                <a class="sub-menu-link" routerLink="/software/report/support" *ngIf="crmSupport">
+                    <button class="btn-submenu" mat-menu-item>
+                        <img src="../../../assets/img/report/file-support-report.png" height="30" alt=""> &nbsp; Support
+                        Report
+                    </button>
+                </a>
+                <a class="sub-menu-link" routerLink="/software/report/activity">
+                    <button class="btn-submenu" mat-menu-item routerLink="/software/report/activity">
+                        <img src="../../../assets/img/report/file-activity-report.png" height="30" alt=""> &nbsp;
+                        Activity Report
+                        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                    </button>
+                </a>
+
             </mat-menu>
             <mat-menu #menuSetup="matMenu" xPosition="after" width="1000">
-                <button class="btn-submenu" mat-menu-item routerLink="/software/setup/user">
-                    <img src="../../../assets/img/icons/woman.png" height="30" alt=""> &nbsp; User
-                </button>
-                <button class="btn-submenu" mat-menu-item routerLink="/software/setup/status">
-                    <img src="../../../assets/img/icons/status.png" height="30" alt=""> &nbsp; Status
+                <a class="sub-menu-link" routerLink="/software/setup/user">
+                    <button class="btn-submenu" mat-menu-item>
+                        <img src="../../../assets/img/icons/woman.png" height="30" alt=""> &nbsp; User
+                    </button>
+                </a>
+                <a class="sub-menu-link" routerLink="/software/setup/status">
+                    <button class="btn-submenu" mat-menu-item>
+                        <img src="../../../assets/img/icons/status.png" height="30" alt=""> &nbsp; Status
 
-                </button>
-                <button class="btn-submenu" mat-menu-item routerLink="/software/setup/product">
-                    <img src="../../../assets/img/icons/product.png" height="30" alt=""> &nbsp; Product
-                    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;;&nbsp;&nbsp;&nbsp;&nbsp;
-                </button>
+                    </button>
+                </a>
+                <a class="sub-menu-link" routerLink="/software/setup/product">
+                    <button class="btn-submenu" mat-menu-item>
+                        <img src="../../../assets/img/icons/product.png" height="30" alt=""> &nbsp; Product
+                        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;;&nbsp;&nbsp;&nbsp;&nbsp;
+                    </button>
+                </a>
+            </mat-menu>
+            <mat-menu #menuStaffReport="matMenu" xPosition="after" width="1000">
+                <a class="sub-menu-link" routerLink="/software/report/lead/staff" *ngIf="crmLead">
+                    <button class="btn-submenu" mat-menu-item>
+                        <img src="../../../assets/img/report/lead-staff-report.png" height="30" alt=""> &nbsp; Lead
+                        Staff
+                        Report
+                    </button>
+                </a>
+                <a class="sub-menu-link" routerLink="/software/report/sales-delivery/staff" *ngIf="crmSalesDelivery">
+                    <button class="btn-submenu" mat-menu-item>
+                        <img src="../../../assets/img/report/delivery-staff-report.png" height="30" alt=""> &nbsp; Sales
+                        Delivery Staff Report
+                    </button>
+                </a>
+                <a class="sub-menu-link" routerLink="/software/report/support/staff" *ngIf="crmSupport">
+                    <button class="btn-submenu" mat-menu-item>
+                        <img src="../../../assets/img/report/support-staff-report.png" height="30" alt=""> &nbsp;
+                        Support Staff Report
+                        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                    </button>
+                </a>
             </mat-menu>
         </div>
     </mat-drawer>
@@ -115,20 +164,20 @@
 
 <ng-template #logOutModalTemplate>
     <div class="modal-header">
-      <h4 class="modal-title">
-        Sign-Out
-      </h4>
+        <h4 class="modal-title">
+            Sign-Out
+        </h4>
     </div>
     <div class="modal-body">
         Sign-out {{ username }}?
     </div>
     <div class="modal-footer">
-      <button type="button" class="btn btn-danger" style="margin-right: 5px;" (click)="signOut()"
-        id="btnConfirmSignOut">
+        <button type="button" class="btn btn-danger" style="margin-right: 5px;" (click)="signOut()"
+            id="btnConfirmSignOut">
             <i class="fa fa-power-off fa-fw"></i> Sign Out
-      </button>
-      <button type="button" class="btn btn-light" (click)="logOutModalRef.hide()" id="btnCloseModal">
-        <i class="fa fa-close"></i> Cancel
-      </button>
+        </button>
+        <button type="button" class="btn btn-light" (click)="logOutModalRef.hide()" id="btnCloseModal">
+            <i class="fa fa-close"></i> Cancel
+        </button>
     </div>
-  </ng-template>
+</ng-template>

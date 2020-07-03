@@ -1,0 +1,186 @@
+<div class="card card-default">
+  <div class="card-header">
+    <table border="0" style="width: 100%; border: none;">
+      <tr>
+        <td>
+        </td>
+        <td style="text-align: right;">
+          <button class="btn btn-danger" routerLink="/software" id="btnCloseLead">
+            <i class="fa fa-close fa-fw"></i> Close
+          </button>
+        </td>
+      </tr>
+    </table>
+  </div>
+  <div class="card-body">
+    <div class="row">
+      <div class="col-md-8">
+        <table border="0" style="width: 100%; border: none; margin-top: -15px;">
+          <tr>
+            <td>
+              <div class="form-group">
+                <span class="badge badge-info sky-blue" style="margin-bottom: 5px;"><i class="fa fa-calendar fa-fw"></i>
+                  Start Date</span>
+                <wj-input-date #cboLeadStartDateFilter [(ngModel)]="startDateFilterData"
+                  [ngModelOptions]="{standalone: true}" (textChanged)="cboStartDateTextChanged()" format="MMMM dd, yyyy"
+                  style="width: 100%;">
+                </wj-input-date>
+              </div>
+            </td>
+            <td>
+              <div class="form-group">
+                <span class="badge badge-info sky-blue" style="margin-bottom: 5px;"><i class="fa fa-calendar fa-fw"></i>
+                  End Date</span>
+                <wj-input-date #cboLeadEndDateFilter [(ngModel)]="endDateFilterData"
+                  [ngModelOptions]="{standalone: true}" (textChanged)="cboEndDateTextChanged()" format="MMMM dd, yyyy"
+                  style="width: 100%;">
+                </wj-input-date>
+              </div>
+            </td>
+            <td>
+              <div class="form-group">
+                <span class="badge badge-info sky-blue" style="margin-bottom: 5px;"><i
+                    class="fa fa-question-circle fa-fw"></i>
+                  User</span>
+                <wj-combo-box #cboUser [itemsSource]="cboUserObservableArray" [isEditable]="false" [isRequired]="true"
+                  [displayMemberPath]="'FullName'" [selectedValuePath]="'Id'"
+                  (selectedIndexChanged)="cboUserSelectedIndexChanged(cboUser.selectedValue)" style="width: 100%;">
+                </wj-combo-box>
+              </div>
+            </td>
+          </tr>
+        </table>
+      </div>
+      <div class="col-md-4"></div>
+    </div>
+    <ul class="nav nav-tabs" id="myTab" role="tablist" style="margin-top: 10px; margin-bottom: 10px;">
+      <li class="nav-item">
+        <a class="nav-link active" id="salesStaffReport-tab" data-toggle="tab" href="#salesStaffReport" role="tab"
+          aria-controls="salesStaffReport" (click)="refreshlistSalesStaffReport()" aria-selected="true">Support</a>
+      </li>
+      <li class="nav-item">
+        <a class="nav-link" id="SalesStaffQuotationReport-tab" data-toggle="tab" href="#SalesStaffQuotationReport"
+          role="tab" aria-controls="SalesStaffQuotationReport" (click)="listSalesStaffQuotationReport()" aria-selected="false">Open Support</a>
+      </li>
+    </ul>
+    <div class="tab-content" id="myTabContent">
+      <div class="tab-pane fade show active" id="salesStaffReport" role="tabpanel"
+        aria-labelledby="salesStaffReport-tab">
+        <div class="card card-default">
+          <!-- <div class="card-header">
+          </div> -->
+          <div class="card-body">
+            <mat-progress-bar [hidden]="isSupportStaffReportProgressBarHidden" [color]="'primary'" [mode]="'indeterminate'">
+            </mat-progress-bar>
+            <wj-flex-grid #listSupportStaffReportFlexGrid [itemsSource]="listSupportStaffReportCollectionView"
+              [selectionMode]="3" [frozenColumns]="2">
+              <wj-flex-grid-filter></wj-flex-grid-filter>
+              <wj-flex-grid-column [header]="'Staff'" [binding]="'Staff'" [isReadOnly]="true" [width]="'2*'">
+              </wj-flex-grid-column>
+              <wj-flex-grid-column [header]="'Open'" [binding]="'Open'" [isReadOnly]="true"
+                [width]="'2*'">
+              </wj-flex-grid-column>
+              <wj-flex-grid-column [header]="'ForClosing'" [binding]="'ForClosing'" [isReadOnly]="true"
+                [width]="'2*'">
+              </wj-flex-grid-column>
+              <wj-flex-grid-column [header]="'Close'" [binding]="'Close'" [isReadOnly]="true" [width]="'2*'">
+              </wj-flex-grid-column>
+              <wj-flex-grid-column [header]="'Cancelled'" [binding]="'Cancelled'" [isReadOnly]="true" [width]="'2*'">
+              </wj-flex-grid-column>
+              <wj-flex-grid-column [header]="'Total'" [binding]="'Total'" [isReadOnly]="true" [width]="'2*'">
+              </wj-flex-grid-column>
+            </wj-flex-grid>
+          </div>
+          <div class="card-footer">
+            <div class="col-sm-4 btn-group" style="padding: 5px 0px 5px 0px;">
+              <button type="button" class="btn btn-secondary"
+                (click)="listSupportStaffReportCollectionView.moveToFirstPage()">
+                <i class="fa fa-fast-backward"></i>
+              </button>
+              <button type="button" class="btn btn-secondary"
+                (click)="listSupportStaffReportCollectionView.moveToPreviousPage()">
+                <i class="fa fa-step-backward"></i>
+              </button>
+              <button type="button" class="btn btn-secondary" disabled style="width:100px">
+                {{ listSupportStaffReportCollectionView.pageIndex + 1 }} /
+                {{ listSupportStaffReportCollectionView.pageCount }}
+              </button>
+              <button type="button" class="btn btn-secondary"
+                (click)="listSupportStaffReportCollectionView.moveToNextPage()">
+                <i class="fa fa-step-forward"></i>
+              </button>
+              <button type="button" class="btn btn-secondary"
+                (click)="listSupportStaffReportCollectionView.moveToLastPage()">
+                <i class="fa fa-fast-forward"></i>
+              </button>
+            </div>
+            <div class="col-sm-8"></div>
+          </div>
+        </div>
+      </div>
+      <div class="tab-pane fade" id="SalesStaffQuotationReport" role="tabpanel"
+        aria-labelledby="SalesStaffQuotationReport-tab">
+        <div class="card card-default">
+          <!-- <div class="card-header">
+          </div> -->
+          <div class="card-body">
+            <mat-progress-bar [hidden]="isOpenSupportStaffReportProgressBarHidden" [color]="'primary'" [mode]="'indeterminate'">
+            </mat-progress-bar>
+            <wj-flex-grid #listOpenSupportStaffReportFlexGrid [itemsSource]="listOpenSupportStaffReportCollectionView"
+              [selectionMode]="3" [frozenColumns]="2">
+              <wj-flex-grid-filter></wj-flex-grid-filter>
+              <wj-flex-grid-column [header]="'No.'" [binding]="'SPNumber'" [isReadOnly]="true" [width]="'2*'">
+              </wj-flex-grid-column>
+              <wj-flex-grid-column [header]="'Customer'" [binding]="'Customer'" [isReadOnly]="true"
+                [width]="'2*'">
+              </wj-flex-grid-column>
+              <wj-flex-grid-column [header]="'Support Date'" [binding]="'SupportDate'" [isReadOnly]="true"
+                [width]="'2*'">
+              </wj-flex-grid-column>
+              <wj-flex-grid-column [header]="'Product'" [binding]="'ProductDescription'" [isReadOnly]="true" [width]="'2*'">
+              </wj-flex-grid-column>
+              <wj-flex-grid-column [header]="'Amount'" [binding]="'Amount'" [isReadOnly]="true" [width]="'2*'">
+              </wj-flex-grid-column>
+              <wj-flex-grid-column [header]="'Expected Close Date'" [binding]="'ExpectedCloseDate'" [isReadOnly]="true" [width]="'2*'">
+              </wj-flex-grid-column>
+              <wj-flex-grid-column [header]="'Assigned User'" [binding]="'AssignedToUser'" [isReadOnly]="true" [width]="'2*'">
+              </wj-flex-grid-column>
+              <wj-flex-grid-column [header]="'Last Activity'" [binding]="'LastActivity'" [isReadOnly]="true" [width]="'2*'">
+              </wj-flex-grid-column>
+              <wj-flex-grid-column [header]="'Last Activity Date'" [binding]="'LastActivityDate'" [isReadOnly]="true" [width]="'2*'">
+              </wj-flex-grid-column>
+              <wj-flex-grid-column [header]="'Last Activity Staff'" [binding]="'LastActivityStaff'" [isReadOnly]="true" [width]="'2*'">
+              </wj-flex-grid-column>
+            </wj-flex-grid>
+          </div>
+          <div class="card-footer">
+            <div class="col-sm-4 btn-group" style="padding: 5px 0px 5px 0px;">
+              <button type="button" class="btn btn-secondary"
+                (click)="listOpenSupportStaffReportCollectionView.moveToFirstPage()">
+                <i class="fa fa-fast-backward"></i>
+              </button>
+              <button type="button" class="btn btn-secondary"
+                (click)="listOpenSupportStaffReportCollectionView.moveToPreviousPage()">
+                <i class="fa fa-step-backward"></i>
+              </button>
+              <button type="button" class="btn btn-secondary" disabled style="width:100px">
+                {{ listOpenSupportStaffReportCollectionView.pageIndex + 1 }} /
+                {{ listOpenSupportStaffReportCollectionView.pageCount }}
+              </button>
+              <button type="button" class="btn btn-secondary"
+                (click)="listOpenSupportStaffReportCollectionView.moveToNextPage()">
+                <i class="fa fa-step-forward"></i>
+              </button>
+              <button type="button" class="btn btn-secondary"
+                (click)="listOpenSupportStaffReportCollectionView.moveToLastPage()">
+                <i class="fa fa-fast-forward"></i>
+              </button>
+            </div>
+            <div class="col-sm-8"></div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+  </div>
+</div>

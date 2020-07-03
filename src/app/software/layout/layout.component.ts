@@ -65,16 +65,16 @@ export class LayoutComponent implements OnInit {
         toolBarImage.setAttribute("src", "../../assets/img/icons/activity.png");
       } else if (this.router.url == "/software/report/lead") {
         this.ToolbarTitle = "Lead Report";
-        toolBarImage.setAttribute("src", "../../assets/img/icons/print.png");
+        toolBarImage.setAttribute("src", "../../../assets/img/report/lead-report.png");
       } else if (this.router.url == "/software/report/sales/delivery") {
         this.ToolbarTitle = "Sales Delivery Report";
-        toolBarImage.setAttribute("src", "../../assets/img/icons/print.png");
+        toolBarImage.setAttribute("src", "../../../assets/img/report/delivery-report.png");
       } else if (this.router.url == "/software/report/support") {
         this.ToolbarTitle = "Support Report";
-        toolBarImage.setAttribute("src", "../../assets/img/icons/print.png");
+        toolBarImage.setAttribute("src", "../../../assets/img/report/support-report.png");
       } else if (this.router.url == "/software/report/activity") {
         this.ToolbarTitle = "Activity Report";
-        toolBarImage.setAttribute("src", "../../assets/img/icons/print.png");
+        toolBarImage.setAttribute("src", "../../../assets/img/report/seo-report.png");
       } else if (this.router.url == "/software/setup/user") {
         this.ToolbarTitle = "Users";
         toolBarImage.setAttribute("src", "../../assets/img/icons/woman.png");
@@ -84,6 +84,15 @@ export class LayoutComponent implements OnInit {
       } else if (this.router.url == "/software/setup/status") {
         this.ToolbarTitle = "Status";
         toolBarImage.setAttribute("src", "../../assets/img/icons/status.png");
+      } else if (this.router.url == "/software/report/lead/staff") {
+        this.ToolbarTitle = "Lead Staff Report";
+        toolBarImage.setAttribute("src", "../../../assets/img/report/lead-staff-report.png");
+      } else if (this.router.url == "/software/report/sales-delivery/staff") {
+        this.ToolbarTitle = "Sales Deliver Staff Report";
+        toolBarImage.setAttribute("src", "../../../assets/img/report/delivery-staff-report.png");
+      } else if (this.router.url == "/software/report/support/staff") {
+        this.ToolbarTitle = "Support Staff Report";
+        toolBarImage.setAttribute("src", "../../../assets/img/report/support-staff-report.png");
       }
       else {
 

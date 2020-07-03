@@ -17,9 +17,9 @@ import { SalesDetailPrintDialogComponent } from './sales-detail-print-dialog/sal
 import { SalesDeliveryActivityPrintDialogComponent } from './sales-delivery-activity-print-dialog/sales-delivery-activity-print-dialog.component';
 import { DocumentModel } from '../document/document.model';
 import { DocumentService } from '../document/document.service';
-import { LeadDocumentDetailComponent } from '../document/lead-document-detail/lead-document-detail.component';
 import { DocumentDeleteComponent } from '../document/document-delete/document-delete.component';
 import { SecurityService } from '../security/security.service';
+import { DocumentComponent } from '../document/document/document.component';
 
 @Component({
   selector: 'app-sales-detail',
@@ -1008,7 +1008,7 @@ export class SalesDetailComponent implements OnInit {
 
   public btnAddDocument(): void {
     this.isDocumentDataLoaded = false;
-    const caseDetailDialogRef = this.caseDetailCaseDialog.open(LeadDocumentDetailComponent, {
+    const caseDetailDialogRef = this.caseDetailCaseDialog.open(DocumentComponent, {
       width: '1350px',
       height: '80%',
       data: {
@@ -1049,7 +1049,7 @@ export class SalesDetailComponent implements OnInit {
     this.documentModel.UpdatedByUser = currentDocument.UpdatedByUser;
     this.documentModel.UpdatedDateTime = currentDocument.UpdatedDateTime;
 
-    const caseDetailDialogRef = this.caseDetailCaseDialog.open(LeadDocumentDetailComponent, {
+    const caseDetailDialogRef = this.caseDetailCaseDialog.open(DocumentComponent, {
       width: '1350px',
       height: '80%',
       data: {
@@ -1099,7 +1099,7 @@ export class SalesDetailComponent implements OnInit {
 
     const caseDetailDialogRef = this.caseDetailCaseDialog.open(DocumentDeleteComponent, {
       width: '400px',
-      height: '200px',
+      height: '170px',
       data: {
         objDialogTitle: "Delete Delivery Document",
         objDialogEvent: "delete",

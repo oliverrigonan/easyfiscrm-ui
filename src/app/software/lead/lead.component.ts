@@ -163,7 +163,6 @@ export class LeadComponent implements OnInit {
     let endDate;
 
     this.activatedRoute.params.subscribe(params => { isDashboard = params["dashboard"]; });
-
     if (isDashboard) {
       this.activatedRoute.params.subscribe(params => { startDate = params["startDate"]; });
       this.activatedRoute.params.subscribe(params => { endDate = params["endDate"]; });

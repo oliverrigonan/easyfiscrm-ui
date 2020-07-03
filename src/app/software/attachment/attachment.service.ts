@@ -27,6 +27,8 @@ export class AttachmentService {
 
   public listAttachmenttSubject = new Subject<ObservableArray>();
   public listAttachmentObservable = this.listAttachmenttSubject.asObservable();
+  public addAttachmentSubject = new Subject<string[]>();
+  public addAttachmentObservable = this.addAttachmentSubject.asObservable();
   public saveAttachmentSubject = new Subject<string[]>();
   public saveAttachmentObservable = this.saveAttachmentSubject.asObservable();
   public deleteAttachmentSubject = new Subject<string[]>();
@@ -75,7 +77,7 @@ export class AttachmentService {
   }
 
   public saveAttachment(objAttachment: FileAttachmentModel): void {
-    console.log("Support: ", objAttachment.SPId );
+    console.log("Support: ", objAttachment.SPId);
     if (objAttachment.Id == 0) {
       this.httpClient.post(this.defaultAPIURLHost + "/api/crm/trn/support/attachment/add/", JSON.stringify(objAttachment), this.options).subscribe(
         response => {
@@ -101,6 +103,20 @@ export class AttachmentService {
     }
   }
 
+  public addAttachment(objAttachment: FileAttachmentModel): void {
+    console.log("Support: ", objAttachment.SPId);
+    this.httpClient.post(this.defaultAPIURLHost + "/api/crm/trn/support/attachment/add/", JSON.stringify(objAttachment), this.options).subscribe(
+      response => {
+        let responseResults: string[] = ["success", response.toString()];
+        this.addAttachmentSubject.next(responseResults);
+      },
+      error => {
+        let errorResults: string[] = ["failed", error["error"]];
+        this.addAttachmentSubject.next(errorResults);
+      }
+    )
+  }
+
   public deleteAttachment(id: number): void {
     this.httpClient.delete(this.defaultAPIURLHost + "/api/crm/trn/support/attachment/delete/" + id, this.options).subscribe(
       response => {
@@ -112,5 +128,33 @@ export class AttachmentService {
         this.deleteAttachmentSubject.next(errorResults);
       }
     )
+  }
+
+  public uploadFileSubject = new Subject<string[]>();
+  public uploadFileObservable = this.uploadFileSubject.asObservable();
+
+  public uploadFile(file: File, fileType: string, fileName: string): void {
+
+    let options = {
+      headers: new HttpHeaders({
+        'Authorization': 'Bearer ' + localStorage.getItem('access_token')
+      })
+    };
+
+    var formData: FormData = new FormData();
+    formData.append(fileType, file, fileName);
+
+    console.log(formData);
+
+    this.httpClient.post(this.defaultAPIURLHost + "/api/crm/trn/support/attachment/uploadFile/", formData, options).subscribe(
+      response => {
+        let responseResults: string[] = ["success", response.toString()];
+        this.uploadFileSubject.next(responseResults);
+      },
+      error => {
+        let errorResults: string[] = ["failed", error["error"]];
+        this.uploadFileSubject.next(errorResults);
+      }
+    );
   }
 }

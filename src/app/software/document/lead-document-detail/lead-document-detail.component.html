@@ -2,7 +2,7 @@
   {{ title }}
 </h1>
 <mat-divider></mat-divider>
-<div mat-dialog-content style="height: 90%;">
+<div mat-dialog-content style="height: 100%;">
   <div class="modal-body">
     <div [hidden]="isDocumentLoadingSpinnerHidden">
       <br /><br />
@@ -21,11 +21,19 @@
             <br /><br />
             <label for="" class="col-sm-2 col-form-label form-group-label">Document Type</label>
             <div class="col-sm-10">
-              <select [(ngModel)]="documentModel.DocumentType" class="form-control" [disabled]="!crmAdmin">
+              <select [(ngModel)]="documentModel.DocumentType" class="form-control" [disabled]="!crmAdmin" (change)="documentOnChange()">
                 <option *ngFor="let docType of cboDocumentTypesObservable" value="{{docType.DocumentType}}">
                   {{ docType.DocumentType }}
                 </option>
               </select>
+            </div>
+            <br /><br />
+            <label for="" class="col-sm-2 col-form-label form-group-label">Attachment</label>
+            <div class="col-sm-10">
+              <input type="button" color="" [disabled]="isUploadButtonDisable" (click)="btnUploadFile()" id="btnUploadFile" value="Upload" style="margin-right: 5px;">
+                
+              <input id="inputFileUpload" placeholder="" type="file" style="width: 90%;" [disabled]="isAllowChoseFile"
+                (change)="documentFileOnChange()" [(ngModel)]="AttachmentFile" accept="image/*" />
             </div>
             <br /><br />
             <label for="" class="col-sm-2 col-form-label form-group-label">Document URL</label>
@@ -44,7 +52,7 @@
             <label for="" class="col-sm-2 col-form-label form-group-label">Particulars</label>
             <div class="col-sm-10">
               <textarea type="text" class="form-control" placeholder="Particulars..." [disabled]="!crmAdmin"
-                [(ngModel)]="documentModel.Particulars" rows="8">
+                [(ngModel)]="documentModel.Particulars" rows="10">
               </textarea>
             </div>
           </div>
@@ -52,7 +60,6 @@
       </div>
     </div>
   </div>
-
   <div id="documentVideoFrame" class="documentDiv" *ngIf="showVideoDocument" class="col-sm-12" style="height:50vh;">
 
   </div>

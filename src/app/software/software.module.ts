@@ -49,6 +49,10 @@ import { DocumentDeleteComponent } from './document/document-delete/document-del
 import { LeadDocumentDetailComponent } from './document/lead-document-detail/lead-document-detail.component';
 import { AttachmentComponent } from './attachment/attachment/attachment.component';
 import { AttachmentDeleteComponent } from './attachment/attachment-delete/attachment-delete.component';
+import { DocumentComponent } from './document/document/document.component';
+import { LeadStaffReportComponent } from './report/lead-staff-report/lead-staff-report.component';
+import { SalesDeliveryStaffReportComponent } from './report/sales-delivery-staff-report/sales-delivery-staff-report.component';
+import { SupportStaffReportComponent } from './report/support-staff-report/support-staff-report.component';
 
 @NgModule({
   declarations: [
@@ -77,7 +81,11 @@ import { AttachmentDeleteComponent } from './attachment/attachment-delete/attach
     LeadDocumentDetailComponent,
     DocumentDeleteComponent,
     AttachmentComponent,
-    AttachmentDeleteComponent
+    AttachmentDeleteComponent,
+    DocumentComponent,
+    LeadStaffReportComponent,
+    SalesDeliveryStaffReportComponent,
+    SupportStaffReportComponent
   ],
   imports: [
     CommonModule,
@@ -108,7 +116,7 @@ import { AttachmentDeleteComponent } from './attachment/attachment-delete/attach
     LeadActivityPrintDialogComponent,
     SalesDeliveryActivityPrintDialogComponent,
     SupportDetailActivityPrintDialogComponent,
-    LeadDocumentDetailComponent,
+    DocumentComponent,
     DocumentDeleteComponent,
     AttachmentComponent,
     AttachmentDeleteComponent

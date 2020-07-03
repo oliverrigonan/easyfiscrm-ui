@@ -20,8 +20,8 @@ import { LeadActivityPrintDialogComponent } from './lead-activity-print-dialog/l
 import { DocumentModel } from '../document/document.model';
 import { DocumentService } from '../document/document.service';
 import { DocumentDeleteComponent } from '../document/document-delete/document-delete.component';
-import { LeadDocumentDetailComponent } from '../document/lead-document-detail/lead-document-detail.component';
 import { SecurityService } from '../security/security.service';
+import { DocumentComponent } from '../document/document/document.component';
 
 @Component({
   selector: 'app-lead-detail',
@@ -152,6 +152,18 @@ export class LeadDetailComponent implements OnInit {
   };
 
   public isAddClicked: boolean = false;
+
+  private documentEditButtonLabel = "Open";
+
+  ngOnInit() {
+    setTimeout(() => {
+      if (this.securityService.openGroupPage("Admin") == true) {
+        this.isAdmin = true;
+        this.documentEditButtonLabel = "Edit"
+      }
+    }, 100);
+    this.createCboProduct();
+  }
 
   public createCboProduct(): void {
     this.leadDetailService.listProduct();
@@ -750,20 +762,6 @@ export class LeadDetailComponent implements OnInit {
     });
   }
 
-  private documentEditButtonLabel = "Open";
-
-  ngOnInit() {
-    setTimeout(() => {
-      if (this.securityService.openGroupPage("Admin") == true) {
-        this.isAdmin = true;
-        this.documentEditButtonLabel = "Edit"
-      }
-    }, 100);
-    this.createCboProduct();
-  }
-
-
-
   public listDocumentObservableArray: ObservableArray = new ObservableArray();
   public listDocumentCollectionView: CollectionView = new CollectionView(this.listDocumentObservableArray);
   public listDocumentageIndex: number = 15;
@@ -828,7 +826,7 @@ export class LeadDetailComponent implements OnInit {
 
   public btnAddDocument(): void {
     this.isDocumentDataLoaded = false;
-    const caseDetailDialogRef = this.caseDetailCaseDialog.open(LeadDocumentDetailComponent, {
+    const caseDetailDialogRef = this.caseDetailCaseDialog.open(DocumentComponent, {
       width: '1350px',
       height: '80%',
       data: {
@@ -868,7 +866,7 @@ export class LeadDetailComponent implements OnInit {
     this.documentModel.UpdatedByUser = currentDocument.UpdatedByUser;
     this.documentModel.UpdatedDateTime = currentDocument.UpdatedDateTime;
 
-    const caseDetailDialogRef = this.caseDetailCaseDialog.open(LeadDocumentDetailComponent, {
+    const caseDetailDialogRef = this.caseDetailCaseDialog.open(DocumentComponent, {
       width: '1350px',
       height: '80%',
       data: {
@@ -918,7 +916,7 @@ export class LeadDetailComponent implements OnInit {
 
     const caseDetailDialogRef = this.caseDetailCaseDialog.open(DocumentDeleteComponent, {
       width: '400px',
-      height: '200px',
+      height: '170px',
       data: {
         objDialogTitle: "Delete Lead Document",
         objDialogEvent: "delete",

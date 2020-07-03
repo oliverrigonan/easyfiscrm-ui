@@ -38,7 +38,7 @@ export class AttachmentComponent implements OnInit {
 
   private eventName = '';
   private title = '';
-  private AttachmentURL = '';
+  private AttachmentFile = '';
 
   private isAttachmentLoadingSpinnerHidden: boolean = false;
 
@@ -47,6 +47,7 @@ export class AttachmentComponent implements OnInit {
   private cboDocumentTypeObservable: any;
 
   public docUrl: string;
+  public imageUrl: string;
 
   private isAddEvent: boolean = false;
 
@@ -54,13 +55,20 @@ export class AttachmentComponent implements OnInit {
 
   private showVideoDocument: boolean = false;
   private showDocument: boolean = false;
+  private showImage: boolean = false;
+
+  public uploadFileSubscription: any;
+
+  private isAllowChoseFile: boolean = true;
+  private isUploadButtonDisable: boolean = true;
 
   ngOnInit() {
 
     this.title = this.caseData.objDialogTitle;
     this.eventName = this.caseData.objDialogEvent;
     this.isAttachmentLoadingSpinnerHidden = true;
-    this.getDocumentTypeList()
+    this.getDocumentTypeList();
+    this.checkAttachmentDetail();
   }
 
   public getDocumentTypeList(): void {
@@ -128,4 +136,67 @@ export class AttachmentComponent implements OnInit {
     this.caseAttachmentDialogRef.close({ data: 200 });
     if (this.saveAttachmentSub != null) this.saveAttachmentSub.unsubscribe();
   }
+
+  private documentOnChange() {
+    this.checkAttachmentDetail();
+  }
+
+  checkAttachmentDetail() {
+    if (this.attachmentModel.AttachmentType !== '' && this.attachmentModel.Attachment !== '') {
+      this.isAllowChoseFile = false;
+    } else {
+      this.isAllowChoseFile = true;
+    }
+  }
+
+  private documentFileOnChange() {
+    if (this.AttachmentFile !== '') {
+      this.isUploadButtonDisable = false;
+    } else {
+      this.isUploadButtonDisable = true;
+    }
+  }
+
+  public btnUploadFile(): void {
+    let btnUploadFile: Element = document.getElementById("btnUploadFile");
+    btnUploadFile.setAttribute("disabled", "disabled");
+
+    let inputFileImage = document.getElementById("inputFileUpload") as HTMLInputElement;
+
+    if (inputFileImage.files.length > 0) {
+      this.attachmentService.uploadFile(inputFileImage.files[0], this.attachmentModel.AttachmentType, this.attachmentModel.Attachment);
+      this.uploadFileSubscription = this.attachmentService.uploadFileObservable.subscribe(
+        data => {
+          console.log(data);
+          if (data[0] == "success") {
+            this.toastr.success("File was successfully uploaded.", "Success");
+            btnUploadFile.removeAttribute("disabled");
+            this.attachmentModel.AttachmentURL = data[1];
+          } else if (data[0] == "failed") {
+            this.toastr.error("Unsupported file.", "Error");
+            btnUploadFile.removeAttribute("disabled");
+          }
+
+          if (this.uploadFileSubscription != null) this.uploadFileSubscription.unsubscribe();
+        }
+      );
+    } else {
+      this.toastr.error("No file selected.", "Error");
+      btnUploadFile.removeAttribute("disabled");
+    }
+  }
+
+  viewDocumentUrl() {
+    this.imageUrl = '';
+    this.showImage = false;
+    if (this.attachmentModel.AttachmentType !== '' && this.attachmentModel.AttachmentURL !== '') {
+      let documentType = this.attachmentModel.AttachmentType;
+      let documentUrl = this.attachmentModel.AttachmentURL;
+      this.docUrl = documentUrl;
+      window.open(documentUrl);
+    } else {
+      this.toastr.error("Document Type or Url is empty!", "Error");
+    }
+  }
+
 }

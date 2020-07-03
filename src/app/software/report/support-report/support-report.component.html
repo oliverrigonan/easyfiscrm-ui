@@ -38,7 +38,7 @@
           <tr>
             <td>
               <div class="form-group">
-                <span class="badge badge-info" style="margin-bottom: 5px;"><i class="fa fa-calendar fa-fw"></i>
+                <span class="badge badge-info pink" style="margin-bottom: 5px;"><i class="fa fa-calendar fa-fw"></i>
                   Start Date</span>
                 <wj-input-date #cboSupportStartDateFilter [(ngModel)]="supportStartDateFilterData"
                   [ngModelOptions]="{standalone: true}" (textChanged)="cboStartDateTextChanged()" format="MMMM dd, yyyy"
@@ -48,7 +48,7 @@
             </td>
             <td>
               <div class="form-group">
-                <span class="badge badge-info" style="margin-bottom: 5px;"><i class="fa fa-calendar fa-fw"></i>
+                <span class="badge badge-info pink" style="margin-bottom: 5px;"><i class="fa fa-calendar fa-fw"></i>
                   End Date</span>
                 <wj-input-date #cboSupportEndDateFilter [(ngModel)]="supportEndDateFilterData"
                   [ngModelOptions]="{standalone: true}" (textChanged)="cboEndDateTextChanged()" format="MMMM dd, yyyy"
@@ -58,7 +58,7 @@
             </td>
             <td>
               <div class="form-group">
-                <span class="badge badge-info" style="margin-bottom: 5px;"><i class="fa fa-question-circle fa-fw"></i>
+                <span class="badge badge-info pink" style="margin-bottom: 5px;"><i class="fa fa-question-circle fa-fw"></i>
                   Status</span>
                 <wj-combo-box #cboSupportStatus [itemsSource]="cboSupportStatusObservableArray" [isEditable]="false"
                   [isRequired]="true" [displayMemberPath]="'Status'" [selectedValuePath]="'Status'"

@@ -17,13 +17,13 @@ import { SupportDetailPrintDialogComponent } from './support-detail-print-dialog
 import { SupportDetailActivityPrintDialogComponent } from './support-detail-activity-print-dialog/support-detail-activity-print-dialog.component';
 import { DocumentService } from '../document/document.service';
 import { DocumentDeleteComponent } from '../document/document-delete/document-delete.component';
-import { LeadDocumentDetailComponent } from '../document/lead-document-detail/lead-document-detail.component';
 import { DocumentModel } from '../document/document.model';
 import { SecurityService } from '../security/security.service';
 import { FileAttachmentModel } from '../attachment/attachment.model';
 import { AttachmentComponent } from '../attachment/attachment/attachment.component';
 import { AttachmentDeleteComponent } from '../attachment/attachment-delete/attachment-delete.component';
 import { AttachmentService } from '../attachment/attachment.service';
+import { DocumentComponent } from '../document/document/document.component';
 
 @Component({
   selector: 'app-support-detail',
@@ -871,7 +871,7 @@ export class SupportDetailComponent implements OnInit {
 
   public btnAddDocument(): void {
     this.isDocumentDataLoaded = false;
-    const caseDetailDialogRef = this.caseDetailCaseDialog.open(LeadDocumentDetailComponent, {
+    const caseDetailDialogRef = this.caseDetailCaseDialog.open(DocumentComponent, {
       width: '1350px',
       height: '80%',
       data: {
@@ -911,7 +911,7 @@ export class SupportDetailComponent implements OnInit {
     this.documentModel.UpdatedByUser = currentDocument.UpdatedByUser;
     this.documentModel.UpdatedDateTime = currentDocument.UpdatedDateTime;
 
-    const caseDetailDialogRef = this.caseDetailCaseDialog.open(LeadDocumentDetailComponent, {
+    const caseDetailDialogRef = this.caseDetailCaseDialog.open(DocumentComponent, {
       width: '1350px',
       height: '80%',
       data: {
@@ -961,7 +961,7 @@ export class SupportDetailComponent implements OnInit {
 
     const caseDetailDialogRef = this.caseDetailCaseDialog.open(DocumentDeleteComponent, {
       width: '400px',
-      height: '200px',
+      height: '170px',
       data: {
         objDialogTitle: "Delete Support Document",
         objDialogEvent: "delete",
@@ -991,6 +991,7 @@ export class SupportDetailComponent implements OnInit {
   public isAttachmentDataLoaded: boolean = false;
 
   public listAttachmentSub: any;
+  public addAttachmentSub: any;
 
   private attachmentModel: FileAttachmentModel = {
     Id: 0,
@@ -1028,7 +1029,7 @@ export class SupportDetailComponent implements OnInit {
               this.listAttachmentFlexGrid.refresh();
               this.isAttachmentDataLoaded = true;
               this.isAttachmentProgressBarHidden = true;
-            }, 300);
+            }, 500);
 
             console.log('Client', this.listDocumentObservableArray);
 
@@ -1045,6 +1046,23 @@ export class SupportDetailComponent implements OnInit {
     this.attachmentModel.AttachmentURL = '';
     this.attachmentModel.AttachmentType = '';
     this.attachmentModel.Particulars = '';
+  }
+
+  public btnAddAttachmentClick(): void {
+    
+    this.attachmentModel.SPId = this.supportModel.Id;
+
+    this.attachmentService.addAttachment(this.attachmentModel);
+    this.addAttachmentSub = this.attachmentService.addAttachmentObservable.subscribe(
+      data => {
+        if (data[0] == "success") {
+        }
+        else if (data[0] == "failed") {
+          this.toastr.error(data[1], "Error");
+        }
+        if (this.addAttachmentSub != null) this.addAttachmentSub.unsubscribe();
+      }
+    );
   }
 
   public btnAddAttachment(): void {
@@ -1066,6 +1084,8 @@ export class SupportDetailComponent implements OnInit {
     caseDetailDialogRef.afterClosed().subscribe(result => {
       if (result.data == 200) {
         this.listAttachment();
+        this.clearAttachmentModel();
+
       }
       else {
         this.isAttachmentDataLoaded = true;
@@ -1119,7 +1139,7 @@ export class SupportDetailComponent implements OnInit {
 
     const caseDetailDialogRef = this.caseDetailCaseDialog.open(AttachmentDeleteComponent, {
       width: '400px',
-      height: '200px',
+      height: '170px',
       data: {
         objDialogTitle: "Delete Support Attachment",
         objDialogEvent: "delete",
@@ -1141,12 +1161,6 @@ export class SupportDetailComponent implements OnInit {
         this.clearAttachmentModel();
       }
     });
-  }
-
-  selectedFile: File
-
-  onFileChanged(event) {
-    this.selectedFile = event.target.files[0]
   }
 
   ngOnDestry() {

@@ -7,14 +7,15 @@
       <a class="nav-link active" id="sales-tab" data-toggle="tab" href="#salesDelivery" role="tab"
         aria-controls="salesDelivery" aria-selected="true">Sales Delivery Detail</a>
     </li>
+    <li class="nav-item">
+      <a class="nav-link" id="document-tab" data-toggle="tab" href="#document" role="tab" aria-controls="document"
+        aria-selected="false" (click)="listDocument()">Document</a>
+    </li>
     <li class="nav-item" [hidden]="isActivityTabHidden">
       <a class="nav-link" id="activities-tab" data-toggle="tab" href="#activities" role="tab" aria-controls="activities"
         aria-selected="false" (click)="listActivity()">Activities</a>
     </li>
-    <li class="nav-item" [hidden]="isActivityTabHidden">
-      <a class="nav-link" id="document-tab" data-toggle="tab" href="#document" role="tab" aria-controls="document"
-        aria-selected="false" (click)="listDocument()">Document</a>
-    </li>
+    
   </ul>
 
   <div class="tab-content" id="myTabContent">

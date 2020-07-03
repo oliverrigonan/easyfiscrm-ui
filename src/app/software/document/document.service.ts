@@ -119,4 +119,32 @@ export class DocumentService {
       }
     )
   }
+
+  public uploadFileSubject = new Subject<string[]>();
+  public uploadFileObservable = this.uploadFileSubject.asObservable();
+
+  public uploadFile(file: File, fileType: string, fileName: string): void {
+
+    let options = {
+      headers: new HttpHeaders({
+        'Authorization': 'Bearer ' + localStorage.getItem('access_token')
+      })
+    };
+
+    var formData: FormData = new FormData();
+    formData.append(fileType, file, fileName);
+
+    console.log(formData);
+
+    this.httpClient.post(this.defaultAPIURLHost + "/api/crm/trn/support/attachment/uploadFile/", formData, options).subscribe(
+      response => {
+        let responseResults: string[] = ["success", response.toString()];
+        this.uploadFileSubject.next(responseResults);
+      },
+      error => {
+        let errorResults: string[] = ["failed", error["error"]];
+        this.uploadFileSubject.next(errorResults);
+      }
+    );
+  }
 }
