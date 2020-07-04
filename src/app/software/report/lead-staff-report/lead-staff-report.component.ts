@@ -47,34 +47,37 @@ export class LeadStaffReportComponent implements OnInit {
   public isSalesStaffTabClick: boolean = true;
   public isSalesStaffQuotationTabClick: boolean = false;
 
-  cboStartDateTextChanged() {
+  public isListSalesStaffQuotationReportFocus: boolean = false;
+  public isListSalesStasffReportFocus: boolean = true;
 
+  cboStartDateTextChanged() {
     if (this.isSalesStaffReportDataLoaded) {
-      setTimeout(() => {
+      if (this.isListSalesStasffReportFocus == true) {
+        this.isSalesStaffReportDataLoaded = false;
         this.listSalesStaffReport();
-      }, 100);
+      }
     }
 
-    if (this.isSalesStaffQuotationTabClick == true) {
-      if (this.isSalesStaffQuotationReportDataLoaded) {
+    if (this.isSalesStaffQuotationReportDataLoaded) {
+      if (this.isListSalesStaffQuotationReportFocus == true) {
         this.isSalesStaffQuotationReportDataLoaded = false;
         this.listSalesStaffQuotationReport();
       }
     }
+
   }
 
   cboEndDateTextChanged() {
-
     if (this.isSalesStaffReportDataLoaded) {
-      setTimeout(() => {
+      if (this.isListSalesStasffReportFocus == true) {
+        this.isSalesStaffReportDataLoaded = false;
         this.listSalesStaffReport();
-      }, 100);
+      }
     }
 
-    if (this.isSalesStaffQuotationTabClick == true) {
-      if (this.isSalesStaffQuotationReportDataLoaded) {
+    if (this.isSalesStaffQuotationReportDataLoaded) {
+      if (this.isListSalesStaffQuotationReportFocus == true) {
         this.isSalesStaffQuotationReportDataLoaded = false;
-
         this.listSalesStaffQuotationReport();
       }
     }
@@ -84,13 +87,14 @@ export class LeadStaffReportComponent implements OnInit {
     this.cboUserSelectedValue = selectedValue;
 
     if (this.isSalesStaffReportDataLoaded) {
-      setTimeout(() => {
+      if (this.isListSalesStasffReportFocus == true) {
+        this.isSalesStaffReportDataLoaded = false;
         this.listSalesStaffReport();
-      }, 100);
+      }
     }
 
-    if (this.isSalesStaffQuotationTabClick == true) {
-      if (this.isSalesStaffQuotationReportDataLoaded) {
+    if (this.isSalesStaffQuotationReportDataLoaded) {
+      if (this.isListSalesStaffQuotationReportFocus == true) {
         this.isSalesStaffQuotationReportDataLoaded = false;
         this.listSalesStaffQuotationReport();
       }
@@ -134,12 +138,15 @@ export class LeadStaffReportComponent implements OnInit {
   }
 
   refreshlistSalesStaffReport() {
-    this.isSalesStaffQuotationTabClick = false;
+    this.isListSalesStasffReportFocus = true;
+    this.isListSalesStaffQuotationReportFocus = false;
+
     setTimeout(() => {
       this.listSalesStaffReportCollectionView.refresh();
       this.listSalesStaffReportFlexGrid.refresh();
     }, 300);
   }
+
 
   public listSalesStaffReport(): void {
     this.listSalesStaffReportObservableArray = new ObservableArray();
@@ -169,51 +176,69 @@ export class LeadStaffReportComponent implements OnInit {
           this.listSalesStaffReportFlexGrid.refresh();
           this.isSalesStaffReportDataLoaded = true;
           this.isSalesStaffReportProgressBarHidden = true;
-          this.isSalesStaffQuotationReportDataLoaded = false;
+
+          if (this.isListSalesStaffQuotationReportFocus == false) {
+            this.listSalesStaffQuotationReport();
+          }
+          this.listSalesStaffQuotationReportCollectionView.refresh();
+          this.listSalesStaffQuotationReportFlexGrid.refresh();
         }, 500);
 
         if (this.listSalesStaffReportSub != null) this.listSalesStaffReportSub.unsubscribe();
       }
     );
+
+  }
+
+  refreshlistSalesStaffQuotationReport() {
+    this.isListSalesStasffReportFocus = false;
+    this.isListSalesStaffQuotationReportFocus = true;
+
+    setTimeout(() => {
+      this.listSalesStaffQuotationReportCollectionView.refresh();
+      this.listSalesStaffQuotationReportFlexGrid.refresh();
+    }, 300);
   }
 
   public listSalesStaffQuotationReport(): void {
-    this.isSalesStaffQuotationTabClick = true;
-    setTimeout(() => {
-      if (!this.isSalesStaffQuotationReportDataLoaded) {
-        this.listSalesStaffQuotationReportObservableArray = new ObservableArray();
-        this.listSalesStaffQuotationReportCollectionView = new CollectionView(this.listSalesStaffQuotationReportObservableArray);
-        this.listSalesStaffQuotationReportCollectionView.pageSize = 15;
-        this.listSalesStaffQuotationReportCollectionView.trackChanges = true;
-        this.listSalesStaffQuotationReportCollectionView.refresh();
-        this.listSalesStaffQuotationReportFlexGrid.refresh();
+    this.listSalesStaffQuotationReportObservableArray = new ObservableArray();
+    this.listSalesStaffQuotationReportCollectionView = new CollectionView(this.listSalesStaffQuotationReportObservableArray);
+    this.listSalesStaffQuotationReportCollectionView.pageSize = 15;
+    this.listSalesStaffQuotationReportCollectionView.trackChanges = true;
+    this.listSalesStaffQuotationReportCollectionView.refresh();
+    this.listSalesStaffQuotationReportFlexGrid.refresh();
 
-        let startDate = [this.startDateFilterData.getFullYear(), this.startDateFilterData.getMonth() + 1, this.startDateFilterData.getDate()].join('-');
-        let endDate = [this.endDateFilterData.getFullYear(), this.endDateFilterData.getMonth() + 1, this.endDateFilterData.getDate()].join('-');
+    let startDate = [this.startDateFilterData.getFullYear(), this.startDateFilterData.getMonth() + 1, this.startDateFilterData.getDate()].join('-');
+    let endDate = [this.endDateFilterData.getFullYear(), this.endDateFilterData.getMonth() + 1, this.endDateFilterData.getDate()].join('-');
 
-        this.isSalesStaffQuotationReportProgressBarHidden = false;
+    this.isSalesStaffQuotationReportProgressBarHidden = false;
 
-        this.leadStaffReportService.listSalesStaffQuotationReport(startDate, endDate, this.cboUserSelectedValue);
-        this.listSalesStaffReportSub = this.leadStaffReportService.listSalesQuotationReportObservable.subscribe(
-          data => {
-            if (data.length > 0) {
-              this.listSalesStaffQuotationReportObservableArray = data;
-              this.listSalesStaffQuotationReportCollectionView = new CollectionView(this.listSalesStaffQuotationReportObservableArray);
-              this.listSalesStaffQuotationReportCollectionView.pageSize = this.listSalesStafQuotationReportPageIndex;
-              this.listSalesStaffQuotationReportCollectionView.trackChanges = true;
-            }
-            setTimeout(() => {
-              this.listSalesStaffQuotationReportCollectionView.refresh();
-              this.listSalesStaffQuotationReportFlexGrid.refresh();
-              this.isSalesStaffQuotationReportDataLoaded = true;
-              this.isSalesStaffQuotationReportProgressBarHidden = true;
-            }, 300);
+    this.leadStaffReportService.listSalesStaffQuotationReport(startDate, endDate, this.cboUserSelectedValue);
+    this.listSalesStaffReportSub = this.leadStaffReportService.listSalesQuotationReportObservable.subscribe(
+      data => {
+        if (data.length > 0) {
+          this.listSalesStaffQuotationReportObservableArray = data;
+          this.listSalesStaffQuotationReportCollectionView = new CollectionView(this.listSalesStaffQuotationReportObservableArray);
+          this.listSalesStaffQuotationReportCollectionView.pageSize = this.listSalesStafQuotationReportPageIndex;
+          this.listSalesStaffQuotationReportCollectionView.trackChanges = true;
+        }
+        setTimeout(() => {
+          this.listSalesStaffQuotationReportCollectionView.refresh();
+          this.listSalesStaffQuotationReportFlexGrid.refresh();
+          this.isSalesStaffQuotationReportDataLoaded = true;
+          this.isSalesStaffQuotationReportProgressBarHidden = true;
 
-            if (this.listSalesStaffQuotationReportSub != null) this.listSalesStaffQuotationReportSub.unsubscribe();
+          if (this.isListSalesStasffReportFocus == false) {
+            this.listSalesStaffReport();
           }
-        );
+          this.listSalesStaffReportCollectionView.refresh();
+          this.listSalesStaffReportFlexGrid.refresh();
+
+        }, 300);
+
+        if (this.listSalesStaffQuotationReportSub != null) this.listSalesStaffQuotationReportSub.unsubscribe();
       }
-    }, 300);
+    );
   }
 
   ngOnDestroy() {

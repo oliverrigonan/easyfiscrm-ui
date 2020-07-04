@@ -103,6 +103,11 @@ export class SalesDeliveryStaffReportService {
           }
         }
         this.listOpenSalesDeliveryReportubject.next(listOpenSalesDeliveryReporObservableArray);
+      },
+      error => {
+        let errorResults: string[] = ["failed", error["error"]];
+        console.log(errorResults);
+        this.listOpenSalesDeliveryReportubject.next(listOpenSalesDeliveryReporObservableArray);
       }
     );
   }

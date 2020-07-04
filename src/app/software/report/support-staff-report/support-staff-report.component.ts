@@ -135,6 +135,7 @@ export class SupportStaffReportComponent implements OnInit {
 
   refreshlistSalesStaffReport() {
     this.isOpenSupportStaffReportTabClick = false;
+
     setTimeout(() => {
       this.listSupportStaffReportCollectionView.refresh();
       this.listSupportStaffReportFlexGrid.refresh();
@@ -169,7 +170,6 @@ export class SupportStaffReportComponent implements OnInit {
           this.listSupportStaffReportFlexGrid.refresh();
           this.isSupportStaffReportDataLoaded = true;
           this.isSupportStaffReportProgressBarHidden = true;
-          this.isOpenSupportStaffReportDataLoaded = false;
         }, 500);
 
         if (this.listSupportStaffReportSub != null) this.listSupportStaffReportSub.unsubscribe();

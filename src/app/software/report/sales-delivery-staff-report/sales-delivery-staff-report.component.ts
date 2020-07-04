@@ -141,6 +141,7 @@ export class SalesDeliveryStaffReportComponent implements OnInit {
 
   refreshlistSalesDeliveryStaffReport() {
     this.isOpenSalesDeliveryStaffTabClick = false;
+    this.isOpenSalesDeliveryStaffReportDataLoaded = false;
     setTimeout(() => {
       this.listSalesDeliveryStaffReportCollectionView.refresh();
       this.listSalesDeliveryStaffReportFlexGrid.refresh();
@@ -175,7 +176,6 @@ export class SalesDeliveryStaffReportComponent implements OnInit {
           this.listSalesDeliveryStaffReportFlexGrid.refresh();
           this.isSalesDeliveryStaffReportDataLoaded = true;
           this.isSalesStaffDeliveryReportProgressBarHidden = true;
-          this.isOpenSalesDeliveryStaffReportDataLoaded = false;
         }, 500);
 
         if (this.listSalesDeliveryStaffReportSub != null) this.listSalesDeliveryStaffReportSub.unsubscribe();
