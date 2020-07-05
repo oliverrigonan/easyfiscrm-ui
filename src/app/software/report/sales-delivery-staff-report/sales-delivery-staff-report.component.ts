@@ -50,19 +50,19 @@ export class SalesDeliveryStaffReportComponent implements OnInit {
 
   public listOpenSalesDeliveryStaffReportSub: any;
 
-  public isSalesDeliveryStaffTabClick: boolean = true;
-  public isOpenSalesDeliveryStaffTabClick: boolean = false;
+  public isLisSalesDeliveryStaffReportFocus: boolean = true;
+  public isListOpenSalesDeliveryStaffReportFocus: boolean = false;
 
   cboStartDateTextChanged() {
-
     if (this.isSalesDeliveryStaffReportDataLoaded) {
-      setTimeout(() => {
+      if (this.isLisSalesDeliveryStaffReportFocus == true) {
+        this.isSalesDeliveryStaffReportDataLoaded = false;
         this.listSalesDeliveryStaffReport();
-      }, 100);
+      }
     }
 
-    if (this.isOpenSalesDeliveryStaffTabClick == true) {
-      if (this.isOpenSalesDeliveryStaffReportDataLoaded) {
+    if (this.isOpenSalesDeliveryStaffReportDataLoaded) {
+      if (this.isListOpenSalesDeliveryStaffReportFocus == true) {
         this.isOpenSalesDeliveryStaffReportDataLoaded = false;
         this.listOpenSalesDeliveryStaffReport();
       }
@@ -70,17 +70,16 @@ export class SalesDeliveryStaffReportComponent implements OnInit {
   }
 
   cboEndDateTextChanged() {
-
     if (this.isSalesDeliveryStaffReportDataLoaded) {
-      setTimeout(() => {
+      if (this.isLisSalesDeliveryStaffReportFocus == true) {
+        this.isSalesDeliveryStaffReportDataLoaded = false;
         this.listSalesDeliveryStaffReport();
-      }, 100);
+      }
     }
 
-    if (this.isOpenSalesDeliveryStaffTabClick == true) {
-      if (this.isOpenSalesDeliveryStaffReportDataLoaded) {
+    if (this.isOpenSalesDeliveryStaffReportDataLoaded) {
+      if (this.isListOpenSalesDeliveryStaffReportFocus == true) {
         this.isOpenSalesDeliveryStaffReportDataLoaded = false;
-
         this.listOpenSalesDeliveryStaffReport();
       }
     }
@@ -90,13 +89,14 @@ export class SalesDeliveryStaffReportComponent implements OnInit {
     this.cboUserSelectedValue = selectedValue;
 
     if (this.isSalesDeliveryStaffReportDataLoaded) {
-      setTimeout(() => {
+      if (this.isLisSalesDeliveryStaffReportFocus == true) {
+        this.isSalesDeliveryStaffReportDataLoaded = false;
         this.listSalesDeliveryStaffReport();
-      }, 100);
+      }
     }
 
-    if (this.isOpenSalesDeliveryStaffTabClick == true) {
-      if (this.isOpenSalesDeliveryStaffReportDataLoaded) {
+    if (this.isOpenSalesDeliveryStaffReportDataLoaded) {
+      if (this.isListOpenSalesDeliveryStaffReportFocus == true) {
         this.isOpenSalesDeliveryStaffReportDataLoaded = false;
         this.listOpenSalesDeliveryStaffReport();
       }
@@ -129,7 +129,6 @@ export class SalesDeliveryStaffReportComponent implements OnInit {
           }
         }
 
-        console.log(userObservableArray);
         this.cboUserObservableArray = userObservableArray;
 
         setTimeout(() => {
@@ -140,11 +139,22 @@ export class SalesDeliveryStaffReportComponent implements OnInit {
   }
 
   refreshlistSalesDeliveryStaffReport() {
-    this.isOpenSalesDeliveryStaffTabClick = false;
-    this.isOpenSalesDeliveryStaffReportDataLoaded = false;
+    this.isLisSalesDeliveryStaffReportFocus = true;
+    this.isListOpenSalesDeliveryStaffReportFocus = false;
+
     setTimeout(() => {
       this.listSalesDeliveryStaffReportCollectionView.refresh();
       this.listSalesDeliveryStaffReportFlexGrid.refresh();
+    }, 300);
+  }
+
+  refreshlistSOpenalesDeliveryStaffReport() {
+    this.isLisSalesDeliveryStaffReportFocus = false;
+    this.isListOpenSalesDeliveryStaffReportFocus = true;
+
+    setTimeout(() => {
+      this.listOpenSalesDeliveryStaffReportCollectionView.refresh();
+      this.listOpenSalesDeliveryStaffReportFlexGrid.refresh();
     }, 300);
   }
 
@@ -176,6 +186,11 @@ export class SalesDeliveryStaffReportComponent implements OnInit {
           this.listSalesDeliveryStaffReportFlexGrid.refresh();
           this.isSalesDeliveryStaffReportDataLoaded = true;
           this.isSalesStaffDeliveryReportProgressBarHidden = true;
+
+          if (this.isListOpenSalesDeliveryStaffReportFocus == false) {
+            this.listOpenSalesDeliveryStaffReport();
+          }
+
         }, 500);
 
         if (this.listSalesDeliveryStaffReportSub != null) this.listSalesDeliveryStaffReportSub.unsubscribe();
@@ -184,42 +199,43 @@ export class SalesDeliveryStaffReportComponent implements OnInit {
   }
 
   public listOpenSalesDeliveryStaffReport(): void {
-    this.isOpenSalesDeliveryStaffTabClick = true;
-    setTimeout(() => {
-      if (!this.isOpenSalesDeliveryStaffReportDataLoaded) {
-        this.listOpenSalesDeliveryStaffReportObservableArray = new ObservableArray();
-        this.listOpenSalesDeliveryStaffReportCollectionView = new CollectionView(this.listOpenSalesDeliveryStaffReportObservableArray);
-        this.listOpenSalesDeliveryStaffReportCollectionView.pageSize = 15;
-        this.listOpenSalesDeliveryStaffReportCollectionView.trackChanges = true;
-        this.listOpenSalesDeliveryStaffReportCollectionView.refresh();
-        this.listOpenSalesDeliveryStaffReportFlexGrid.refresh();
+    this.listOpenSalesDeliveryStaffReportObservableArray = new ObservableArray();
+    this.listOpenSalesDeliveryStaffReportCollectionView = new CollectionView(this.listOpenSalesDeliveryStaffReportObservableArray);
+    this.listOpenSalesDeliveryStaffReportCollectionView.pageSize = 15;
+    this.listOpenSalesDeliveryStaffReportCollectionView.trackChanges = true;
+    this.listOpenSalesDeliveryStaffReportCollectionView.refresh();
+    this.listOpenSalesDeliveryStaffReportFlexGrid.refresh();
 
-        let startDate = [this.startDateFilterData.getFullYear(), this.startDateFilterData.getMonth() + 1, this.startDateFilterData.getDate()].join('-');
-        let endDate = [this.endDateFilterData.getFullYear(), this.endDateFilterData.getMonth() + 1, this.endDateFilterData.getDate()].join('-');
+    let startDate = [this.startDateFilterData.getFullYear(), this.startDateFilterData.getMonth() + 1, this.startDateFilterData.getDate()].join('-');
+    let endDate = [this.endDateFilterData.getFullYear(), this.endDateFilterData.getMonth() + 1, this.endDateFilterData.getDate()].join('-');
 
-        this.isOpenSalesDeliveryStaffReportProgressBarHidden = false;
+    this.isOpenSalesDeliveryStaffReportProgressBarHidden = false;
 
-        this.salesDeliveryStaffReportService.listOpenSalesDeliveryStaffReport(startDate, endDate, this.cboUserSelectedValue);
-        this.listSalesDeliveryStaffReportSub = this.salesDeliveryStaffReportService.listOpenSalesDeliveryReportObservable.subscribe(
-          data => {
-            if (data.length > 0) {
-              this.listOpenSalesDeliveryStaffReportObservableArray = data;
-              this.listOpenSalesDeliveryStaffReportCollectionView = new CollectionView(this.listOpenSalesDeliveryStaffReportObservableArray);
-              this.listOpenSalesDeliveryStaffReportCollectionView.pageSize = this.listOpenSalesDeliveryStafReportPageIndex;
-              this.listOpenSalesDeliveryStaffReportCollectionView.trackChanges = true;
-            }
-            setTimeout(() => {
-              this.listOpenSalesDeliveryStaffReportCollectionView.refresh();
-              this.listOpenSalesDeliveryStaffReportFlexGrid.refresh();
-              this.isOpenSalesDeliveryStaffReportDataLoaded = true;
-              this.isOpenSalesDeliveryStaffReportProgressBarHidden = true;
-            }, 300);
+    this.salesDeliveryStaffReportService.listOpenSalesDeliveryStaffReport(startDate, endDate, this.cboUserSelectedValue);
+    this.listSalesDeliveryStaffReportSub = this.salesDeliveryStaffReportService.listOpenSalesDeliveryReportObservable.subscribe(
+      data => {
+        if (data.length > 0) {
+          this.listOpenSalesDeliveryStaffReportObservableArray = data;
+          this.listOpenSalesDeliveryStaffReportCollectionView = new CollectionView(this.listOpenSalesDeliveryStaffReportObservableArray);
+          this.listOpenSalesDeliveryStaffReportCollectionView.pageSize = this.listOpenSalesDeliveryStafReportPageIndex;
+          this.listOpenSalesDeliveryStaffReportCollectionView.trackChanges = true;
+        }
+        setTimeout(() => {
+          this.listOpenSalesDeliveryStaffReportCollectionView.refresh();
+          this.listOpenSalesDeliveryStaffReportFlexGrid.refresh();
+          this.isOpenSalesDeliveryStaffReportDataLoaded = true;
+          this.isOpenSalesDeliveryStaffReportProgressBarHidden = true;
 
-            if (this.listOpenSalesDeliveryStaffReportSub != null) this.listOpenSalesDeliveryStaffReportSub.unsubscribe();
+          if (this.isLisSalesDeliveryStaffReportFocus == false) {
+            this.listSalesDeliveryStaffReport();
           }
-        );
+          this.listSalesDeliveryStaffReportCollectionView.refresh();
+          this.listSalesDeliveryStaffReportFlexGrid.refresh();
+        }, 300);
+
+        if (this.listOpenSalesDeliveryStaffReportSub != null) this.listOpenSalesDeliveryStaffReportSub.unsubscribe();
       }
-    }, 300);
+    );
   }
 
   ngOnDestroy() {

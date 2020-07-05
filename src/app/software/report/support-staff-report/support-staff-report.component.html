@@ -56,11 +56,12 @@
     <ul class="nav nav-tabs" id="myTab" role="tablist" style="margin-top: 10px; margin-bottom: 10px;">
       <li class="nav-item">
         <a class="nav-link active" id="salesStaffReport-tab" data-toggle="tab" href="#salesStaffReport" role="tab"
-          aria-controls="salesStaffReport" (click)="refreshlistSalesStaffReport()" aria-selected="true">Support</a>
+          aria-controls="salesStaffReport" (click)="refreshlistSupportStaffReport()" aria-selected="true">Support</a>
       </li>
       <li class="nav-item">
         <a class="nav-link" id="SalesStaffQuotationReport-tab" data-toggle="tab" href="#SalesStaffQuotationReport"
-          role="tab" aria-controls="SalesStaffQuotationReport" (click)="listSalesStaffQuotationReport()" aria-selected="false">Open Support</a>
+          role="tab" aria-controls="SalesStaffQuotationReport" (click)="refreshlistOpenSupportStaffReport()"
+          aria-selected="false">Open Support</a>
       </li>
     </ul>
     <div class="tab-content" id="myTabContent">
@@ -70,18 +71,17 @@
           <!-- <div class="card-header">
           </div> -->
           <div class="card-body">
-            <mat-progress-bar [hidden]="isSupportStaffReportProgressBarHidden" [color]="'primary'" [mode]="'indeterminate'">
+            <mat-progress-bar [hidden]="isSupportStaffReportProgressBarHidden" [color]="'primary'"
+              [mode]="'indeterminate'">
             </mat-progress-bar>
             <wj-flex-grid #listSupportStaffReportFlexGrid [itemsSource]="listSupportStaffReportCollectionView"
               [selectionMode]="3" [frozenColumns]="2">
               <wj-flex-grid-filter></wj-flex-grid-filter>
               <wj-flex-grid-column [header]="'Staff'" [binding]="'Staff'" [isReadOnly]="true" [width]="'2*'">
               </wj-flex-grid-column>
-              <wj-flex-grid-column [header]="'Open'" [binding]="'Open'" [isReadOnly]="true"
-                [width]="'2*'">
+              <wj-flex-grid-column [header]="'Open'" [binding]="'Open'" [isReadOnly]="true" [width]="'2*'">
               </wj-flex-grid-column>
-              <wj-flex-grid-column [header]="'ForClosing'" [binding]="'ForClosing'" [isReadOnly]="true"
-                [width]="'2*'">
+              <wj-flex-grid-column [header]="'ForClosing'" [binding]="'ForClosing'" [isReadOnly]="true" [width]="'2*'">
               </wj-flex-grid-column>
               <wj-flex-grid-column [header]="'Close'" [binding]="'Close'" [isReadOnly]="true" [width]="'2*'">
               </wj-flex-grid-column>
@@ -124,32 +124,38 @@
           <!-- <div class="card-header">
           </div> -->
           <div class="card-body">
-            <mat-progress-bar [hidden]="isOpenSupportStaffReportProgressBarHidden" [color]="'primary'" [mode]="'indeterminate'">
+            <mat-progress-bar [hidden]="isOpenSupportStaffReportProgressBarHidden" [color]="'primary'"
+              [mode]="'indeterminate'">
             </mat-progress-bar>
             <wj-flex-grid #listOpenSupportStaffReportFlexGrid [itemsSource]="listOpenSupportStaffReportCollectionView"
               [selectionMode]="3" [frozenColumns]="2">
               <wj-flex-grid-filter></wj-flex-grid-filter>
               <wj-flex-grid-column [header]="'No.'" [binding]="'SPNumber'" [isReadOnly]="true" [width]="'2*'">
               </wj-flex-grid-column>
-              <wj-flex-grid-column [header]="'Customer'" [binding]="'Customer'" [isReadOnly]="true"
-                [width]="'2*'">
+              <wj-flex-grid-column [header]="'Customer'" [binding]="'Customer'" [isReadOnly]="true" [width]="'2*'">
               </wj-flex-grid-column>
               <wj-flex-grid-column [header]="'Support Date'" [binding]="'SupportDate'" [isReadOnly]="true"
                 [width]="'2*'">
               </wj-flex-grid-column>
-              <wj-flex-grid-column [header]="'Product'" [binding]="'ProductDescription'" [isReadOnly]="true" [width]="'2*'">
+              <wj-flex-grid-column [header]="'Product'" [binding]="'ProductDescription'" [isReadOnly]="true"
+                [width]="'2*'">
               </wj-flex-grid-column>
-              <wj-flex-grid-column [header]="'Amount'" [binding]="'Amount'" [isReadOnly]="true" [width]="'2*'">
+              <wj-flex-grid-column *ngIf="" [header]="'Amount'" [binding]="'Amount'" [isReadOnly]="true" [width]="'2*'">
               </wj-flex-grid-column>
-              <wj-flex-grid-column [header]="'Expected Close Date'" [binding]="'ExpectedCloseDate'" [isReadOnly]="true" [width]="'2*'">
+              <wj-flex-grid-column *ngIf="" [header]="'Expected Close Date'" [binding]="'ExpectedCloseDate'"
+                [isReadOnly]="true" [width]="'2*'">
               </wj-flex-grid-column>
-              <wj-flex-grid-column [header]="'Assigned User'" [binding]="'AssignedToUser'" [isReadOnly]="true" [width]="'2*'">
+              <wj-flex-grid-column [header]="'Assigned User'" [binding]="'AssignedToUser'" [isReadOnly]="true"
+                [width]="'2*'">
               </wj-flex-grid-column>
-              <wj-flex-grid-column [header]="'Last Activity'" [binding]="'LastActivity'" [isReadOnly]="true" [width]="'2*'">
+              <wj-flex-grid-column [header]="'Last Activity'" [binding]="'LastActivity'" [isReadOnly]="true"
+                [width]="'2*'">
               </wj-flex-grid-column>
-              <wj-flex-grid-column [header]="'Last Activity Date'" [binding]="'LastActivityDate'" [isReadOnly]="true" [width]="'2*'">
+              <wj-flex-grid-column [header]="'Last Activity Date'" [binding]="'LastActivityDate'" [isReadOnly]="true"
+                [width]="'2*'">
               </wj-flex-grid-column>
-              <wj-flex-grid-column [header]="'Last Activity Staff'" [binding]="'LastActivityStaff'" [isReadOnly]="true" [width]="'2*'">
+              <wj-flex-grid-column [header]="'Last Activity Staff'" [binding]="'LastActivityStaff'" [isReadOnly]="true"
+                [width]="'2*'">
               </wj-flex-grid-column>
             </wj-flex-grid>
           </div>

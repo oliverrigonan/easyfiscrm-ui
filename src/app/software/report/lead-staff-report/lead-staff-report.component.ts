@@ -44,39 +44,35 @@ export class LeadStaffReportComponent implements OnInit {
 
   public listSalesStaffQuotationReportSub: any;
 
-  public isSalesStaffTabClick: boolean = true;
-  public isSalesStaffQuotationTabClick: boolean = false;
-
-  public isListSalesStaffQuotationReportFocus: boolean = false;
-  public isListSalesStasffReportFocus: boolean = true;
+  public isListSalesStaffQuotationReportActiveTab: boolean = false;
+  public isListSalesStasffReportActiveTab: boolean = true;
 
   cboStartDateTextChanged() {
     if (this.isSalesStaffReportDataLoaded) {
-      if (this.isListSalesStasffReportFocus == true) {
+      if (this.isListSalesStasffReportActiveTab == true) {
         this.isSalesStaffReportDataLoaded = false;
         this.listSalesStaffReport();
       }
     }
 
     if (this.isSalesStaffQuotationReportDataLoaded) {
-      if (this.isListSalesStaffQuotationReportFocus == true) {
+      if (this.isListSalesStaffQuotationReportActiveTab == true) {
         this.isSalesStaffQuotationReportDataLoaded = false;
         this.listSalesStaffQuotationReport();
       }
     }
-
   }
 
   cboEndDateTextChanged() {
     if (this.isSalesStaffReportDataLoaded) {
-      if (this.isListSalesStasffReportFocus == true) {
+      if (this.isListSalesStasffReportActiveTab == true) {
         this.isSalesStaffReportDataLoaded = false;
         this.listSalesStaffReport();
       }
     }
 
     if (this.isSalesStaffQuotationReportDataLoaded) {
-      if (this.isListSalesStaffQuotationReportFocus == true) {
+      if (this.isListSalesStaffQuotationReportActiveTab == true) {
         this.isSalesStaffQuotationReportDataLoaded = false;
         this.listSalesStaffQuotationReport();
       }
@@ -87,14 +83,14 @@ export class LeadStaffReportComponent implements OnInit {
     this.cboUserSelectedValue = selectedValue;
 
     if (this.isSalesStaffReportDataLoaded) {
-      if (this.isListSalesStasffReportFocus == true) {
+      if (this.isListSalesStasffReportActiveTab == true) {
         this.isSalesStaffReportDataLoaded = false;
         this.listSalesStaffReport();
       }
     }
 
     if (this.isSalesStaffQuotationReportDataLoaded) {
-      if (this.isListSalesStaffQuotationReportFocus == true) {
+      if (this.isListSalesStaffQuotationReportActiveTab == true) {
         this.isSalesStaffQuotationReportDataLoaded = false;
         this.listSalesStaffQuotationReport();
       }
@@ -127,7 +123,6 @@ export class LeadStaffReportComponent implements OnInit {
           }
         }
 
-        console.log(userObservableArray);
         this.cboUserObservableArray = userObservableArray;
 
         setTimeout(() => {
@@ -138,8 +133,8 @@ export class LeadStaffReportComponent implements OnInit {
   }
 
   refreshlistSalesStaffReport() {
-    this.isListSalesStasffReportFocus = true;
-    this.isListSalesStaffQuotationReportFocus = false;
+    this.isListSalesStasffReportActiveTab = true;
+    this.isListSalesStaffQuotationReportActiveTab = false;
 
     setTimeout(() => {
       this.listSalesStaffReportCollectionView.refresh();
@@ -147,6 +142,15 @@ export class LeadStaffReportComponent implements OnInit {
     }, 300);
   }
 
+  refreshlistSalesStaffQuotationReport() {
+    this.isListSalesStasffReportActiveTab = false;
+    this.isListSalesStaffQuotationReportActiveTab = true;
+
+    setTimeout(() => {
+      this.listSalesStaffQuotationReportCollectionView.refresh();
+      this.listSalesStaffQuotationReportFlexGrid.refresh();
+    }, 300);
+  }
 
   public listSalesStaffReport(): void {
     this.listSalesStaffReportObservableArray = new ObservableArray();
@@ -177,27 +181,15 @@ export class LeadStaffReportComponent implements OnInit {
           this.isSalesStaffReportDataLoaded = true;
           this.isSalesStaffReportProgressBarHidden = true;
 
-          if (this.isListSalesStaffQuotationReportFocus == false) {
+          if (this.isListSalesStaffQuotationReportActiveTab == false) {
             this.listSalesStaffQuotationReport();
           }
-          this.listSalesStaffQuotationReportCollectionView.refresh();
-          this.listSalesStaffQuotationReportFlexGrid.refresh();
         }, 500);
 
         if (this.listSalesStaffReportSub != null) this.listSalesStaffReportSub.unsubscribe();
       }
     );
 
-  }
-
-  refreshlistSalesStaffQuotationReport() {
-    this.isListSalesStasffReportFocus = false;
-    this.isListSalesStaffQuotationReportFocus = true;
-
-    setTimeout(() => {
-      this.listSalesStaffQuotationReportCollectionView.refresh();
-      this.listSalesStaffQuotationReportFlexGrid.refresh();
-    }, 300);
   }
 
   public listSalesStaffQuotationReport(): void {
@@ -228,7 +220,7 @@ export class LeadStaffReportComponent implements OnInit {
           this.isSalesStaffQuotationReportDataLoaded = true;
           this.isSalesStaffQuotationReportProgressBarHidden = true;
 
-          if (this.isListSalesStasffReportFocus == false) {
+          if (this.isListSalesStasffReportActiveTab == false) {
             this.listSalesStaffReport();
           }
           this.listSalesStaffReportCollectionView.refresh();

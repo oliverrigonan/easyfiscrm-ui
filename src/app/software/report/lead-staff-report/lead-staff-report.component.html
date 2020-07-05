@@ -139,11 +139,11 @@
               <wj-flex-grid-column [header]="'Quotation Date'" [binding]="'LDQuotationDate'" [isReadOnly]="true"
                 [width]="'2*'">
               </wj-flex-grid-column>
-              <wj-flex-grid-column [header]="'Product'" [binding]="'ProductDescription'" [isReadOnly]="true" [width]="'2*'">
+              <wj-flex-grid-column  [header]="'Product'" [binding]="'ProductDescription'" [isReadOnly]="true" [width]="'2*'">
               </wj-flex-grid-column>
-              <wj-flex-grid-column [header]="'Amount'" [binding]="'Amount'" [isReadOnly]="true" [width]="'2*'">
+              <wj-flex-grid-column *ngIf="" [header]="'Amount'" [binding]="'Amount'" [isReadOnly]="true" [width]="'2*'">
               </wj-flex-grid-column>
-              <wj-flex-grid-column [header]="'Expected Invoiced Date'" [binding]="'ExpectedInvoicedDate'" [isReadOnly]="true" [width]="'2*'">
+              <wj-flex-grid-column *ngIf="" [header]="'Expected Invoiced Date'" [binding]="'ExpectedInvoicedDate'" [isReadOnly]="true" [width]="'2*'">
               </wj-flex-grid-column>
               <wj-flex-grid-column [header]="'Assigned User'" [binding]="'AssignedToUser'" [isReadOnly]="true" [width]="'2*'">
               </wj-flex-grid-column>

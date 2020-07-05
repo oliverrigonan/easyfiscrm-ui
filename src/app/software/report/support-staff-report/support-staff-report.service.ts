@@ -48,7 +48,6 @@ export class SupportStaffReportService {
             });
           }
         }
-        console.log(listUserObservableArray);
         this.listUserSubject.next(listUserObservableArray);
       }
     );

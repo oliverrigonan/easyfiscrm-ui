@@ -47,35 +47,37 @@ export class SupportStaffReportComponent implements OnInit {
   public isSupportStaffReportTabClick: boolean = true;
   public isOpenSupportStaffReportTabClick: boolean = false;
 
-  cboStartDateTextChanged() {
+  public isListOpenSupportStaffReportActiveTab: boolean = false;
+  public isListSupportStaffReportActiveTab: boolean = true;
 
+  cboStartDateTextChanged() {
     if (this.isSupportStaffReportDataLoaded) {
-      setTimeout(() => {
+      if (this.isListSupportStaffReportActiveTab == true) {
+        this.isSupportStaffReportDataLoaded = false;
         this.listSalesStaffReport();
-      }, 100);
+      }
     }
 
-    if (this.isOpenSupportStaffReportTabClick == true) {
-      if (this.isOpenSupportStaffReportDataLoaded) {
+    if (this.isOpenSupportStaffReportDataLoaded) {
+      if (this.isListOpenSupportStaffReportActiveTab == true) {
         this.isOpenSupportStaffReportDataLoaded = false;
-        this.listSalesStaffQuotationReport();
+        this.listOpenSupportStaffReport();
       }
     }
   }
 
   cboEndDateTextChanged() {
-
     if (this.isSupportStaffReportDataLoaded) {
-      setTimeout(() => {
+      if (this.isListSupportStaffReportActiveTab == true) {
+        this.isSupportStaffReportDataLoaded = false;
         this.listSalesStaffReport();
-      }, 100);
+      }
     }
 
-    if (this.isOpenSupportStaffReportTabClick == true) {
-      if (this.isOpenSupportStaffReportDataLoaded) {
+    if (this.isOpenSupportStaffReportDataLoaded) {
+      if (this.isListOpenSupportStaffReportActiveTab == true) {
         this.isOpenSupportStaffReportDataLoaded = false;
-
-        this.listSalesStaffQuotationReport();
+        this.listOpenSupportStaffReport();
       }
     }
   }
@@ -84,15 +86,16 @@ export class SupportStaffReportComponent implements OnInit {
     this.cboUserSelectedValue = selectedValue;
 
     if (this.isSupportStaffReportDataLoaded) {
-      setTimeout(() => {
+      if (this.isListSupportStaffReportActiveTab == true) {
+        this.isSupportStaffReportDataLoaded = false;
         this.listSalesStaffReport();
-      }, 100);
+      }
     }
 
-    if (this.isOpenSupportStaffReportTabClick == true) {
-      if (this.isOpenSupportStaffReportDataLoaded) {
+    if (this.isOpenSupportStaffReportDataLoaded) {
+      if (this.isListOpenSupportStaffReportActiveTab == true) {
         this.isOpenSupportStaffReportDataLoaded = false;
-        this.listSalesStaffQuotationReport();
+        this.listOpenSupportStaffReport();
       }
     }
   }
@@ -123,7 +126,6 @@ export class SupportStaffReportComponent implements OnInit {
           }
         }
 
-        console.log(userObservableArray);
         this.cboUserObservableArray = userObservableArray;
 
         setTimeout(() => {
@@ -133,12 +135,23 @@ export class SupportStaffReportComponent implements OnInit {
     );
   }
 
-  refreshlistSalesStaffReport() {
-    this.isOpenSupportStaffReportTabClick = false;
+  refreshlistSupportStaffReport() {
+    this.isListSupportStaffReportActiveTab = true;
+    this.isListOpenSupportStaffReportActiveTab = false;
 
     setTimeout(() => {
       this.listSupportStaffReportCollectionView.refresh();
       this.listSupportStaffReportFlexGrid.refresh();
+    }, 300);
+  }
+
+  refreshlistOpenSupportStaffReport() {
+    this.isListSupportStaffReportActiveTab = true;
+    this.isListOpenSupportStaffReportActiveTab = false;
+
+    setTimeout(() => {
+      this.listOpenSupportStaffReportCollectionView.refresh();
+      this.listOpenSupportStaffReportFlexGrid.refresh();
     }, 300);
   }
 
@@ -170,6 +183,11 @@ export class SupportStaffReportComponent implements OnInit {
           this.listSupportStaffReportFlexGrid.refresh();
           this.isSupportStaffReportDataLoaded = true;
           this.isSupportStaffReportProgressBarHidden = true;
+
+          if (this.isListOpenSupportStaffReportActiveTab == false) {
+            this.listOpenSupportStaffReport();
+          }
+
         }, 500);
 
         if (this.listSupportStaffReportSub != null) this.listSupportStaffReportSub.unsubscribe();
@@ -177,43 +195,45 @@ export class SupportStaffReportComponent implements OnInit {
     );
   }
 
-  public listSalesStaffQuotationReport(): void {
-    this.isOpenSupportStaffReportTabClick = true;
-    setTimeout(() => {
-      if (!this.isOpenSupportStaffReportDataLoaded) {
-        this.listSupportStaffQuotationReportObservableArray = new ObservableArray();
-        this.listOpenSupportStaffReportCollectionView = new CollectionView(this.listSupportStaffQuotationReportObservableArray);
-        this.listOpenSupportStaffReportCollectionView.pageSize = 15;
-        this.listOpenSupportStaffReportCollectionView.trackChanges = true;
-        this.listOpenSupportStaffReportCollectionView.refresh();
-        this.listOpenSupportStaffReportFlexGrid.refresh();
+  public listOpenSupportStaffReport(): void {
+    this.listSupportStaffQuotationReportObservableArray = new ObservableArray();
+    this.listOpenSupportStaffReportCollectionView = new CollectionView(this.listSupportStaffQuotationReportObservableArray);
+    this.listOpenSupportStaffReportCollectionView.pageSize = 15;
+    this.listOpenSupportStaffReportCollectionView.trackChanges = true;
+    this.listOpenSupportStaffReportCollectionView.refresh();
+    this.listOpenSupportStaffReportFlexGrid.refresh();
 
-        let startDate = [this.startDateFilterData.getFullYear(), this.startDateFilterData.getMonth() + 1, this.startDateFilterData.getDate()].join('-');
-        let endDate = [this.endDateFilterData.getFullYear(), this.endDateFilterData.getMonth() + 1, this.endDateFilterData.getDate()].join('-');
+    let startDate = [this.startDateFilterData.getFullYear(), this.startDateFilterData.getMonth() + 1, this.startDateFilterData.getDate()].join('-');
+    let endDate = [this.endDateFilterData.getFullYear(), this.endDateFilterData.getMonth() + 1, this.endDateFilterData.getDate()].join('-');
 
-        this.isOpenSupportStaffReportProgressBarHidden = false;
+    this.isOpenSupportStaffReportProgressBarHidden = false;
 
-        this.supportStaffReportService.listOpenSupportStaffReport(startDate, endDate, this.cboUserSelectedValue);
-        this.listSupportStaffReportSub = this.supportStaffReportService.listOpenSupportReportObservable.subscribe(
-          data => {
-            if (data.length > 0) {
-              this.listSupportStaffQuotationReportObservableArray = data;
-              this.listOpenSupportStaffReportCollectionView = new CollectionView(this.listSupportStaffQuotationReportObservableArray);
-              this.listOpenSupportStaffReportCollectionView.pageSize = this.listOpenSupportStaffReportPageIndex;
-              this.listOpenSupportStaffReportCollectionView.trackChanges = true;
-            }
-            setTimeout(() => {
-              this.listOpenSupportStaffReportCollectionView.refresh();
-              this.listOpenSupportStaffReportFlexGrid.refresh();
-              this.isOpenSupportStaffReportDataLoaded = true;
-              this.isOpenSupportStaffReportProgressBarHidden = true;
-            }, 300);
+    this.supportStaffReportService.listOpenSupportStaffReport(startDate, endDate, this.cboUserSelectedValue);
+    this.listSupportStaffReportSub = this.supportStaffReportService.listOpenSupportReportObservable.subscribe(
+      data => {
+        if (data.length > 0) {
+          this.listSupportStaffQuotationReportObservableArray = data;
+          this.listOpenSupportStaffReportCollectionView = new CollectionView(this.listSupportStaffQuotationReportObservableArray);
+          this.listOpenSupportStaffReportCollectionView.pageSize = this.listOpenSupportStaffReportPageIndex;
+          this.listOpenSupportStaffReportCollectionView.trackChanges = true;
+        }
+        setTimeout(() => {
+          this.listOpenSupportStaffReportCollectionView.refresh();
+          this.listOpenSupportStaffReportFlexGrid.refresh();
+          this.isOpenSupportStaffReportDataLoaded = true;
+          this.isOpenSupportStaffReportProgressBarHidden = true;
 
-            if (this.listOpenSupportStaffReportSub != null) this.listOpenSupportStaffReportSub.unsubscribe();
+          if (this.isListSupportStaffReportActiveTab == false) {
+            this.listSalesStaffReport();
           }
-        );
+
+          this.listSupportStaffReportCollectionView.refresh();
+          this.listSupportStaffReportFlexGrid.refresh();
+        }, 300);
+
+        if (this.listOpenSupportStaffReportSub != null) this.listOpenSupportStaffReportSub.unsubscribe();
       }
-    }, 300);
+    );
   }
 
   ngOnDestroy() {

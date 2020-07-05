@@ -48,7 +48,6 @@ export class SalesDeliveryStaffReportService {
             });
           }
         }
-        console.log(listUserObservableArray);
         this.listUserSubject.next(listUserObservableArray);
       }
     );

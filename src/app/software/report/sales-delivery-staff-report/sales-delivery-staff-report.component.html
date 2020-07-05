@@ -60,7 +60,7 @@
       </li>
       <li class="nav-item">
         <a class="nav-link" id="openSalesDeliveryStaffReport-tab" data-toggle="tab" href="#openSalesDeliveryStaffReport"
-          role="tab" aria-controls="openSalesDeliveryStaffReport" (click)="listOpenSalesDeliveryStaffReport()" aria-selected="false">Open Sales Delivery</a>
+          role="tab" aria-controls="openSalesDeliveryStaffReport" (click)="refreshlistSOpenalesDeliveryStaffReport()" aria-selected="false">Open Sales Delivery</a>
       </li>
     </ul>
     <div class="tab-content" id="myTabContent">
@@ -139,9 +139,9 @@
               </wj-flex-grid-column>
               <wj-flex-grid-column [header]="'Product'" [binding]="'ProductDescription'" [isReadOnly]="true" [width]="'2*'">
               </wj-flex-grid-column>
-              <wj-flex-grid-column [header]="'Amount'" [binding]="'Amount'" [isReadOnly]="true" [width]="'2*'">
+              <wj-flex-grid-column *ngIf="" [header]="'Amount'" [binding]="'Amount'" [isReadOnly]="true" [width]="'2*'">
               </wj-flex-grid-column>
-              <wj-flex-grid-column [header]="'Expected Acceptance Date'" [binding]="'ExpectedAcceptanceDate'" [isReadOnly]="true" [width]="'2*'">
+              <wj-flex-grid-column *ngIf="" [header]="'Expected Acceptance Date'" [binding]="'ExpectedAcceptanceDate'" [isReadOnly]="true" [width]="'2*'">
               </wj-flex-grid-column>
               <wj-flex-grid-column [header]="'Assigned User'" [binding]="'AssignedToUser'" [isReadOnly]="true" [width]="'2*'">
               </wj-flex-grid-column>
