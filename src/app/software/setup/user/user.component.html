@@ -43,9 +43,7 @@
       </wj-flex-grid-column>
       <wj-flex-grid-column [header]="'FullName'" [binding]="'FullName'" [isReadOnly]="true" [width]="'2*'">
       </wj-flex-grid-column>
-      <wj-flex-grid-column [header]="'Password'" [binding]="'Password'" [isReadOnly]="true" [width]="'2*'" *ngIf="">
-      </wj-flex-grid-column>
-      <wj-flex-grid-column [header]="'IsLocked'" [binding]="'IsLocked'" [isReadOnly]="true" [width]="'2*'" *ngIf="">
+      <wj-flex-grid-column [header]="'User Group'" [binding]="'CRMUserGroup'" [isReadOnly]="true" [width]="'2*'">
       </wj-flex-grid-column>
     </wj-flex-grid>
   </div>
@@ -90,10 +88,10 @@
           <a class="nav-link active" id="user-tab" data-toggle="tab" href="#user" role="tab" aria-controls="user"
             aria-selected="true">User</a>
         </li>
-        <li class="nav-item" [hidden]="isUserFormTabHidden">
+        <!-- <li class="nav-item" [hidden]="isUserFormTabHidden">
           <a class="nav-link" id="user-form-tab" data-toggle="tab" href="#userForm" role="tab" aria-controls="userForm"
             aria-selected="false" (click)="listUserForm()">User Form</a>
-        </li>
+        </li> -->
       </ul>
 
       <div class="tab-content" id="myTabContent">
@@ -104,8 +102,8 @@
               <table border="0" style="width: 100%; border: none;">
                 <tr>
                   <td style="text-align: right;">
-                    <button class="btn btn-primary" (click)="btnSaveUserClick()"
-                      style="margin-right: 5px;" id="btnUpdateUser">
+                    <button class="btn btn-primary" (click)="btnSaveUserClick()" style="margin-right: 5px;"
+                      id="btnUpdateUser">
                       <i class="fa fa-save fa-fw"></i> Save
                     </button>
                     <button class="btn btn-danger" (click)="btnCloseModal()" id="btnCloseLead">
