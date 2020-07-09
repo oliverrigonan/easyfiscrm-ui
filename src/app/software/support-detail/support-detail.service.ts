@@ -23,6 +23,9 @@ export class SupportDetailService {
     })
   };
 
+  public listPointOfContactSubject = new Subject<ObservableArray>();
+  public listPointOfContactObservable = this.listPointOfContactSubject.asObservable();
+
   public listCustomerSubject = new Subject<ObservableArray>();
   public listCustomerObservable = this.listCustomerSubject.asObservable();
 
@@ -42,7 +45,7 @@ export class SupportDetailService {
 
   public saveSupportSubject = new Subject<string[]>();
   public saveSupportObservable = this.saveSupportSubject.asObservable();
-  
+
   public lockSupportSubject = new Subject<string[]>();
   public lockSupportObservable = this.lockSupportSubject.asObservable();
 
@@ -59,6 +62,26 @@ export class SupportDetailService {
   public saveActivityObservable = this.saveActivitySubject.asObservable();
   public deleteActivitySubject = new Subject<string[]>();
   public deleteActivityObservable = this.deleteActivitySubject.asObservable();
+
+  public listPointOfContact(): void {
+    let listPointOfContactObservableArray = new ObservableArray();
+    this.listPointOfContactSubject.next(listPointOfContactObservableArray);
+
+    this.httpClient.get(this.defaultAPIURLHost + "/api/crm/trn/support/list/pointOfContactEntity", this.options).subscribe(
+      response => {
+        var results = response;
+        if (results["length"] > 0) {
+          for (var i = 0; i <= results["length"] - 1; i++) {
+            listPointOfContactObservableArray.push({
+              Id: results[i].Id,
+              PointOfContact: results[i].PointOfContact
+            });
+          }
+        }
+        this.listPointOfContactSubject.next(listPointOfContactObservableArray);
+      }
+    );
+  }
 
   public listCustomer(): void {
     let listCustomerObservableArray = new ObservableArray();
@@ -167,6 +190,7 @@ export class SupportDetailService {
             ContactPosition: result["ContactPosition"],
             ContactEmail: result["ContactEmail"],
             ContactPhoneNumber: result["ContactPhoneNumber"],
+            PointOfContact: result["PointOfContact"],
             Issue: result["Issue"],
             AssignedToUserId: result["AssignedToUserId"],
             AssignedToUser: result["AssignedToUser"],

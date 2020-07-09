@@ -81,6 +81,7 @@ export class SupportListService {
               ContactPosition: results[i].ContactPosition,
               ContactEmail: results[i].ContactEmail,
               ContactPhoneNumber: results[i].ContactPhoneNumber,
+              PointOfContact: results[i].PointOfContact,
               Issue: results[i].Issue,
               AssignedToUserId: results[i].AssignedToUserId,
               AssignedToUser: results[i].AssignedToUser,
@@ -102,7 +103,7 @@ export class SupportListService {
     );
   }
 
-  public listSupportFilteredByUser(startDate: string, endDate: string, status: string, userId:number ): void {
+  public listSupportFilteredByUser(startDate: string, endDate: string, status: string, userId: number): void {
     let listSupportObservableArray = new ObservableArray();
     this.listSupportSubject.next(listSupportObservableArray);
 
@@ -124,6 +125,7 @@ export class SupportListService {
               ContactPosition: results[i].ContactPosition,
               ContactEmail: results[i].ContactEmail,
               ContactPhoneNumber: results[i].ContactPhoneNumber,
+              PointOfContact: results[i].PointOfContact,
               Issue: results[i].Issue,
               AssignedToUserId: results[i].AssignedToUserId,
               AssignedToUser: results[i].AssignedToUser,
@@ -158,7 +160,7 @@ export class SupportListService {
     );
   }
 
-  public DeleteSupport(id: number){
+  public DeleteSupport(id: number) {
     this.httpClient.delete(this.defaultAPIURLHost + "/api/crm/trn/support/delete/" + id, this.options).subscribe(
       response => {
         let responseResults: string[] = ["success", ""];

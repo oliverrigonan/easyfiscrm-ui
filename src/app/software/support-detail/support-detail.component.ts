@@ -63,6 +63,9 @@ export class SupportDetailComponent implements OnInit {
   public cboAssignedToUserSub: any;
   public cboAssignedToUserObservable: ObservableArray = new ObservableArray();
 
+  public cboPointOfContactSub: any;
+  public cboPointOfContactObservable: ObservableArray = new ObservableArray();
+
   public cboSupportStatusSub: any;
   public cboSupportStatusObservable: ObservableArray = new ObservableArray();
 
@@ -122,6 +125,7 @@ export class SupportDetailComponent implements OnInit {
     ContactPosition: "",
     ContactEmail: "",
     ContactPhoneNumber: "",
+    PointOfContact: "",
     Issue: "",
     AssignedToUserId: 0,
     AssignedToUser: "",
@@ -242,6 +246,29 @@ export class SupportDetailComponent implements OnInit {
     }
   }
 
+  public createPointOfContact(): void {
+    this.supportDetailService.listPointOfContact();
+    this.cboPointOfContactSub = this.supportDetailService.listPointOfContactObservable.subscribe(
+      data => {
+        let pointOfContactObservableArray = new ObservableArray();
+        if (data.length > 0) {
+          for (var i = 0; i <= data.length - 1; ++i) {
+            pointOfContactObservableArray.push({
+              Id: data[i].Id,
+              PointOfContact: data[i].PointOfContact
+            });
+          }
+        }
+
+        this.cboPointOfContactObservable = pointOfContactObservableArray;
+        setTimeout(() => {
+          this.detailSupport();
+        }, 100);
+        if (this.cboPointOfContactSub != null) this.cboPointOfContactSub.unsubscribe();
+      }
+    );
+  }
+
   public createCboAssignedToUser(): void {
     this.supportDetailService.listAssignedUsers();
     this.cboAssignedToUserSub = this.supportDetailService.listLeadAssignedToUsersObservable.subscribe(
@@ -281,7 +308,7 @@ export class SupportDetailComponent implements OnInit {
 
         this.cboSupportStatusObservable = statusObservableArray;
         setTimeout(() => {
-          this.detailSupport();
+          this.createPointOfContact();
         }, 100);
         if (this.cboSupportStatusSub != null) this.cboSupportStatusSub.unsubscribe();
       }
@@ -335,6 +362,7 @@ export class SupportDetailComponent implements OnInit {
     this.supportModel.ContactPosition = objSupport.ContactPosition;
     this.supportModel.ContactEmail = objSupport.ContactEmail;
     this.supportModel.ContactPhoneNumber = objSupport.ContactPhoneNumber;
+    this.supportModel.PointOfContact = objSupport.PointOfContact;
     this.supportModel.Issue = objSupport.Issue;
     this.supportModel.AssignedToUserId = objSupport.AssignedToUserId;
     this.supportModel.AssignedToUserId = objSupport.AssignedToUserId;
@@ -1049,7 +1077,7 @@ export class SupportDetailComponent implements OnInit {
   }
 
   public btnAddAttachmentClick(): void {
-    
+
     this.attachmentModel.SPId = this.supportModel.Id;
 
     this.attachmentService.addAttachment(this.attachmentModel);
@@ -1178,5 +1206,6 @@ export class SupportDetailComponent implements OnInit {
     if (this.saveActivitySub != null) this.saveActivitySub.unsubscribe();
     if (this.deleteActivitySub != null) this.deleteActivitySub.unsubscribe();
     if (this.listDocumentSub != null) this.listDocumentSub.unsubscribe();
+    if (this.cboPointOfContactSub != null) this.cboPointOfContactSub.unsubscribe();
   }
 }

@@ -67,6 +67,7 @@ export class LeadService {
               LDDate: results[i].LDDate,
               Name: results[i].Name,
               Poduct: results[i].ProductDescription,
+              Amount: results[i].TotalAmount,
               Address: results[i].Address,
               ContactPerson: results[i].ContactPerson,
               ContactPosition: results[i].ContactPosition,
@@ -102,7 +103,7 @@ export class LeadService {
     this.httpClient.get(this.defaultAPIURLHost + "/api/crm/trn/lead/list/" + startDate + "/" + endDate + "/" + status + "/" + userId, this.options).subscribe(
       response => {
         let results = response;
-
+        console.log(results);
         if (results["length"] > 0) {
           for (let i = 0; i <= results["length"] - 1; i++) {
             listLeadObservableArray.push({
@@ -111,6 +112,7 @@ export class LeadService {
               LDDate: results[i].LDDate,
               Name: results[i].Name,
               Poduct: results[i].ProductDescription,
+              Amount: results[i].TotalAmount,
               Address: results[i].Address,
               ContactPerson: results[i].ContactPerson,
               ContactPosition: results[i].ContactPosition,

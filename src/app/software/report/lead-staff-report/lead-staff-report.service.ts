@@ -94,7 +94,7 @@ export class LeadStaffReportService {
               Customer: results[i].Customer,
               LDQuotationDate: results[i].LDQuotationDate,
               ProductDescription: results[i].ProductDescription,
-              Amount: results[i].Amount,
+              TotalAmount: results[i].TotalAmount,
               ExpectedInvoicedDate: results[i].ExpectedInvoicedDate,
               AssignedToUser: results[i].AssignedToUser,
               LastActivity: results[i].LastActivity,

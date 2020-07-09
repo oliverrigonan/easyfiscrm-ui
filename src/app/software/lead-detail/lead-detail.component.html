@@ -16,7 +16,7 @@
       <a class="nav-link" id="activities-tab" data-toggle="tab" href="#activities" role="tab" aria-controls="activities"
         aria-selected="false" (click)="listActivity()">Activities</a>
     </li>
-    
+
   </ul>
 
   <div class="tab-content" id="myTabContent">
@@ -83,6 +83,12 @@
                   </wj-combo-box>
                 </div>
                 <br /><br />
+                <label for="" class="col-sm-4 col-form-label form-group-label">Total Amount</label>
+                <div class="col-sm-8">
+                  <input type="number" class="form-control" [disabled]="isLocked" style="text-align: right;"
+                    [(ngModel)]="leadDetailModel.Amount">
+                </div>
+                <br /><br />
                 <label for="" class="col-sm-4 col-form-label form-group-label">Address</label>
                 <div class="col-sm-8">
                   <textarea type="text" class="form-control" style="resize: none" [disabled]="isLocked"
@@ -101,7 +107,10 @@
                   <input type="text" class="form-control" [disabled]="isLocked"
                     [(ngModel)]="leadDetailModel.ContactPosition" placeholder="Contact Position...">
                 </div>
-                <br /><br />
+              </div>
+            </div>
+            <div class="col-lg-6">
+              <div class="form-group row">
                 <label for="" class="col-sm-4 col-form-label form-group-label">Contact Email</label>
                 <div class="col-sm-8">
                   <input type="text" class="form-control" [disabled]="isLocked"
@@ -114,10 +123,6 @@
                     [(ngModel)]="leadDetailModel.ContactPhoneNumber" placeholder="Contact Phone Number...">
                 </div>
                 <br /><br />
-              </div>
-            </div>
-            <div class="col-lg-6">
-              <div class="form-group row">
                 <label for="" class="col-sm-4 col-form-label form-group-label">Remarks</label>
                 <div class="col-sm-8">
                   <textarea type="text" class="form-control" style="resize: none" [disabled]="isLocked"
@@ -314,11 +319,11 @@
               </td>
               <td style="text-align: right;">
 
-                <button class="btn btn-primary" (click)="btnAddDocument()" *ngIf="isAdmin"
-                  style="margin-right: 5px;" id="btnAddDocument">
+                <button class="btn btn-primary" (click)="btnAddDocument()" *ngIf="isAdmin" style="margin-right: 5px;"
+                  id="btnAddDocument">
                   <i class="fa fa-plus fa-fw"></i> Add
                 </button>
-                <button class="btn btn-danger" routerLink="/software/trn/lead" id="btnCloseActivity" >
+                <button class="btn btn-danger" routerLink="/software/trn/lead" id="btnCloseActivity">
                   <i class="fa fa-close fa-fw"></i> Close
                 </button>
               </td>
@@ -333,15 +338,16 @@
             <wj-flex-grid-filter></wj-flex-grid-filter>
             <wj-flex-grid-column [header]="Edit" [isReadOnly]="true" [width]="80">
               <ng-template wjFlexGridCellTemplate [cellType]="'Cell'">
-                <button type="button" class="btn btn-primary btn-block btn-xs" id="btnEditDocument" 
-                  (click)="btnEditDocument()"><i class="fa fa-edit fa-fw" *ngIf="isAdmin"></i> 
+                <button type="button" class="btn btn-primary btn-block btn-xs" id="btnEditDocument"
+                  (click)="btnEditDocument()"><i class="fa fa-edit fa-fw" *ngIf="isAdmin"></i>
                   <i class="fa fa-file fa-fw" *ngIf="!isAdmin"></i> {{ documentEditButtonLabel }}
                 </button>
               </ng-template>
             </wj-flex-grid-column>
             <wj-flex-grid-column [header]="Delete" [isReadOnly]="true" [width]="90" *ngIf="isAdmin">
               <ng-template wjFlexGridCellTemplate [cellType]="'Cell'">
-                <button type="button" class="btn btn-danger btn-block btn-xs" id="btnDeleteActivity" (click)="btnDeleteDocument()">
+                <button type="button" class="btn btn-danger btn-block btn-xs" id="btnDeleteActivity"
+                  (click)="btnDeleteDocument()">
                   <i class="fa fa-trash fa-fw"></i> Delete
                 </button>
               </ng-template>

@@ -10,6 +10,7 @@ export class SupportModel {
     ContactPosition: string;
     ContactEmail: string;
     ContactPhoneNumber: string;
+    PointOfContact: string;
     Issue: string;
     AssignedToUserId: number;
     AssignedToUser: string;

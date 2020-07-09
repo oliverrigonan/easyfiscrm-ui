@@ -60,8 +60,9 @@
               <div class="form-group">
                 <span class="badge badge-info" style="margin-bottom: 5px;"><i class="fa fa-question-circle fa-fw"></i>
                   Status</span>
-                <wj-combo-box #cboSupportStatus [(ngModel)]="cboSupportStatusSelectedValue" [itemsSource]="cboSupportStatusObservableArray" [isEditable]="false"
-                  [isRequired]="true" [displayMemberPath]="'Status'" [selectedValuePath]="'Status'"
+                <wj-combo-box #cboSupportStatus [(ngModel)]="cboSupportStatusSelectedValue"
+                  [itemsSource]="cboSupportStatusObservableArray" [isEditable]="false" [isRequired]="true"
+                  [displayMemberPath]="'Status'" [selectedValuePath]="'Status'"
                   (selectedIndexChanged)="cboSupportStatusSelectedIndexChanged(cboSupportStatus.selectedValue)"
                   style="width: 100%;">
                 </wj-combo-box>
@@ -73,7 +74,8 @@
       <div class="col-md-4"></div>
     </div>
     <mat-progress-bar [hidden]="isProgressBarHidden" [color]="'primary'" [mode]="'indeterminate'"></mat-progress-bar>
-    <wj-flex-grid #listSupportFlexGrid [itemsSource]="listSupportCollectionView" [selectionMode]="3" [frozenColumns]="2">
+    <wj-flex-grid #listSupportFlexGrid [itemsSource]="listSupportCollectionView" [selectionMode]="3"
+      [frozenColumns]="2">
       <wj-flex-grid-filter></wj-flex-grid-filter>
       <wj-flex-grid-column [header]="Edit" [isReadOnly]="true" [width]="80">
         <ng-template wjFlexGridCellTemplate [cellType]="'Cell'">
@@ -101,11 +103,14 @@
       </wj-flex-grid-column>
       <wj-flex-grid-column [header]="'Issue'" [binding]="'Issue'" [isReadOnly]="true" [width]="'3*'">
       </wj-flex-grid-column>
+      <wj-flex-grid-column [header]="'Point Of Contact'" [binding]="'PointOfContact'" [isReadOnly]="true" [width]="'2*'">
+      </wj-flex-grid-column>
       <wj-flex-grid-column [header]="'Assigned To'" [binding]="'AssignedToUser'" [isReadOnly]="true" [width]="'2*'">
       </wj-flex-grid-column>
       <wj-flex-grid-column [header]="'Last Activity'" [binding]="'LastActivity'" [isReadOnly]="true" [width]="'3*'">
       </wj-flex-grid-column>
-      <wj-flex-grid-column [header]="'Last Activity Date'" [binding]="'LastActivityDate'" [isReadOnly]="true" [width]="'2*'">
+      <wj-flex-grid-column [header]="'Last Activity Date'" [binding]="'LastActivityDate'" [isReadOnly]="true"
+        [width]="'2*'">
       </wj-flex-grid-column>
       <wj-flex-grid-column [header]="'Status'" [binding]="'Status'" [isReadOnly]="true" [width]="'1.5*'">
       </wj-flex-grid-column>
@@ -206,8 +211,8 @@
         }}?
     </div>
     <div class="modal-footer">
-      <button type="button" class="btn btn-danger" style="margin-right: 5px;"
-        (click)="btnConfirmDeleteSupportClick()" id="btnConfirmDeleteSupport">
+      <button type="button" class="btn btn-danger" style="margin-right: 5px;" (click)="btnConfirmDeleteSupportClick()"
+        id="btnConfirmDeleteSupport">
         <i class="fa fa-trash"></i> Delete
       </button>
       <button type="button" class="btn btn-light" (click)="deleteSupportModalRef.hide()"

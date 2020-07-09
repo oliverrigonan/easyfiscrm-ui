@@ -63,6 +63,8 @@ export class LeadReportService {
               LDNumber: results[i].LDNumber,
               LDDate: results[i].LDDate,
               Name: results[i].Name,
+              ProductDescription: results[i].ProductDescription,
+              Amount: results[i].Amount,
               Address: results[i].Address,
               ContactPerson: results[i].ContactPerson,
               ContactPosition: results[i].ContactPosition,

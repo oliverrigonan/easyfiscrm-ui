@@ -115,6 +115,15 @@
           </div>
           <div class="col-lg-6">
             <div class="form-group row">
+              <label for="" class="col-sm-4 col-form-label form-group-label">Point of Contact</label>
+              <div class="col-sm-8">
+                <wj-combo-box #cboPointOfContact [disabled]="isLocked" [(ngModel)]="supportModel.PointOfContact"
+                  [itemsSource]="cboPointOfContactObservable" [isEditable]="false" [isRequired]="true"
+                  [displayMemberPath]="'PointOfContact'" [selectedValuePath]="'PointOfContact'"
+                  style="width: 100%; padding: 3px;">
+                </wj-combo-box>
+              </div>
+              <br><br>
               <label for="" class="col-sm-4 col-form-label form-group-label">Issue</label>
               <div class="col-sm-8">
                 <textarea type="text" class="form-control" style="resize: none" [disabled]="isLocked"

@@ -95,6 +95,7 @@ export class SupportStaffReportService {
               Amount: results[i].Amount,
               ExpectedCloseDate: results[i].ExpectedCloseDate,
               AssignedToUser: results[i].AssignedToUser,
+              PointOfContact: results[i].PointOfContact,
               LastActivity: results[i].LastActivity,
               LastActivityDate: results[i].LastActivityDate,
               LastActivityStaff: results[i].LastActivityStaff
