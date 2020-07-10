@@ -62,7 +62,7 @@ export class LeadDetailComponent implements OnInit {
     LDDate: new Date(),
     Name: "",
     ProductId: 0,
-    Amount: 0,
+    TotalAmount: 0,
     Address: "",
     ContactPerson: "",
     ContactPosition: "",
@@ -263,7 +263,7 @@ export class LeadDetailComponent implements OnInit {
           this.leadDetailModel.LDDate = data.LDDate;
           this.leadDetailModel.Name = data.Name;
           this.leadDetailModel.ProductId = data.ProductId;
-          this.leadDetailModel.Amount = data.Amount ;
+          this.leadDetailModel.TotalAmount = data.TotalAmount ;
           this.leadDetailModel.Address = data.Address;
           this.leadDetailModel.ContactPerson = data.ContactPerson;
           this.leadDetailModel.ContactPosition = data.ContactPosition;

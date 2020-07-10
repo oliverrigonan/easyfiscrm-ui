@@ -133,7 +133,7 @@ export class LeadDetailService {
             LDDate: results["LDDate"],
             Name: results["Name"],
             ProductId: results["ProductId"],
-            Amount: results["TotalAmount"],
+            TotalAmount: results["TotalAmount"],
             Address: results["Address"],
             ContactPerson: results["ContactPerson"],
             ContactPosition: results["ContactPosition"],

@@ -3,7 +3,7 @@ export class LeadDetailModel {
     LDNumber: string;
     LDDate: Date;
     ProductId: number;
-    Amount: number;
+    TotalAmount: number;
     Name: string;
     Address: string;
     ContactPerson: string;
