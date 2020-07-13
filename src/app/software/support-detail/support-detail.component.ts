@@ -140,15 +140,16 @@ export class SupportDetailComponent implements OnInit {
   }
 
   private documentEditButtonLabel = "Open";
-  private isAdmin: boolean = false;
+  private isDocumentEditAuthorized: boolean = false;
 
   ngOnInit() {
     setTimeout(() => {
-      if (this.securityService.openGroupPage("Admin") == true) {
-        this.isAdmin = true;
+      if (this.securityService.pageTab("Document")) {
+        this.isDocumentEditAuthorized = true;
         this.documentEditButtonLabel = "Edit"
       }
     }, 100);
+
     this.createCboAssignedToUser();
     this.createCboShowNumberOfRows();
   }

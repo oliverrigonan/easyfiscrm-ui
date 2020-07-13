@@ -168,12 +168,12 @@ export class SalesDetailComponent implements OnInit {
   // public isLoadingSpinnerHidden: boolean = false;
   // public isContentHidden: boolean = true;
   private documentEditButtonLabel = "Open";
-  private isAdmin = false;
+  private isDocumentEditAuthorized = false;
 
   ngOnInit() {
     setTimeout(() => {
-      if (this.securityService.openGroupPage("Admin") == true) {
-        this.isAdmin = true;
+      if (this.securityService.pageTab("Document")) {
+        this.isDocumentEditAuthorized = true;
         this.documentEditButtonLabel = "Edit"
       }
     }, 100);

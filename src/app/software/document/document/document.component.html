@@ -15,13 +15,13 @@
           <div class="form-group row">
             <label for="" class="col-sm-2 col-form-label form-group-label">Document</label>
             <div class="col-sm-10">
-              <input type="text" class="form-control" placeholder="Document..." [disabled]="!crmAdmin"
-                [(ngModel)]="documentModel.DocumentName">
+              <input type="text" class="form-control" placeholder="Document..." [disabled]="!isDocumentEditAuthorized"
+                (change)="documentOnChange()" [(ngModel)]="documentModel.DocumentName">
             </div>
             <br /><br />
             <label for="" class="col-sm-2 col-form-label form-group-label">Document Type</label>
             <div class="col-sm-10">
-              <select [(ngModel)]="documentModel.DocumentType" class="form-control" [disabled]="!crmAdmin"
+              <select [(ngModel)]="documentModel.DocumentType" class="form-control" [disabled]="!isDocumentEditAuthorized"
                 (change)="documentOnChange()">
                 <option *ngFor="let docType of cboDocumentTypesObservable" value="{{docType.DocumentType}}">
                   {{ docType.DocumentType }}
@@ -31,32 +31,32 @@
             <div>
 
             </div>
-            <br *ngIf="crmAdmin"/><br *ngIf="crmAdmin" />
-            <label *ngIf="crmAdmin" for="" class="col-sm-2 col-form-label form-group-label">Attachment</label>
-            <div class="col-sm-10" *ngIf="crmAdmin">
+            <br *ngIf="isDocumentEditAuthorized" /><br *ngIf="isDocumentEditAuthorized" />
+            <label *ngIf="isDocumentEditAuthorized" for="" class="col-sm-2 col-form-label form-group-label">Attachment</label>
+            <div class="col-sm-10" *ngIf="isDocumentEditAuthorized">
               <input type="button" color="" [disabled]="isUploadButtonDisable" (click)="btnUploadFile()"
                 id="btnUploadFile" value="Upload" style="margin-right: 5px;">
               <input id="inputFileUpload" placeholder="" type="file" style="width: 90%;" [disabled]="isAllowChoseFile"
                 (change)="documentFileOnChange()" [(ngModel)]="AttachmentFile" accept="image/*" />
             </div>
             <br />
-            <br *ngIf="!crmAdmin"/>
+            <br *ngIf="!isDocumentEditAuthorized" />
             <label for="" class="col-sm-2 col-form-label form-group-label">Document URL</label>
             <div class="col-sm-10">
               <input type="text" class="form-control" placeholder="Document url..."
-                [(ngModel)]="documentModel.DocumentURL" [disabled]="!crmAdmin">
+                [(ngModel)]="documentModel.DocumentURL" [disabled]="!isDocumentEditAuthorized">
             </div>
             <br /><br />
             <label for="" class="col-sm-2 col-form-label form-group-label">Date Uploaded</label>
             <div class="col-sm-10">
               <wj-input-date #cboDateUploadedDate format="MMMM dd, yyyy" [(ngModel)]="documentModel.DateUploaded"
-                [disabled]="!crmAdmin" style="width: 40%; padding: 3px;">
+                [disabled]="!isDocumentEditAuthorized" style="width: 40%; padding: 3px;">
               </wj-input-date>
             </div>
             <br /><br />
             <label for="" class="col-sm-2 col-form-label form-group-label">Particulars</label>
             <div class="col-sm-10">
-              <textarea type="text" class="form-control" placeholder="Particulars..." [disabled]="!crmAdmin"
+              <textarea type="text" class="form-control" placeholder="Particulars..." [disabled]="!isDocumentEditAuthorized"
                 [(ngModel)]="documentModel.Particulars" rows="10">
               </textarea>
             </div>
@@ -76,7 +76,7 @@
 <mat-divider></mat-divider>
 <div mat-dialog-actions align="right">
   <button mat-flat-button color="primary" align-self="right" style="margin-right: 5px;" (click)="btnSaveDocumentClick()"
-    *ngIf="crmAdmin" id="btnSave">
+    *ngIf="isDocumentEditAuthorized" id="btnSave">
     <i class="fa fa-save fa-fw"></i>
     Save
   </button>

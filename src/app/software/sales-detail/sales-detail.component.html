@@ -15,7 +15,6 @@
       <a class="nav-link" id="activities-tab" data-toggle="tab" href="#activities" role="tab" aria-controls="activities"
         aria-selected="false" (click)="listActivity()">Activities</a>
     </li>
-    
   </ul>
 
   <div class="tab-content" id="myTabContent">
@@ -48,7 +47,6 @@
             </tr>
           </table>
         </div>
-
         <div class="card-body">
           <div class="row">
             <div class="col-lg-6">
@@ -334,7 +332,6 @@
 
     <div class="tab-pane fade" id="document" role="tabpanel" aria-labelledby="document-tab" [hidden]="false">
       <div class="card card-default">
-
         <div class="card-header">
           <table border="0" style="width: 100%; border: none;">
             <tr>
@@ -343,12 +340,11 @@
                 </div>
               </td>
               <td style="text-align: right;">
-
-                <button class="btn btn-primary" (click)="btnAddDocument()" *ngIf="isAdmin"
+                <button class="btn btn-primary" (click)="btnAddDocument()" *ngIf="isDocumentEditAuthorized"
                   style="margin-right: 5px;" id="btnAddDocument">
                   <i class="fa fa-plus fa-fw"></i> Add
                 </button>
-                <button class="btn btn-danger" routerLink="/software/trn/lead" id="btnCloseActivity">
+                <button class="btn btn-danger" routerLink="/software/trn/sales" id="btnCloseActivity">
                   <i class="fa fa-close fa-fw"></i> Close
                 </button>
               </td>
@@ -364,39 +360,32 @@
             <wj-flex-grid-column [header]="Edit" [isReadOnly]="true" [width]="80">
               <ng-template wjFlexGridCellTemplate [cellType]="'Cell'">
                 <button type="button" class="btn btn-primary btn-block btn-xs" id="btnEditDocument"
-                  (click)="btnEditDocument()"><i class="fa fa-edit fa-fw" *ngIf="isAdmin"></i> 
-                  <i class="fa fa-file fa-fw" *ngIf="!isAdmin"></i> {{ documentEditButtonLabel }}
+                  (click)="btnEditDocument()"><i class="fa fa-edit fa-fw" *ngIf="isDocumentEditAuthorized"></i> 
+                  <i class="fa fa-file fa-fw" *ngIf="!isDocumentEditAuthorized"></i> {{ documentEditButtonLabel }}
                 </button>
               </ng-template>
             </wj-flex-grid-column>
-            <wj-flex-grid-column [header]="Delete" [isReadOnly]="true" [width]="90" *ngIf="isAdmin">
+            <wj-flex-grid-column [header]="Delete" [isReadOnly]="true" [width]="90" *ngIf="isDocumentEditAuthorized">
               <ng-template wjFlexGridCellTemplate [cellType]="'Cell'">
                 <button type="button" class="btn btn-danger btn-block btn-xs" id="btnDeleteActivity" (click)="btnDeleteDocument()">
                   <i class="fa fa-trash fa-fw"></i> Delete
                 </button>
               </ng-template>
             </wj-flex-grid-column>
-
             <wj-flex-grid-column [header]="'Document'" [binding]="'DocumentName'" [isReadOnly]="true" [width]="'2*'">
             </wj-flex-grid-column>
-
             <wj-flex-grid-column [header]="'URL'" [binding]="'DocumentURL'" [isReadOnly]="true" [width]="'2*'">
             </wj-flex-grid-column>
-
             <wj-flex-grid-column [header]="'DocumentGroup'" [binding]="'DocumentGroup'" [isReadOnly]="true"
               [width]="'2*'">
             </wj-flex-grid-column>
-
             <wj-flex-grid-column [header]="'Date Uploaded'" [binding]="'DateUploaded'" [isReadOnly]="true"
               [width]="'2*'">
             </wj-flex-grid-column>
-
             <wj-flex-grid-column [header]="'Particulars'" [binding]="'Particulars'" [isReadOnly]="true" [width]="'2*'">
             </wj-flex-grid-column>
-
           </wj-flex-grid>
         </div>
-
         <div class="card-footer">
           <div class="col-sm-4 btn-group" style="padding: 5px 0px 5px 0px;">
             <button type="button" class="btn btn-secondary" (click)="listDocumentCollectionView.moveToFirstPage()">
@@ -420,9 +409,7 @@
       </div>
     </div>
   </div>
-
 </div>
-
 <ng-template #customerModalTemplate>
   <div class="modal-header">
     <h4 class="modal-title">

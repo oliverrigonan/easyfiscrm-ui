@@ -42,7 +42,7 @@ export class LeadDetailComponent implements OnInit {
 
   ) { }
 
-  private isAdmin = false;
+  private isDocumentEditAuthorized = false;
 
   public cboAssignedToUsersSub: any;
   public cboLeadAssignedToUsersObservableArray: ObservableArray = new ObservableArray();
@@ -153,13 +153,12 @@ export class LeadDetailComponent implements OnInit {
   };
 
   public isAddClicked: boolean = false;
-
   private documentEditButtonLabel = "Open";
 
   ngOnInit() {
     setTimeout(() => {
-      if (this.securityService.openGroupPage("Admin") == true) {
-        this.isAdmin = true;
+      if (this.securityService.pageTab("Document")) {
+        this.isDocumentEditAuthorized = true;
         this.documentEditButtonLabel = "Edit"
       }
     }, 100);
@@ -181,7 +180,6 @@ export class LeadDetailComponent implements OnInit {
         }
 
         this.cboProductObservableArray = productObservableArray;
-
         setTimeout(() => {
           this.createCboAssignedToUser();
         }, 100);

@@ -319,7 +319,7 @@
               </td>
               <td style="text-align: right;">
 
-                <button class="btn btn-primary" (click)="btnAddDocument()" *ngIf="isAdmin" style="margin-right: 5px;"
+                <button class="btn btn-primary" (click)="btnAddDocument()" *ngIf="isDocumentEditAuthorized" style="margin-right: 5px;"
                   id="btnAddDocument">
                   <i class="fa fa-plus fa-fw"></i> Add
                 </button>
@@ -339,12 +339,12 @@
             <wj-flex-grid-column [header]="Edit" [isReadOnly]="true" [width]="80">
               <ng-template wjFlexGridCellTemplate [cellType]="'Cell'">
                 <button type="button" class="btn btn-primary btn-block btn-xs" id="btnEditDocument"
-                  (click)="btnEditDocument()"><i class="fa fa-edit fa-fw" *ngIf="isAdmin"></i>
-                  <i class="fa fa-file fa-fw" *ngIf="!isAdmin"></i> {{ documentEditButtonLabel }}
+                  (click)="btnEditDocument()"><i class="fa fa-edit fa-fw" *ngIf="isDocumentEditAuthorized"></i>
+                  <i class="fa fa-file fa-fw" *ngIf="!isDocumentEditAuthorized"></i> {{ documentEditButtonLabel }}
                 </button>
               </ng-template>
             </wj-flex-grid-column>
-            <wj-flex-grid-column [header]="Delete" [isReadOnly]="true" [width]="90" *ngIf="isAdmin">
+            <wj-flex-grid-column [header]="Delete" [isReadOnly]="true" [width]="90" *ngIf="isDocumentEditAuthorized">
               <ng-template wjFlexGridCellTemplate [cellType]="'Cell'">
                 <button type="button" class="btn btn-danger btn-block btn-xs" id="btnDeleteActivity"
                   (click)="btnDeleteDocument()">

@@ -27,7 +27,7 @@ export class DocumentComponent implements OnInit {
 
   ) { }
 
-  private crmAdmin: boolean = false;
+  private isDocumentEditAuthorized: boolean = false;
 
   private cboDocumentTypesObservable: ObservableArray = new ObservableArray();
 
@@ -75,10 +75,11 @@ export class DocumentComponent implements OnInit {
   ngOnInit() {
 
     setTimeout(() => {
-      if (this.securityService.openGroupPage("Admin") == true) {
-        this.crmAdmin = true;
+      if (this.securityService.pageTab("Document")) {
+        this.isDocumentEditAuthorized = true;
       }
     }, 100);
+
     this.title = this.caseData.objDialogTitle;
     this.eventName = this.caseData.objDialogEvent;
     this.isDocumentLoadingSpinnerHidden = true;
