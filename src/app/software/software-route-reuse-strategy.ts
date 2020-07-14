@@ -18,6 +18,8 @@ export class SoftwareRouteReuseStrategy implements RouteReuseStrategy {
             case 'trn/lead/:startDate/:endDate/:status/:userId/:dashboard': break;
             case 'trn/sales/:startDate/:endDate/:status/:userId/:dashboard': break;
             case 'trn/support/:startDate/:endDate/:status/:userId/:dashboard': break;
+            case 'setup/product/detail/:id': break;
+            case 'setup/product': break;
             default: {
                 this.handlers[route.routeConfig.path] = handle;
                 break;

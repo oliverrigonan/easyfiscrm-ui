@@ -234,12 +234,10 @@ export class LeadComponent implements OnInit {
   }
 
   public btnAddLeadClick() {
-
     let btnAddLead: Element = document.getElementById("btnAddLead");
     (<HTMLButtonElement>btnAddLead).disabled = true;
 
     this.leadService.addLead();
-
     this.addLeadSub = this.leadService.addLeadObservable.subscribe(
       data => {
         if (data[0] == "success") {

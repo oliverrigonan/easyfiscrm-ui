@@ -3,7 +3,9 @@ export class ProductModel {
     ProductCode: string;
     ProductDescription: string;
     CreatedById: number;
+    CreatedByUser: string;
     CreatedDateTime: Date;
     UpdatedById: number;
+    UpdatedByUser: string;
     UpdatedDateTime: Date;
 }

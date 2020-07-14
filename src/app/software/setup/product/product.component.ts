@@ -42,7 +42,8 @@ export class ProductComponent implements OnInit {
   public isProgressBarHidden = false;
   public isDataLoaded: boolean = false;
 
-  public addroductSub: any;
+  public addProductSub: any;
+  public listProductSub: any;
   public updateProductSub: any;
   public deleteProductSub: any;
 
@@ -57,8 +58,10 @@ export class ProductComponent implements OnInit {
     ProductCode: "",
     ProductDescription: "",
     CreatedById: 0,
+    CreatedByUser: '',
     CreatedDateTime: new Date(),
     UpdatedById: 0,
+    UpdatedByUser: '',
     UpdatedDateTime: new Date()
   }
 
@@ -112,7 +115,7 @@ export class ProductComponent implements OnInit {
     this.isProgressBarHidden = false;
 
     this.productService.listProduct();
-    this.addroductSub = this.productService.listProductObservable.subscribe(
+    this.listProductSub = this.productService.listProductObservable.subscribe(
       data => {
         if (data.length > 0) {
           this.listProductObservableArray = data;
@@ -125,62 +128,32 @@ export class ProductComponent implements OnInit {
         this.isDataLoaded = true;
         this.isProgressBarHidden = true;
 
-        if (this.addroductSub != null) this.addroductSub.unsubscribe();
+        if (this.listProductSub != null) this.listProductSub.unsubscribe();
       }
     );
   }
 
-  
-  public btnSaveProductClick(): void {
-    if (this.isAddClick == true) {
-      if (this.productModel.ProductCode !== "" || this.productModel.ProductDescription) {
-        this.productService.AddProduct(this.productModel);
 
-        this.addroductSub = this.productService.addProductObservable.subscribe(
-          data => {
-            if (data[0] == "success") {
-              this.productDetailModalRef.hide();
-              this.resetProductModel();
-              setTimeout(() => {
-                this.toastr.success("Product successfully added.", "Success");
-                this.isDataLoaded = false;
-                this.listProductData();
-              }, 100);
+  public async btnAddProductClick() {
+    let btnAddProduct: Element = document.getElementById("btnAddProduct");
+    (<HTMLButtonElement>btnAddProduct).disabled = true;
+    this.addProductSub = await (await this.productService.AddProduct()).subscribe(
+      data => {
+        let response = data;
+        (<HTMLButtonElement>btnAddProduct).disabled = false;
+        this.toastr.success("Product successfully added.", "Success");
+        console.log(response);
+        this.router.navigate(['/software/setup/product/detail/', response]);
 
-            } else if (data[0] == "failed") {
-              this.toastr.error(data[1], "Error");
-            }
-            if (this.addroductSub != null) this.addroductSub.unsubscribe();
-          }
-        );
-      } else {
-        this.toastr.error("Please don't leave empty fields.", "Error");
+        if (this.listProductSub != null) this.listProductSub.unsubscribe();
+      },
+      error => {
+        (<HTMLButtonElement>btnAddProduct).disabled = false;
+        this.toastr.error("Failed", "Error");
+
+        if (this.listProductSub != null) this.listProductSub.unsubscribe();
       }
-    } else {
-      if (this.productModel.ProductCode !== "" || this.productModel.ProductDescription) {
-        this.productService.UpdateProduct(this.productModel);
-
-        this.updateProductSub = this.productService.updateProductObservable.subscribe(
-          data => {
-            if (data[0] == "success") {
-              this.productDetailModalRef.hide();
-              this.resetProductModel();
-              setTimeout(() => {
-                this.toastr.success("Updated successfully.", "Success");
-                this.isDataLoaded = false;
-                this.listProductData();
-              }, 100);
-
-            } else if (data[0] == "failed") {
-              this.toastr.error(data[1], "Error");
-            }
-            if (this.updateProductSub != null) this.updateProductSub.unsubscribe();
-          }
-        );
-      } else {
-        this.toastr.error("Please don't leave empty fields.", "Error");
-      }
-    }
+    );
   }
 
   public btnConfirmDeleteDeleteFormClick(): void {
@@ -204,7 +177,7 @@ export class ProductComponent implements OnInit {
     );
   }
 
-  public btnAddProductClick(addProductDetailModalTemplate: TemplateRef<any>): void {
+  public btnAddProductClicks(addProductDetailModalTemplate: TemplateRef<any>): void {
     this.productDetailModalRef = this.modalService.show(addProductDetailModalTemplate, {
       backdrop: true,
       ignoreBackdropClick: true,
@@ -214,22 +187,27 @@ export class ProductComponent implements OnInit {
     this.isAddClick = true;
   }
 
-  public btnEditProductClick(editProductDetailModalTemplate: TemplateRef<any>): void {
-    this.productDetailModalRef = this.modalService.show(editProductDetailModalTemplate, {
-      backdrop: true,
-      ignoreBackdropClick: true,
-      class: "modal-lg"
-    });
-    this.productModalTitle = "Edit Product";
-    this.isAddClick = false;
+  // public btnEditProductClicks(editProductDetailModalTemplate: TemplateRef<any>): void {
+  //   this.productDetailModalRef = this.modalService.show(editProductDetailModalTemplate, {
+  //     backdrop: true,
+  //     ignoreBackdropClick: true,
+  //     class: "modal-lg"
+  //   });
+  //   this.productModalTitle = "Edit Product";
+  //   this.isAddClick = false;
+  //   let currentProduct = this.listProductCollectionView.currentItem;
+  //   this.productModel.Id = currentProduct.Id;
+  //   this.productModel.ProductCode = currentProduct.ProductCode;
+  //   this.productModel.ProductDescription = currentProduct.ProductDescription;
+  //   this.productModel.CreatedById = currentProduct.CreatedByUserId;
+  //   this.productModel.CreatedDateTime = currentProduct.CreatedDateTime;
+  //   this.productModel.UpdatedById = currentProduct.UpdatedByUserId;
+  //   this.productModel.UpdatedDateTime = currentProduct.UpdatedDateTime;
+  // }
+
+  public btnEditProductClick(): void {
     let currentProduct = this.listProductCollectionView.currentItem;
-    this.productModel.Id = currentProduct.Id;
-    this.productModel.ProductCode = currentProduct.ProductCode;
-    this.productModel.ProductDescription = currentProduct.ProductDescription;
-    this.productModel.CreatedById = currentProduct.CreatedByUserId;
-    this.productModel.CreatedDateTime = currentProduct.CreatedDateTime;
-    this.productModel.UpdatedById = currentProduct.UpdatedByUserId;
-    this.productModel.UpdatedDateTime = currentProduct.UpdatedDateTime;
+    this.router.navigate(['/software/setup/product/detail/', currentProduct.Id]);
   }
 
   public btnDeleteProductClick(delelteProductDetailModalTemplate: TemplateRef<any>): void {
@@ -241,24 +219,24 @@ export class ProductComponent implements OnInit {
     this.isAddClick = true;
   }
 
-  public btnCloseModal(): void {
-    this.productDetailModalRef.hide();
-    this.resetProductModel();
-  }
+  // public btnCloseModal(): void {
+  //   this.productDetailModalRef.hide();
+  //   this.resetProductModel();
+  // }
 
-  public resetProductModel(): void {
-    this.productModel.Id = 0;
-    this.productModel.ProductCode = "";
-    this.productModel.ProductDescription = "";
-    this.productModel.CreatedById = 0;
-    this.productModel.CreatedDateTime = new Date();
-    this.productModel.UpdatedById = 0;
-    this.productModel.UpdatedDateTime = new Date();
-  }
+  // public resetProductModel(): void {
+  //   this.productModel.Id = 0;
+  //   this.productModel.ProductCode = "";
+  //   this.productModel.ProductDescription = "";
+  //   this.productModel.CreatedById = 0;
+  //   this.productModel.CreatedDateTime = new Date();
+  //   this.productModel.UpdatedById = 0;
+  //   this.productModel.UpdatedDateTime = new Date();
+  // }
 
   ngOnDestroy() {
-    if (this.addroductSub != null) this.addroductSub.unsubscribe();
-    if (this.addroductSub != null) this.addroductSub.unsubscribe();
+    if (this.listProductSub != null) this.listProductSub.unsubscribe();
+    if (this.listProductSub != null) this.listProductSub.unsubscribe();
     if (this.updateProductSub != null) this.updateProductSub.unsubscribe();
     if (this.deleteProductSub != null) this.deleteProductSub.unsubscribe();
   }

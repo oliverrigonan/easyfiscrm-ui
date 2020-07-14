@@ -22,6 +22,7 @@ import { StatusComponent } from './setup/status/status.component';
 import { LeadStaffReportComponent } from './report/lead-staff-report/lead-staff-report.component';
 import { SalesDeliveryStaffReportComponent } from './report/sales-delivery-staff-report/sales-delivery-staff-report.component';
 import { SupportStaffReportComponent } from './report/support-staff-report/support-staff-report.component';
+import { ProductDetailComponent } from './setup/product-detail/product-detail.component';
 
 const routes: Routes = [
   {
@@ -48,6 +49,7 @@ const routes: Routes = [
       { path: 'report/activity', component: ActivityReportComponent, canActivate: [SoftwareRouterActivate] },
       { path: 'setup/user', component: UserComponent, canActivate: [SoftwareRouterActivate] },
       { path: 'setup/product', component: ProductComponent, canActivate: [SoftwareRouterActivate] },
+      { path: 'setup/product/detail/:id', component: ProductDetailComponent, canActivate: [SoftwareRouterActivate] },
       { path: 'setup/status', component: StatusComponent, canActivate: [SoftwareRouterActivate] },
     ]
   }

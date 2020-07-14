@@ -63,30 +63,8 @@ export class ProductService {
     );
   }
 
-  public AddProduct(objProduct: ProductModel): void {
-    this.httpClient.post(this.defaultAPIURLHost + "/api/crm/product/add", JSON.stringify(objProduct), this.options).subscribe(
-      response => {
-        let responseResults: string[] = ["success", ""];
-        this.addProductSubject.next(responseResults);
-      },
-      error => {
-        let errorResults: string[] = ["failed", error["error"]];
-        this.addProductSubject.next(errorResults);
-      }
-    );
-  }
-
-  public UpdateProduct(objProduct: ProductModel): void {
-    this.httpClient.put(this.defaultAPIURLHost + "/api/crm/product/update/", JSON.stringify(objProduct) ,this.options).subscribe(
-      response => {
-        let responseResults: string[] = ["success", ""];
-        this.updateProductSubject.next(responseResults);
-      },
-      error => {
-        let errorResults: string[] = ["failed", error["error"]];
-        this.updateProductSubject.next(errorResults);
-      }
-    );
+  public async AddProduct() {
+    return await this.httpClient.post(this.defaultAPIURLHost + "/api/crm/product/add", "", this.options);
   }
 
   public deleteProduct(id: number) {

@@ -53,6 +53,7 @@ import { DocumentComponent } from './document/document/document.component';
 import { LeadStaffReportComponent } from './report/lead-staff-report/lead-staff-report.component';
 import { SalesDeliveryStaffReportComponent } from './report/sales-delivery-staff-report/sales-delivery-staff-report.component';
 import { SupportStaffReportComponent } from './report/support-staff-report/support-staff-report.component';
+import { ProductDetailComponent } from './setup/product-detail/product-detail.component';
 
 @NgModule({
   declarations: [
@@ -85,7 +86,8 @@ import { SupportStaffReportComponent } from './report/support-staff-report/suppo
     DocumentComponent,
     LeadStaffReportComponent,
     SalesDeliveryStaffReportComponent,
-    SupportStaffReportComponent
+    SupportStaffReportComponent,
+    ProductDetailComponent
   ],
   imports: [
     CommonModule,

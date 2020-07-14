@@ -20,8 +20,8 @@
           </div>
         </td>
         <td style="text-align: right;">
-          <button class="btn btn-primary" (click)="btnAddProductClick(productDetailModalTemplate)"
-            style="margin-right: 5px;" id="btnAddSupport">
+          <button class="btn btn-primary" (click)="btnAddProductClick()"
+            style="margin-right: 5px;" id="btnAddProduct">
             <i class="fa fa-plus fa-fw"></i> Add
           </button>
           <button class="btn btn-danger" routerLink="/software/sys/dashboard" id="btnCloseActivity">
@@ -39,7 +39,7 @@
       <wj-flex-grid-column [header]="Edit" [isReadOnly]="true" [width]="80">
         <ng-template wjFlexGridCellTemplate [cellType]="'Cell'">
           <button type="button" class="btn btn-primary btn-block btn-xs"
-            (click)="btnEditProductClick(productDetailModalTemplate)" id="btnEditUser">
+            (click)="btnEditProductClick()" id="btnEditUser">
             <i class="fa fa-edit fa-fw"></i> Edit
           </button>
         </ng-template>
@@ -132,9 +132,6 @@
     </table>
   </div>
 </ng-template>
-
-
-
 <ng-template #productDeleteModalTemplate>
   <div class="modal-header" style="background-color: white;">
     <h4 class="modal-title" style="color: black;">

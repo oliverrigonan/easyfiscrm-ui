@@ -1,0 +1,222 @@
+<div class="card card-default">
+
+  <div class="card-header">
+    <table border="0" style="width: 100%; border: none;">
+      <tr>
+        <td>
+        </td>
+        <td style="text-align: right;">
+          <button class="btn btn-primary" (click)="btnSaveProductClick()" style="margin-right: 5px;" id="btnAddProduct">
+            <i class="fa fa-save fa-fw"></i> Save
+          </button>
+          <button class="btn btn-danger" routerLink="/software/setup/product" id="btnCloseActivity">
+            <i class="fa fa-close fa-fw"></i> Close
+          </button>
+        </td>
+      </tr>
+    </table>
+  </div>
+  <div class="card-body">
+    <div class="card card-default">
+      <div class="card-body" style="padding-bottom: 1px;">
+        <div class="row">
+          <div class="col-lg-4">
+            <div class="form-group row">
+              <label for="" class="col-sm-3 col-form-label form-group-label">Product Code</label>
+              <div class="col-sm-9">
+                <input type="text" class="form-control" [disabled]="isLocked" [(ngModel)]="product.ProductCode"
+                  placeholder="Product Code...">
+              </div>
+            </div>
+          </div>
+          <div class="col-lg-8">
+            <div class="form-group row">
+              <label for="" class="col-sm-3 col-form-label form-group-label">Product Discription</label>
+              <div class="col-sm-9">
+                <input type="text" class="form-control" [disabled]="isLocked" [(ngModel)]="product.ProductDescription"
+                  placeholder="Product Description...">
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <ul class="nav nav-tabs" id="myTab" role="tablist" style="margin-top: 10px; margin-bottom: 10px;">
+      <li class="nav-item">
+        <a class="nav-link active" id="softwareDevelopmentList-tab" data-toggle="tab" href="#softwareDevelopmentList"
+          role="tab" aria-controls="softwareDevelopmentList" (click)="refreshlistSalesDeliveryStaffReport()"
+          aria-selected="true">Software Development List</a>
+      </li>
+      <li class="nav-item">
+        <a class="nav-link" id="softwareDevelopmentDetail-tab" data-toggle="tab" href="#softwareDevelopmentDetail"
+          role="tab" aria-controls="softwareDevelopmentDetail" (click)="refreshlistSOpenalesDeliveryStaffReport()"
+          aria-selected="false">Software Development Detial</a>
+      </li>
+    </ul>
+    <div class="tab-content" id="myTabContent">
+      <div class="tab-pane fade show active" id="softwareDevelopmentList" role="tabpanel"
+        aria-labelledby="softwareDevelopmentList-tab">
+        <div class="card card-default">
+
+          <div class="card-body">
+            <table border="0" style="width: 100%; border: none; margin-bottom: 8px">
+              <tr>
+                <td>
+                </td>
+                <td style="text-align: right;">
+                  <button class="btn btn-primary" (click)="btnAddProductClick()" style="padding: 5px; font-size: 10px;"
+                    id="btnAddProduct">
+                    <i class="fa fa-plus fa-fw"></i> Add
+                  </button>
+                </td>
+              </tr>
+            </table>
+            <mat-progress-bar [hidden]="isProgressBarHidden" [color]="'primary'" [mode]="'indeterminate'">
+            </mat-progress-bar>
+            <wj-flex-grid #listSoftwareDevelopmentFlexGrid [itemsSource]="listSoftwareDevelopmentCollectionView"
+              [selectionMode]="3" [frozenColumns]="2">
+              <wj-flex-grid-filter></wj-flex-grid-filter>
+              <wj-flex-grid-column [header]="Edit" [isReadOnly]="true" [width]="80">
+                <ng-template wjFlexGridCellTemplate [cellType]="'Cell'">
+                  <button type="button" class="btn btn-primary btn-block btn-xs"
+                    (click)="btnEditProductClick(productDetailModalTemplate)" id="btnEditUser">
+                    <i class="fa fa-edit fa-fw"></i> Edit
+                  </button>
+                </ng-template>
+              </wj-flex-grid-column>
+              <wj-flex-grid-column [header]="Delete" [isReadOnly]="true" [width]="90">
+                <ng-template wjFlexGridCellTemplate [cellType]="'Cell'">
+                  <button type="button" class="btn btn-danger btn-block btn-xs"
+                    (click)="btnDeleteProductClick(productDeleteModalTemplate)" id="btnDeleteSupport">
+                    <i class="fa fa-trash fa-fw"></i> Delete
+                  </button>
+                </ng-template>
+              </wj-flex-grid-column>
+              <wj-flex-grid-column [header]="'SDNumber'" [binding]="'SDNumber'" [isReadOnly]="true" [width]="'2*'">
+              </wj-flex-grid-column>
+              <wj-flex-grid-column [header]="'SDDate'" [binding]="'SDDate'" [isReadOnly]="true" [width]="'2*'">
+              </wj-flex-grid-column>
+              <wj-flex-grid-column [header]="'ProductDescription'" [binding]="'ProductDescription'" [isReadOnly]="true"
+                [width]="'2*'">
+              </wj-flex-grid-column>
+              <wj-flex-grid-column [header]="'Issue'" [binding]="'Issue'" [isReadOnly]="true" [width]="'2*'">
+              </wj-flex-grid-column>
+              <wj-flex-grid-column [header]="'IssueType'" [binding]="'IssueType'" [isReadOnly]="true" [width]="'2*'">
+              </wj-flex-grid-column>
+              <wj-flex-grid-column [header]="'Remarks'" [binding]="'Remarks'" [isReadOnly]="true" [width]="'2*'">
+              </wj-flex-grid-column>
+              <wj-flex-grid-column [header]="'AssignedToUserFullname'" [binding]="'AssignedToUserFullname'"
+                [isReadOnly]="true" [width]="'2*'">
+              </wj-flex-grid-column>
+              <wj-flex-grid-column [header]="'TargetDateTime'" [binding]="'TargetDateTime'" [isReadOnly]="true"
+                [width]="'2*'">
+              </wj-flex-grid-column>
+              <wj-flex-grid-column [header]="'CloseDateTime'" [binding]="'CloseDateTime'" [isReadOnly]="true"
+                [width]="'2*'">
+              </wj-flex-grid-column>
+              <wj-flex-grid-column [header]="'Status'" [binding]="'Status'" [isReadOnly]="true" [width]="'2*'">
+              </wj-flex-grid-column>
+              <wj-flex-grid-column [header]="'IsLocked'" [binding]="'IsLocked'" [isReadOnly]="true" [width]="'2*'">
+              </wj-flex-grid-column>
+            </wj-flex-grid>
+          </div>
+          <div class="card-footer">
+            <div class="col-sm-4 btn-group" style="padding: 5px 0px 5px 0px;">
+              <button type="button" class="btn btn-secondary"
+                (click)="listSoftwareDevelopmentCollectionView.moveToFirstPage()">
+                <i class="fa fa-fast-backward"></i>
+              </button>
+              <button type="button" class="btn btn-secondary"
+                (click)="listSoftwareDevelopmentCollectionView.moveToPreviousPage()">
+                <i class="fa fa-step-backward"></i>
+              </button>
+              <button type="button" class="btn btn-secondary" disabled style="width:100px">
+                {{ listSoftwareDevelopmentCollectionView.pageIndex + 1 }} /
+                {{ listSoftwareDevelopmentCollectionView.pageCount }}
+              </button>
+              <button type="button" class="btn btn-secondary"
+                (click)="listSoftwareDevelopmentCollectionView.moveToNextPage()">
+                <i class="fa fa-step-forward"></i>
+              </button>
+              <button type="button" class="btn btn-secondary"
+                (click)="listSoftwareDevelopmentCollectionView.moveToLastPage()">
+                <i class="fa fa-fast-forward"></i>
+              </button>
+            </div>
+            <div class="col-sm-8"></div>
+          </div>
+        </div>
+      </div>
+      <div class="tab-pane fade" id="softwareDevelopmentDetail" role="tabpanel"
+        aria-labelledby="softwareDevelopmentDetail-tab">
+        <div class="card card-default">
+          <!-- <div class="card-header">
+          </div> -->
+          <div class="card-body">
+
+          </div>
+        </div>
+      </div>
+    </div>
+
+  </div>
+</div>
+<!-- <div class="card-footer">
+
+</div> -->
+
+<div class="card card-default" style="margin-top: 10px;">
+  <div class="card-header">
+    User stamp
+  </div>
+  <div class="card-body">
+    <div class="row">
+      <div class="col-md-6">
+        <p>Created by:</p>
+        <div style="padding-left: 10px;">
+          <i class="fa fa-key"></i>&nbsp;
+          <label id="createdBy">
+            {{
+            listSoftwareDevelopmentCollectionView.items.length > 0 ?
+            listSoftwareDevelopmentCollectionView.currentItem.CreatedByUserFullname : 'NA'
+            }}
+          </label>
+          <br />
+          <small>
+            <i class="fa fa-calendar"></i>&nbsp;&nbsp;
+            <span id="createdDate">
+              {{
+              listSoftwareDevelopmentCollectionView.items.length > 0 ?
+              listSoftwareDevelopmentCollectionView.currentItem.CreatedDateTime : 'mm/dd/yyyy'
+              }}
+            </span>
+          </small>
+        </div>
+        <br />
+      </div>
+      <div class="col-md-6">
+        <p>Updated by:</p>
+        <div style="padding-left: 10px;">
+          <i class="fa fa-key"></i>&nbsp;
+          <label id="updatedBy">
+            {{
+            listSoftwareDevelopmentCollectionView.items.length > 0 ?
+            listSoftwareDevelopmentCollectionView.currentItem.UpdatedByUserFullname : 'NA'
+            }}
+          </label>
+          <br />
+          <small>
+            <i class="fa fa-calendar"></i>&nbsp;&nbsp;
+            <span id="updatedDate">
+              {{
+              listSoftwareDevelopmentCollectionView.items.length > 0 ?
+              listSoftwareDevelopmentCollectionView.currentItem.UpdatedDateTime : 'mm/dd/yyyy'
+              }}
+            </span>
+          </small>
+        </div>
+        <br />
+      </div>
+    </div>
+  </div>
+</div>
