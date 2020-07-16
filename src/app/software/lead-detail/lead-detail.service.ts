@@ -187,7 +187,7 @@ export class LeadDetailService {
   }
 
   public unlockLead(objLead: LeadDetailModel): void {
-    this.httpClient.put(this.defaultAPIURLHost + "/api/crm/trn/lead/unlock/" + objLead.Id, JSON.stringify(objLead), this.options).subscribe(
+    this.httpClient.put(this.defaultAPIURLHost + "/api/crm/trn/lead/unlock/" + objLead.Id, "", this.options).subscribe(
       response => {
         let responseResults: string[] = ["success", ""];
         this.unlockLeadSubject.next(responseResults);

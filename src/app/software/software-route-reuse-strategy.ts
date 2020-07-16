@@ -12,13 +12,13 @@ export class SoftwareRouteReuseStrategy implements RouteReuseStrategy {
 
     store(route: ActivatedRouteSnapshot, handle: DetachedRouteHandle): void {
         switch (route.routeConfig.path) {
+            case 'setup/product/detail/:id': break;
             case 'trn/lead/detail/:id': break;
             case 'trn/sales/detail/:id': break;
             case 'trn/support/detail/:id': break;
             case 'trn/lead/:startDate/:endDate/:status/:userId/:dashboard': break;
             case 'trn/sales/:startDate/:endDate/:status/:userId/:dashboard': break;
             case 'trn/support/:startDate/:endDate/:status/:userId/:dashboard': break;
-            case 'setup/product/detail/:id': break;
             case 'setup/product': break;
             default: {
                 this.handlers[route.routeConfig.path] = handle;

@@ -67,16 +67,7 @@ export class ProductService {
     return await this.httpClient.post(this.defaultAPIURLHost + "/api/crm/product/add", "", this.options);
   }
 
-  public deleteProduct(id: number) {
-    this.httpClient.delete(this.defaultAPIURLHost + "/api/crm/product/delete/" + id, this.options).subscribe(
-      response => {
-        let responseResults: string[] = ["success", ""];
-        this.deleteProductSubject.next(responseResults);
-      },
-      error => {
-        let errorResults: string[] = ["failed", error["error"]];
-        this.deleteProductSubject.next(errorResults);
-      }
-    );
+  public async deleteProduct(id: number) {
+    return await this.httpClient.delete(this.defaultAPIURLHost + "/api/crm/product/delete/" + id, this.options);
   }
 }

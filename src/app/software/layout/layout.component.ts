@@ -21,6 +21,9 @@ export class LayoutComponent implements OnInit {
   private crmActivity: boolean = false;
   private crmReport: boolean = false;
   private crmAdmin: boolean = false;
+  private crmStatus: boolean = false;
+  private crmProduct: boolean = false;
+  private crmUser: boolean = false;
 
   constructor(
     private router: Router,
@@ -93,6 +96,9 @@ export class LayoutComponent implements OnInit {
       } else if (this.router.url == "/software/report/support/staff") {
         this.ToolbarTitle = "Support Staff Report";
         toolBarImage.setAttribute("src", "../../../assets/img/report/support-staff-report.png");
+      } else if (this.router.url.split('/').slice(0, -1).join('/') == "/software/setup/product/detail") {
+        this.ToolbarTitle = "Product Detail";
+        toolBarImage.setAttribute("src", "../../../assets/img/icons/product.png");
       }
       else {
 
@@ -120,6 +126,7 @@ export class LayoutComponent implements OnInit {
     this.openSideBar();
     setTimeout(() => {
       this.username = localStorage.getItem("username");
+
       if (this.securityService.openGroupPage("Lead") == true) {
         this.crmLead = true;
       }
@@ -135,9 +142,14 @@ export class LayoutComponent implements OnInit {
       if (this.securityService.openGroupPage("Report") == true) {
         this.crmReport = true;
       }
+      if (this.securityService.openGroupPage("Product") == true) {
+        this.crmProduct = true;
+      }
+      
       if (this.securityService.openGroupPage("Admin") == true) {
         this.crmAdmin = true;
       }
+
     }, 1000);
   }
 

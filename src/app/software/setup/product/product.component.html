@@ -20,7 +20,7 @@
           </div>
         </td>
         <td style="text-align: right;">
-          <button class="btn btn-primary" (click)="btnAddProductClick()"
+          <button class="btn btn-primary" (click)="btnAddProductClick()" [disabled]="!crmAdmin"
             style="margin-right: 5px;" id="btnAddProduct">
             <i class="fa fa-plus fa-fw"></i> Add
           </button>
@@ -132,6 +132,7 @@
     </table>
   </div>
 </ng-template>
+
 <ng-template #productDeleteModalTemplate>
   <div class="modal-header" style="background-color: white;">
     <h4 class="modal-title" style="color: black;">

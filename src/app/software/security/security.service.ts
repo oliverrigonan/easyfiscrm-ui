@@ -51,6 +51,10 @@ export class SecurityService {
           if (userGroup === "Easyfis Staff" || userGroup === "Delivery Manager" || userGroup === "Sales Manager" || userGroup === "Support Manager" || userGroup === "Admin") {
             openFlag = true;
           }
+        } else if (page === "Product") {
+          if (userGroup === "Easyfis Staff" || userGroup === "Admin") {
+            openFlag = true;
+          }
         } else if (page === "Admin") {
           if (userGroup === "Admin") {
             openFlag = true;
@@ -80,7 +84,7 @@ export class SecurityService {
         else {
           isAuthorizedFlag = false;
         }
-        
+
       } catch (e) {
         console.log(e);
       }

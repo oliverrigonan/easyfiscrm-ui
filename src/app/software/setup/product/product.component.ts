@@ -11,6 +11,7 @@ import { BsModalService } from 'ngx-bootstrap/modal';
 import { BsModalRef } from 'ngx-bootstrap/modal/bs-modal-ref.service';
 import { ProductService } from './product.service';
 import { ProductModel } from './product.model';
+import { SecurityService } from '../../security/security.service';
 
 @Component({
   selector: 'app-product',
@@ -24,10 +25,18 @@ export class ProductComponent implements OnInit {
     private activatedRoute: ActivatedRoute,
     private router: Router,
     private modalService: BsModalService,
-    private productService: ProductService
+    private productService: ProductService,
+    private securityService: SecurityService
+
   ) { }
 
+  private crmAdmin: boolean = false;
+
   ngOnInit() {
+    if (this.securityService.openGroupPage("Admin") == true) {
+      this.crmAdmin = true;
+    }
+
     this.createCboShowNumberOfRows();
     this.listProductData();
   }
@@ -145,34 +154,31 @@ export class ProductComponent implements OnInit {
         console.log(response);
         this.router.navigate(['/software/setup/product/detail/', response]);
 
-        if (this.listProductSub != null) this.listProductSub.unsubscribe();
+        if (this.addProductSub != null) this.addProductSub.unsubscribe();
       },
       error => {
         (<HTMLButtonElement>btnAddProduct).disabled = false;
         this.toastr.error("Failed", "Error");
 
-        if (this.listProductSub != null) this.listProductSub.unsubscribe();
+        if (this.addProductSub != null) this.addProductSub.unsubscribe();
       }
     );
   }
 
-  public btnConfirmDeleteDeleteFormClick(): void {
+  public async btnConfirmDeleteDeleteFormClick() {
     let currentProduct = this.listProductCollectionView.currentItem;
-    this.productService.deleteProduct(currentProduct.Id);
-    this.deleteProductSub = this.productService.deleteProductObservable.subscribe(
+    this.deleteProductSub = await (await this.productService.deleteProduct(currentProduct.Id)).subscribe(
       data => {
-        if (data[0] == "success") {
-          this.productDeleteModalRef.hide();
-          this.toastr.success("Deleted successfully.", "Success");
-          setTimeout(() => {
-            this.isDataLoaded = false;
-            this.listProductData();
-          }, 100);
-
-        } else if (data[0] == "failed") {
-          this.toastr.error(data[1], "Error");
-        }
+        this.toastr.success("Deleted successfully.", "Success");
+        this.productDeleteModalRef.hide();
+        this.isDataLoaded = false;
+        this.listProductData();
         if (this.deleteProductSub != null) this.deleteProductSub.unsubscribe();
+      },
+      error => {
+        this.toastr.error(error["error"], "Error");
+        if (this.deleteProductSub != null) this.deleteProductSub.unsubscribe();
+
       }
     );
   }
@@ -236,7 +242,7 @@ export class ProductComponent implements OnInit {
 
   ngOnDestroy() {
     if (this.listProductSub != null) this.listProductSub.unsubscribe();
-    if (this.listProductSub != null) this.listProductSub.unsubscribe();
+    if (this.addProductSub != null) this.addProductSub.unsubscribe();
     if (this.updateProductSub != null) this.updateProductSub.unsubscribe();
     if (this.deleteProductSub != null) this.deleteProductSub.unsubscribe();
   }
