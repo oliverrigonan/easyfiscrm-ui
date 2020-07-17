@@ -1,0 +1,188 @@
+<div class="card card-default">
+  <div class="card-header">
+    <table border="0" style="width: 100%; border: none;">
+      <tr>
+        <td>
+        </td>
+        <td style="text-align: right;">
+          <button class="btn btn-danger" routerLink="/software" id="btnCloseLead">
+            <i class="fa fa-close fa-fw"></i> Close
+          </button>
+        </td>
+      </tr>
+    </table>
+  </div>
+  <div class="card-body">
+    <div class="row">
+      <div class="col-md-8">
+        <table border="0" style="width: 100%; border: none; margin-top: -15px;">
+          <tr>
+            <td>
+              <div class="form-group">
+                <span class="badge badge-info sky-blue" style="margin-bottom: 5px;"><i class="fa fa-calendar fa-fw"></i>
+                  Start Date</span>
+                <wj-input-date #cboLeadStartDateFilter [(ngModel)]="startDateFilterData"
+                  [ngModelOptions]="{standalone: true}" (textChanged)="cboStartDateTextChanged()" format="MMMM dd, yyyy"
+                  style="width: 100%;">
+                </wj-input-date>
+              </div>
+            </td>
+            <td>
+              <div class="form-group">
+                <span class="badge badge-info sky-blue" style="margin-bottom: 5px;"><i class="fa fa-calendar fa-fw"></i>
+                  End Date</span>
+                <wj-input-date #cboLeadEndDateFilter [(ngModel)]="endDateFilterData"
+                  [ngModelOptions]="{standalone: true}" (textChanged)="cboEndDateTextChanged()" format="MMMM dd, yyyy"
+                  style="width: 100%;">
+                </wj-input-date>
+              </div>
+            </td>
+            <td>
+              <div class="form-group">
+                <span class="badge badge-info sky-blue" style="margin-bottom: 5px;"><i
+                    class="fa fa-question-circle fa-fw"></i>
+                  User</span>
+                <wj-combo-box #cboUser [itemsSource]="cboUserObservableArray" [isEditable]="false" [isRequired]="true"
+                  [displayMemberPath]="'FullName'" [selectedValuePath]="'Id'"
+                  (selectedIndexChanged)="cboUserSelectedIndexChanged(cboUser.selectedValue)" style="width: 100%;">
+                </wj-combo-box>
+              </div>
+            </td>
+          </tr>
+        </table>
+      </div>
+      <div class="col-md-4"></div>
+    </div>
+    <ul class="nav nav-tabs" id="myTab" role="tablist" style="margin-top: 10px; margin-bottom: 10px;">
+      <li class="nav-item">
+        <a class="nav-link active" id="softwareDevelopmentStaffReport-tab" data-toggle="tab"
+          href="#softwareDevelopmentStaffReport" role="tab" aria-controls="softwareDevelopmentStaffReport"
+          (click)="refreshlistSoftwareDevelopmentStaffReport()" aria-selected="true">Software Development</a>
+      </li>
+      <li class="nav-item">
+        <a class="nav-link" id="openSoftwareDevelopmentStaffReport-tab" data-toggle="tab"
+          href="#openSoftwareDevelopmentStaffReport" role="tab" aria-controls="openSoftwareDevelopmentStaffReport"
+          (click)="refreshlistOpenSoftwareDevelopmentStaffReport()" aria-selected="false">Open Software Development</a>
+      </li>
+    </ul>
+    <div class="tab-content" id="myTabContent">
+      <div class="tab-pane fade show active" id="softwareDevelopmentStaffReport" role="tabpanel"
+        aria-labelledby="softwareDevelopmentStaffReport-tab">
+        <div class="card card-default">
+          <!-- <div class="card-header">
+          </div> -->
+          <div class="card-body">
+            <mat-progress-bar [hidden]="isSoftwareDevelopmentDeliveryReportProgressBarHidden" [color]="'primary'"
+              [mode]="'indeterminate'">
+            </mat-progress-bar>
+            <wj-flex-grid #listSoftwareDevelopmentStaffReportFlexGrid
+              [itemsSource]="listSoftwareDevelopmentStaffReportCollectionView" [selectionMode]="3" [frozenColumns]="2">
+              <wj-flex-grid-filter></wj-flex-grid-filter>
+              <wj-flex-grid-column [header]="'Staff'" [binding]="'Staff'" [isReadOnly]="true" [width]="'2*'">
+              </wj-flex-grid-column>
+              <wj-flex-grid-column [header]="'Open'" [binding]="'Open'" [isReadOnly]="true" [width]="'2*'">
+              </wj-flex-grid-column>
+              <wj-flex-grid-column [header]="'Close'" [binding]="'Close'" [isReadOnly]="true" [width]="'2*'">
+              </wj-flex-grid-column>
+              <wj-flex-grid-column [header]="'Cancelled'" [binding]="'Cancelled'" [isReadOnly]="true" [width]="'2*'">
+              </wj-flex-grid-column>
+              <wj-flex-grid-column [header]="'Total'" [binding]="'Total'" [isReadOnly]="true" [width]="'2*'">
+              </wj-flex-grid-column>
+            </wj-flex-grid>
+          </div>
+          <div class="card-footer">
+            <div class="col-sm-4 btn-group" style="padding: 5px 0px 5px 0px;">
+              <button type="button" class="btn btn-secondary"
+                (click)="listSoftwareDevelopmentStaffReportCollectionView.moveToFirstPage()">
+                <i class="fa fa-fast-backward"></i>
+              </button>
+              <button type="button" class="btn btn-secondary"
+                (click)="listSoftwareDevelopmentStaffReportCollectionView.moveToPreviousPage()">
+                <i class="fa fa-step-backward"></i>
+              </button>
+              <button type="button" class="btn btn-secondary" disabled style="width:100px">
+                {{ listSoftwareDevelopmentStaffReportCollectionView.pageIndex + 1 }} /
+                {{ listSoftwareDevelopmentStaffReportCollectionView.pageCount }}
+              </button>
+              <button type="button" class="btn btn-secondary"
+                (click)="listSoftwareDevelopmentStaffReportCollectionView.moveToNextPage()">
+                <i class="fa fa-step-forward"></i>
+              </button>
+              <button type="button" class="btn btn-secondary"
+                (click)="listSoftwareDevelopmentStaffReportCollectionView.moveToLastPage()">
+                <i class="fa fa-fast-forward"></i>
+              </button>
+            </div>
+            <div class="col-sm-8"></div>
+          </div>
+        </div>
+      </div>
+      <div class="tab-pane fade" id="openSoftwareDevelopmentStaffReport" role="tabpanel"
+        aria-labelledby="openSoftwareDevelopmentStaffReport-tab">
+        <div class="card card-default">
+          <!-- <div class="card-header">
+          </div> -->
+          <div class="card-body">
+            <mat-progress-bar [hidden]="isOpenSoftwareDevelopmentStaffReportProgressBarHidden" [color]="'primary'"
+              [mode]="'indeterminate'">
+            </mat-progress-bar>
+            <wj-flex-grid #listOpenSoftwareDevelopmentStaffReportFlexGrid
+              [itemsSource]="listOpenSoftwareDevelopmentStaffReportCollectionView" [selectionMode]="3"
+              [frozenColumns]="2">
+              <wj-flex-grid-filter></wj-flex-grid-filter>
+              <wj-flex-grid-column [header]="'No.'" [binding]="'SDNumber'" [isReadOnly]="true" [width]="'2*'">
+              </wj-flex-grid-column>
+              <wj-flex-grid-column [header]="'SDDate'" [binding]="'SDDate'" [isReadOnly]="true" [width]="'2*'">
+              </wj-flex-grid-column>
+              <wj-flex-grid-column [header]="'Product'" [binding]="'ProductDescription'" [isReadOnly]="true"
+                [width]="'2*'">
+              </wj-flex-grid-column>
+              <wj-flex-grid-column [header]="'Issue'" [binding]="'Issue'" [isReadOnly]="true" [width]="'2*'">
+              </wj-flex-grid-column>
+              <wj-flex-grid-column *ngIf="" [header]="'IssueType'" [binding]="'IssueType'" [isReadOnly]="true"
+                [width]="'2*'">
+              </wj-flex-grid-column>
+              <wj-flex-grid-column [header]="'Assigned User'" [binding]="'AssignedToUserFullname'" [isReadOnly]="true"
+                [width]="'2*'">
+              </wj-flex-grid-column>
+              <wj-flex-grid-column [header]="'TargetDateTime'" [binding]="'TargetDateTime'" [isReadOnly]="true"
+                [width]="'2*'">
+              </wj-flex-grid-column>
+              <wj-flex-grid-column [header]="'CloseDateTime'" [binding]="'CloseDateTime'" [isReadOnly]="true"
+                [width]="'2*'">
+              </wj-flex-grid-column>
+              <wj-flex-grid-column [header]="'Status'" [binding]="'Status'" [isReadOnly]="true" [width]="'2*'">
+              </wj-flex-grid-column>
+            </wj-flex-grid>
+          </div>
+          <div class="card-footer">
+            <div class="col-sm-4 btn-group" style="padding: 5px 0px 5px 0px;">
+              <button type="button" class="btn btn-secondary"
+                (click)="listOpenSoftwareDevelopmentStaffReportCollectionView.moveToFirstPage()">
+                <i class="fa fa-fast-backward"></i>
+              </button>
+              <button type="button" class="btn btn-secondary"
+                (click)="listOpenSoftwareDevelopmentStaffReportCollectionView.moveToPreviousPage()">
+                <i class="fa fa-step-backward"></i>
+              </button>
+              <button type="button" class="btn btn-secondary" disabled style="width:100px">
+                {{ listOpenSoftwareDevelopmentStaffReportCollectionView.pageIndex + 1 }} /
+                {{ listOpenSoftwareDevelopmentStaffReportCollectionView.pageCount }}
+              </button>
+              <button type="button" class="btn btn-secondary"
+                (click)="listOpenSoftwareDevelopmentStaffReportCollectionView.moveToNextPage()">
+                <i class="fa fa-step-forward"></i>
+              </button>
+              <button type="button" class="btn btn-secondary"
+                (click)="listOpenSoftwareDevelopmentStaffReportCollectionView.moveToLastPage()">
+                <i class="fa fa-fast-forward"></i>
+              </button>
+            </div>
+            <div class="col-sm-8"></div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+  </div>
+</div>

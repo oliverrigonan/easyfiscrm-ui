@@ -1,8 +1,6 @@
 import { Injectable } from '@angular/core';
 import { AppSettings } from 'src/app/app-settings';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
-import { ObservableArray } from 'wijmo/wijmo';
-import { Subject } from 'rxjs';
 import { ProductModel } from '../product/product.model';
 import { SoftwareDevelopentModel } from './software-development.model';
 

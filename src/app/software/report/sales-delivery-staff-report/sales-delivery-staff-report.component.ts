@@ -1,14 +1,8 @@
 import { Component, OnInit, ViewChild, TemplateRef } from '@angular/core';
-import { Router } from '@angular/router';
-
 import { ObservableArray, CollectionView } from 'wijmo/wijmo';
 import { WjFlexGrid } from 'wijmo/wijmo.angular2.grid';
-
-import { BsModalService } from 'ngx-bootstrap/modal';
-import { BsModalRef } from 'ngx-bootstrap/modal/bs-modal-ref.service';
-
-import { ToastrService } from 'ngx-toastr';
 import { SalesDeliveryStaffReportService } from './sales-delivery-staff-report.service';
+
 @Component({
   selector: 'app-sales-delivery-staff-report',
   templateUrl: './sales-delivery-staff-report.component.html',

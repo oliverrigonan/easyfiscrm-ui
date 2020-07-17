@@ -96,7 +96,10 @@ export class LayoutComponent implements OnInit {
       } else if (this.router.url == "/software/report/support/staff") {
         this.ToolbarTitle = "Support Staff Report";
         toolBarImage.setAttribute("src", "../../../assets/img/report/support-staff-report.png");
-      } else if (this.router.url.split('/').slice(0, -1).join('/') == "/software/setup/product/detail") {
+      } else if (this.router.url == "/software/report/software/development/staff") {
+        this.ToolbarTitle = "Software Development Staff Report";
+        toolBarImage.setAttribute("src", "../../../assets/img/report/support-staff-report.png");
+      }else if (this.router.url.split('/').slice(0, -1).join('/') == "/software/setup/product/detail") {
         this.ToolbarTitle = "Product Detail";
         toolBarImage.setAttribute("src", "../../../assets/img/icons/product.png");
       }

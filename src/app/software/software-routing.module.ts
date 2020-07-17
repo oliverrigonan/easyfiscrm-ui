@@ -23,6 +23,7 @@ import { LeadStaffReportComponent } from './report/lead-staff-report/lead-staff-
 import { SalesDeliveryStaffReportComponent } from './report/sales-delivery-staff-report/sales-delivery-staff-report.component';
 import { SupportStaffReportComponent } from './report/support-staff-report/support-staff-report.component';
 import { ProductDetailComponent } from './setup/product-detail/product-detail.component';
+import { SoftwareDevelopmentStaffReportComponent } from './report/software-development-staff-report/software-development-staff-report.component';
 
 const routes: Routes = [
   {
@@ -44,6 +45,7 @@ const routes: Routes = [
       { path: 'report/lead/staff', component: LeadStaffReportComponent, canActivate: [SoftwareRouterActivate] },
       { path: 'report/sales-delivery/staff', component: SalesDeliveryStaffReportComponent, canActivate: [SoftwareRouterActivate] },
       { path: 'report/support/staff', component: SupportStaffReportComponent, canActivate: [SoftwareRouterActivate] },
+      { path: 'report/software/development/staff', component: SoftwareDevelopmentStaffReportComponent, canActivate: [SoftwareRouterActivate] },
       { path: 'report/sales/delivery', component: SalesdeliveryReportComponent, canActivate: [SoftwareRouterActivate] },
       { path: 'report/support', component: SupportReportComponent, canActivate: [SoftwareRouterActivate] },
       { path: 'report/activity', component: ActivityReportComponent, canActivate: [SoftwareRouterActivate] },
