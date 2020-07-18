@@ -53,6 +53,7 @@ const routes: Routes = [
       { path: 'setup/product', component: ProductComponent, canActivate: [SoftwareRouterActivate] },
       { path: 'setup/product/detail/:id', component: ProductDetailComponent, canActivate: [SoftwareRouterActivate] },
       { path: 'setup/status', component: StatusComponent, canActivate: [SoftwareRouterActivate] },
+      { path: '**', component: DashboardComponent,canActivate: [SoftwareRouterActivate] }
     ]
   }
 ];

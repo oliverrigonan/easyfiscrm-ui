@@ -40,6 +40,7 @@ export class LayoutComponent implements OnInit {
   @ViewChild('sidenav') sidenav: MatSidenav;
 
   public routerEvents(): void {
+    this.securityService.pageAuthentication(this.router.url);
     this.router.events.subscribe((val) => {
       let toolBarImage: Element = document.getElementById("toolBarImage");
       if (this.router.url == "/software" || this.router.url == "/software/sys/dashboard") {
@@ -98,13 +99,12 @@ export class LayoutComponent implements OnInit {
         toolBarImage.setAttribute("src", "../../../assets/img/report/support-staff-report.png");
       } else if (this.router.url == "/software/report/software/development/staff") {
         this.ToolbarTitle = "Software Development Staff Report";
-        toolBarImage.setAttribute("src", "../../../assets/img/report/support-staff-report.png");
-      }else if (this.router.url.split('/').slice(0, -1).join('/') == "/software/setup/product/detail") {
+        toolBarImage.setAttribute("src", "../../../assets/img/report/software-development-staffs-report.png");
+      } else if (this.router.url.split('/').slice(0, -1).join('/') == "/software/setup/product/detail") {
         this.ToolbarTitle = "Product Detail";
         toolBarImage.setAttribute("src", "../../../assets/img/icons/product.png");
       }
       else {
-
         // this.ToolbarTitle = "Easyfis CRM";
       }
     });
@@ -148,7 +148,7 @@ export class LayoutComponent implements OnInit {
       if (this.securityService.openGroupPage("Product") == true) {
         this.crmProduct = true;
       }
-      
+
       if (this.securityService.openGroupPage("Admin") == true) {
         this.crmAdmin = true;
       }

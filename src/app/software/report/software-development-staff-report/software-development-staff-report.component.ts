@@ -74,7 +74,6 @@ export class SoftwareDevelopmentStaffReportComponent implements OnInit {
         }
 
         this.cboUserObservableArray = userObservableArray;
-
       }
     );
 

@@ -32,6 +32,10 @@ export class SalesDeliveryStaffReportService {
   public listOpenSalesDeliveryReportubject = new Subject<ObservableArray>();
   public listOpenSalesDeliveryReportObservable = this.listOpenSalesDeliveryReportubject.asObservable();
 
+  public async ListUser(){
+    return await this.httpClient.get(this.defaultAPIURLHost + "/api/crm/report/users", this.options);
+  }
+
   public listUser(): void {
     let listUserObservableArray = new ObservableArray();
     this.listUserSubject.next(listUserObservableArray);

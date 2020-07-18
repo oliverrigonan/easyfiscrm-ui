@@ -28,6 +28,8 @@ export class LeadComponent implements OnInit {
   ) { }
 
   ngOnInit() {
+    console.log(this.router.url);
+
     this.createCboShowNumberOfRows();
     this.createCboLeadStatus();
     this.getFirsDayOftheMonth();
@@ -244,7 +246,7 @@ export class LeadComponent implements OnInit {
           this.toastr.success("Successfully added.", "Success");
           (<HTMLButtonElement>btnAddLead).disabled = false;
           this.router.navigate(['/software/trn/lead/detail/', data[1]]);
-        } 
+        }
         if (data[0] == "failed") {
           this.toastr.error(data[1], "Error");
           (<HTMLButtonElement>btnAddLead).disabled = false;

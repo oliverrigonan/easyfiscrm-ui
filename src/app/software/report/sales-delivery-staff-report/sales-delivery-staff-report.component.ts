@@ -47,6 +47,39 @@ export class SalesDeliveryStaffReportComponent implements OnInit {
   public isLisSalesDeliveryStaffReportFocus: boolean = true;
   public isListOpenSalesDeliveryStaffReportFocus: boolean = false;
 
+  // =============
+  // ComboBox User
+  // =============
+  public async createCboUser() {
+    this.cboListUserSub = await (await this.salesDeliveryStaffReportService.ListUser()).subscribe(
+      data => {
+        let results = data;
+        let userObservableArray = new ObservableArray();
+        if (results["length"] > 1) {
+          userObservableArray.push({
+            Id: 0,
+            UserName: '',
+            FullName: 'All Users'
+          });
+        }
+
+        if (results["length"] > 0) {
+          for (var i = 0; i <= results["length"] - 1; i++) {
+            userObservableArray.push({
+              Id: data[i].Id,
+              UserName: data[i].UserName,
+              FullName: data[i].FullName
+            });
+          }
+        }
+
+        this.cboUserObservableArray = userObservableArray;
+      }
+    );
+
+    this.listSalesDeliveryStaffReport();
+  }
+
   cboStartDateTextChanged() {
     if (this.isSalesDeliveryStaffReportDataLoaded) {
       if (this.isLisSalesDeliveryStaffReportFocus == true) {
@@ -100,21 +133,22 @@ export class SalesDeliveryStaffReportComponent implements OnInit {
   // =============
   // ComboBox User
   // =============
-  public createCboUser(): void {
-    this.salesDeliveryStaffReportService.listUser();
-    this.cboListUserSub = this.salesDeliveryStaffReportService.listUserObservable.subscribe(
+  public async createCboUsera() {
+    this.cboListUserSub = await (await this.salesDeliveryStaffReportService.ListUser()).subscribe(
       data => {
+        let results = data;
         let userObservableArray = new ObservableArray();
 
-        if (data != null) {
-          if (data.length > 1) {
-            userObservableArray.push({
-              Id: 0,
-              UserName: '',
-              FullName: 'All Users'
-            });
-          }
-          for (var i = 0; i <= data.length - 1; i++) {
+        if (results["lenght"] > 1) {
+          userObservableArray.push({
+            Id: 0,
+            UserName: '',
+            FullName: 'All Users'
+          });
+        }
+
+        if (results["length"] > 0) {
+          for (var i = 0; i <= results["length"] - 1; i++) {
             userObservableArray.push({
               Id: data[i].Id,
               UserName: data[i].UserName,
@@ -124,12 +158,40 @@ export class SalesDeliveryStaffReportComponent implements OnInit {
         }
 
         this.cboUserObservableArray = userObservableArray;
-
-        setTimeout(() => {
-          this.listSalesDeliveryStaffReport();
-        }, 100);
       }
     );
+
+    this.listSalesDeliveryStaffReport();
+
+    // this.salesDeliveryStaffReportService.listUser();
+    // this.cboListUserSub = this.salesDeliveryStaffReportService.listUserObservable.subscribe(
+    //   data => {
+    //     let userObservableArray = new ObservableArray();
+
+    //     if (data != null) {
+    //       if (data.length > 1) {
+    //         userObservableArray.push({
+    //           Id: 0,
+    //           UserName: '',
+    //           FullName: 'All Users'
+    //         });
+    //       }
+    //       for (var i = 0; i <= data.length - 1; i++) {
+    //         userObservableArray.push({
+    //           Id: data[i].Id,
+    //           UserName: data[i].UserName,
+    //           FullName: data[i].FullName
+    //         });
+    //       }
+    //     }
+
+    //     this.cboUserObservableArray = userObservableArray;
+
+    //     setTimeout(() => {
+    //       this.listSalesDeliveryStaffReport();
+    //     }, 100);
+    //   }
+    // );
   }
 
   refreshlistSalesDeliveryStaffReport() {
