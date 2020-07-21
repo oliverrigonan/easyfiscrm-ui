@@ -43,6 +43,8 @@ export class SoftwareDevelopmentStaffReportComponent implements OnInit {
   public isListSoftwareDevelopmentStaffReportFocus: boolean = true;
   public isListOpenSoftwareDevelopmentStaffReportFocus: boolean = false;
 
+  public openSoftwareDevelopementCount: number = 0;
+
   ngOnInit() {
     this.createCboUser();
   }
@@ -243,6 +245,8 @@ export class SoftwareDevelopmentStaffReportComponent implements OnInit {
           this.listOpenSoftwareDevelopmentStaffReportCollectionView.trackChanges = true;
           this.listOpenSoftwareDevelopmentStaffReportCollectionView.refresh();
           this.listOpenSoftwareDevelopmentStaffReportFlexGrid.refresh();
+
+          this.openSoftwareDevelopementCount = results["length"];
         }
 
         setTimeout(() => {

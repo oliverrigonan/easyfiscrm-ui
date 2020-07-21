@@ -50,6 +50,8 @@ export class SupportStaffReportComponent implements OnInit {
   public isListOpenSupportStaffReportActiveTab: boolean = false;
   public isListSupportStaffReportActiveTab: boolean = true;
 
+  public openSupportCount: number = 0;
+
   cboStartDateTextChanged() {
     if (this.isSupportStaffReportDataLoaded) {
       if (this.isListSupportStaffReportActiveTab == true) {
@@ -216,6 +218,7 @@ export class SupportStaffReportComponent implements OnInit {
           this.listOpenSupportStaffReportCollectionView = new CollectionView(this.listSupportStaffQuotationReportObservableArray);
           this.listOpenSupportStaffReportCollectionView.pageSize = this.listOpenSupportStaffReportPageIndex;
           this.listOpenSupportStaffReportCollectionView.trackChanges = true;
+          this.openSupportCount = data.length;
         }
         setTimeout(() => {
           this.listOpenSupportStaffReportCollectionView.refresh();

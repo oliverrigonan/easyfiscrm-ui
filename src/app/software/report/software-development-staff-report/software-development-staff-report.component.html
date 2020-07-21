@@ -156,29 +156,35 @@
             </wj-flex-grid>
           </div>
           <div class="card-footer">
-            <div class="col-sm-4 btn-group" style="padding: 5px 0px 5px 0px;">
-              <button type="button" class="btn btn-secondary"
-                (click)="listOpenSoftwareDevelopmentStaffReportCollectionView.moveToFirstPage()">
-                <i class="fa fa-fast-backward"></i>
-              </button>
-              <button type="button" class="btn btn-secondary"
-                (click)="listOpenSoftwareDevelopmentStaffReportCollectionView.moveToPreviousPage()">
-                <i class="fa fa-step-backward"></i>
-              </button>
-              <button type="button" class="btn btn-secondary" disabled style="width:100px">
-                {{ listOpenSoftwareDevelopmentStaffReportCollectionView.pageIndex + 1 }} /
-                {{ listOpenSoftwareDevelopmentStaffReportCollectionView.pageCount }}
-              </button>
-              <button type="button" class="btn btn-secondary"
-                (click)="listOpenSoftwareDevelopmentStaffReportCollectionView.moveToNextPage()">
-                <i class="fa fa-step-forward"></i>
-              </button>
-              <button type="button" class="btn btn-secondary"
-                (click)="listOpenSoftwareDevelopmentStaffReportCollectionView.moveToLastPage()">
-                <i class="fa fa-fast-forward"></i>
-              </button>
+            <div class="row">
+              <div class="col-sm-4 btn-group" style="padding: 5px 0px 5px 14px;">
+                <button type="button" class="btn btn-secondary"
+                  (click)="listOpenSoftwareDevelopmentStaffReportCollectionView.moveToFirstPage()">
+                  <i class="fa fa-fast-backward"></i>
+                </button>
+                <button type="button" class="btn btn-secondary"
+                  (click)="listOpenSoftwareDevelopmentStaffReportCollectionView.moveToPreviousPage()">
+                  <i class="fa fa-step-backward"></i>
+                </button>
+                <button type="button" class="btn btn-secondary" disabled style="width:100px">
+                  {{ listOpenSoftwareDevelopmentStaffReportCollectionView.pageIndex + 1 }} /
+                  {{ listOpenSoftwareDevelopmentStaffReportCollectionView.pageCount }}
+                </button>
+                <button type="button" class="btn btn-secondary"
+                  (click)="listOpenSoftwareDevelopmentStaffReportCollectionView.moveToNextPage()">
+                  <i class="fa fa-step-forward"></i>
+                </button>
+                <button type="button" class="btn btn-secondary"
+                  (click)="listOpenSoftwareDevelopmentStaffReportCollectionView.moveToLastPage()">
+                  <i class="fa fa-fast-forward"></i>
+                </button>
+              </div>
+              <div class="col-sm-8" style="padding: 10px 20px 5px 0px; text-align: right; color: gray;"><b><i>Open
+                    Support
+                    Count: {{openSoftwareDevelopementCount}}</i></b>
+              </div>
             </div>
-            <div class="col-sm-8"></div>
+
           </div>
         </div>
       </div>

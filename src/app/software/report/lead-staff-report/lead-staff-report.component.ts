@@ -192,6 +192,7 @@ export class LeadStaffReportComponent implements OnInit {
 
   }
 
+  public salesQuotationCount: number = 0;
   public listSalesStaffQuotationReport(): void {
     this.listSalesStaffQuotationReportObservableArray = new ObservableArray();
     this.listSalesStaffQuotationReportCollectionView = new CollectionView(this.listSalesStaffQuotationReportObservableArray);
@@ -213,6 +214,7 @@ export class LeadStaffReportComponent implements OnInit {
           this.listSalesStaffQuotationReportCollectionView = new CollectionView(this.listSalesStaffQuotationReportObservableArray);
           this.listSalesStaffQuotationReportCollectionView.pageSize = this.listSalesStafQuotationReportPageIndex;
           this.listSalesStaffQuotationReportCollectionView.trackChanges = true;
+          this.salesQuotationCount = data.length;
         }
         setTimeout(() => {
           this.listSalesStaffQuotationReportCollectionView.refresh();

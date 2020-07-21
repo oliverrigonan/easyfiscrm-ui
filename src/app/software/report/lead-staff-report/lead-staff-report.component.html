@@ -60,7 +60,8 @@
       </li>
       <li class="nav-item">
         <a class="nav-link" id="SalesStaffQuotationReport-tab" data-toggle="tab" href="#SalesStaffQuotationReport"
-          role="tab" aria-controls="SalesStaffQuotationReport" (click)="refreshlistSalesStaffQuotationReport()" aria-selected="false">Sales Quotation</a>
+          role="tab" aria-controls="SalesStaffQuotationReport" (click)="refreshlistSalesStaffQuotationReport()"
+          aria-selected="false">Sales Quotation</a>
       </li>
     </ul>
     <div class="tab-content" id="myTabContent">
@@ -70,7 +71,8 @@
           <!-- <div class="card-header">
           </div> -->
           <div class="card-body">
-            <mat-progress-bar [hidden]="isSalesStaffReportProgressBarHidden" [color]="'primary'" [mode]="'indeterminate'">
+            <mat-progress-bar [hidden]="isSalesStaffReportProgressBarHidden" [color]="'primary'"
+              [mode]="'indeterminate'">
             </mat-progress-bar>
             <wj-flex-grid #listSalesStaffReportFlexGrid [itemsSource]="listSalesStaffReportCollectionView"
               [selectionMode]="3" [frozenColumns]="2">
@@ -126,59 +128,71 @@
           <!-- <div class="card-header">
           </div> -->
           <div class="card-body">
-            <mat-progress-bar [hidden]="isSalesStaffQuotationReportProgressBarHidden" [color]="'primary'" [mode]="'indeterminate'">
+            <mat-progress-bar [hidden]="isSalesStaffQuotationReportProgressBarHidden" [color]="'primary'"
+              [mode]="'indeterminate'">
             </mat-progress-bar>
-            <wj-flex-grid #listSalesStaffQuotationReportFlexGrid [itemsSource]="listSalesStaffQuotationReportCollectionView"
-              [selectionMode]="3" [frozenColumns]="2">
+            <wj-flex-grid #listSalesStaffQuotationReportFlexGrid
+              [itemsSource]="listSalesStaffQuotationReportCollectionView" [selectionMode]="3" [frozenColumns]="2">
               <wj-flex-grid-filter></wj-flex-grid-filter>
               <wj-flex-grid-column [header]="'No.'" [binding]="'LDNumber'" [isReadOnly]="true" [width]="'2*'">
               </wj-flex-grid-column>
-              <wj-flex-grid-column [header]="'Customer'" [binding]="'Customer'" [isReadOnly]="true"
-                [width]="'2*'">
+              <wj-flex-grid-column [header]="'Customer'" [binding]="'Customer'" [isReadOnly]="true" [width]="'2*'">
               </wj-flex-grid-column>
               <wj-flex-grid-column [header]="'Quotation Date'" [binding]="'LDQuotationDate'" [isReadOnly]="true"
                 [width]="'2*'">
               </wj-flex-grid-column>
-              <wj-flex-grid-column  [header]="'Product'" [binding]="'ProductDescription'" [isReadOnly]="true" [width]="'2*'">
+              <wj-flex-grid-column [header]="'Product'" [binding]="'ProductDescription'" [isReadOnly]="true"
+                [width]="'2*'">
               </wj-flex-grid-column>
-              <wj-flex-grid-column [header]="'Total Amount'" [binding]="'TotalAmount'" [isReadOnly]="true" [width]="'2*'">
+              <wj-flex-grid-column [header]="'Total Amount'" [binding]="'TotalAmount'" [isReadOnly]="true"
+                [width]="'2*'">
               </wj-flex-grid-column>
-              <wj-flex-grid-column *ngIf="" [header]="'Expected Invoiced Date'" [binding]="'ExpectedInvoicedDate'" [isReadOnly]="true" [width]="'2*'">
+              <wj-flex-grid-column *ngIf="" [header]="'Expected Invoiced Date'" [binding]="'ExpectedInvoicedDate'"
+                [isReadOnly]="true" [width]="'2*'">
               </wj-flex-grid-column>
-              <wj-flex-grid-column [header]="'Assigned User'" [binding]="'AssignedToUser'" [isReadOnly]="true" [width]="'2*'">
+              <wj-flex-grid-column [header]="'Assigned User'" [binding]="'AssignedToUser'" [isReadOnly]="true"
+                [width]="'2*'">
               </wj-flex-grid-column>
-              <wj-flex-grid-column [header]="'Last Activity'" [binding]="'LastActivity'" [isReadOnly]="true" [width]="'2*'">
+              <wj-flex-grid-column [header]="'Last Activity'" [binding]="'LastActivity'" [isReadOnly]="true"
+                [width]="'2*'">
               </wj-flex-grid-column>
-              <wj-flex-grid-column [header]="'Last Activity Date'" [binding]="'LastActivityDate'" [isReadOnly]="true" [width]="'2*'">
+              <wj-flex-grid-column [header]="'Last Activity Date'" [binding]="'LastActivityDate'" [isReadOnly]="true"
+                [width]="'2*'">
               </wj-flex-grid-column>
-              <wj-flex-grid-column [header]="'Last Activity Staff'" [binding]="'LastActivityStaff'" [isReadOnly]="true" [width]="'2*'">
+              <wj-flex-grid-column [header]="'Last Activity Staff'" [binding]="'LastActivityStaff'" [isReadOnly]="true"
+                [width]="'2*'">
               </wj-flex-grid-column>
             </wj-flex-grid>
           </div>
           <div class="card-footer">
-            <div class="col-sm-4 btn-group" style="padding: 5px 0px 5px 0px;">
-              <button type="button" class="btn btn-secondary"
-                (click)="listSalesStaffQuotationReportCollectionView.moveToFirstPage()">
-                <i class="fa fa-fast-backward"></i>
-              </button>
-              <button type="button" class="btn btn-secondary"
-                (click)="listSalesStaffQuotationReportCollectionView.moveToPreviousPage()">
-                <i class="fa fa-step-backward"></i>
-              </button>
-              <button type="button" class="btn btn-secondary" disabled style="width:100px">
-                {{ listSalesStaffQuotationReportCollectionView.pageIndex + 1 }} /
-                {{ listSalesStaffQuotationReportCollectionView.pageCount }}
-              </button>
-              <button type="button" class="btn btn-secondary"
-                (click)="listSalesStaffQuotationReportCollectionView.moveToNextPage()">
-                <i class="fa fa-step-forward"></i>
-              </button>
-              <button type="button" class="btn btn-secondary"
-                (click)="listSalesStaffQuotationReportCollectionView.moveToLastPage()">
-                <i class="fa fa-fast-forward"></i>
-              </button>
+            <div class="row">
+              <div class="col-sm-4 btn-group" style="padding: 5px 0px 5px 14px;">
+                <button type="button" class="btn btn-secondary"
+                  (click)="listSalesStaffQuotationReportCollectionView.moveToFirstPage()">
+                  <i class="fa fa-fast-backward"></i>
+                </button>
+                <button type="button" class="btn btn-secondary"
+                  (click)="listSalesStaffQuotationReportCollectionView.moveToPreviousPage()">
+                  <i class="fa fa-step-backward"></i>
+                </button>
+                <button type="button" class="btn btn-secondary" disabled style="width:100px">
+                  {{ listSalesStaffQuotationReportCollectionView.pageIndex + 1 }} /
+                  {{ listSalesStaffQuotationReportCollectionView.pageCount }}
+                </button>
+                <button type="button" class="btn btn-secondary"
+                  (click)="listSalesStaffQuotationReportCollectionView.moveToNextPage()">
+                  <i class="fa fa-step-forward"></i>
+                </button>
+                <button type="button" class="btn btn-secondary"
+                  (click)="listSalesStaffQuotationReportCollectionView.moveToLastPage()">
+                  <i class="fa fa-fast-forward"></i>
+                </button>
+              </div>
+              <div class="col-sm-8" style="padding: 10px 20px 5px 0px; text-align: right; color: gray;"><b><i>Sales
+                    Quotation
+                    Count: {{salesQuotationCount}}</i></b>
+              </div>
             </div>
-            <div class="col-sm-8"></div>
           </div>
         </div>
       </div>

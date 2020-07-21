@@ -81,7 +81,7 @@
               </wj-flex-grid-column>
               <wj-flex-grid-column [header]="'Open'" [binding]="'Open'" [isReadOnly]="true" [width]="'2*'">
               </wj-flex-grid-column>
-              <wj-flex-grid-column [header]="'ForClosing'" [binding]="'ForClosing'" [isReadOnly]="true" [width]="'2*'">
+              <wj-flex-grid-column [header]="'For Closing'" [binding]="'ForClosing'" [isReadOnly]="true" [width]="'2*'">
               </wj-flex-grid-column>
               <wj-flex-grid-column [header]="'Close'" [binding]="'Close'" [isReadOnly]="true" [width]="'2*'">
               </wj-flex-grid-column>
@@ -163,33 +163,37 @@
             </wj-flex-grid>
           </div>
           <div class="card-footer">
-            <div class="col-sm-4 btn-group" style="padding: 5px 0px 5px 0px;">
-              <button type="button" class="btn btn-secondary"
-                (click)="listOpenSupportStaffReportCollectionView.moveToFirstPage()">
-                <i class="fa fa-fast-backward"></i>
-              </button>
-              <button type="button" class="btn btn-secondary"
-                (click)="listOpenSupportStaffReportCollectionView.moveToPreviousPage()">
-                <i class="fa fa-step-backward"></i>
-              </button>
-              <button type="button" class="btn btn-secondary" disabled style="width:100px">
-                {{ listOpenSupportStaffReportCollectionView.pageIndex + 1 }} /
-                {{ listOpenSupportStaffReportCollectionView.pageCount }}
-              </button>
-              <button type="button" class="btn btn-secondary"
-                (click)="listOpenSupportStaffReportCollectionView.moveToNextPage()">
-                <i class="fa fa-step-forward"></i>
-              </button>
-              <button type="button" class="btn btn-secondary"
-                (click)="listOpenSupportStaffReportCollectionView.moveToLastPage()">
-                <i class="fa fa-fast-forward"></i>
-              </button>
+            <div class="row">
+              <div class="col-sm-4 btn-group" style="padding: 5px 0px 5px 14px;">
+                <button type="button" class="btn btn-secondary"
+                  (click)="listOpenSupportStaffReportCollectionView.moveToFirstPage()">
+                  <i class="fa fa-fast-backward"></i>
+                </button>
+                <button type="button" class="btn btn-secondary"
+                  (click)="listOpenSupportStaffReportCollectionView.moveToPreviousPage()">
+                  <i class="fa fa-step-backward"></i>
+                </button>
+                <button type="button" class="btn btn-secondary" disabled style="width:100px">
+                  {{ listOpenSupportStaffReportCollectionView.pageIndex + 1 }} /
+                  {{ listOpenSupportStaffReportCollectionView.pageCount }}
+                </button>
+                <button type="button" class="btn btn-secondary"
+                  (click)="listOpenSupportStaffReportCollectionView.moveToNextPage()">
+                  <i class="fa fa-step-forward"></i>
+                </button>
+                <button type="button" class="btn btn-secondary"
+                  (click)="listOpenSupportStaffReportCollectionView.moveToLastPage()">
+                  <i class="fa fa-fast-forward"></i>
+                </button>
+              </div>
+              <div class="col-sm-8" style="padding: 10px 20px 5px 0px; text-align: right; color: gray;"><b><i>Open
+                    Support
+                    Count: {{openSupportCount}}</i></b>
+              </div>
             </div>
-            <div class="col-sm-8"></div>
           </div>
         </div>
       </div>
     </div>
-
   </div>
 </div>

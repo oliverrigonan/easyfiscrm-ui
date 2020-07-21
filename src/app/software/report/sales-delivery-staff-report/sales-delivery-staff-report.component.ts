@@ -214,6 +214,8 @@ export class SalesDeliveryStaffReportComponent implements OnInit {
     }, 300);
   }
 
+  public openSalesDeliveryCount: number = 0;
+
   public listSalesDeliveryStaffReport(): void {
     this.listSalesDeliveryStaffReportObservableArray = new ObservableArray();
     this.listSalesDeliveryStaffReportCollectionView = new CollectionView(this.listSalesDeliveryStaffReportObservableArray);
@@ -275,6 +277,7 @@ export class SalesDeliveryStaffReportComponent implements OnInit {
           this.listOpenSalesDeliveryStaffReportCollectionView = new CollectionView(this.listOpenSalesDeliveryStaffReportObservableArray);
           this.listOpenSalesDeliveryStaffReportCollectionView.pageSize = this.listOpenSalesDeliveryStafReportPageIndex;
           this.listOpenSalesDeliveryStaffReportCollectionView.trackChanges = true;
+          this.openSalesDeliveryCount = data.length;
         }
         setTimeout(() => {
           this.listOpenSalesDeliveryStaffReportCollectionView.refresh();
