@@ -61,6 +61,7 @@ export class ProductDetailService {
   public async SaveSoftwareDevelopment(objSoftwareDevelopent: SoftwareDevelopentModel, softwareDevelomentId: number) {
     return await this.httpClient.put(this.defaultAPIURLHost + "/api/crm/trn/software/development/update/" + softwareDevelomentId, JSON.stringify(objSoftwareDevelopent), this.options);
   }
+  
   public async LockSoftwareDevelopment(objSoftwareDevelopent: SoftwareDevelopentModel, softwareDevelomentId: number) {
     return await this.httpClient.put(this.defaultAPIURLHost + "/api/crm/trn/software/development/lock/" + softwareDevelomentId, JSON.stringify(objSoftwareDevelopent), this.options);
   }

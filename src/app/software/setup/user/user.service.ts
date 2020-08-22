@@ -175,7 +175,6 @@ export class UserService {
               Id: results[i].Id,
               FormName: results[i].FormName,
               Particulars: results[i].Particulars
-
             });
           }
         }

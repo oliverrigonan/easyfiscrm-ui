@@ -183,12 +183,14 @@ export class ProductDetailComponent implements OnInit {
           this.listSoftwareDevelopmentCollectionView.trackChanges = true;
           this.listSoftwareDevelopmentCollectionView.refresh();
           this.listSoftwareDevelopmentFlexGrid.refresh();
-
         }
         this.isDataLoaded = true;
         this.isProgressBarHidden = true;
 
         if (this.listSoftwareDevelopmentSubscription != null) this.listSoftwareDevelopmentSubscription.unsubscribe();
+      },
+      error => {
+        this.toastr.error(error.status, "Error");
       }
     );
   }
@@ -259,7 +261,7 @@ export class ProductDetailComponent implements OnInit {
 
         this.cboProductObservableArray = productObservableArray;
         this.progressPercentage = '40%';
-        
+
         if (this.cboProductSubscription != null) this.cboProductSubscription.unsubscribe();
       }
     );

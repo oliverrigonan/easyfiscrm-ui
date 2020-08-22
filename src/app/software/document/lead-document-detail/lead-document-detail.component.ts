@@ -138,7 +138,6 @@ export class LeadDocumentDetailComponent implements OnInit {
     } else {
       this.toastr.error("Document, Document Type or Document Url is empty!", "Error");
     }
-
   }
 
   private btnCloseDocumentDialog(): void {
@@ -166,35 +165,6 @@ export class LeadDocumentDetailComponent implements OnInit {
     }
   }
 
-
-
-  // viewDocumentUrl() {
-  //   if (this.documentModel.DocumentType !== '' && this.documentModel.DocumentURL !== '') {
-  //     let documentType = this.documentModel.DocumentType;
-  //     let documentUrl = this.documentModel.DocumentURL;
-
-  //     if (documentType == 'YOUTUBE') {
-  //       this.showVideoDocument = true;
-  //       this.showDocument = false;
-  //       console.log(documentUrl);
-  //       setTimeout(() => {
-  //         let documentVideoFrame: Element = document.getElementById("documentVideoFrame");
-  //         documentVideoFrame.innerHTML = documentUrl;
-  //       }, 1000);
-  //     }
-
-  //     if (documentType != 'YOUTUBE') {
-  //       this.showDocument = true;
-  //       this.showVideoDocument = false;
-  //       setTimeout(() => {
-  //         this.docUrl = documentUrl;
-  //       }, 1000);
-  //     }
-  //   } else {
-  //     this.toastr.error("Document Type or Url is empty!", "Error");
-  //   }
-  // }
-
   viewDocumentUrl() {
     if (this.documentModel.DocumentType !== '' && this.documentModel.DocumentURL !== '') {
       let documentType = this.documentModel.DocumentType;
@@ -208,7 +178,6 @@ export class LeadDocumentDetailComponent implements OnInit {
   public btnUploadFile(): void {
     let btnUploadFile: Element = document.getElementById("btnUploadFile");
     btnUploadFile.setAttribute("disabled", "disabled");
-
     let inputFileImage = document.getElementById("inputFileUpload") as HTMLInputElement;
 
     if (inputFileImage.files.length > 0) {
@@ -233,5 +202,4 @@ export class LeadDocumentDetailComponent implements OnInit {
       btnUploadFile.removeAttribute("disabled");
     }
   }
-
 }

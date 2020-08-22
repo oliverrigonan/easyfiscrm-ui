@@ -124,7 +124,6 @@ export class DocumentService {
   public uploadFileObservable = this.uploadFileSubject.asObservable();
 
   public uploadFile(file: File, fileType: string, fileName: string): void {
-
     let options = {
       headers: new HttpHeaders({
         'Authorization': 'Bearer ' + localStorage.getItem('access_token')

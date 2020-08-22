@@ -103,17 +103,17 @@ export class SecurityService {
       try {
         let userGroup = localStorage.getItem("userGroup");
 
-        if (currentUrl === "/software/trn/lead" || currentUrl === "/software/trn/lead" || currentUrl === "/software/trn/lead/:startDate/:endDate/:status/:userId/:dashboard" || currentUrl === "/software/trn/lead/detail/:id") {
+        if (currentUrl === "/software/trn/lead" || currentUrl === "/software/trn/lead" || currentUrl === "/software/trn/lead/:startDate/:endDate/:status/:userId/:dashboard" || currentUrl.split('/').slice(0, -1).join('/') === "/software/trn/lead/detail") {
           if (userGroup === "Sales" || userGroup === "Sales Manager" || userGroup === "Easyfis Staff" || userGroup === "Admin") {
           } else {
             this.router.navigate(['/software']);
           }
-        } else if (currentUrl === "/software/trn/sales" || currentUrl === "/software/trn/sales/:startDate/:endDate/:status/:userId/:dashboard" || currentUrl === "/software/trn/sales/detail/:id") {
+        } else if (currentUrl === "/software/trn/sales" || currentUrl === "/software/trn/sales/:startDate/:endDate/:status/:userId/:dashboard" || currentUrl.split('/').slice(0, -1).join('/') === "/software/trn/sales/detail") {
           if (userGroup === "Delivery" || userGroup === "Delivery Manager" || userGroup === "Easyfis Staff" || userGroup === "Admin") {
           } else {
             this.router.navigate(['/software']);
           }
-        } else if (currentUrl === "/software/trn/support" || currentUrl === "/software/trn/support/:startDate/:endDate/:status/:userId/:dashboard" || currentUrl === "/software/trn/support/detail/:id") {
+        } else if (currentUrl === "/software/trn/support" || currentUrl === "/software/trn/support/:startDate/:endDate/:status/:userId/:dashboard" || currentUrl.split('/').slice(0, -1).join('/') === "/software/trn/support/detail") {
           if (userGroup === "Support" || userGroup === "Support Manager" || userGroup === "Easyfis Staff" || userGroup === "Customer" || userGroup === "Admin") {
           }
         } else if (currentUrl === "/software/trn/activity") {
@@ -142,7 +142,7 @@ export class SecurityService {
           } else {
             this.router.navigate(['/software']);
           }
-        } else if (currentUrl === "/software/setup/product" || currentUrl === "/software/setup/product/detail/:id") {
+        } else if (currentUrl === "/software/setup/product" || currentUrl.split('/').slice(0, -1).join('/') === "/software/setup/product/detail") {
           if (userGroup === "Easyfis Staff" || userGroup === "Admin") {
           } else {
             this.router.navigate(['/software']);
